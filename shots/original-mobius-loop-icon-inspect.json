@@ -1,0 +1,15 @@
+{
+  "label": "https://chanhdai.com/components/mobius-loop-icon",
+  "title": "Mobius Loop Icon – Chánh Đại",
+  "view": {
+    "width": 1440,
+    "height": 900
+  },
+  "body": {
+    "bg": "lab(100 0 0)",
+    "color": "lab(2.51107 0.242703 -0.886115)",
+    "fontFamily": "GeistSans, \"GeistSans Fallback\"",
+    "fontSize": "16px"
+  },
+  "wrap": null
+}
