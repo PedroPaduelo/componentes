@@ -72,6 +72,10 @@ import { examplesInteractive } from "@/data/examples-interactive"
 import { examplesFluid } from "@/data/examples-fluid"
 import { examplesCyber } from "@/data/examples-cyber"
 import { animatedButtonExamples } from "@/data/examples-animated"
+import { examplesFlipText } from "@/data/examples-flip-text"
+import { perspectiveGridExamples } from "@/data/examples-perspective-grid"
+import { examplesGlassDock } from "@/data/examples-glass-dock"
+import { creepyButtonExamples } from "@/data/examples-creepy"
 
 export type Example = {
   title: string
@@ -1207,6 +1211,10 @@ export const examples: Record<string, Example[]> = {
   // Lote VengenceUI
   ...examplesCyber,
   ...animatedButtonExamples,
+  ...examplesFlipText,
+  ...examplesGlassDock,
+  ...creepyButtonExamples,
+  ...perspectiveGridExamples,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

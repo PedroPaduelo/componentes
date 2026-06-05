@@ -313,6 +313,54 @@ export const components: ComponentMeta[] = [
       "Botão com borda brilhante animada e text reveal (mask gradient deslizante) — ideal para chamadas de ação (CTA).",
     tags: ["button", "animated", "shiny", "border", "reveal", "cta", "vengenceui"],
   },
+  {
+    slug: "flip-text",
+    name: "Flip Text",
+    category: "Feedback",
+    description:
+      "Texto com animação 3D flip caractere-por-caractere, usando rotateX + CSS variables e delays staggered (sine wave) para efeito de onda.",
+    tags: ["flip", "3d", "animação", "texto", "efeito", "wave", "stagger"],
+  },
+  {
+    slug: "perspective-grid",
+    name: "Perspective Grid",
+    category: "Feedback",
+    description:
+      "Grid 3D em perspectiva com tiles coloridos no hover — efeito de profundidade para hero/backgrounds.",
+    tags: [
+      "3d",
+      "grid",
+      "perspective",
+      "hover",
+      "vengenceui",
+      "background",
+      "tile",
+    ],
+  },
+  {
+    slug: "glass-dock",
+    name: "Glass Dock",
+    category: "Actions",
+    description:
+      "MacOS-inspired glassmorphic dock com scale magnification on hover.",
+    tags: ["dock", "macos", "glassmorphism", "navigation", "hover", "magnify"],
+  },
+  {
+    slug: "creepy-button",
+    name: "Creepy Button",
+    category: "Actions",
+    description:
+      "Botão interativo com olhos que seguem o cursor (pupil tracking), animação de piscar periódica e cover que rotaciona em hover.",
+    tags: [
+      "button",
+      "interactive",
+      "animation",
+      "vengenceui",
+      "creepy",
+      "pupil-tracking",
+      "hover",
+    ],
+  },
 
   // Lote Fluid (ONDA 2 lote A)
   {
