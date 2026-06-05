@@ -1,0 +1,15 @@
+{
+  "label": "http://localhost:5173/components/shimmering-text",
+  "title": "Vitrine UI — Catálogo de Componentes React",
+  "view": {
+    "width": 1440,
+    "height": 900
+  },
+  "body": {
+    "bg": "oklch(1 0 0)",
+    "color": "oklch(0.145 0 0)",
+    "fontFamily": "ui-sans-serif, system-ui, sans-serif, \"Apple Color Emoji\", \"Segoe UI Emoji\", \"Segoe UI Symbol\", \"Noto Color Emoji\"",
+    "fontSize": "16px"
+  },
+  "wrap": null
+}
