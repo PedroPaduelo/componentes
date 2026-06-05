@@ -62,7 +62,7 @@ import {
 } from "@/components/ui/tabs"
 import { Settings, User, LogOut } from "lucide-react"
 import { Tree } from "@/components/ui/tree"
-import { MiddleTruncation } from "@/components/ui/middle-truncation"
+import { SlideToUnlock } from "@/components/ui/slide-to-unlock"
 
 export type Example = {
   title: string
@@ -743,53 +743,49 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                            middle-truncation                                */
+/*                             slide-to-unlock                                 */
 /* -------------------------------------------------------------------------- */
 
-const middleTruncationBasicExample: Example = {
+const slideToUnlockBasicExample: Example = {
   title: "Básico",
-  description: "Trunca texto longo no meio, preservando início e fim.",
-  code: `<MiddleTruncation text="/Users/ncdai/Code/chanhdai.com/src/components/ui/button.tsx" />`,
+  description: "Arraste o thumb para desbloquear.",
+  code: `<SlideToUnlock onUnlock={() => alert("Desbloqueado!")} />`,
   render: (
-    <div className="w-full max-w-xs">
-      <MiddleTruncation text="/Users/ncdai/Code/chanhdai.com/src/components/ui/button.tsx" />
-    </div>
+    <SlideToUnlock onUnlock={() => alert("Desbloqueado!")} />
   ),
 }
 
-const middleTruncationUrlExample: Example = {
-  title: "URL",
-  description: "Ideal para URLs longas em que o domínio e o path final importam.",
-  code: `<MiddleTruncation
-  text="https://example.com/api/v1/users/12345/profile/settings"
-  maxLength={30}
+const slideToUnlockConfirmExample: Example = {
+  title: "Confirmar ação",
+  description: "Variante success para confirmar pagamento ou ação importante.",
+  code: `<SlideToUnlock
+  onUnlock={() => alert("Ação confirmada!")}
+  label="deslize para confirmar"
+  variant="success"
 />`,
   render: (
-    <div className="w-full max-w-xs">
-      <MiddleTruncation
-        text="https://example.com/api/v1/users/12345/profile/settings"
-        maxLength={30}
-      />
-    </div>
+    <SlideToUnlock
+      onUnlock={() => alert("Ação confirmada!")}
+      label="deslize para confirmar"
+      variant="success"
+    />
   ),
 }
 
-const middleTruncationCustomExample: Example = {
-  title: "Ellipsis customizado",
-  description: "Use um separador diferente e controle o tamanho máximo.",
-  code: `<MiddleTruncation
-  text="FY26_Q1_Consolidated_Financial_Statements.pdf"
-  maxLength={24}
-  ellipsis=" ... "
+const slideToUnlockDestructiveExample: Example = {
+  title: "Ação destrutiva",
+  description: "Variante destructive para exclusão ou ações irreversíveis.",
+  code: `<SlideToUnlock
+  onUnlock={() => alert("Item excluído!")}
+  label="deslize para excluir"
+  variant="destructive"
 />`,
   render: (
-    <div className="w-full max-w-xs">
-      <MiddleTruncation
-        text="FY26_Q1_Consolidated_Financial_Statements.pdf"
-        maxLength={24}
-        ellipsis=" ... "
-      />
-    </div>
+    <SlideToUnlock
+      onUnlock={() => alert("Item excluído!")}
+      label="deslize para excluir"
+      variant="destructive"
+    />
   ),
 }
 
@@ -809,10 +805,10 @@ export const examples: Record<string, Example[]> = {
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
   tree: [treeBasicExample, treeSearchExample, treeDensityExample],
-  "middle-truncation": [
-    middleTruncationBasicExample,
-    middleTruncationUrlExample,
-    middleTruncationCustomExample,
+  "slide-to-unlock": [
+    slideToUnlockBasicExample,
+    slideToUnlockConfirmExample,
+    slideToUnlockDestructiveExample,
   ],
 }
 

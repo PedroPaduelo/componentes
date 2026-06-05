@@ -129,18 +129,18 @@ export const components: ComponentMeta[] = [
     ],
   },
   {
-    slug: "middle-truncation",
-    name: "Middle Truncation",
+    slug: "slide-to-unlock",
+    name: "Slide to Unlock",
     category: "Forms",
     description:
-      "Trunca texto no meio preservando início e fim, com tooltip no hover.",
+      "Controle deslizante estilo iOS para confirmar ações. Arraste o thumb da esquerda para a direita.",
     tags: [
-      "truncar",
-      "texto",
-      "ellipsis",
-      "meio",
-      "tooltip",
-      "string",
+      "slider",
+      "deslizar",
+      "confirmar",
+      "ação",
+      "touch",
+      "arrastar",
     ],
   },
 ]
