@@ -18,8 +18,8 @@
       "width": 924,
       "height": 418
     },
-    "bg": "rgb(248, 248, 248)",
-    "color": "rgb(108, 108, 113)",
+    "bg": "oklch(1 0 0)",
+    "color": "oklch(0.145 0 0)",
     "fontFamily": "system-ui",
     "fontSize": "13px",
     "fontWeight": "400",

@@ -61,6 +61,7 @@ import {
 } from "@/components/ui/tabs"
 import { Settings, User, LogOut } from "lucide-react"
 import { Tree } from "@/components/ui/tree"
+import { MiddleTruncation } from "@/components/ui/middle-truncation"
 
 export type Example = {
   title: string
@@ -741,6 +742,57 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                            middle-truncation                                */
+/* -------------------------------------------------------------------------- */
+
+const middleTruncationBasicExample: Example = {
+  title: "Básico",
+  description: "Trunca texto longo no meio, preservando início e fim.",
+  code: `<MiddleTruncation text="/Users/ncdai/Code/chanhdai.com/src/components/ui/button.tsx" />`,
+  render: (
+    <div className="w-full max-w-xs">
+      <MiddleTruncation text="/Users/ncdai/Code/chanhdai.com/src/components/ui/button.tsx" />
+    </div>
+  ),
+}
+
+const middleTruncationUrlExample: Example = {
+  title: "URL",
+  description: "Ideal para URLs longas em que o domínio e o path final importam.",
+  code: `<MiddleTruncation
+  text="https://example.com/api/v1/users/12345/profile/settings"
+  maxLength={30}
+/>`,
+  render: (
+    <div className="w-full max-w-xs">
+      <MiddleTruncation
+        text="https://example.com/api/v1/users/12345/profile/settings"
+        maxLength={30}
+      />
+    </div>
+  ),
+}
+
+const middleTruncationCustomExample: Example = {
+  title: "Ellipsis customizado",
+  description: "Use um separador diferente e controle o tamanho máximo.",
+  code: `<MiddleTruncation
+  text="FY26_Q1_Consolidated_Financial_Statements.pdf"
+  maxLength={24}
+  ellipsis=" ... "
+/>`,
+  render: (
+    <div className="w-full max-w-xs">
+      <MiddleTruncation
+        text="FY26_Q1_Consolidated_Financial_Statements.pdf"
+        maxLength={24}
+        ellipsis=" ... "
+      />
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  mapa                                       */
 /* -------------------------------------------------------------------------- */
 
@@ -755,6 +807,11 @@ export const examples: Record<string, Example[]> = {
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
   tree: [treeBasicExample, treeSearchExample, treeDensityExample],
+  "middle-truncation": [
+    middleTruncationBasicExample,
+    middleTruncationUrlExample,
+    middleTruncationCustomExample,
+  ],
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

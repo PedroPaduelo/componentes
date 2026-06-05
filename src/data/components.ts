@@ -120,6 +120,21 @@ export const components: ComponentMeta[] = [
       "explorer",
     ],
   },
+  {
+    slug: "middle-truncation",
+    name: "Middle Truncation",
+    category: "Forms",
+    description:
+      "Trunca texto no meio preservando início e fim, com tooltip no hover.",
+    tags: [
+      "truncar",
+      "texto",
+      "ellipsis",
+      "meio",
+      "tooltip",
+      "string",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
