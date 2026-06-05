@@ -191,6 +191,10 @@
   --color-hover: var(--hover);
   --color-active: var(--active);
   --color-destructive-light: var(--destructive-light);
+
+  /* ─── Aceternity — Background Ripple Effect ────────────────────── */
+  --animate-cell-ripple: cell-ripple var(--duration, 200ms) ease-out none 1
+    var(--delay, 0ms);
 }
 
 @layer base {
@@ -467,6 +471,19 @@
   60%,
   100% {
     opacity: 0;
+  }
+}
+
+/* ─── Aceternity — Background Ripple Effect ──────────────────────────────── */
+@keyframes cell-ripple {
+  0% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.4;
   }
 }
 

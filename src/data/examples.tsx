@@ -89,6 +89,7 @@ import { examplesBackgroundRippleEffect } from "@/data/examples-background-rippl
 import { examplesBackgroundBeamsWithCollision } from "@/data/examples-background-beams-with-collision"
 import { examplesSparkles } from "@/data/examples-sparkles"
 import { examplesBackgroundBeams } from "@/data/examples-background-beams"
+import { examplesBackgroundLines } from "@/data/examples-background-lines"
 
 export type Example = {
   title: string
@@ -1232,6 +1233,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesLightLines,
   ...examplesAnimatedNumber,
   // Lote Aceternity
+  ...examplesBackgroundLines,
   ...examplesBackgroundBeamsWithCollision,
   ...examplesImagesBadge,
   ...examplesParallaxHeroImages,

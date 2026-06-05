@@ -575,6 +575,14 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "background-lines",
+    name: "Background Lines",
+    category: "Feedback",
+    description:
+      "Efeito de fundo da Aceternity UI: SVG com múltiplos paths curvos coloridos que animam em padrão de onda (wave) em loop, atrás do conteúdo. Inspirado no height.app; fundo transparente que adapta ao tema.",
+    tags: ["background", "lines", "svg", "wave", "hero", "aceternity"],
+  },
+  {
     slug: "background-beams-with-collision",
     name: "Background Beams With Collision",
     category: "Feedback",
