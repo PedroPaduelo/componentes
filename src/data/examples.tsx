@@ -70,6 +70,7 @@ import { examplesChanhdaiB } from "@/data/examples-chanhdai-b"
 import { examplesChanhdaiC } from "@/data/examples-chanhdai-c"
 import { examplesInteractive } from "@/data/examples-interactive"
 import { examplesFluid } from "@/data/examples-fluid"
+import { examplesCyber } from "@/data/examples-cyber"
 
 export type Example = {
   title: string
@@ -1202,6 +1203,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesInteractive,
   // Lote Fluid (ONDA 2 lote A)
   ...examplesFluid,
+  // Lote VengenceUI
+  ...examplesCyber,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

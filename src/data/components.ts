@@ -296,6 +296,16 @@ export const components: ComponentMeta[] = [
     tags: ["toc", "sumário", "navegação", "minimap", "scroll", "âncora"],
   },
 
+  // Lote VengenceUI
+  {
+    slug: "cyber-glitch-text",
+    name: "Cyber Glitch Text",
+    category: "Feedback",
+    description:
+      "Bloco de texto estilizado com scramble (decodificação hacker) e chromatic aberration RGB no hover.",
+    tags: ["glitch", "hacker", "scramble", "chromatic", "efeito"],
+  },
+
   // Lote Fluid (ONDA 2 lote A)
   {
     slug: "button-fluid",

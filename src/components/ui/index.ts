@@ -196,3 +196,7 @@ export type {
   InputMessageFluidProps,
   InputMessageSlotContext as InputMessageFluidSlotContext,
 } from "./input-message-fluid"
+
+// Lote VengenceUI
+export { CyberGlitchText } from "./cyber-glitch-text"
+export type { CyberGlitchTextProps } from "./cyber-glitch-text"
