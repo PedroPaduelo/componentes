@@ -121,6 +121,9 @@ function Tree({
       data-slot="tree"
       data-density={density ?? "default"}
       data-theme={resolvedTheme}
+      style={{
+        colorScheme: resolvedTheme,
+      }}
       className={cn(treeVariants({ density, variant, className }))}
       {...hostProps}
     >
