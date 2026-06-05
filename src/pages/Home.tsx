@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react"
 
-import { components, type ComponentMeta } from "@/data/components"
+import { groupByFamily, type Family } from "@/data/families"
 import { ComponentCard } from "@/components/catalog/ComponentCard"
 import { SearchInput } from "@/components/catalog/SearchInput"
 import {
@@ -10,20 +10,35 @@ import {
 } from "@/components/catalog/CategoryFilter"
 import { EmptyState } from "@/components/catalog/EmptyState"
 
-/** Filtro em memória: busca por nome/tags (case-insensitive) + categoria (AND). */
-function filterComponents(
-  list: ComponentMeta[],
+/** Texto pesquisável de uma família: base, nome, e slug/nome/tags de cada variant. */
+function familyHaystack(family: Family): string {
+  const parts: string[] = [family.base, family.name, ...family.origins]
+  for (const v of family.variants) {
+    parts.push(v.slug, v.name, ...v.tags)
+  }
+  return parts.join(" ").toLowerCase()
+}
+
+/** Família casa a categoria se QUALQUER variant tem a categoria selecionada. */
+function familyMatchesCategory(
+  family: Family,
+  category: CategoryFilterValue
+): boolean {
+  if (category === ALL_CATEGORIES) return true
+  return family.variants.some((v) => v.category === category)
+}
+
+/** Filtro em memória: busca (case-insensitive) + categoria (AND). */
+function filterFamilies(
+  list: Family[],
   query: string,
   category: CategoryFilterValue
-): ComponentMeta[] {
+): Family[] {
   const q = query.trim().toLowerCase()
-  return list.filter((c) => {
-    const matchesCategory =
-      category === ALL_CATEGORIES || c.category === category
-    if (!matchesCategory) return false
+  return list.filter((family) => {
+    if (!familyMatchesCategory(family, category)) return false
     if (!q) return true
-    const haystack = [c.name, ...c.tags].join(" ").toLowerCase()
-    return haystack.includes(q)
+    return familyHaystack(family).includes(q)
   })
 }
 
@@ -31,20 +46,26 @@ export function Home() {
   const [query, setQuery] = useState("")
   const [category, setCategory] = useState<CategoryFilterValue>(ALL_CATEGORIES)
 
+  const families = useMemo(() => groupByFamily(), [])
+
   const filtered = useMemo(
-    () => filterComponents(components, query, category),
-    [query, category]
+    () => filterFamilies(families, query, category),
+    [families, query, category]
   )
 
   // Contagens por categoria respeitando a busca atual (mas não a categoria selecionada).
   const counts = useMemo(() => {
-    const bySearch = filterComponents(components, query, ALL_CATEGORIES)
+    const bySearch = filterFamilies(families, query, ALL_CATEGORIES)
     const map: Record<string, number> = { [ALL_CATEGORIES]: bySearch.length }
-    for (const c of bySearch) {
-      map[c.category] = (map[c.category] ?? 0) + 1
+    for (const family of bySearch) {
+      // Conta a família em cada categoria que alguma variant tenha.
+      const cats = new Set(family.variants.map((v) => v.category))
+      for (const c of cats) {
+        map[c] = (map[c] ?? 0) + 1
+      }
     }
     return map
-  }, [query])
+  }, [families, query])
 
   function resetFilters() {
     setQuery("")
@@ -62,8 +83,9 @@ export function Home() {
           Catálogo de componentes
         </h1>
         <p className="mt-3 text-base text-muted-foreground sm:text-lg">
-          Explore componentes React open-source baseados em shadcn/ui. Busque
-          por nome e filtre por categoria.
+          Explore componentes React open-source agrupados por família. Cada
+          família reúne as variantes de diferentes bibliotecas. Busque por nome
+          e filtre por categoria.
         </p>
       </section>
 
@@ -83,12 +105,12 @@ export function Home() {
       <section className="mt-10">
         <p className="mb-4 text-sm text-muted-foreground" aria-live="polite">
           {filtered.length}{" "}
-          {filtered.length === 1 ? "componente" : "componentes"}
+          {filtered.length === 1 ? "família" : "famílias"}
         </p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.length > 0 ? (
-            filtered.map((component) => (
-              <ComponentCard key={component.slug} component={component} />
+            filtered.map((family) => (
+              <ComponentCard key={family.base} family={family} />
             ))
           ) : (
             <EmptyState onReset={resetFilters} />

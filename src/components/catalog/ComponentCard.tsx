@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { ArrowUpRight } from "lucide-react"
 
-import type { ComponentMeta } from "@/data/components"
+import type { Family } from "@/data/families"
 import {
   Card,
   CardDescription,
@@ -9,25 +9,42 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { OriginBadge } from "@/components/catalog/OriginBadge"
 
-export function ComponentCard({ component }: { component: ComponentMeta }) {
+export function ComponentCard({ family }: { family: Family }) {
+  const variantCount = family.variants.length
+  const variantLabel =
+    variantCount === 1 ? "1 variante" : `${variantCount} variantes`
+  // Descrição: usa a da variante representativa (primeira após ordenação).
+  const description = family.variants[0]?.description ?? ""
+
   return (
     <Link
-      to={`/components/${component.slug}`}
+      to={`/components/${family.base}`}
+      data-slot="family-card"
+      data-family-base={family.base}
       className="group rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-      aria-label={`Ver detalhes de ${component.name}`}
+      aria-label={`Ver a família ${family.name} (${variantLabel})`}
     >
       <Card className="h-full gap-4 transition-colors group-hover:border-primary/40 group-hover:bg-accent/40">
         <CardHeader>
           <div className="flex items-start justify-between gap-3">
-            <CardTitle className="text-lg">{component.name}</CardTitle>
+            <CardTitle className="text-lg">{family.name}</CardTitle>
             <ArrowUpRight className="size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:text-foreground" />
           </div>
-          <Badge variant="secondary" className="mt-1 w-fit">
-            {component.category}
-          </Badge>
+          <div className="mt-1 flex flex-wrap items-center gap-2">
+            <Badge variant="secondary" className="w-fit">
+              {family.category}
+            </Badge>
+            <Badge variant="outline" className="w-fit">
+              {variantLabel}
+            </Badge>
+            {family.origins.map((origin) => (
+              <OriginBadge key={origin} origin={origin} />
+            ))}
+          </div>
           <CardDescription className="mt-2 line-clamp-3">
-            {component.description}
+            {description}
           </CardDescription>
         </CardHeader>
       </Card>
