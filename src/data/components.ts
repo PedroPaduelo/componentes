@@ -120,6 +120,23 @@ export const components: ComponentMeta[] = [
       "explorer",
     ],
   },
+  {
+    slug: "elastic-slider",
+    name: "Elastic Slider",
+    category: "Forms",
+    description:
+      "Slider com efeito elástico de rubber-band ao arrastar, feedback tátil e snap magnético. Ideal para seleção de valores com precisão.",
+    tags: [
+      "slider",
+      "range",
+      "controle",
+      "valor",
+      "drag",
+      "elástico",
+      "bounce",
+      "formulário",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

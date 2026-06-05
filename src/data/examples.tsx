@@ -61,6 +61,7 @@ import {
 } from "@/components/ui/tabs"
 import { Settings, User, LogOut } from "lucide-react"
 import { Tree } from "@/components/ui/tree"
+import { ElasticSlider } from "@/components/ui/elastic-slider"
 
 export type Example = {
   title: string
@@ -741,6 +742,83 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                              elastic-slider                                 */
+/* -------------------------------------------------------------------------- */
+
+const elasticSliderVolumeExample: Example = {
+  title: "Volume",
+  description: "Slider de volume com efeito elástico e formatação percentual.",
+  code: `const [volume, setVolume] = useState(65)
+
+<ElasticSlider
+  label="Volume"
+  min={0}
+  max={100}
+  step={1}
+  value={volume}
+  onValueChange={setVolume}
+  formatValue={(v) => \`\${Math.round(v)}%\`}
+/>`,
+  render: (
+    <div className="flex w-full flex-col gap-4">
+      <ElasticSlider
+        label="Volume"
+        min={0}
+        max={100}
+        step={1}
+        defaultValue={65}
+        formatValue={(v) => `${Math.round(v)}%`}
+      />
+    </div>
+  ),
+}
+
+const elasticSliderPriceExample: Example = {
+  title: "Faixa de preço",
+  description: "Slider de preço com formatação de moeda e elasticidade alta.",
+  code: `const [price, setPrice] = useState(49.9)
+
+<ElasticSlider
+  label="Preço"
+  min={0}
+  max={200}
+  step={0.1}
+  value={price}
+  onValueChange={setPrice}
+  elasticity="high"
+  formatValue={(v) => \`R$ \${v.toFixed(2)}\`}
+/>`,
+  render: (
+    <div className="flex w-full flex-col gap-4">
+      <ElasticSlider
+        label="Preço"
+        min={0}
+        max={200}
+        step={0.1}
+        defaultValue={49.9}
+        elasticity="high"
+        formatValue={(v) => `R$ ${v.toFixed(2)}`}
+      />
+    </div>
+  ),
+}
+
+const elasticSliderDensityExample: Example = {
+  title: "Densidades",
+  description: "Três densidades: compacto, padrão e relaxado.",
+  code: `<ElasticSlider density="compact" label="Compact" defaultValue={0.3} />
+<ElasticSlider density="default" label="Default" defaultValue={0.5} />
+<ElasticSlider density="relaxed" label="Relaxed" defaultValue={0.7} />`,
+  render: (
+    <div className="flex w-full flex-col gap-4">
+      <ElasticSlider density="compact" label="Compact" defaultValue={0.3} />
+      <ElasticSlider density="default" label="Default" defaultValue={0.5} />
+      <ElasticSlider density="relaxed" label="Relaxed" defaultValue={0.7} />
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  mapa                                       */
 /* -------------------------------------------------------------------------- */
 
@@ -755,6 +833,7 @@ export const examples: Record<string, Example[]> = {
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
   tree: [treeBasicExample, treeSearchExample, treeDensityExample],
+  "elastic-slider": [elasticSliderVolumeExample, elasticSliderPriceExample, elasticSliderDensityExample],
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
