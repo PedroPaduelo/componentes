@@ -62,8 +62,7 @@ import {
 } from "@/components/ui/tabs"
 import { Settings, User, LogOut } from "lucide-react"
 import { Tree } from "@/components/ui/tree"
-import { ConsentManagerProvider } from "@/components/ui/consent-manager"
-import { Shield, Cookie } from "lucide-react"
+import { ElasticSlider } from "@/components/ui/elastic-slider"
 
 export type Example = {
   title: string
@@ -744,62 +743,79 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                               copy-button                                   */
+/*                              elastic-slider                                 */
 /* -------------------------------------------------------------------------- */
 
-const copyButtonBasicExample: Example = {
-  title: "Básico",
-  description: "Copia um texto para a área de transferência com feedback visual.",
-  code: `<CopyButton value="npm install @vitrine/ui" />`,
-  render: (
-    <CopyButton value="npm install @vitrine/ui" />
-  ),
-}
+const elasticSliderVolumeExample: Example = {
+  title: "Volume",
+  description: "Slider de volume com efeito elástico e formatação percentual.",
+  code: `const [volume, setVolume] = useState(65)
 
-const copyButtonVariantsExample: Example = {
-  title: "Variantes",
-  description: "Diferentes estilos visuais para combinar com o contexto.",
-  code: `<CopyButton value="Texto para copiar" variant="default" />
-<CopyButton value="Texto para copiar" variant="secondary" />
-<CopyButton value="Texto para copiar" variant="outline" />
-<CopyButton value="Texto para copiar" variant="ghost" />`,
-  render: (
-    <div className="flex flex-wrap gap-2">
-      <CopyButton value="Texto para copiar" variant="default" />
-      <CopyButton value="Texto para copiar" variant="secondary" />
-      <CopyButton value="Texto para copiar" variant="outline" />
-      <CopyButton value="Texto para copiar" variant="ghost" />
-    </div>
-  ),
-}
-
-const copyButtonSizesExample: Example = {
-  title: "Tamanhos",
-  description: "Três tamanhos para diferentes densidades de interface.",
-  code: `<CopyButton value="npm run build" size="sm" />
-<CopyButton value="npm run build" size="default" />
-<CopyButton value="npm run build" size="lg" />`,
-  render: (
-    <div className="flex flex-wrap items-center gap-2">
-      <CopyButton value="npm run build" size="sm" />
-      <CopyButton value="npm run build" size="default" />
-      <CopyButton value="npm run build" size="lg" />
-    </div>
-  ),
-}
-
-const copyButtonCustomLabelExample: Example = {
-  title: "Label customizado",
-  description: "Substitui o label padrão por um texto personalizado.",
-  code: `<CopyButton
-  value="https://github.com/vitrine/ui"
-  label="Copiar URL"
+<ElasticSlider
+  label="Volume"
+  min={0}
+  max={100}
+  step={1}
+  value={volume}
+  onValueChange={setVolume}
+  formatValue={(v) => \`\${Math.round(v)}%\`}
 />`,
   render: (
-    <CopyButton
-      value="https://github.com/vitrine/ui"
-      label="Copiar URL"
-    />
+    <div className="flex w-full flex-col gap-4">
+      <ElasticSlider
+        label="Volume"
+        min={0}
+        max={100}
+        step={1}
+        defaultValue={65}
+        formatValue={(v) => `${Math.round(v)}%`}
+      />
+    </div>
+  ),
+}
+
+const elasticSliderPriceExample: Example = {
+  title: "Faixa de preço",
+  description: "Slider de preço com formatação de moeda e elasticidade alta.",
+  code: `const [price, setPrice] = useState(49.9)
+
+<ElasticSlider
+  label="Preço"
+  min={0}
+  max={200}
+  step={0.1}
+  value={price}
+  onValueChange={setPrice}
+  elasticity="high"
+  formatValue={(v) => \`R$ \${v.toFixed(2)}\`}
+/>`,
+  render: (
+    <div className="flex w-full flex-col gap-4">
+      <ElasticSlider
+        label="Preço"
+        min={0}
+        max={200}
+        step={0.1}
+        defaultValue={49.9}
+        elasticity="high"
+        formatValue={(v) => `R$ ${v.toFixed(2)}`}
+      />
+    </div>
+  ),
+}
+
+const elasticSliderDensityExample: Example = {
+  title: "Densidades",
+  description: "Três densidades: compacto, padrão e relaxado.",
+  code: `<ElasticSlider density="compact" label="Compact" defaultValue={0.3} />
+<ElasticSlider density="default" label="Default" defaultValue={0.5} />
+<ElasticSlider density="relaxed" label="Relaxed" defaultValue={0.7} />`,
+  render: (
+    <div className="flex w-full flex-col gap-4">
+      <ElasticSlider density="compact" label="Compact" defaultValue={0.3} />
+      <ElasticSlider density="default" label="Default" defaultValue={0.5} />
+      <ElasticSlider density="relaxed" label="Relaxed" defaultValue={0.7} />
+    </div>
   ),
 }
 
@@ -819,7 +835,7 @@ export const examples: Record<string, Example[]> = {
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
   tree: [treeBasicExample, treeSearchExample, treeDensityExample],
-  "consent-manager": [consentManagerBasicExample],
+  "elastic-slider": [elasticSliderVolumeExample, elasticSliderPriceExample, elasticSliderDensityExample],
 }
 
 /**
