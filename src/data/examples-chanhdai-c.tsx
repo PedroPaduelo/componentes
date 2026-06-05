@@ -51,6 +51,56 @@ const themeToggleEffectExample: Example = {
   ),
 }
 
+const themeToggleEffectVariantsExample: Example = {
+  title: "Variantes de animação",
+  description:
+    "7 variantes de animação (circle, circle-blur, circle-blur-top-left, triangle, triangle-blur, polygon, polygon-gradient) + sem efeito.",
+  code: `<ThemeToggleEffect variant="circle" />
+<ThemeToggleEffect variant="circle-blur" />
+<ThemeToggleEffect variant="circle-blur-top-left" />
+<ThemeToggleEffect variant="triangle" />
+<ThemeToggleEffect variant="triangle-blur" />
+<ThemeToggleEffect variant="polygon" />
+<ThemeToggleEffect variant="polygon-gradient" />
+<ThemeToggleEffect withEffect={false} />`,
+  render: (
+    <div className="grid grid-cols-4 gap-4">
+      <div className="flex flex-col items-center gap-1">
+        <ThemeToggleEffect variant="circle" />
+        <span className="text-xs text-muted-foreground">circle</span>
+      </div>
+      <div className="flex flex-col items-center gap-1">
+        <ThemeToggleEffect variant="circle-blur" />
+        <span className="text-xs text-muted-foreground">circle-blur</span>
+      </div>
+      <div className="flex flex-col items-center gap-1">
+        <ThemeToggleEffect variant="circle-blur-top-left" />
+        <span className="text-xs text-muted-foreground">circle-blur-tl</span>
+      </div>
+      <div className="flex flex-col items-center gap-1">
+        <ThemeToggleEffect variant="triangle" />
+        <span className="text-xs text-muted-foreground">triangle</span>
+      </div>
+      <div className="flex flex-col items-center gap-1">
+        <ThemeToggleEffect variant="triangle-blur" />
+        <span className="text-xs text-muted-foreground">triangle-blur</span>
+      </div>
+      <div className="flex flex-col items-center gap-1">
+        <ThemeToggleEffect variant="polygon" />
+        <span className="text-xs text-muted-foreground">polygon</span>
+      </div>
+      <div className="flex flex-col items-center gap-1">
+        <ThemeToggleEffect variant="polygon-gradient" />
+        <span className="text-xs text-muted-foreground">polygon-grad</span>
+      </div>
+      <div className="flex flex-col items-center gap-1">
+        <ThemeToggleEffect withEffect={false} />
+        <span className="text-xs text-muted-foreground">sem efeito</span>
+      </div>
+    </div>
+  ),
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                toc-minimap                                  */
 /* -------------------------------------------------------------------------- */
@@ -146,7 +196,10 @@ const consentManagerExample: Example = {
 
 export const examplesChanhdaiC: Record<string, Example[]> = {
   "theme-switcher": [themeSwitcherBasicExample],
-  "theme-toggle-effect": [themeToggleEffectExample],
+  "theme-toggle-effect": [
+    themeToggleEffectExample,
+    themeToggleEffectVariantsExample,
+  ],
   "toc-minimap": [tocMinimapVerticalExample, tocMinimapHorizontalExample],
   "copy-button": [copyButtonBasicExample, copyButtonLabelExample],
   "consent-manager": [consentManagerExample],

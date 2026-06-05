@@ -145,3 +145,12 @@
 .animate-shimmer {
   animation: shimmer 2s linear infinite;
 }
+
+/* ─── ThemeToggleEffect — polygon-gradient ────────────────────────── */
+::view-transition-old(root) {
+  mix-blend-mode: normal;
+}
+::view-transition-new(root) {
+  background: linear-gradient(45deg, oklch(0.55 0.18 265), oklch(0.7 0.18 200));
+  mix-blend-mode: normal;
+}

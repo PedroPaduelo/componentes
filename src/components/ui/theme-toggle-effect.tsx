@@ -2,6 +2,12 @@ import * as React from "react"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "@/components/theme/theme-provider"
 import { cn } from "@/lib/utils"
+import {
+  type ThemeToggleEffectVariant,
+  getVariantKeyframes,
+  getVariantOptions,
+  getVariantOrigin,
+} from "@/components/ui/theme-toggle-effect-variants"
 
 export type ThemeToggleEffectProps = Omit<
   React.ButtonHTMLAttributes<HTMLButtonElement>,
@@ -9,22 +15,31 @@ export type ThemeToggleEffectProps = Omit<
 > & {
   /** Ativa ou desativa o efeito visual de transição. Default: true. */
   withEffect?: boolean
+  /**
+   * Variante de animação do toggle.
+   * @default "circle"
+   */
+  variant?: ThemeToggleEffectVariant
 }
 
 function ThemeToggleEffect({
   withEffect = true,
+  variant = "circle",
   className,
   ...props
 }: ThemeToggleEffectProps) {
   const { setTheme, resolvedTheme } = useTheme()
 
-  const toggleTheme = () => {
+  const toggleTheme = (event: React.MouseEvent<HTMLButtonElement>) => {
     const next = resolvedTheme === "dark" ? "light" : "dark"
 
     if (!withEffect || !document.startViewTransition) {
       setTheme(next)
       return
     }
+
+    const buttonRect =
+      event.currentTarget.getBoundingClientRect()
 
     const transition = document.startViewTransition(() => {
       setTheme(next)
@@ -33,21 +48,22 @@ function ThemeToggleEffect({
     transition.ready.then(() => {
       const root = document.documentElement
       const { innerWidth, innerHeight } = window
-      const maxDim = Math.max(innerWidth, innerHeight)
+      const maxDim = Math.max(innerWidth, innerHeight) * 1.5
 
-      root.animate(
-        {
-          clipPath: [
-            `circle(0px at ${innerWidth / 2}px ${innerHeight / 2}px)`,
-            `circle(${maxDim}px at ${innerWidth / 2}px ${innerHeight / 2}px)`,
-          ],
-        },
-        {
-          duration: 400,
-          easing: "ease-in-out",
-          pseudoElement: "::view-transition-new(root)",
-        },
+      const origin = getVariantOrigin(
+        variant,
+        innerWidth,
+        innerHeight,
+        buttonRect,
       )
+
+      const keyframes = getVariantKeyframes(variant, origin, maxDim)
+      const options = getVariantOptions(variant)
+
+      root.animate(keyframes, {
+        ...options,
+        pseudoElement: "::view-transition-new(root)",
+      })
     })
   }
 
@@ -55,6 +71,7 @@ function ThemeToggleEffect({
     <button
       type="button"
       data-slot="theme-toggle-effect"
+      data-variant={variant}
       aria-label="Alternar tema"
       className={cn(
         "inline-flex size-9 items-center justify-center rounded-lg border border-border bg-background text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
