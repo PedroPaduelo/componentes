@@ -25,3 +25,4 @@ shots/
 *.njsproj
 *.sln
 *.sw?
+.fluid-analysis/
