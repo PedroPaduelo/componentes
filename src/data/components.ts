@@ -207,6 +207,38 @@ export const components: ComponentMeta[] = [
       "Toggle de tema com animação de view transition (círculo expandindo do botão até a tela inteira).",
     tags: ["tema", "view-transition", "animação", "efeito"],
   },
+  {
+    slug: "mobius-loop-icon",
+    name: "Mobius Loop Icon",
+    category: "Actions",
+    description:
+      "Ícone animado de loop infinito (mobius strip) com gradiente fluindo.",
+    tags: ["ícone", "loop", "mobius", "animado"],
+  },
+  {
+    slug: "scroll-fade-effect",
+    name: "Scroll Fade Effect",
+    category: "Layout",
+    description:
+      "Container com fade nas bordas superior/inferior quando há conteúdo scrollável além do viewport (estilo iOS).",
+    tags: ["scroll", "fade", "mask", "container", "efeito"],
+  },
+  {
+    slug: "slide-to-unlock",
+    name: "Slide to Unlock",
+    category: "Forms",
+    description:
+      "Controle estilo iOS: arrastar thumb da esquerda pra direita pra confirmar ação.",
+    tags: ["slide", "unlock", "touch", "gesture", "confirmação"],
+  },
+  {
+    slug: "theme-switcher",
+    name: "Theme Switcher",
+    category: "Actions",
+    description:
+      "Seletor de tema elaborado com opções light/dark/system (e talvez accent color).",
+    tags: ["tema", "switcher", "light", "dark", "system"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

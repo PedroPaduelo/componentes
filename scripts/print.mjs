@@ -1,16 +1,25 @@
 // scripts/print.mjs
 // Captura screenshots com Playwright.
-// Uso: node scripts/print.mjs
+// Uso: node scripts/print.mjs <slug> <url-original>
+// Ex:  node scripts/print.mjs shimmering-text https://chanhdai.com/components/shimmering-text
 import { chromium } from "playwright";
 import { mkdirSync } from "node:fs";
+
+const slug = process.argv[2];
+const originalUrl = process.argv[3];
+
+if (!slug || !originalUrl) {
+  console.error("Uso: node scripts/print.mjs <slug> <url-original>");
+  process.exit(1);
+}
 
 mkdirSync("shots", { recursive: true });
 
 const targets = [
-  { name: "trees-home",         url: "https://trees.software/" },
-  { name: "vitrine-home",       url: "http://localhost:5173/" },
-  { name: "vitrine-tree",       url: "http://localhost:5173/components/tree" },
-  { name: "vitrine-tree-dark",  url: "http://localhost:5173/components/tree" },
+  { name: `original-${slug}`,        url: originalUrl },
+  { name: `vitrine-home`,            url: "http://localhost:5173/" },
+  { name: `vitrine-${slug}`,         url: `http://localhost:5173/components/${slug}` },
+  { name: `vitrine-${slug}-dark`,    url: `http://localhost:5173/components/${slug}` },
 ];
 
 const browser = await chromium.launch();
