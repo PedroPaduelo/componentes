@@ -121,42 +121,18 @@ export const components: ComponentMeta[] = [
     ],
   },
   {
-    slug: "scroll-fade-effect",
-    name: "Scroll Fade Effect",
-    category: "Layout",
+    slug: "consent-manager",
+    name: "Consent Manager",
+    category: "Forms",
     description:
-      "Efeito fade nas bordas de containers scrolláveis, ativado automaticamente quando há conteúdo fora do viewport.",
-    tags: ["scroll", "fade", "máscara", "overflow", "iOS", "gradiente"],
-  },
-  {
-    slug: "mobius-loop-icon",
-    name: "Mobius Loop Icon",
-    category: "Actions",
-    description:
-      "Ícono animado de loop infinito (mobius strip) com morphing SVG entre círculos e infinito.",
+      "Modal de gerenciamento de consentimento de cookies com toggles por categoria e persistência em localStorage.",
     tags: [
-      "ícone",
-      "animação",
-      "svg",
-      "loading",
-      "infinito",
-      "mobius",
-      "loop",
-    ],
-  },
-  {
-    slug: "toc-minimap",
-    name: "TOC Minimap",
-    category: "Layout",
-    description:
-      "Table of contents com minimap lateral — indicador de seção ativa via IntersectionObserver e barra de progresso de scroll.",
-    tags: [
-      "sumário",
-      "navegação",
-      "scroll",
-      "minimap",
-      "table of contents",
-      "índice",
+      "cookies",
+      "consentimento",
+      "lgpd",
+      "privacidade",
+      "modal",
+      "preferências",
     ],
   },
 ]

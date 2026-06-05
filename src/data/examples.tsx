@@ -61,8 +61,8 @@ import {
 } from "@/components/ui/tabs"
 import { Settings, User, LogOut } from "lucide-react"
 import { Tree } from "@/components/ui/tree"
-import { ScrollFadeEffect } from "@/components/ui/scroll-fade-effect"
-import { cn } from "@/lib/utils"
+import { ConsentManagerProvider } from "@/components/ui/consent-manager"
+import { Shield, Cookie } from "lucide-react"
 
 export type Example = {
   title: string
@@ -743,107 +743,34 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                            scroll-fade-effect                               */
+/*                              consent-manager                                */
 /* -------------------------------------------------------------------------- */
 
-const scrollFadeVerticalExample: Example = {
-  title: "Scroll vertical",
-  description: "Lista longa com fade nas bordas superior e inferior.",
-  code: `<ScrollFadeEffect className="h-72 w-48" orientation="vertical">
-  <div className="p-4 space-y-2">
-    {Array.from({ length: 50 }, (_, i) => (
-      <div key={i} className="text-sm">Item {i + 1}</div>
-    ))}
-  </div>
-</ScrollFadeEffect>`,
+const consentManagerBasicExample: Example = {
+  title: "Básico",
+  description:
+    "Modal de consentimento com toggles por categoria (Essencial, Analytics, Marketing) e botões de ação.",
+  code: `<ConsentManagerProvider>
+  <ConsentManager />
+</ConsentManagerProvider>`,
   render: (
-    <div className="flex items-center justify-center">
-      <ScrollFadeEffect className="h-72 w-48" orientation="vertical">
-        <div className="space-y-2 p-4">
-          {Array.from({ length: 50 }, (_, i) => (
-            <div key={i} className="text-sm">
-              Item {i + 1}
-            </div>
-          ))}
+    <ConsentManagerProvider>
+      <div className="flex flex-col items-center gap-4 p-4">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Cookie className="size-4" />
+          <span>Clique no botão "Cookies" no canto inferior para abrir o modal</span>
         </div>
-      </ScrollFadeEffect>
-    </div>
-  ),
-}
-
-const scrollFadeHorizontalExample: Example = {
-  title: "Scroll horizontal",
-  description: "Galeria de cards com fade nas bordas laterais.",
-  code: `<ScrollFadeEffect className="h-40" orientation="horizontal">
-  <div className="flex gap-4 p-4">
-    {Array.from({ length: 12 }, (_, i) => (
-      <div key={i} className="shrink-0 rounded-lg border p-4 w-32">
-        Card {i + 1}
+        <div className="flex items-center gap-2 rounded-lg border border-border p-4">
+          <Shield className="size-5 text-primary" />
+          <div>
+            <p className="text-sm font-medium">Consent Manager</p>
+            <p className="text-xs text-muted-foreground">
+              Gerencia preferências de cookies com persistência em localStorage.
+            </p>
+          </div>
+        </div>
       </div>
-    ))}
-  </div>
-</ScrollFadeEffect>`,
-  render: (
-    <div className="flex items-center justify-center">
-      <ScrollFadeEffect className="h-40" orientation="horizontal">
-        <div className="flex gap-4 p-4">
-          {Array.from({ length: 12 }, (_, i) => (
-            <div
-              key={i}
-              className="flex h-24 w-32 shrink-0 items-center justify-center rounded-lg border text-sm"
-            >
-              Card {i + 1}
-            </div>
-          ))}
-        </div>
-      </ScrollFadeEffect>
-    </div>
-  ),
-}
-
-const scrollFadeChatExample: Example = {
-  title: "Chat log",
-  description: "Log de mensagens com fade estilo app de chat.",
-  code: `<ScrollFadeEffect className="h-64 max-w-sm" fadeHeight={48}>
-  <div className="p-4 space-y-3">
-    {messages.map((msg, i) => (
-      <div key={i} className={cn("rounded-lg p-3 text-sm", msg.isUser ? "bg-primary text-primary-foreground ml-8" : "bg-muted mr-8")}>
-        {msg.text}
-      </div>
-    ))}
-  </div>
-</ScrollFadeEffect>`,
-  render: (
-    <div className="flex items-center justify-center">
-      <ScrollFadeEffect className="h-64 max-w-sm" fadeHeight={48}>
-        <div className="space-y-3 p-4">
-          {[
-            { text: "Olá! Como vai?", isUser: false },
-            { text: "Tudo bem! E você?", isUser: true },
-            { text: "Estou ótimo, obrigado por perguntar.", isUser: false },
-            { text: "Que bom! Posso ajudar em algo?", isUser: true },
-            { text: "Sim, preciso de ajuda com React.", isUser: false },
-            { text: "Claro! O que você precisa saber?", isUser: true },
-            { text: "Como funciona o useEffect?", isUser: false },
-            { text: "É um hook para efeitos colaterais.", isUser: true },
-            { text: "Entendi, muito obrigado!", isUser: false },
-            { text: "De nada! Qualquer coisa, é só perguntar.", isUser: true },
-          ].map((msg, i) => (
-            <div
-              key={i}
-              className={cn(
-                "rounded-lg p-3 text-sm",
-                msg.isUser
-                  ? "ml-8 bg-primary text-primary-foreground"
-                  : "mr-8 bg-muted"
-              )}
-            >
-              {msg.text}
-            </div>
-          ))}
-        </div>
-      </ScrollFadeEffect>
-    </div>
+    </ConsentManagerProvider>
   ),
 }
 
@@ -862,10 +789,12 @@ export const examples: Record<string, Example[]> = {
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
   tree: [treeBasicExample, treeSearchExample, treeDensityExample],
-  "scroll-fade-effect": [scrollFadeVerticalExample, scrollFadeHorizontalExample, scrollFadeChatExample],
+  "consent-manager": [consentManagerBasicExample],
 }
 
-/** Retorna os exemplos de um slug, ou `undefined` se não houver. */
+/**
+ * Retorna os exemplos de um slug, ou `undefined` se não houver.
+ */
 export function getExamplesBySlug(slug: string): Example[] | undefined {
   return examples[slug]
 }
