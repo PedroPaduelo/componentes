@@ -1,18 +1,8 @@
 // scripts/inspect.mjs
 // Extrai informação estrutural: dimensões de elementos, cores computadas,
 // estrutura DOM, etc. Pra comparar visualmente o original com a vitrine.
-// Uso: node scripts/inspect.mjs <slug> <data-slot-name>
-// Ex:  node scripts/inspect.mjs shimmering-text shimmering-text
 import { chromium } from "playwright";
 import { writeFileSync } from "node:fs";
-
-const slug = process.argv[2];
-const slotName = process.argv[3];
-
-if (!slug || !slotName) {
-  console.error("Uso: node scripts/inspect.mjs <slug> <data-slot-name>");
-  process.exit(1);
-}
 
 const browser = await chromium.launch();
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
@@ -22,7 +12,7 @@ async function inspect(url, label) {
   await page.goto(url, { waitUntil: "networkidle", timeout: 30000 });
   await page.waitForTimeout(1500);
 
-  const info = await page.evaluate((slot) => {
+  const info = await page.evaluate(() => {
     const result = { label: location.href, title: document.title, view: {} };
 
     // viewport
@@ -38,55 +28,59 @@ async function inspect(url, label) {
       fontSize: cs.fontSize,
     };
 
-    // component wrapper
-    const wrap = document.querySelector(`[data-slot="${slot}"]`);
-    if (wrap) {
-      const wr = wrap.getBoundingClientRect();
-      const ws = getComputedStyle(wrap);
-      result.wrap = {
-        rect: { x: wr.x, y: wr.y, width: wr.width, height: wr.height },
-        bg: ws.backgroundColor,
-        color: ws.color,
-        fontFamily: ws.fontFamily,
-        fontSize: ws.fontSize,
-        fontWeight: ws.fontWeight,
-        borderRadius: ws.borderRadius,
-        // filhos diretos
-        children: Array.from(wrap.children).slice(0, 5).map((child) => {
-          const cr = child.getBoundingClientRect();
-          const cs2 = getComputedStyle(child);
-          return {
-            tag: child.tagName.toLowerCase(),
-            text: child.textContent?.trim().slice(0, 80),
-            width: Math.round(cr.width),
-            height: Math.round(cr.height),
-            bg: cs2.backgroundColor,
-            color: cs2.color,
-          };
-        }),
+    // file tree
+    const tree = document.querySelector("file-tree-container, [data-file-tree-style]");
+    if (tree) {
+      const tr = tree.getBoundingClientRect();
+      const ts = getComputedStyle(tree);
+      result.tree = {
+        rect: { x: tr.x, y: tr.y, width: tr.width, height: tr.height },
+        bg: ts.backgroundColor,
+        color: ts.color,
+        fontFamily: ts.fontFamily,
+        fontSize: ts.fontSize,
+        fontWeight: ts.fontWeight,
+        borderRadius: ts.borderRadius,
+        // primeiros items
+        items: Array.from(tree.querySelectorAll("[role=treeitem], [data-type=item]"))
+          .slice(0, 8)
+          .map((it) => {
+            const r = it.getBoundingClientRect();
+            const s = getComputedStyle(it);
+            return {
+              text: it.textContent?.trim().slice(0, 50),
+              width: Math.round(r.width),
+              height: Math.round(r.height),
+              bg: s.backgroundColor,
+              color: s.color,
+              fontSize: s.fontSize,
+              padding: s.padding,
+            };
+          }),
       };
     } else {
-      result.wrap = null;
+      result.tree = null;
     }
 
     return result;
-  }, slotName);
+  });
 
   console.log(JSON.stringify(info, null, 2));
-  writeFileSync(`shots/${label}-inspect.json`, JSON.stringify(info, null, 2));
+  writeFileSync(`shots/${label}.json`, JSON.stringify(info, null, 2));
   await page.close();
   return info;
 }
 
-const originalUrl = `https://chanhdai.com/components/${slug}`;
-const t = await inspect(originalUrl, `original-${slug}`);
-const v = await inspect(`http://localhost:5173/components/${slug}`, `vitrine-${slug}`);
+const t = await inspect("https://trees.software/", "trees-inspect");
+const v = await inspect("http://localhost:5173/components/tree", "vitrine-inspect");
 
 // Diff
 console.log("\n=== DIFF ===");
-console.log("original wrap rect:", t.wrap?.rect);
-console.log("vitrine wrap rect:", v.wrap?.rect);
-console.log("original wrap bg:", t.wrap?.bg, "color:", t.wrap?.color);
-console.log("vitrine wrap bg:", v.wrap?.bg, "color:", v.wrap?.color);
+console.log("trees tree rect:", t.tree?.rect);
+console.log("vitrine tree rect:", v.tree?.rect);
+console.log("trees tree bg:", t.tree?.bg, "color:", t.tree?.color);
+console.log("vitrine tree bg:", v.tree?.bg, "color:", v.tree?.color);
+console.log("trees first item:", t.tree?.items?.[0]);
+console.log("vitrine first item:", v.tree?.items?.[0]);
 
 await browser.close();
