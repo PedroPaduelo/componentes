@@ -1,9 +1,9 @@
 /**
  * Examples — exemplos data-driven por slug de componente.
  *
- * A página de detalhe (ComponentDetail) consome este mapa e renderiza
+ * A página de detalhe consome este mapa e renderiza
  * um ExampleBlock por entrada. Slugs sem entrada aqui recebem o fallback
- * "Exemplos em breve" (vide ComponentDetail).
+ * "Exemplos em breve".
  *
  * Cada Example tem:
  *  - title: rótulo do bloco
