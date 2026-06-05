@@ -61,6 +61,7 @@ import {
 } from "@/components/ui/tabs"
 import { Settings, User, LogOut } from "lucide-react"
 import { Tree } from "@/components/ui/tree"
+import { WorkExperienceComponent } from "@/components/ui/work-experience-component"
 
 export type Example = {
   title: string
@@ -741,6 +742,146 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                          work-experience-component                          */
+/* -------------------------------------------------------------------------- */
+
+const workExperienceTimelineExample: Example = {
+  title: "Timeline",
+  description: "Linha do tempo vertical com bullets e cards de experiência.",
+  code: `<WorkExperienceComponent
+  variant="timeline"
+  experiences={[
+    {
+      company: "Acme Corp",
+      role: "Senior Frontend Engineer",
+      period: "2022 — Presente",
+      description:
+        "Liderança técnica do redesign do produto principal, migrando de Angular para React e melhorando métricas de Core Web Vitals em 40%.",
+      technologies: ["React", "TypeScript", "Tailwind CSS", "Vite"],
+      href: "https://acme.example.com",
+    },
+    {
+      company: "StartupXYZ",
+      role: "Full Stack Developer",
+      period: "2019 — 2022",
+      description:
+        "Construção do zero do painel de analytics com visualizações em tempo real e integração com WebSockets.",
+      technologies: ["Next.js", "Node.js", "PostgreSQL", "Redis"],
+      href: "https://startupxyz.example.com",
+    },
+    {
+      company: "Freelance",
+      role: "Web Developer",
+      period: "2017 — 2019",
+      description:
+        "Desenvolvimento de landing pages e e-commerces para clientes diversos, com foco em performance e SEO.",
+      technologies: ["React", "Gatsby", "WordPress", "Figma"],
+    },
+  ]}
+/>`,
+  render: (
+    <div className="w-full max-w-xl">
+      <WorkExperienceComponent
+        variant="timeline"
+        experiences={[
+          {
+            company: "Acme Corp",
+            role: "Senior Frontend Engineer",
+            period: "2022 — Presente",
+            description:
+              "Liderança técnica do redesign do produto principal, migrando de Angular para React e melhorando métricas de Core Web Vitals em 40%.",
+            technologies: ["React", "TypeScript", "Tailwind CSS", "Vite"],
+            href: "https://acme.example.com",
+          },
+          {
+            company: "StartupXYZ",
+            role: "Full Stack Developer",
+            period: "2019 — 2022",
+            description:
+              "Construção do zero do painel de analytics com visualizações em tempo real e integração com WebSockets.",
+            technologies: ["Next.js", "Node.js", "PostgreSQL", "Redis"],
+            href: "https://startupxyz.example.com",
+          },
+          {
+            company: "Freelance",
+            role: "Web Developer",
+            period: "2017 — 2019",
+            description:
+              "Desenvolvimento de landing pages e e-commerces para clientes diversos, com foco em performance e SEO.",
+            technologies: ["React", "Gatsby", "WordPress", "Figma"],
+          },
+        ]}
+      />
+    </div>
+  ),
+}
+
+const workExperienceCardExample: Example = {
+  title: "Cards",
+  description: "Lista vertical de cards sem linha do tempo.",
+  code: `<WorkExperienceComponent
+  variant="card"
+  experiences={[
+    {
+      company: "Acme Corp",
+      role: "Senior Frontend Engineer",
+      period: "2022 — Presente",
+      description:
+        "Liderança técnica do redesign do produto principal.",
+      technologies: ["React", "TypeScript", "Tailwind CSS"],
+    },
+    {
+      company: "StartupXYZ",
+      role: "Full Stack Developer",
+      period: "2019 — 2022",
+      description:
+        "Construção do painel de analytics com visualizações em tempo real.",
+      technologies: ["Next.js", "Node.js", "PostgreSQL"],
+    },
+    {
+      company: "Freelance",
+      role: "Web Developer",
+      period: "2017 — 2019",
+      description:
+        "Landing pages e e-commerces com foco em performance.",
+      technologies: ["React", "Gatsby", "WordPress"],
+    },
+  ]}
+/>`,
+  render: (
+    <div className="w-full max-w-xl">
+      <WorkExperienceComponent
+        variant="card"
+        experiences={[
+          {
+            company: "Acme Corp",
+            role: "Senior Frontend Engineer",
+            period: "2022 — Presente",
+            description: "Liderança técnica do redesign do produto principal.",
+            technologies: ["React", "TypeScript", "Tailwind CSS"],
+          },
+          {
+            company: "StartupXYZ",
+            role: "Full Stack Developer",
+            period: "2019 — 2022",
+            description:
+              "Construção do painel de analytics com visualizações em tempo real.",
+            technologies: ["Next.js", "Node.js", "PostgreSQL"],
+          },
+          {
+            company: "Freelance",
+            role: "Web Developer",
+            period: "2017 — 2019",
+            description: "Landing pages e e-commerces com foco em performance.",
+            technologies: ["React", "Gatsby", "WordPress"],
+          },
+        ]}
+      />
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  mapa                                       */
 /* -------------------------------------------------------------------------- */
 
@@ -755,6 +896,7 @@ export const examples: Record<string, Example[]> = {
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
   tree: [treeBasicExample, treeSearchExample, treeDensityExample],
+  "work-experience-component": [workExperienceTimelineExample, workExperienceCardExample],
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

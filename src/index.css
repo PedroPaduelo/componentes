@@ -119,70 +119,6 @@
 }
 
 /* ─── Tree (componente) ──────────────────────────────────────────── */
-/* O `<file-tree-container>` da lib @pierre/trees é um web component
-   com shadow DOM. O `:host` interno fixa `color-scheme: light dark` e usa
-   `light-dark()` para escolher as cores — o que ignora o `color-scheme` do
-   parent. Pra tema reativo, sobrescrevemos as CSS variables de override
-   da própria lib (`--trees-*-override`) com os tokens semânticos do shadcn,
-   que JÁ são trocados pelo ThemeProvider (`:root` vs `.dark`). */
-
-[data-slot="tree"] {
-  --trees-height: 420px;
-  height: var(--trees-height);
-  min-height: 12rem;
-  display: flex;
-  flex-direction: column;
-}
-[data-slot="tree"] > file-tree-container {
-  flex: 1 1 0;
-  min-height: 0;
-  display: flex;
-  width: 100%;
-}
-
-/* Light mode (data-theme="light", default) */
-[data-slot="tree"][data-theme="light"] {
-  --trees-fg-override: var(--foreground);
-  --trees-fg-muted-override: var(--muted-foreground);
-  --trees-bg-override: var(--background);
-  --trees-bg-muted-override: color-mix(in oklab, var(--accent) 35%, transparent);
-  --trees-accent-override: oklch(0.55 0.18 265);
-  --trees-border-color-override: var(--border);
-  --trees-focus-ring-color-override: var(--ring);
-  --trees-search-bg-override: var(--muted);
-  --trees-search-fg-override: var(--foreground);
-  --trees-selected-bg-override: color-mix(in oklab, var(--accent) 14%, transparent);
-  --trees-selected-fg-override: var(--accent-foreground);
-  --trees-input-bg-override: var(--muted);
-  --trees-scrollbar-thumb-override: color-mix(
-    in oklab,
-    var(--muted-foreground) 25%,
-    transparent
-  );
-}
-
-/* Dark mode (data-theme="dark") */
-[data-slot="tree"][data-theme="dark"] {
-  --trees-fg-override: var(--foreground);
-  --trees-fg-muted-override: var(--muted-foreground);
-  --trees-bg-override: oklch(0.145 0 0);
-  --trees-bg-muted-override: color-mix(in oklab, var(--accent) 14%, transparent);
-  --trees-accent-override: oklch(0.7 0.18 265);
-  --trees-border-color-override: var(--border);
-  --trees-focus-ring-color-override: var(--ring);
-  --trees-search-bg-override: oklch(0.205 0 0);
-  --trees-search-fg-override: var(--foreground);
-  --trees-selected-bg-override: color-mix(in oklab, var(--accent) 14%, transparent);
-  --trees-selected-fg-override: var(--accent-foreground);
-  --trees-input-bg-override: oklch(0.205 0 0);
-  --trees-scrollbar-thumb-override: color-mix(
-    in oklab,
-    var(--muted-foreground) 25%,
-    transparent
-  );
-}
-
-/* ─── Tree (componente) ──────────────────────────────────────────── */
 /* O `<file-tree-container>` da lib @pierre/trees usa CSS de shadow DOM
    e assume que o host tem altura. Forçamos 100% da altura do wrapper
    `<div data-slot="tree">` (cuja altura é --trees-height). */
@@ -198,4 +134,14 @@
   min-height: 0;
   display: flex;
   width: 100%;
+}
+
+/* ─── Shimmering Text ─────────────────────────────────────────────── */
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+.animate-shimmer {
+  animation: shimmer 2s linear infinite;
 }

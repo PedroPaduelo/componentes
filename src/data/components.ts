@@ -120,6 +120,133 @@ export const components: ComponentMeta[] = [
       "explorer",
     ],
   },
+  {
+    slug: "work-experience-component",
+    name: "Work Experience",
+    category: "Layout",
+    description:
+      "Card/timeline de experiência profissional com empresa, cargo, período, descrição e tecnologias.",
+    tags: [
+      "experiência",
+      "currículo",
+      "timeline",
+      "carreira",
+      "portfólio",
+      "work",
+    ],
+  },
+  {
+    slug: "chevrons-up-down-icon",
+    name: "Chevrons Up Down Icon",
+    category: "Actions",
+    description:
+      "Ícone animado de dois chevrons que rotacionam suavemente — indicador visual de dropdown/select.",
+    tags: ["ícone", "chevron", "dropdown", "seletor"],
+  },
+  {
+    slug: "code-block-command",
+    name: "Code Block Command",
+    category: "Feedback",
+    description:
+      "Comando shell com tokens coloridos (comando, args, flags) e botão de copiar.",
+    tags: ["código", "comando", "cli", "terminal", "copy"],
+  },
+  {
+    slug: "dot-grid-spotlight",
+    name: "Dot Grid Spotlight",
+    category: "Feedback",
+    description:
+      "Background de grade de pontos com spotlight que segue o cursor do mouse.",
+    tags: ["dots", "grid", "spotlight", "background", "efeito"],
+  },
+  {
+    slug: "fluid-gradient-text",
+    name: "Fluid Gradient Text",
+    category: "Layout",
+    description:
+      "Texto com gradiente animado (mesh gradient) que flui continuamente.",
+    tags: ["texto", "gradiente", "animado", "efeito"],
+  },
+  {
+    slug: "glow-card-grid",
+    name: "Glow Card Grid",
+    category: "Layout",
+    description:
+      "Grid de cards com efeito glow — icon/background borrado que segue o cursor e borda com backdrop-blur.",
+    tags: ["glow", "cards", "grid", "bento", "pointer", "efeito"],
+  },
+  {
+    slug: "icon-swap",
+    name: "Icon Swap",
+    category: "Actions",
+    description:
+      "Componente que troca entre dois ícones com crossfade (Sun↔Moon, Eye↔EyeOff, etc.).",
+    tags: ["ícone", "swap", "crossfade", "tema"],
+  },
+  {
+    slug: "react-wheel-picker",
+    name: "React Wheel Picker",
+    category: "Forms",
+    description:
+      "Picker estilo iOS com 3 colunas (data picker) que rola como uma roda. Wrapper sobre react-wheel-picker.",
+    tags: ["picker", "wheel", "data", "iOS", "rolagem"],
+  },
+  {
+    slug: "shimmering-text",
+    name: "Shimmering Text",
+    category: "Feedback",
+    description:
+      "Texto com efeito shimmer (brilho da esquerda pra direita, estilo skeleton/loading).",
+    tags: ["shimmer", "skeleton", "loading", "texto", "efeito"],
+  },
+  {
+    slug: "theme-toggle-effect",
+    name: "Theme Toggle Effect",
+    category: "Actions",
+    description:
+      "Toggle de tema com animação de view transition (círculo expandindo do botão até a tela inteira).",
+    tags: ["tema", "view-transition", "animação", "efeito"],
+  },
+  {
+    slug: "mobius-loop-icon",
+    name: "Mobius Loop Icon",
+    category: "Actions",
+    description:
+      "Ícono animado de loop infinito (mobius strip) com morphing SVG entre círculos e infinito.",
+    tags: [
+      "ícone",
+      "animação",
+      "svg",
+      "loading",
+      "infinito",
+      "mobius",
+      "loop",
+    ],
+  },
+  {
+    slug: "scroll-fade-effect",
+    name: "Scroll Fade Effect",
+    category: "Layout",
+    description:
+      "Container com fade nas bordas superior/inferior quando há conteúdo scrollável além do viewport (estilo iOS).",
+    tags: ["scroll", "fade", "mask", "container", "efeito"],
+  },
+  {
+    slug: "slide-to-unlock",
+    name: "Slide to Unlock",
+    category: "Forms",
+    description:
+      "Controle estilo iOS: arrastar thumb da esquerda pra direita pra confirmar ação.",
+    tags: ["slide", "unlock", "touch", "gesture", "confirmação"],
+  },
+  {
+    slug: "theme-switcher",
+    name: "Theme Switcher",
+    category: "Actions",
+    description:
+      "Seletor de tema elaborado com opções light/dark/system (e talvez accent color).",
+    tags: ["tema", "switcher", "light", "dark", "system"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
