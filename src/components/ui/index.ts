@@ -39,3 +39,31 @@ export { ThemeSwitcher } from "./theme-switcher"
 export { ThemeToggleEffect } from "./theme-toggle-effect"
 export type { ThemeToggleEffectVariant } from "./theme-toggle-effect-variants"
 export { TOCMinimap } from "./toc-minimap"
+
+// Lote Fluid (ONDA 2 lote A)
+export { ButtonFluid } from "./button-fluid"
+export type { ButtonFluidProps } from "./button-fluid"
+export { buttonFluidVariants } from "./button-fluid-variants"
+export { BadgeFluid } from "./badge-fluid"
+export type { BadgeFluidProps } from "./badge-fluid"
+export { badgeFluidVariants, badgeColors } from "./badge-fluid-variants"
+export type { BadgeColor } from "./badge-fluid-variants"
+export { SliderFluid, SliderComfortable } from "./slider-fluid"
+export type {
+  SliderFluidProps,
+  SliderValue,
+  ValuePosition,
+  SliderComfortableProps,
+} from "./slider-fluid"
+export { SwitchFluid } from "./switch-fluid"
+export type { SwitchFluidProps } from "./switch-fluid"
+export { TooltipFluid, TooltipFluidPortalContainer } from "./tooltip-fluid"
+export type { TooltipFluidProps, TooltipFluidSide } from "./tooltip-fluid"
+export {
+  TableFluid,
+  TableFluidHeader,
+  TableFluidBody,
+  TableFluidRow,
+  TableFluidHead,
+  TableFluidCell,
+} from "./table-fluid"

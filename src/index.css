@@ -209,6 +209,22 @@
   animation: shimmer 2s linear infinite;
 }
 
+/* ─── Button (Fluid) — loading spinner ────────────────────────────── */
+@keyframes spinner-move {
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+@keyframes spinner-dash {
+  0%,
+  100% {
+    stroke-dasharray: 15 85;
+  }
+  50% {
+    stroke-dasharray: 40 60;
+  }
+}
+
 /* ─── Slide to Unlock — letter shimmer wave ───────────────────────── */
 @keyframes slide-to-unlock-letter {
   0%,

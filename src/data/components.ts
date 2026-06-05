@@ -295,6 +295,56 @@ export const components: ComponentMeta[] = [
       "Sumário/minimap de navegação com seção ativa via IntersectionObserver e barra de progresso.",
     tags: ["toc", "sumário", "navegação", "minimap", "scroll", "âncora"],
   },
+
+  // Lote Fluid (ONDA 2 lote A)
+  {
+    slug: "button-fluid",
+    name: "Button (Fluid)",
+    category: "Actions",
+    description:
+      "Botão animado da Fluid Functionalism com variantes, ícones, spinner de loading e transições fluidas no hover.",
+    tags: ["fluid", "button", "botão", "ações", "loading", "ícone"],
+  },
+  {
+    slug: "badge-fluid",
+    name: "Badge (Fluid)",
+    category: "Feedback",
+    description:
+      "Selo/etiqueta da Fluid Functionalism com variantes solid e dot, paleta de cores e três tamanhos.",
+    tags: ["fluid", "badge", "selo", "etiqueta", "status", "tag"],
+  },
+  {
+    slug: "slider-fluid",
+    name: "Slider (Fluid)",
+    category: "Forms",
+    description:
+      "Slider da Fluid Functionalism com thumb animado, faixa (range), step dots, tooltip de valor e edição inline.",
+    tags: ["fluid", "slider", "range", "controle", "valor", "formulário"],
+  },
+  {
+    slug: "switch-fluid",
+    name: "Switch (Fluid)",
+    category: "Forms",
+    description:
+      "Switch da Fluid Functionalism com thumb que estica no hover/press e suporte a arraste para alternar.",
+    tags: ["fluid", "switch", "toggle", "alternar", "formulário", "controle"],
+  },
+  {
+    slug: "tooltip-fluid",
+    name: "Tooltip (Fluid)",
+    category: "Feedback",
+    description:
+      "Tooltip da Fluid Functionalism com animação de entrada/saída via motion e posicionamento em quatro lados.",
+    tags: ["fluid", "tooltip", "dica", "popover", "hover", "feedback"],
+  },
+  {
+    slug: "table-fluid",
+    name: "Table (Fluid)",
+    category: "Layout",
+    description:
+      "Tabela da Fluid Functionalism com destaque de linha por proximidade do cursor e transições suaves.",
+    tags: ["fluid", "table", "tabela", "dados", "linhas", "layout"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
