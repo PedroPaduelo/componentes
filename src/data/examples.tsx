@@ -18,7 +18,6 @@
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { CopyButton } from "@/components/ui/copy-button"
 import {
   Card,
   CardContent,
@@ -62,7 +61,7 @@ import {
 } from "@/components/ui/tabs"
 import { Settings, User, LogOut } from "lucide-react"
 import { Tree } from "@/components/ui/tree"
-import { ThemeSwitcher } from "@/components/ui/theme-switcher"
+import { WorkExperienceComponent } from "@/components/ui/work-experience-component"
 
 export type Example = {
   title: string
@@ -743,31 +742,141 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                              theme-switcher                                 */
+/*                          work-experience-component                          */
 /* -------------------------------------------------------------------------- */
 
-const themeSwitcherBasicExample: Example = {
-  title: "Básico",
-  description: "Dropdown com opções Light, Dark e System. Ícone reflete o tema ativo.",
-  code: `<ThemeSwitcher />`,
+const workExperienceTimelineExample: Example = {
+  title: "Timeline",
+  description: "Linha do tempo vertical com bullets e cards de experiência.",
+  code: `<WorkExperienceComponent
+  variant="timeline"
+  experiences={[
+    {
+      company: "Acme Corp",
+      role: "Senior Frontend Engineer",
+      period: "2022 — Presente",
+      description:
+        "Liderança técnica do redesign do produto principal, migrando de Angular para React e melhorando métricas de Core Web Vitals em 40%.",
+      technologies: ["React", "TypeScript", "Tailwind CSS", "Vite"],
+      href: "https://acme.example.com",
+    },
+    {
+      company: "StartupXYZ",
+      role: "Full Stack Developer",
+      period: "2019 — 2022",
+      description:
+        "Construção do zero do painel de analytics com visualizações em tempo real e integração com WebSockets.",
+      technologies: ["Next.js", "Node.js", "PostgreSQL", "Redis"],
+      href: "https://startupxyz.example.com",
+    },
+    {
+      company: "Freelance",
+      role: "Web Developer",
+      period: "2017 — 2019",
+      description:
+        "Desenvolvimento de landing pages e e-commerces para clientes diversos, com foco em performance e SEO.",
+      technologies: ["React", "Gatsby", "WordPress", "Figma"],
+    },
+  ]}
+/>`,
   render: (
-    <div className="flex items-center gap-4">
-      <ThemeSwitcher />
-      <span className="text-sm text-muted-foreground">
-        Clique para alternar o tema
-      </span>
+    <div className="w-full max-w-xl">
+      <WorkExperienceComponent
+        variant="timeline"
+        experiences={[
+          {
+            company: "Acme Corp",
+            role: "Senior Frontend Engineer",
+            period: "2022 — Presente",
+            description:
+              "Liderança técnica do redesign do produto principal, migrando de Angular para React e melhorando métricas de Core Web Vitals em 40%.",
+            technologies: ["React", "TypeScript", "Tailwind CSS", "Vite"],
+            href: "https://acme.example.com",
+          },
+          {
+            company: "StartupXYZ",
+            role: "Full Stack Developer",
+            period: "2019 — 2022",
+            description:
+              "Construção do zero do painel de analytics com visualizações em tempo real e integração com WebSockets.",
+            technologies: ["Next.js", "Node.js", "PostgreSQL", "Redis"],
+            href: "https://startupxyz.example.com",
+          },
+          {
+            company: "Freelance",
+            role: "Web Developer",
+            period: "2017 — 2019",
+            description:
+              "Desenvolvimento de landing pages e e-commerces para clientes diversos, com foco em performance e SEO.",
+            technologies: ["React", "Gatsby", "WordPress", "Figma"],
+          },
+        ]}
+      />
     </div>
   ),
 }
 
-const themeSwitcherCustomExample: Example = {
-  title: "Customizado",
-  description: "Switcher com classes customizadas para diferentes contextos.",
-  code: `<ThemeSwitcher className="size-10 rounded-full" />`,
+const workExperienceCardExample: Example = {
+  title: "Cards",
+  description: "Lista vertical de cards sem linha do tempo.",
+  code: `<WorkExperienceComponent
+  variant="card"
+  experiences={[
+    {
+      company: "Acme Corp",
+      role: "Senior Frontend Engineer",
+      period: "2022 — Presente",
+      description:
+        "Liderança técnica do redesign do produto principal.",
+      technologies: ["React", "TypeScript", "Tailwind CSS"],
+    },
+    {
+      company: "StartupXYZ",
+      role: "Full Stack Developer",
+      period: "2019 — 2022",
+      description:
+        "Construção do painel de analytics com visualizações em tempo real.",
+      technologies: ["Next.js", "Node.js", "PostgreSQL"],
+    },
+    {
+      company: "Freelance",
+      role: "Web Developer",
+      period: "2017 — 2019",
+      description:
+        "Landing pages e e-commerces com foco em performance.",
+      technologies: ["React", "Gatsby", "WordPress"],
+    },
+  ]}
+/>`,
   render: (
-    <div className="flex items-center gap-4">
-      <ThemeSwitcher className="size-10 rounded-full" />
-      <ThemeSwitcher className="size-8 border-0 bg-transparent" />
+    <div className="w-full max-w-xl">
+      <WorkExperienceComponent
+        variant="card"
+        experiences={[
+          {
+            company: "Acme Corp",
+            role: "Senior Frontend Engineer",
+            period: "2022 — Presente",
+            description: "Liderança técnica do redesign do produto principal.",
+            technologies: ["React", "TypeScript", "Tailwind CSS"],
+          },
+          {
+            company: "StartupXYZ",
+            role: "Full Stack Developer",
+            period: "2019 — 2022",
+            description:
+              "Construção do painel de analytics com visualizações em tempo real.",
+            technologies: ["Next.js", "Node.js", "PostgreSQL"],
+          },
+          {
+            company: "Freelance",
+            role: "Web Developer",
+            period: "2017 — 2019",
+            description: "Landing pages e e-commerces com foco em performance.",
+            technologies: ["React", "Gatsby", "WordPress"],
+          },
+        ]}
+      />
     </div>
   ),
 }
@@ -778,7 +887,6 @@ const themeSwitcherCustomExample: Example = {
 
 export const examples: Record<string, Example[]> = {
   button: [buttonVariantsExample, buttonSizesExample, buttonDisabledExample],
-  "copy-button": [copyButtonBasicExample, copyButtonVariantsExample, copyButtonSizesExample, copyButtonCustomLabelExample],
   "dropdown-menu": [dropdownBasicExample, dropdownIconExample],
   card: [cardBasicExample, cardInteractiveExample],
   dialog: [dialogBasicExample, dialogFormExample],
@@ -788,12 +896,10 @@ export const examples: Record<string, Example[]> = {
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
   tree: [treeBasicExample, treeSearchExample, treeDensityExample],
-  "theme-switcher": [themeSwitcherBasicExample, themeSwitcherCustomExample],
+  "work-experience-component": [workExperienceTimelineExample, workExperienceCardExample],
 }
 
-/**
- * Retorna os exemplos de um slug, ou `undefined` se não houver.
- */
+/** Retorna os exemplos de um slug, ou `undefined` se não houver. */
 export function getExamplesBySlug(slug: string): Example[] | undefined {
   return examples[slug]
 }

@@ -98,14 +98,6 @@ export const components: ComponentMeta[] = [
     tags: ["caixa", "seleção", "formulário", "booleano", "marcar"],
   },
   {
-    slug: "copy-button",
-    name: "Copy Button",
-    category: "Actions",
-    description:
-      "Botão para copiar texto ou código para a área de transferência com feedback visual animado.",
-    tags: ["copiar", "clipboard", "botão", "ação", "feedback"],
-  },
-  {
     slug: "badge",
     name: "Badge",
     category: "Feedback",
@@ -129,12 +121,91 @@ export const components: ComponentMeta[] = [
     ],
   },
   {
-    slug: "theme-switcher",
-    name: "Theme Switcher",
+    slug: "work-experience-component",
+    name: "Work Experience",
+    category: "Layout",
+    description:
+      "Card/timeline de experiência profissional com empresa, cargo, período, descrição e tecnologias.",
+    tags: [
+      "experiência",
+      "currículo",
+      "timeline",
+      "carreira",
+      "portfólio",
+      "work",
+    ],
+  },
+  {
+    slug: "chevrons-up-down-icon",
+    name: "Chevrons Up Down Icon",
     category: "Actions",
     description:
-      "Seletor de tema com dropdown para alternar entre Light, Dark e System.",
-    tags: ["tema", "dark mode", "light mode", "system", "toggle", "switch", "appear\u00e2ncia"],
+      "Ícone animado de dois chevrons que rotacionam suavemente — indicador visual de dropdown/select.",
+    tags: ["ícone", "chevron", "dropdown", "seletor"],
+  },
+  {
+    slug: "code-block-command",
+    name: "Code Block Command",
+    category: "Feedback",
+    description:
+      "Comando shell com tokens coloridos (comando, args, flags) e botão de copiar.",
+    tags: ["código", "comando", "cli", "terminal", "copy"],
+  },
+  {
+    slug: "dot-grid-spotlight",
+    name: "Dot Grid Spotlight",
+    category: "Feedback",
+    description:
+      "Background de grade de pontos com spotlight que segue o cursor do mouse.",
+    tags: ["dots", "grid", "spotlight", "background", "efeito"],
+  },
+  {
+    slug: "fluid-gradient-text",
+    name: "Fluid Gradient Text",
+    category: "Layout",
+    description:
+      "Texto com gradiente animado (mesh gradient) que flui continuamente.",
+    tags: ["texto", "gradiente", "animado", "efeito"],
+  },
+  {
+    slug: "glow-card-grid",
+    name: "Glow Card Grid",
+    category: "Layout",
+    description:
+      "Grid de cards com efeito glow — icon/background borrado que segue o cursor e borda com backdrop-blur.",
+    tags: ["glow", "cards", "grid", "bento", "pointer", "efeito"],
+  },
+  {
+    slug: "icon-swap",
+    name: "Icon Swap",
+    category: "Actions",
+    description:
+      "Componente que troca entre dois ícones com crossfade (Sun↔Moon, Eye↔EyeOff, etc.).",
+    tags: ["ícone", "swap", "crossfade", "tema"],
+  },
+  {
+    slug: "react-wheel-picker",
+    name: "React Wheel Picker",
+    category: "Forms",
+    description:
+      "Picker estilo iOS com 3 colunas (data picker) que rola como uma roda. Wrapper sobre react-wheel-picker.",
+    tags: ["picker", "wheel", "data", "iOS", "rolagem"],
+  },
+  {
+    slug: "shimmering-text",
+    name: "Shimmering Text",
+    category: "Feedback",
+    description:
+      "Texto com efeito shimmer (brilho da esquerda pra direita, estilo skeleton/loading).",
+    tags: ["shimmer", "skeleton", "loading", "texto", "efeito"],
+  },
+  {
+    slug: "theme-toggle-effect",
+    name: "Theme Toggle Effect",
+    category: "Actions",
+    description:
+      "Toggle de tema com animação de view transition (círculo expandindo do botão até a tela inteira).",
+    tags: ["tema", "view-transition", "animação", "efeito"],
   },
 ]
 
