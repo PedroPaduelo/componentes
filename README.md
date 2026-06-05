@@ -53,17 +53,34 @@ npm run lint
 
 ## Componentes documentados
 
-| Componente | Categoria | Slug |
-|---|---|---|
-| Button | Actions | `button` |
-| Dropdown Menu | Actions | `dropdown-menu` |
-| Card | Layout | `card` |
-| Dialog | Layout | `dialog` |
-| Sheet | Layout | `sheet` |
-| Tabs | Layout | `tabs` |
-| Input | Forms | `input` |
-| Checkbox | Forms | `checkbox` |
-| Badge | Feedback | `badge` |
+| Componente | Categoria | Slug | Fonte |
+|---|---|---|---|
+| Button | Actions | `button` | shadcn/ui |
+| Dropdown Menu | Actions | `dropdown-menu` | shadcn/ui |
+| Card | Layout | `card` | shadcn/ui |
+| Dialog | Layout | `dialog` | shadcn/ui |
+| Sheet | Layout | `sheet` | shadcn/ui |
+| Tabs | Layout | `tabs` | shadcn/ui |
+| **Tree** | Layout | `tree` | [`@pierre/trees`](https://trees.software) (adaptado) |
+| Input | Forms | `input` | shadcn/ui |
+| Checkbox | Forms | `checkbox` | shadcn/ui |
+| Badge | Feedback | `badge` | shadcn/ui |
+
+## Adicionando novos componentes
+
+Todo componente adicionado — próprio shadcn **ou** adaptador de uma lib externa — segue a mesma API padronizada:
+
+- **Localização**: `src/components/ui/<nome>.tsx` (+ `<nome>-variants.ts` se tiver variantes)
+- **Variants via `cva`** (class-variance-authority)
+- **Props com `data-slot`** no JSX raiz, **`cn()`** para merge de className
+- **Tipo**: `Props = Omit<HTMLAttributes<...>,'children'> & VariantProps<typeof variants> & { ...específicas }`
+- **Re-exportado** em `src/components/ui/index.ts` (barrel)
+- **Registrado** em `src/data/components.ts` (slug, name, category, description, tags)
+- **≥1 example** em `src/data/examples.tsx`
+- Se importar **lib externa**, declarar a dep em `package.json` + `npm install` (build reproduzível obrigatório)
+- Build (`npm run build`) e lint (`npm run lint`) devem passar **0 erros / 0 warnings** antes de commitar
+
+Exemplo de adaptador: `Tree` consome `@pierre/trees` real por baixo e expõe `data` (array de paths) + `header` + `initialExpansion` + `search` + `density` + `variant` + `onSelectionChange` — mesma forma de consumo de Button, Card, etc.
 
 ## Estrutura do projeto
 
