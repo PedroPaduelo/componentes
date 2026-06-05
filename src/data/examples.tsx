@@ -848,6 +848,21 @@ const scrollFadeChatExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                                  mapa                                       */
+/* -------------------------------------------------------------------------- */
+
+export const examples: Record<string, Example[]> = {
+  button: [buttonVariantsExample, buttonSizesExample, buttonDisabledExample],
+  "dropdown-menu": [dropdownBasicExample, dropdownIconExample],
+  card: [cardBasicExample, cardInteractiveExample],
+  dialog: [dialogBasicExample, dialogFormExample],
+  sheet: [sheetBasicExample, sheetSideExample],
+  tabs: [tabsBasicExample],
+  input: [inputBasicExample, inputWithLabelExample],
+  checkbox: [checkboxBasicExample],
+  badge: [badgeVariantsExample, badgeUseCaseExample],
+  tree: [treeBasicExample, treeSearchExample, treeDensityExample],
+  "scroll-fade-effect": [scrollFadeVerticalExample, scrollFadeHorizontalExample, scrollFadeChatExample],
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
