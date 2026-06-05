@@ -14,6 +14,7 @@ dist-ssr
 
 # Playwright validation shots
 shots/
+tmp-shots/
 
 # Editor directories and files
 .vscode/*
@@ -31,9 +32,8 @@ shots/
 .pierre-analysis/
 .*analysis/
 
-# Scripts efêmeros de probe/review (convenção: prefixo _)
-scripts/_*.mjs
-scripts/_*.html
-scripts/_*.js
-scripts/_*.ts
-scripts/_*.tsx
+# Scripts: só os validadores canônicos `val-*.mjs` (+ README) são versionados.
+# Todo o resto em scripts/ (probes, diag, inspect, debug, _* efêmeros) é ignorado.
+scripts/*
+!scripts/val-*.mjs
+!scripts/README.md

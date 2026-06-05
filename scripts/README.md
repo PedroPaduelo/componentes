@@ -1,19 +1,37 @@
-# Scripts
+# Scripts de validação visual
 
-## `check-theme-toggle-variants.mjs`
+Cada `val-<slug>.mjs` é o **validador canônico** de um componente da vitrine:
+compara o componente renderizado (`http://localhost:5173/components/<slug>`)
+com o site de referência via Playwright, em light e dark, e gera prints +
+relatório em `shots/<slug>/`.
 
-Validação Playwright — testa cada variante do `ThemeToggleEffect` em light e dark.
+## Pré-requisitos
 
-**Uso:**
 ```bash
-node scripts/check-theme-toggle-variants.mjs
+npm install --save-dev playwright   # já está em devDependencies
+npx playwright install chromium
 ```
 
-**O que faz:**
-- Para cada variante (circle, circle-blur, circle-blur-top-left, triangle, triangle-blur, polygon, polygon-gradient) + sem efeito:
-  - Abre a page `/components/theme-toggle-effect` com tema inicial (light/dark)
-  - Clica no botão da variante
-  - Verifica se o tema alternou corretamente
-  - Tira prints em `shots/`
+O dev server (`fe`, porta 5173) precisa estar no ar:
 
-**Saída:** `16/16 OK` (8 configs × 2 temas).
+```bash
+npm run dev
+```
+
+## Uso
+
+```bash
+node scripts/val-<slug>.mjs
+```
+
+Ex.: `node scripts/val-button.mjs`, `node scripts/val-glow-card-grid.mjs`.
+
+Os artefatos (`shots/`) são gerados localmente e **não** vão pro repo
+(`shots/` está no `.gitignore`).
+
+## Convenção
+
+- **Só `val-*.mjs` são versionados.** São os validadores de regressão por componente.
+- Scripts efêmeros de diagnóstico/probe (`probe-*`, `diag-*`, `inspect-*`,
+  `debug-*`, `_*`, etc.) **não** são commitados — o `.gitignore` ignora tudo
+  em `scripts/` que não seja `val-*.mjs` ou este `README.md`.
