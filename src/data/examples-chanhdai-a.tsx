@@ -124,26 +124,56 @@ const glowCardGridBasic: Example = {
   title: "Grade de cards",
   description: "Grade responsiva de cards com efeito de brilho que segue o cursor.",
   code: `<GlowCardGrid columns={3}>
-  <GlowCard>
-    <span className="text-sm font-medium">Card 1</span>
+  <GlowCard icon="https://unavatar.io/x/shadcn" iconAlt="shadcn">
+    <h2 className="text-base leading-none font-semibold text-foreground">shadcn</h2>
+    <p className="text-sm leading-none text-foreground/50">@shadcn</p>
   </GlowCard>
-  <GlowCard>
-    <span className="text-sm font-medium">Card 2</span>
+  <GlowCard icon="https://unavatar.io/x/orcdev" iconAlt="OrcDev">
+    <h2 className="text-base leading-none font-semibold text-foreground">OrcDev</h2>
+    <p className="text-sm leading-none text-foreground/50">@orcdev</p>
   </GlowCard>
-  <GlowCard>
-    <span className="text-sm font-medium">Card 3</span>
+  <GlowCard icon="https://unavatar.io/x/davidhdev" iconAlt="David Haz">
+    <h2 className="text-base leading-none font-semibold text-foreground">David Haz</h2>
+    <p className="text-sm leading-none text-foreground/50">@davidhdev</p>
+  </GlowCard>
+  <GlowCard icon="https://unavatar.io/x/shuding" iconAlt="Shu">
+    <h2 className="text-base leading-none font-semibold text-foreground">Shu</h2>
+    <p className="text-sm leading-none text-foreground/50">@shuding</p>
+  </GlowCard>
+  <GlowCard icon="https://unavatar.io/x/emilkowalski" iconAlt="Emil Kowalski">
+    <h2 className="text-base leading-none font-semibold text-foreground">Emil Kowalski</h2>
+    <p className="text-sm leading-none text-foreground/50">@emilkowalski</p>
+  </GlowCard>
+  <GlowCard icon="https://unavatar.io/x/iamncdai" iconAlt="Chánh Đại">
+    <h2 className="text-base leading-none font-semibold text-foreground">Chánh Đại</h2>
+    <p className="text-sm leading-none text-foreground/50">@iamncdai</p>
   </GlowCard>
 </GlowCardGrid>`,
   render: (
     <GlowCardGrid columns={3}>
-      <GlowCard>
-        <span className="text-sm font-medium">Card 1</span>
+      <GlowCard icon="https://unavatar.io/x/shadcn" iconAlt="shadcn">
+        <h2 className="text-base leading-none font-semibold text-foreground">shadcn</h2>
+        <p className="text-sm leading-none text-foreground/50">@shadcn</p>
       </GlowCard>
-      <GlowCard>
-        <span className="text-sm font-medium">Card 2</span>
+      <GlowCard icon="https://unavatar.io/x/orcdev" iconAlt="OrcDev">
+        <h2 className="text-base leading-none font-semibold text-foreground">OrcDev</h2>
+        <p className="text-sm leading-none text-foreground/50">@orcdev</p>
       </GlowCard>
-      <GlowCard>
-        <span className="text-sm font-medium">Card 3</span>
+      <GlowCard icon="https://unavatar.io/x/davidhdev" iconAlt="David Haz">
+        <h2 className="text-base leading-none font-semibold text-foreground">David Haz</h2>
+        <p className="text-sm leading-none text-foreground/50">@davidhdev</p>
+      </GlowCard>
+      <GlowCard icon="https://unavatar.io/x/shuding" iconAlt="Shu">
+        <h2 className="text-base leading-none font-semibold text-foreground">Shu</h2>
+        <p className="text-sm leading-none text-foreground/50">@shuding</p>
+      </GlowCard>
+      <GlowCard icon="https://unavatar.io/x/emilkowalski" iconAlt="Emil Kowalski">
+        <h2 className="text-base leading-none font-semibold text-foreground">Emil Kowalski</h2>
+        <p className="text-sm leading-none text-foreground/50">@emilkowalski</p>
+      </GlowCard>
+      <GlowCard icon="https://unavatar.io/x/iamncdai" iconAlt="Chánh Đại">
+        <h2 className="text-base leading-none font-semibold text-foreground">Chánh Đại</h2>
+        <p className="text-sm leading-none text-foreground/50">@iamncdai</p>
       </GlowCard>
     </GlowCardGrid>
   ),
