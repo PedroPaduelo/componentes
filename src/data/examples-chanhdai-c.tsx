@@ -112,6 +112,59 @@ const tocItems: TOCItem[] = [
   { id: "exemplos", label: "Exemplos", level: 2 },
 ]
 
+const lorem =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+const tocMinimapShowcaseExample: Example = {
+  title: "Showcase com scroll-tracking",
+  description:
+    "Use dentro de uma página com seções: o item ativo muda conforme a seção visível e a barra de progresso reflete a posição de scroll.",
+  code: `const items = [
+  { id: "intro",    label: "Introdução" },
+  { id: "setup",    label: "Instalação", level: 2 },
+  { id: "api",      label: "API" },
+  { id: "exemplos", label: "Exemplos",   level: 2 },
+]
+
+// Renderize o TOC junto das seções que ele rastreia:
+<div className="space-y-8">
+  <TOCMinimap items={items} orientation="vertical" />
+  <section id="intro">…</section>
+  <section id="setup">…</section>
+  <section id="api">…</section>
+  <section id="exemplos">…</section>
+</div>`,
+  render: (
+    <div className="w-full space-y-6">
+      <div className="flex justify-center">
+        <TOCMinimap items={tocItems} orientation="vertical" />
+      </div>
+      {(
+        [
+          { id: "intro", title: "Introdução" },
+          { id: "setup", title: "Instalação" },
+          { id: "api", title: "API" },
+          { id: "exemplos", title: "Exemplos" },
+        ] as const
+      ).map(({ id, title }) => (
+        <section
+          key={id}
+          id={id}
+          data-toc-section
+          className="space-y-3 border-b border-dashed border-border pb-6 last:border-b-0"
+        >
+          <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
+          {Array.from({ length: 10 }).map((_, i) => (
+            <p key={i} className="text-sm leading-relaxed text-muted-foreground">
+              {lorem}
+            </p>
+          ))}
+        </section>
+      ))}
+    </div>
+  ),
+}
+
 const tocMinimapVerticalExample: Example = {
   title: "Vertical",
   description:
@@ -172,6 +225,22 @@ const copyButtonLabelExample: Example = {
   ),
 }
 
+const copyButtonIconOnlyExample: Example = {
+  title: "Ícone-only (ghost)",
+  description:
+    "Variante ghost com size icon-xs (28×28, ícone-only) — paridade com o site de referência.",
+  code: `<CopyButton variant="ghost" size="icon-xs" value="npm install lucide-react" />`,
+  render: (
+    <div className="flex items-center gap-3">
+      <CopyButton
+        variant="ghost"
+        size="icon-xs"
+        value="npm install lucide-react"
+      />
+    </div>
+  ),
+}
+
 /* -------------------------------------------------------------------------- */
 /*                              consent-manager                                */
 /* -------------------------------------------------------------------------- */
@@ -200,7 +269,15 @@ export const examplesChanhdaiC: Record<string, Example[]> = {
     themeToggleEffectExample,
     themeToggleEffectVariantsExample,
   ],
-  "toc-minimap": [tocMinimapVerticalExample, tocMinimapHorizontalExample],
-  "copy-button": [copyButtonBasicExample, copyButtonLabelExample],
+  "toc-minimap": [
+    tocMinimapShowcaseExample,
+    tocMinimapVerticalExample,
+    tocMinimapHorizontalExample,
+  ],
+  "copy-button": [
+    copyButtonIconOnlyExample,
+    copyButtonBasicExample,
+    copyButtonLabelExample,
+  ],
   "consent-manager": [consentManagerExample],
 }

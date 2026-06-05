@@ -15,16 +15,10 @@ import { ElasticSlider } from "@/components/ui/elastic-slider"
 import { SlideToUnlock } from "@/components/ui/slide-to-unlock"
 
 export function ChevronsToggleDemo() {
-  const [open, setOpen] = React.useState(false)
   return (
-    <Button
-      variant="outline"
-      onClick={() => setOpen((v) => !v)}
-      data-state={open ? "open" : "closed"}
-      className="gap-2"
-    >
+    <Button variant="outline" className="gap-2">
       Selecione uma opção
-      <ChevronsUpDownIcon className={open ? "rotate-180" : ""} aria-hidden />
+      <ChevronsUpDownIcon aria-hidden />
     </Button>
   )
 }
@@ -62,7 +56,7 @@ export function IconSwapRow() {
 export function ElasticSliderDemo() {
   const [value, setValue] = React.useState(0.5)
   return (
-    <div className="w-full max-w-sm">
+    <div className="w-[200px]">
       <ElasticSlider
         value={value}
         onValueChange={setValue}
@@ -105,9 +99,9 @@ export function SlideToUnlockDemo({
 export function SlideToUnlockVariants() {
   return (
     <div className="flex w-full max-w-xs flex-col gap-4">
-      <SlideToUnlockDemo variant="default" label="deslize" />
-      <SlideToUnlockDemo variant="success" label="confirmar" />
-      <SlideToUnlockDemo variant="destructive" label="apagar" />
+      <SlideToUnlockDemo variant="default" label="slide" />
+      <SlideToUnlockDemo variant="success" label="confirm" />
+      <SlideToUnlockDemo variant="destructive" label="delete" />
     </div>
   )
 }

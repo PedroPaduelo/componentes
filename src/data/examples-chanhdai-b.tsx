@@ -7,6 +7,7 @@
 import * as React from "react"
 import type { Example } from "@/data/examples"
 import { GitHubContributions } from "@/components/ui/github-contributions"
+import { Label } from "@/components/ui/label"
 import { MiddleTruncation } from "@/components/ui/middle-truncation"
 import { MobiusLoopIcon } from "@/components/ui/mobius-loop-icon"
 import { ReactWheelPicker } from "@/components/ui/react-wheel-picker"
@@ -24,6 +25,30 @@ const hours: React.ComponentProps<typeof ReactWheelPicker>["options"] = Array.fr
   (_, i) => ({
     value: String(i + 1),
     label: String(i + 1),
+  })
+)
+
+const days: React.ComponentProps<typeof ReactWheelPicker>["options"] = Array.from(
+  { length: 31 },
+  (_, i) => ({
+    value: String(i + 1).padStart(2, "0"),
+    label: String(i + 1).padStart(2, "0"),
+  })
+)
+
+const months: React.ComponentProps<typeof ReactWheelPicker>["options"] = Array.from(
+  { length: 12 },
+  (_, i) => ({
+    value: String(i + 1).padStart(2, "0"),
+    label: String(i + 1).padStart(2, "0"),
+  })
+)
+
+const years: React.ComponentProps<typeof ReactWheelPicker>["options"] = Array.from(
+  { length: 11 },
+  (_, i) => ({
+    value: String(2020 + i),
+    label: String(2020 + i),
   })
 )
 
@@ -65,26 +90,54 @@ const middleTruncationExample: Example = {
   title: "Truncamento no meio",
   description:
     "Preserva início e fim do texto, escondendo o miolo — ideal para hashes, paths e emails.",
-  code: `<div className="font-mono text-sm space-y-1">
-  <MiddleTruncation text="0x71C7656EC7ab88b098defB751B7401B5f6d8976F" maxLength={20} />
-  <MiddleTruncation text="/usr/local/share/applications/components/vitrine.tsx" maxLength={28} />
-  <MiddleTruncation text="contato.suporte.equipe@empresa-exemplo.com.br" maxLength={24} />
+  code: `<div className="space-y-1">
+  <MiddleTruncation text="0x71C7656EC7ab88b098defB751B7401B5f6d8976F" maxLength={20} ellipsis="..." />
+  <MiddleTruncation text="/usr/local/share/applications/components/vitrine.tsx" maxLength={28} ellipsis="..." />
+  <MiddleTruncation text="contato.suporte.equipe@empresa-exemplo.com.br" maxLength={24} ellipsis="..." />
 </div>`,
   render: (
-    <div className="font-mono text-sm space-y-1">
+    <div className="space-y-1">
       <MiddleTruncation
         text="0x71C7656EC7ab88b098defB751B7401B5f6d8976F"
         maxLength={20}
+        ellipsis="..."
         as="div"
       />
       <MiddleTruncation
         text="/usr/local/share/applications/components/vitrine.tsx"
         maxLength={28}
+        ellipsis="..."
         as="div"
       />
       <MiddleTruncation
         text="contato.suporte.equipe@empresa-exemplo.com.br"
         maxLength={24}
+        ellipsis="..."
+        as="div"
+      />
+    </div>
+  ),
+}
+
+const middleTruncationMinEndExample: Example = {
+  title: "Preservar fim (minEnd)",
+  description:
+    "Garante que os últimos N caracteres nunca sejam cortados — útil para preservar a extensão de um path.",
+  code: `<div className="space-y-1">
+  <MiddleTruncation
+    text="/usr/local/share/applications/components/button.tsx"
+    maxLength={28}
+    minEnd={4}
+    ellipsis="..."
+  />
+</div>`,
+  render: (
+    <div className="space-y-1">
+      <MiddleTruncation
+        text="/usr/local/share/applications/components/button.tsx"
+        maxLength={28}
+        minEnd={4}
+        ellipsis="..."
         as="div"
       />
     </div>
@@ -138,11 +191,76 @@ const reactWheelPickerExample: Example = {
 }))
 
 <div className="w-32 mx-auto">
-  <ReactWheelPicker options={hours} defaultValue="3" />
+  <div className="grid gap-1.5">
+    <Label htmlFor="hours">Horas</Label>
+    <ReactWheelPicker id="hours" options={hours} defaultValue="3" />
+  </div>
 </div>`,
   render: (
     <div className="w-32 mx-auto">
-      <ReactWheelPicker options={hours} defaultValue="3" />
+      <div className="grid gap-1.5">
+        <Label htmlFor="hours">Horas</Label>
+        <ReactWheelPicker id="hours" options={hours} defaultValue="3" />
+      </div>
+    </div>
+  ),
+}
+
+const reactWheelPickerDateExample: Example = {
+  title: "Data (dia / mês / ano)",
+  description:
+    "Date picker com 3 colunas sincronizadas — Dia, Mês e Ano lado a lado.",
+  code: `const days = Array.from({ length: 31 }, (_, i) => ({
+  value: String(i + 1).padStart(2, "0"),
+  label: String(i + 1).padStart(2, "0"),
+}))
+const months = Array.from({ length: 12 }, (_, i) => ({
+  value: String(i + 1).padStart(2, "0"),
+  label: String(i + 1).padStart(2, "0"),
+}))
+const years = Array.from({ length: 11 }, (_, i) => ({
+  value: String(2020 + i),
+  label: String(2020 + i),
+}))
+
+<div className="flex items-end justify-center gap-4">
+  <div className="grid gap-1.5">
+    <Label htmlFor="day">Dia</Label>
+    <ReactWheelPicker id="day" options={days} defaultValue="15" className="w-24" />
+  </div>
+  <div className="grid gap-1.5">
+    <Label htmlFor="month">Mês</Label>
+    <ReactWheelPicker id="month" options={months} defaultValue="06" className="w-24" />
+  </div>
+  <div className="grid gap-1.5">
+    <Label htmlFor="year">Ano</Label>
+    <ReactWheelPicker id="year" options={years} defaultValue="2025" className="w-28" />
+  </div>
+</div>`,
+  render: (
+    <div className="flex items-end justify-center gap-4">
+      <div className="grid gap-1.5">
+        <Label htmlFor="day">Dia</Label>
+        <ReactWheelPicker id="day" options={days} defaultValue="15" className="w-24" />
+      </div>
+      <div className="grid gap-1.5">
+        <Label htmlFor="month">Mês</Label>
+        <ReactWheelPicker
+          id="month"
+          options={months}
+          defaultValue="06"
+          className="w-24"
+        />
+      </div>
+      <div className="grid gap-1.5">
+        <Label htmlFor="year">Ano</Label>
+        <ReactWheelPicker
+          id="year"
+          options={years}
+          defaultValue="2025"
+          className="w-28"
+        />
+      </div>
     </div>
   ),
 }
@@ -184,8 +302,8 @@ export const examplesChanhdaiB: Record<string, Example[]> = {
     githubContributionsGreenExample,
     githubContributionsShadcnExample,
   ],
-  "middle-truncation": [middleTruncationExample],
+  "middle-truncation": [middleTruncationExample, middleTruncationMinEndExample],
   "mobius-loop-icon": [mobiusLoopSpeedsExample, mobiusLoopGradientExample],
-  "react-wheel-picker": [reactWheelPickerExample],
+  "react-wheel-picker": [reactWheelPickerExample, reactWheelPickerDateExample],
   "scroll-fade-effect": [scrollFadeExample],
 }

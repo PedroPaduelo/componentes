@@ -84,35 +84,29 @@ const dotGridSpotlightCustom: Example = {
 /*                             fluid-gradient-text                            */
 /* -------------------------------------------------------------------------- */
 
-const fluidGradientTextHeading: Example = {
-  title: "Título",
-  description: "Texto com gradiente animado fluido, ideal para destaques.",
-  code: `<FluidGradientText as="h1" className="text-4xl font-bold">
-  Gradiente animado
-</FluidGradientText>`,
+const fluidGradientTextBasic: Example = {
+  title: "Básico",
+  description: "Texto com gradiente fluido em SVG que segue o cursor do mouse.",
+  code: `<div className="w-full text-foreground">
+  <FluidGradientText text="shadcn" />
+</div>`,
   render: (
-    <FluidGradientText as="h1" className="text-4xl font-bold">
-      Gradiente animado
-    </FluidGradientText>
+    <div className="w-full text-foreground">
+      <FluidGradientText text="shadcn" />
+    </div>
   ),
 }
 
-const fluidGradientTextInline: Example = {
-  title: "Inline rápido",
-  description: "Aplicado em trecho inline com animação acelerada.",
-  code: `<p className="text-lg">
-  Construído com{" "}
-  <FluidGradientText speed="fast" className="font-semibold">
-    React + Tailwind
-  </FluidGradientText>
-</p>`,
+const fluidGradientTextCustom: Example = {
+  title: "Texto customizado",
+  description: "Variando o texto e a altura do viewBox para um layout diferente.",
+  code: `<div className="w-full text-foreground">
+  <FluidGradientText text="vitrine" svgViewBoxHeight={200} />
+</div>`,
   render: (
-    <p className="text-lg">
-      Construído com{" "}
-      <FluidGradientText speed="fast" className="font-semibold">
-        React + Tailwind
-      </FluidGradientText>
-    </p>
+    <div className="w-full text-foreground">
+      <FluidGradientText text="vitrine" svgViewBoxHeight={200} />
+    </div>
   ),
 }
 
@@ -215,6 +209,27 @@ const shimmeringTextInline: Example = {
   ),
 }
 
+const shimmeringTextCustomColor: Example = {
+  title: "Cores customizadas",
+  description: "Customize as cores base e do highlight via props (exemplo amarelo do chanhdai).",
+  code: `<ShimmeringText
+  color="#fbbf24"
+  shimmerColor="#ca8a04"
+  className="text-2xl font-semibold"
+>
+  Processing your request with AI …
+</ShimmeringText>`,
+  render: (
+    <ShimmeringText
+      color="#fbbf24"
+      shimmerColor="#ca8a04"
+      className="text-2xl font-semibold"
+    >
+      Processing your request with AI …
+    </ShimmeringText>
+  ),
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                  registry                                  */
 /* -------------------------------------------------------------------------- */
@@ -234,7 +249,7 @@ void _reactAnchor
 export const examplesChanhdaiA: Record<string, Example[]> = {
   "code-block-command": [codeBlockCommandBasic, codeBlockCommandGhost],
   "dot-grid-spotlight": [dotGridSpotlightBasic, dotGridSpotlightCustom],
-  "fluid-gradient-text": [fluidGradientTextHeading, fluidGradientTextInline],
+  "fluid-gradient-text": [fluidGradientTextBasic, fluidGradientTextCustom],
   "glow-card-grid": [glowCardGridBasic],
-  "shimmering-text": [shimmeringTextBasic, shimmeringTextInline],
+  "shimmering-text": [shimmeringTextBasic, shimmeringTextInline, shimmeringTextCustomColor],
 }

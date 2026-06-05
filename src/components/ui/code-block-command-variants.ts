@@ -1,7 +1,7 @@
 import { cva } from "class-variance-authority"
 
 export const codeBlockCommandVariants = cva(
-  "relative overflow-hidden rounded-lg border border-border bg-muted font-mono text-sm",
+  "relative overflow-hidden rounded-[9px] border border-border bg-transparent font-mono text-base",
   {
     variants: {
       variant: {

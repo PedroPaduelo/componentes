@@ -15,14 +15,24 @@ import { workExperienceComponentVariants } from "@/components/ui/work-experience
 /*  Tipos                                                                     */
 /* -------------------------------------------------------------------------- */
 
+export interface Stat {
+  /** Rótulo exibido abaixo do valor (ex.: "Hours/Day"). */
+  label: string
+  /** Valor numérico/textual em destaque (ex.: "8.4"). */
+  value: string
+}
+
 export interface WorkExperienceItem {
   company: string
   role: string
   period: string
-  description?: string
+  /** Texto corrido (`string`) ou lista de responsabilidades (`string[]`). */
+  description?: string | string[]
   technologies?: string[]
   logo?: string
   href?: string
+  /** Cards de estatísticas renderizados ao final do item. */
+  stats?: Stat[]
 }
 
 export type WorkExperienceVariant = "timeline" | "card"
@@ -114,11 +124,21 @@ function ExperienceCard({
           </div>
         </div>
       </CardHeader>
-      {(item.description || (item.technologies && item.technologies.length > 0)) && (
+      {(item.description ||
+        (item.technologies && item.technologies.length > 0) ||
+        (item.stats && item.stats.length > 0)) && (
         <CardContent className="space-y-2 pb-0 pl-11">
           {item.description && (
             <CardDescription className="text-xs leading-relaxed">
-              {item.description}
+              {Array.isArray(item.description) ? (
+                <ul className="list-disc list-inside space-y-0.5 marker:text-muted-foreground">
+                  {item.description.map((line, i) => (
+                    <li key={i}>{line}</li>
+                  ))}
+                </ul>
+              ) : (
+                item.description
+              )}
             </CardDescription>
           )}
           {item.technologies && item.technologies.length > 0 && (
@@ -127,6 +147,19 @@ function ExperienceCard({
                 <Badge key={tech} variant="secondary" className="text-[10px]">
                   {tech}
                 </Badge>
+              ))}
+            </div>
+          )}
+          {item.stats && item.stats.length > 0 && (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
+              {item.stats.map((s) => (
+                <div
+                  key={s.label}
+                  className="rounded-md border border-border bg-card p-2 text-center"
+                >
+                  <div className="text-sm font-semibold text-foreground">{s.value}</div>
+                  <div className="text-[10px] text-muted-foreground">{s.label}</div>
+                </div>
               ))}
             </div>
           )}

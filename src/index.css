@@ -146,6 +146,27 @@
   animation: shimmer 2s linear infinite;
 }
 
+/* ─── Slide to Unlock — letter shimmer wave ───────────────────────── */
+@keyframes slide-to-unlock-letter {
+  0%,
+  100% {
+    color: var(--slide-to-unlock-letter-color, var(--muted-foreground));
+  }
+  40% {
+    color: color-mix(
+      in oklab,
+      var(--slide-to-unlock-letter-highlight, var(--foreground)) 60%,
+      transparent
+    );
+  }
+}
+.slide-to-unlock-letter {
+  animation: slide-to-unlock-letter 2.4s ease-in-out infinite;
+  animation-delay: var(--slide-to-unlock-letter-delay, 0s);
+  display: inline-block;
+  white-space: pre;
+}
+
 /* ─── ThemeToggleEffect — polygon-gradient ────────────────────────── */
 ::view-transition-old(root) {
   mix-blend-mode: normal;
@@ -153,4 +174,14 @@
 ::view-transition-new(root) {
   background: linear-gradient(45deg, oklch(0.55 0.18 265), oklch(0.7 0.18 200));
   mix-blend-mode: normal;
+}
+
+/* ─── Wheel picker — suaviza cor do texto dos items ────────────────── */
+/* Site de referência usa cinza médio nos items (L ~65 light, L ~48 dark
+   em oklab); a vitrine herdava o --foreground (preto/branco puro) por
+   herança natural. color-mix com 40% do foreground + transparent dá:
+     dark  fg=0.985 bg=0.145 → 0.40·0.985 + 0.60·0.145 = 0.481 (L ~48)
+     light fg=0.145 bg=1     → 0.40·0.145 + 0.60·1     = 0.658 (L ~65) */
+[data-slot="react-wheel-picker"] [data-slot="option-item"] {
+  color: color-mix(in oklab, var(--foreground) 40%, transparent);
 }

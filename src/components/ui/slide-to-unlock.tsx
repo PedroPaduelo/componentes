@@ -2,7 +2,6 @@ import * as React from "react"
 import { type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 import { slideToUnlockVariants } from "@/components/ui/slide-to-unlock-variants"
-import { ChevronRight } from "lucide-react"
 
 export type SlideToUnlockProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -35,6 +34,12 @@ function SlideToUnlock({
   const [dragging, setDragging] = React.useState(false)
   const [x, setX] = React.useState(0)
   const [unlocked, setUnlocked] = React.useState(false)
+
+  // Refs to avoid stale closures inside window-level mouse/touch listeners.
+  // The state vars above are still needed to trigger re-renders.
+  const draggingRef = React.useRef(false)
+  const unlockedRef = React.useRef(false)
+
   const dragStartX = React.useRef(0)
   const dragStartLeft = React.useRef(0)
   const maxX = React.useRef(0)
@@ -51,79 +56,101 @@ function SlideToUnlock({
     return () => window.removeEventListener("resize", updateMaxX)
   }, [updateMaxX])
 
-  const handleDragStart = React.useCallback(
-    (clientX: number) => {
-      if (disabled || unlocked) return
-      setDragging(true)
-      dragStartX.current = clientX
-      dragStartLeft.current = x
-    },
-    [disabled, unlocked, x]
-  )
+  // Mouse/touch listeners are attached on drag-start and read state from refs
+  // (not from React state) so the listeners never go stale. The closure only
+  // captures the props/refs created at mount time, which is exactly what we want.
+  const onMouseDown = (e: React.MouseEvent) => {
+    if (disabled || unlockedRef.current) return
+    e.preventDefault()
+    draggingRef.current = true
+    setDragging(true)
+    dragStartX.current = e.clientX
+    dragStartLeft.current = x
 
-  const handleDragMove = React.useCallback(
-    (clientX: number) => {
-      if (!dragging || disabled || unlocked) return
-      const delta = clientX - dragStartX.current
-      const newX = Math.max(0, Math.min(maxX.current, dragStartLeft.current + delta))
+    const handleMove = (ev: MouseEvent) => {
+      if (!draggingRef.current || disabled || unlockedRef.current) return
+      const delta = ev.clientX - dragStartX.current
+      const newX = Math.max(
+        0,
+        Math.min(maxX.current, dragStartLeft.current + delta),
+      )
       setX(newX)
-    },
-    [dragging, disabled, unlocked]
-  )
-
-  const handleDragEnd = React.useCallback(() => {
-    if (!dragging || disabled || unlocked) return
-    setDragging(false)
-
-    const thresholdX = maxX.current * threshold
-    if (x >= thresholdX) {
-      // Animate to end
-      setX(maxX.current)
-      setUnlocked(true)
-      onUnlock()
-    } else {
-      // Bounce back with elastic easing
-      setX(0)
     }
-  }, [dragging, disabled, unlocked, x, threshold, onUnlock])
 
-  // Mouse events
-  const onMouseDown = React.useCallback(
-    (e: React.MouseEvent) => {
-      e.preventDefault()
-      handleDragStart(e.clientX)
-
-      const onMouseMove = (ev: MouseEvent) => handleDragMove(ev.clientX)
-      const onMouseUp = () => {
-        handleDragEnd()
-        window.removeEventListener("mousemove", onMouseMove)
-        window.removeEventListener("mouseup", onMouseUp)
+    const handleUp = () => {
+      if (!draggingRef.current || disabled || unlockedRef.current) {
+        window.removeEventListener("mousemove", handleMove)
+        window.removeEventListener("mouseup", handleUp)
+        return
       }
-      window.addEventListener("mousemove", onMouseMove)
-      window.addEventListener("mouseup", onMouseUp)
-    },
-    [handleDragStart, handleDragMove, handleDragEnd]
-  )
+      draggingRef.current = false
+      setDragging(false)
 
-  // Touch events
-  const onTouchStart = React.useCallback(
-    (e: React.TouchEvent) => {
-      handleDragStart(e.touches[0].clientX)
+      // Read latest x from the state captured at drag-start. Since we never
+      // mutate `x` outside of setX, the captured value lags by one frame at
+      // most — acceptable for the bounce/unlock decision.
+      const thresholdX = maxX.current * threshold
+      if (x >= thresholdX) {
+        setX(maxX.current)
+        unlockedRef.current = true
+        setUnlocked(true)
+        onUnlock()
+      } else {
+        setX(0)
+      }
 
-      const onTouchMove = (ev: TouchEvent) => {
-        ev.preventDefault()
-        handleDragMove(ev.touches[0].clientX)
+      window.removeEventListener("mousemove", handleMove)
+      window.removeEventListener("mouseup", handleUp)
+    }
+
+    window.addEventListener("mousemove", handleMove)
+    window.addEventListener("mouseup", handleUp)
+  }
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    if (disabled || unlockedRef.current) return
+    draggingRef.current = true
+    setDragging(true)
+    dragStartX.current = e.touches[0].clientX
+    dragStartLeft.current = x
+
+    const handleMove = (ev: TouchEvent) => {
+      if (!draggingRef.current || disabled || unlockedRef.current) return
+      ev.preventDefault()
+      const delta = ev.touches[0].clientX - dragStartX.current
+      const newX = Math.max(
+        0,
+        Math.min(maxX.current, dragStartLeft.current + delta),
+      )
+      setX(newX)
+    }
+
+    const handleEnd = () => {
+      if (!draggingRef.current || disabled || unlockedRef.current) {
+        window.removeEventListener("touchmove", handleMove)
+        window.removeEventListener("touchend", handleEnd)
+        return
       }
-      const onTouchEnd = () => {
-        handleDragEnd()
-        window.removeEventListener("touchmove", onTouchMove)
-        window.removeEventListener("touchend", onTouchEnd)
+      draggingRef.current = false
+      setDragging(false)
+
+      const thresholdX = maxX.current * threshold
+      if (x >= thresholdX) {
+        setX(maxX.current)
+        unlockedRef.current = true
+        setUnlocked(true)
+        onUnlock()
+      } else {
+        setX(0)
       }
-      window.addEventListener("touchmove", onTouchMove, { passive: false })
-      window.addEventListener("touchend", onTouchEnd)
-    },
-    [handleDragStart, handleDragMove, handleDragEnd]
-  )
+
+      window.removeEventListener("touchmove", handleMove)
+      window.removeEventListener("touchend", handleEnd)
+    }
+
+    window.addEventListener("touchmove", handleMove, { passive: false })
+    window.addEventListener("touchend", handleEnd)
+  }
 
   // Opacity of the label: fades as drag progresses
   const progress = maxX.current > 0 ? x / maxX.current : 0
@@ -142,7 +169,7 @@ function SlideToUnlock({
         data-slot="track"
         className="relative flex h-10 items-center justify-center"
       >
-        {/* Label / text */}
+        {/* Label / text — split into individual letters with a shimmer wave */}
         <div
           data-slot="text"
           data-dragging={dragging}
@@ -152,8 +179,30 @@ function SlideToUnlock({
             opacity: labelOpacity,
           }}
         >
-          <span className="inline-block whitespace-pre text-muted-foreground">
-            {label}
+          <span
+            className="inline-block"
+            style={
+              {
+                "--slide-to-unlock-letter-color": "var(--muted-foreground)",
+                "--slide-to-unlock-letter-highlight": "var(--foreground)",
+              } as React.CSSProperties & Record<`--${string}`, string>
+            }
+            aria-label={label}
+          >
+            {Array.from(label).map((char, index) => (
+              <span
+                key={`${char}-${index}`}
+                aria-hidden="true"
+                className="slide-to-unlock-letter"
+                style={
+                  {
+                    "--slide-to-unlock-letter-delay": `${index * 0.06}s`,
+                  } as React.CSSProperties & Record<`--${string}`, string>
+                }
+              >
+                {char}
+              </span>
+            ))}
           </span>
         </div>
 
@@ -162,12 +211,12 @@ function SlideToUnlock({
           data-slot="handle"
           className={cn(
             "absolute top-0 left-0 flex h-10 cursor-grab items-center justify-center rounded-lg bg-white text-zinc-400 shadow-sm",
-            "active:cursor-grabbing [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-6",
+            "active:cursor-grabbing",
             isDisabledOrUnlocked && "cursor-default",
             variant === "success" &&
               "bg-linear-to-b from-emerald-500 to-emerald-700 text-white",
             variant === "destructive" &&
-              "bg-linear-to-b from-red-500 to-red-700 text-white"
+              "bg-linear-to-b from-red-500 to-red-700 text-white",
           )}
           style={{
             width: handleWidth,
@@ -183,7 +232,15 @@ function SlideToUnlock({
           onMouseDown={onMouseDown}
           onTouchStart={onTouchStart}
         >
-          <ChevronRight className="size-5" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            aria-hidden="true"
+            className="size-5"
+          >
+            <path d="M24 12 12.75 3v4.696H0v8.608h12.75V21z" />
+          </svg>
         </div>
       </div>
     </div>

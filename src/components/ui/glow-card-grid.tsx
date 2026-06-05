@@ -160,7 +160,7 @@ function GlowCard({
         // cqi/cqh units in the translate resolve against the card's own
         // size (not the viewport). Without it the glow translate lands
         // thousands of px off-screen and the colored border is invisible.
-        "group/glow-card @container-size relative h-52 w-full cursor-pointer overflow-hidden rounded-[var(--card-radius)]",
+        "@container-size group/glow-card relative h-52 w-full cursor-pointer overflow-hidden rounded-[var(--card-radius)]",
         "ring-1 ring-border transition-[translate,scale]",
         "select-none active:scale-[0.98]",
         className,

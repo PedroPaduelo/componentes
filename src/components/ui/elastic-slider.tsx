@@ -266,7 +266,7 @@ function ElasticSlider({
         <div
           data-slot="elastic-slider-handle"
           aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 h-5 w-1 rounded-full bg-[var(--elastic-slider-handle)]"
+          className="pointer-events-none absolute top-1/2 h-5 w-px rounded-full bg-[var(--elastic-slider-handle)]"
           style={{
             left: `max(4px, calc(${fillPercent}% - 8px))`,
             transform: "translateY(-50%)",

@@ -134,7 +134,7 @@ function GitHubContributions({
       className={cn("flex flex-col gap-2", className)}
       {...props}
     >
-      <div className="flex items-end gap-px overflow-x-auto">
+      <div className="flex items-end gap-[3px] overflow-x-auto">
         {gridData.map((week, weekIdx) => (
           <div
             key={weekIdx}

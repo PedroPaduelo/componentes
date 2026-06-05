@@ -150,14 +150,15 @@ function CodeBlockCommand({
             value={code}
             variant="ghost"
             size="sm"
-            className="h-6 px-1.5 text-muted-foreground hover:text-foreground [&_svg]:size-3"
+            iconOnly
+            className="h-6 w-6 p-0 text-muted-foreground hover:text-foreground [&_svg]:size-3"
           />
         )}
       </div>
 
       {/* Code content with token coloring */}
       <pre className="overflow-x-auto p-4 leading-6">
-        <code className="font-mono text-sm">
+        <code className="font-mono">
           {tokens.map((token, i) => (
             <span key={i} className={TOKEN_COLORS[token.type]}>
               {token.value}

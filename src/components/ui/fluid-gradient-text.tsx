@@ -1,65 +1,95 @@
 import * as React from "react"
+import { motion, useMotionValue, useSpring } from "motion/react"
 import { cn } from "@/lib/utils"
 
-type HeadingTag = "h1" | "h2" | "h3" | "span" | "p"
-
-export interface FluidGradientTextProps {
-  /** Text content rendered with the animated gradient. */
-  children: React.ReactNode
+export interface FluidGradientTextProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  /** Text content rendered inside the SVG. */
+  text: string
   /**
-   * Tailwind gradient color stops (from / via / to).
-   * Default: purple → blue → cyan (shadcn-friendly, visible in both themes).
-   * Colors use `color-mix` with `--foreground` for readability in light mode.
+   * SVG viewBox width used to scale the gradient and text layout.
+   * @default 1200
    */
-  colors?: string[]
-  /** Animation speed. */
-  speed?: "slow" | "normal" | "fast"
-  /** Additional class names on the wrapper. */
-  className?: string
-  /** HTML tag to render. Default: "span". */
-  as?: HeadingTag
+  svgViewBoxWidth?: number
+  /**
+   * SVG viewBox height used as the base text size.
+   * @default 300
+   */
+  svgViewBoxHeight?: number
 }
-
-const speedMap: Record<string, string> = {
-  slow: "8s",
-  normal: "4s",
-  fast: "2s",
-}
-
-const defaultColors = [
-  "var(--foreground)",
-  "oklch(0.65 0.25 265)",    // purple
-  "oklch(0.6 0.2 200)",      // cyan
-  "var(--foreground)",
-]
 
 function FluidGradientText({
-  children,
-  colors = defaultColors,
-  speed = "normal",
+  text,
+  svgViewBoxWidth = 1200,
+  svgViewBoxHeight = 300,
   className,
-  as: Tag = "span",
+  ...hostProps
 }: FluidGradientTextProps) {
-  const gradientColors = colors.join(", ")
-  const duration = speedMap[speed] ?? speedMap.normal
+  const gradientX1Raw = useMotionValue(svgViewBoxWidth / 2)
+  const gradientX1 = useSpring(gradientX1Raw, {
+    stiffness: 200,
+    damping: 30,
+    mass: 0.5,
+  })
+
+  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
+    const container = event.currentTarget
+    const containerRect = container.getBoundingClientRect()
+    const mouseX = event.clientX - containerRect.left
+    const containerWidth = containerRect.width
+    const normalizedX = (mouseX / containerWidth) * svgViewBoxWidth
+    const clampedX = Math.max(0, Math.min(svgViewBoxWidth, normalizedX))
+    gradientX1Raw.set(clampedX)
+  }
+
+  const handleMouseLeave = () => {
+    gradientX1Raw.set(svgViewBoxWidth / 2)
+  }
 
   return (
-    <Tag
+    <div
       data-slot="fluid-gradient-text"
       className={cn(
-        "inline-block",
-        "bg-clip-text text-transparent",
-        "animate-gradient-shift",
+        "relative size-full overflow-hidden after:absolute after:bottom-0 after:h-px after:w-full after:bg-current/15",
         className
       )}
-      style={{
-        backgroundImage: `linear-gradient(90deg, ${gradientColors})`,
-        backgroundSize: "200% 100%",
-        "--gradient-duration": duration,
-      } as React.CSSProperties & Record<`--${string}`, string>}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      {...hostProps}
     >
-      {children}
-    </Tag>
+      <svg
+        viewBox={`0 0 ${svgViewBoxWidth} ${svgViewBoxHeight}`}
+        className="h-full w-full select-none"
+      >
+        <text
+          x="50%"
+          y="50%"
+          dominantBaseline="middle"
+          textAnchor="middle"
+          fill="url(#fluid_gradient_text_linear)"
+          style={{
+            fontFamily: "Helvetica",
+            fontSize: svgViewBoxHeight,
+            fontWeight: "bold",
+          }}
+        >
+          {text}
+        </text>
+        <defs>
+          <motion.linearGradient
+            id="fluid_gradient_text_linear"
+            x1={gradientX1}
+            y1="0"
+            x2={svgViewBoxWidth / 2}
+            y2={svgViewBoxHeight}
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop offset="0.625" stopColor="currentColor" stopOpacity="0" />
+            <stop offset="1" stopColor="currentColor" stopOpacity="1" />
+          </motion.linearGradient>
+        </defs>
+      </svg>
+    </div>
   )
 }
 

@@ -13,6 +13,8 @@ type CopyButtonProps = {
   variant?: React.ComponentProps<typeof Button>["variant"]
   /** Tamanho. Default "sm" (encaixa no canto do bloco de código). */
   size?: React.ComponentProps<typeof Button>["size"]
+  /** Quando true, renderiza apenas o ícone (sem texto do label). Default false. */
+  iconOnly?: boolean
   className?: string
 }
 
@@ -30,6 +32,7 @@ export function CopyButton({
   feedbackMs = 2000,
   variant = "outline",
   size = "sm",
+  iconOnly = false,
   className,
 }: CopyButtonProps) {
   const [copied, setCopied] = useState(false)
@@ -93,6 +96,7 @@ export function CopyButton({
       onClick={onClick}
       aria-live="polite"
       aria-label={label}
+      title={iconOnly ? label : undefined}
       className={cn(
         "transition-colors",
         copied && "border-emerald-500/40 text-emerald-600 dark:text-emerald-400",
@@ -101,7 +105,7 @@ export function CopyButton({
       )}
     >
       <Icon className="size-3.5" />
-      {label}
+      {iconOnly ? null : label}
     </Button>
   )
 }

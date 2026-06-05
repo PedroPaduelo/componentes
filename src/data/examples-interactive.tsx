@@ -89,26 +89,26 @@ const elasticSliderDensityExample: Example = {
 }
 
 const slideToUnlockExample: Example = {
-  title: "Deslize para confirmar",
-  description: "Arraste o thumb até o fim para disparar a ação.",
+  title: "Slide to confirm",
+  description: "Drag the handle all the way to trigger the action.",
   code: `function Demo() {
   const [unlocked, setUnlocked] = React.useState(false)
   return (
     <SlideToUnlock
-      label={unlocked ? "Desbloqueado!" : "deslize para desbloquear"}
+      label={unlocked ? "Unlocked!" : "slide to unlock"}
       onUnlock={() => setUnlocked(true)}
     />
   )
 }`,
-  render: <SlideToUnlockDemo label="deslize para desbloquear" />,
+  render: <SlideToUnlockDemo label="slide to unlock" />,
 }
 
 const slideToUnlockVariantsExample: Example = {
-  title: "Variantes",
-  description: "Estilos default, success e destructive no handle.",
-  code: `<SlideToUnlock variant="default" label="deslize" onUnlock={fn} />
-<SlideToUnlock variant="success" label="confirmar" onUnlock={fn} />
-<SlideToUnlock variant="destructive" label="apagar" onUnlock={fn} />`,
+  title: "Variants",
+  description: "Default, success and destructive handle styles.",
+  code: `<SlideToUnlock variant="default" label="slide" onUnlock={fn} />
+<SlideToUnlock variant="success" label="confirm" onUnlock={fn} />
+<SlideToUnlock variant="destructive" label="delete" onUnlock={fn} />`,
   render: <SlideToUnlockVariants />,
 }
 

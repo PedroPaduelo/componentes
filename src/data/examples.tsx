@@ -754,35 +754,66 @@ const treeDensityExample: Example = {
 
 const workExperienceTimelineExample: Example = {
   title: "Timeline",
-  description: "Linha do tempo vertical com bullets e cards de experiência.",
+  description:
+    "Linha do tempo vertical com logos reais, descrições em lista de bullets e stats cards.",
   code: `<WorkExperienceComponent
   variant="timeline"
   experiences={[
     {
-      company: "Acme Corp",
+      company: "Vercel",
       role: "Senior Frontend Engineer",
       period: "2022 — Presente",
-      description:
-        "Liderança técnica do redesign do produto principal, migrando de Angular para React e melhorando métricas de Core Web Vitals em 40%.",
-      technologies: ["React", "TypeScript", "Tailwind CSS", "Vite"],
-      href: "https://acme.example.com",
+      logo: "https://logo.clearbit.com/vercel.com",
+      description: [
+        "Liderança técnica do redesign do dashboard, migrando de Next.js Pages Router para App Router.",
+        "Reduziu LCP em 38% e INP em 42% nas páginas de marketing via edge runtime.",
+        "Implementação de design system com Tailwind, Radix Primitives e Storybook.",
+      ],
+      technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Vercel"],
+      stats: [
+        { label: "Deploys/Day", value: "312" },
+        { label: "Edge Regions", value: "18" },
+        { label: "PRs/Month", value: "47" },
+        { label: "GH Stars", value: "12.4K" },
+      ],
+      href: "https://vercel.com",
     },
     {
-      company: "StartupXYZ",
-      role: "Full Stack Developer",
+      company: "Linear",
+      role: "Frontend Engineer",
       period: "2019 — 2022",
-      description:
-        "Construção do zero do painel de analytics com visualizações em tempo real e integração com WebSockets.",
-      technologies: ["Next.js", "Node.js", "PostgreSQL", "Redis"],
-      href: "https://startupxyz.example.com",
+      logo: "https://logo.clearbit.com/linear.app",
+      description: [
+        "Reescrita do cliente web com foco em keyboard-first navigation e atalhos.",
+        "Implementação de sync engine local-first com CRDTs (Yjs).",
+        "Reduziu bundle size em 60% com code splitting por rota.",
+      ],
+      technologies: ["React", "TypeScript", "Yjs", "Vite"],
+      stats: [
+        { label: "Active Users", value: "8.4K" },
+        { label: "Sync Latency", value: "23ms" },
+        { label: "NPS", value: "74" },
+        { label: "Bundle", value: "412KB" },
+      ],
+      href: "https://linear.app",
     },
     {
-      company: "Freelance",
+      company: "Figma",
       role: "Web Developer",
       period: "2017 — 2019",
-      description:
-        "Desenvolvimento de landing pages e e-commerces para clientes diversos, com foco em performance e SEO.",
-      technologies: ["React", "Gatsby", "WordPress", "Figma"],
+      logo: "https://logo.clearbit.com/figma.com",
+      description: [
+        "Desenvolvimento do site institucional e landing pages de marketing.",
+        "Integração com CMS headless e otimização de imagens via AVIF/WebP.",
+        "Acessibilidade WCAG AA em todas as páginas públicas.",
+      ],
+      technologies: ["React", "Gatsby", "Sanity", "Figma"],
+      stats: [
+        { label: "LCP", value: "0.9s" },
+        { label: "A11y", value: "AA" },
+        { label: "Languages", value: "12" },
+        { label: "i18n Keys", value: "1.8K" },
+      ],
     },
   ]}
 />`,
@@ -792,30 +823,60 @@ const workExperienceTimelineExample: Example = {
         variant="timeline"
         experiences={[
           {
-            company: "Acme Corp",
+            company: "Vercel",
             role: "Senior Frontend Engineer",
             period: "2022 — Presente",
-            description:
-              "Liderança técnica do redesign do produto principal, migrando de Angular para React e melhorando métricas de Core Web Vitals em 40%.",
-            technologies: ["React", "TypeScript", "Tailwind CSS", "Vite"],
-            href: "https://acme.example.com",
+            logo: "https://logo.clearbit.com/vercel.com",
+            description: [
+              "Liderança técnica do redesign do dashboard, migrando de Next.js Pages Router para App Router.",
+              "Reduziu LCP em 38% e INP em 42% nas páginas de marketing via edge runtime.",
+              "Implementação de design system com Tailwind, Radix Primitives e Storybook.",
+            ],
+            technologies: ["Next.js", "TypeScript", "Tailwind CSS", "Vercel"],
+            stats: [
+              { label: "Deploys/Day", value: "312" },
+              { label: "Edge Regions", value: "18" },
+              { label: "PRs/Month", value: "47" },
+              { label: "GH Stars", value: "12.4K" },
+            ],
+            href: "https://vercel.com",
           },
           {
-            company: "StartupXYZ",
-            role: "Full Stack Developer",
+            company: "Linear",
+            role: "Frontend Engineer",
             period: "2019 — 2022",
-            description:
-              "Construção do zero do painel de analytics com visualizações em tempo real e integração com WebSockets.",
-            technologies: ["Next.js", "Node.js", "PostgreSQL", "Redis"],
-            href: "https://startupxyz.example.com",
+            logo: "https://logo.clearbit.com/linear.app",
+            description: [
+              "Reescrita do cliente web com foco em keyboard-first navigation e atalhos.",
+              "Implementação de sync engine local-first com CRDTs (Yjs).",
+              "Reduziu bundle size em 60% com code splitting por rota.",
+            ],
+            technologies: ["React", "TypeScript", "Yjs", "Vite"],
+            stats: [
+              { label: "Active Users", value: "8.4K" },
+              { label: "Sync Latency", value: "23ms" },
+              { label: "NPS", value: "74" },
+              { label: "Bundle", value: "412KB" },
+            ],
+            href: "https://linear.app",
           },
           {
-            company: "Freelance",
+            company: "Figma",
             role: "Web Developer",
             period: "2017 — 2019",
-            description:
-              "Desenvolvimento de landing pages e e-commerces para clientes diversos, com foco em performance e SEO.",
-            technologies: ["React", "Gatsby", "WordPress", "Figma"],
+            logo: "https://logo.clearbit.com/figma.com",
+            description: [
+              "Desenvolvimento do site institucional e landing pages de marketing.",
+              "Integração com CMS headless e otimização de imagens via AVIF/WebP.",
+              "Acessibilidade WCAG AA em todas as páginas públicas.",
+            ],
+            technologies: ["React", "Gatsby", "Sanity", "Figma"],
+            stats: [
+              { label: "LCP", value: "0.9s" },
+              { label: "A11y", value: "AA" },
+              { label: "Languages", value: "12" },
+              { label: "i18n Keys", value: "1.8K" },
+            ],
           },
         ]}
       />
@@ -825,33 +886,64 @@ const workExperienceTimelineExample: Example = {
 
 const workExperienceCardExample: Example = {
   title: "Cards",
-  description: "Lista vertical de cards sem linha do tempo.",
+  description:
+    "Lista vertical de cards sem linha do tempo, com logos, descrições em bullets e stats.",
   code: `<WorkExperienceComponent
   variant="card"
   experiences={[
     {
-      company: "Acme Corp",
-      role: "Senior Frontend Engineer",
-      period: "2022 — Presente",
-      description:
-        "Liderança técnica do redesign do produto principal.",
-      technologies: ["React", "TypeScript", "Tailwind CSS"],
-    },
-    {
-      company: "StartupXYZ",
+      company: "Stripe",
       role: "Full Stack Developer",
-      period: "2019 — 2022",
-      description:
-        "Construção do painel de analytics com visualizações em tempo real.",
-      technologies: ["Next.js", "Node.js", "PostgreSQL"],
+      period: "2021 — Presente",
+      logo: "https://logo.clearbit.com/stripe.com",
+      description: [
+        "Construção de APIs públicas com versionamento semântico e changelog automatizado.",
+        "Integração com 12+ bancos e processadores via adapters tipados.",
+        "Reduziu tempo de integração de novos parceiros em 65%.",
+      ],
+      technologies: ["Next.js", "Node.js", "PostgreSQL", "Redis"],
+      stats: [
+        { label: "Hours/Day", value: "8.4" },
+        { label: "Visitors/Day", value: "1.2K" },
+        { label: "Subscribers", value: "3.5K" },
+        { label: "GitHub Stars", value: "2.1K" },
+      ],
     },
     {
-      company: "Freelance",
-      role: "Web Developer",
-      period: "2017 — 2019",
-      description:
-        "Landing pages e e-commerces com foco em performance.",
-      technologies: ["React", "Gatsby", "WordPress"],
+      company: "GitHub",
+      role: "Senior Engineer",
+      period: "2018 — 2021",
+      logo: "https://logo.clearbit.com/github.com",
+      description: [
+        "Liderança técnica do módulo de Actions, com fila distribuída de runners.",
+        "Reescrita do scheduler de jobs em Rust (3x throughput).",
+        "Adoção de feature flags para rollout gradual em 100% da frota.",
+      ],
+      technologies: ["React", "TypeScript", "Rust", "Kubernetes"],
+      stats: [
+        { label: "Runners", value: "32K" },
+        { label: "Queue Depth", value: "0.4s" },
+        { label: "MTTR", value: "12m" },
+        { label: "Incidents", value: "0" },
+      ],
+    },
+    {
+      company: "Notion",
+      role: "Frontend Engineer",
+      period: "2015 — 2018",
+      logo: "https://logo.clearbit.com/notion.so",
+      description: [
+        "Implementação do editor de blocos com virtualização de árvore de documentos.",
+        "Sistema de undo/redo cooperativo com Yjs.",
+        "Acessibilidade total via teclado e leitor de tela.",
+      ],
+      technologies: ["React", "TypeScript", "Yjs", "Electron"],
+      stats: [
+        { label: "Block Types", value: "47" },
+        { label: "Undo Depth", value: "100" },
+        { label: "A11y", value: "AAA" },
+        { label: "Bundle", value: "1.2MB" },
+      ],
     },
   ]}
 />`,
@@ -861,26 +953,58 @@ const workExperienceCardExample: Example = {
         variant="card"
         experiences={[
           {
-            company: "Acme Corp",
-            role: "Senior Frontend Engineer",
-            period: "2022 — Presente",
-            description: "Liderança técnica do redesign do produto principal.",
-            technologies: ["React", "TypeScript", "Tailwind CSS"],
-          },
-          {
-            company: "StartupXYZ",
+            company: "Stripe",
             role: "Full Stack Developer",
-            period: "2019 — 2022",
-            description:
-              "Construção do painel de analytics com visualizações em tempo real.",
-            technologies: ["Next.js", "Node.js", "PostgreSQL"],
+            period: "2021 — Presente",
+            logo: "https://logo.clearbit.com/stripe.com",
+            description: [
+              "Construção de APIs públicas com versionamento semântico e changelog automatizado.",
+              "Integração com 12+ bancos e processadores via adapters tipados.",
+              "Reduziu tempo de integração de novos parceiros em 65%.",
+            ],
+            technologies: ["Next.js", "Node.js", "PostgreSQL", "Redis"],
+            stats: [
+              { label: "Hours/Day", value: "8.4" },
+              { label: "Visitors/Day", value: "1.2K" },
+              { label: "Subscribers", value: "3.5K" },
+              { label: "GitHub Stars", value: "2.1K" },
+            ],
           },
           {
-            company: "Freelance",
-            role: "Web Developer",
-            period: "2017 — 2019",
-            description: "Landing pages e e-commerces com foco em performance.",
-            technologies: ["React", "Gatsby", "WordPress"],
+            company: "GitHub",
+            role: "Senior Engineer",
+            period: "2018 — 2021",
+            logo: "https://logo.clearbit.com/github.com",
+            description: [
+              "Liderança técnica do módulo de Actions, com fila distribuída de runners.",
+              "Reescrita do scheduler de jobs em Rust (3x throughput).",
+              "Adoção de feature flags para rollout gradual em 100% da frota.",
+            ],
+            technologies: ["React", "TypeScript", "Rust", "Kubernetes"],
+            stats: [
+              { label: "Runners", value: "32K" },
+              { label: "Queue Depth", value: "0.4s" },
+              { label: "MTTR", value: "12m" },
+              { label: "Incidents", value: "0" },
+            ],
+          },
+          {
+            company: "Notion",
+            role: "Frontend Engineer",
+            period: "2015 — 2018",
+            logo: "https://logo.clearbit.com/notion.so",
+            description: [
+              "Implementação do editor de blocos com virtualização de árvore de documentos.",
+              "Sistema de undo/redo cooperativo com Yjs.",
+              "Acessibilidade total via teclado e leitor de tela.",
+            ],
+            technologies: ["React", "TypeScript", "Yjs", "Electron"],
+            stats: [
+              { label: "Block Types", value: "47" },
+              { label: "Undo Depth", value: "100" },
+              { label: "A11y", value: "AAA" },
+              { label: "Bundle", value: "1.2MB" },
+            ],
           },
         ]}
       />

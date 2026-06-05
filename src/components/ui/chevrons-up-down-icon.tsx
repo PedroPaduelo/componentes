@@ -25,7 +25,7 @@ const ChevronsUpDownIcon = React.forwardRef<
   ChevronsUpDownIconProps
 >(
   (
-    { className, size, duration = 0.2, ...props },
+    { className, size, duration = 0.2, onClick: userOnClick, ...props },
     ref
   ) => {
     const { resolvedTheme } = useTheme()
@@ -37,14 +37,23 @@ const ChevronsUpDownIcon = React.forwardRef<
       stopAnimation: () => setIsOpen(false),
     }))
 
+    const handleClick: React.MouseEventHandler<HTMLSpanElement> = (e) => {
+      // Idiomático shadcn: clicar no ícone = toggle do data-state
+      setIsOpen((v) => !v)
+      // Encadeia para o onClick do consumidor, se houver
+      userOnClick?.(e)
+    }
+
     return (
       <span
         ref={innerRef}
         data-slot="chevrons-up-down-icon"
         data-theme={resolvedTheme}
         data-state={isOpen ? "open" : "closed"}
+        onClick={handleClick}
         className={cn(
           chevronsUpDownIconVariants({ size }),
+          "cursor-pointer hover:text-muted-foreground",
           `transition-transform duration-[${duration * 1000}ms]`,
           isOpen && "rotate-180",
           className

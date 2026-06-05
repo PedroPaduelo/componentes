@@ -10,6 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu"
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip"
 
 export type ThemeOption = "light" | "dark" | "system"
 
@@ -39,16 +40,21 @@ export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger
-        className={cn(
-          "inline-flex size-9 items-center justify-center rounded-md border border-input bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-          className
-        )}
-        aria-label="Toggle theme"
-      >
-        <Icon className="size-4" />
-        <span className="sr-only">Toggle theme</span>
-      </DropdownMenuTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DropdownMenuTrigger
+            className={cn(
+              "inline-flex size-8 items-center justify-center rounded-md border border-input bg-background text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+              className
+            )}
+            aria-label="Toggle theme"
+          >
+            <Icon className="size-4" />
+            <span className="sr-only">Toggle theme</span>
+          </DropdownMenuTrigger>
+        </TooltipTrigger>
+        <TooltipContent>Alternar tema</TooltipContent>
+      </Tooltip>
       <DropdownMenuContent align="end">
         <DropdownMenuLabel className="text-xs font-normal text-muted-foreground">
           Theme
@@ -61,6 +67,7 @@ export function ThemeSwitcher({ className }: ThemeSwitcherProps) {
             <DropdownMenuItem
               key={option.value}
               onClick={() => setTheme(option.value)}
+              aria-checked={isActive}
               className={cn(
                 "flex items-center gap-2",
                 isActive && "bg-accent text-accent-foreground"

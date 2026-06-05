@@ -49,21 +49,25 @@ function TOCMinimap({
 
     const observer = new IntersectionObserver(
       (entries) => {
-        // Find the topmost visible entry.
+        // Find the entry closest to the top of the viewport (the one
+        // dominating the reading area). When the page is above the first
+        // section or below the last, the previous activeId remains.
         const visible = entries
           .filter((e) => e.isIntersecting)
           .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)
 
         if (visible.length > 0) {
           const topEntry = visible[0]
-          if (topEntry) {
+          if (topEntry && topEntry.target.id) {
             setActiveId(topEntry.target.id)
           }
         }
       },
       {
-        // Trigger when a section is near the top 20% of the viewport.
-        rootMargin: "-20% 0px -60% 0px",
+        // A section is "active" when any part of it is on screen. Combined
+        // with sorting by top, the topmost visible section wins, and the
+        // first section is always active at scroll=0.
+        rootMargin: "0px",
         threshold: 0,
       }
     )
@@ -125,11 +129,17 @@ function TOCMinimap({
       {/* Scroll progress bar */}
       {showProgress && (
         <div
+          data-slot="toc-minimap-progress"
+          role="progressbar"
+          aria-valuenow={Math.round(scrollProgress)}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label="Progresso de scroll da página"
           className={cn(
+            "toc-minimap-progress",
             tocMinimapProgressVariants({ orientation }),
             orientation === "vertical" ? "fixed left-0 top-0" : "fixed top-0 left-0"
           )}
-          aria-hidden="true"
         >
           <div
             className="bg-foreground/60 rounded-full transition-[width,height] duration-150"
@@ -159,13 +169,15 @@ function TOCMinimap({
               key={item.id}
               href={`#${item.id}`}
               onClick={(e) => handleClick(e, item.id)}
+              data-active={isActive ? "true" : undefined}
+              data-slot="toc-minimap-item"
               className={cn(
                 tocMinimapItemVariants({ active: isActive, orientation }),
                 orientation === "vertical" &&
                   depth > 1 &&
                   `pl-${depth === 2 ? 4 : 6}`
               )}
-              aria-current={isActive ? "true" : undefined}
+              aria-current={isActive ? "location" : undefined}
             >
               {/* Active indicator dot / bar */}
               {isActive && (
