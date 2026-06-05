@@ -86,6 +86,7 @@ import { examplesScales } from "@/data/examples-scales"
 import { examplesBackgroundBoxes } from "@/data/examples-background-boxes"
 import { examplesWavyBackground } from "@/data/examples-wavy-background"
 import { examplesBackgroundRippleEffect } from "@/data/examples-background-ripple-effect"
+import { examplesBackgroundBeamsWithCollision } from "@/data/examples-background-beams-with-collision"
 import { examplesSparkles } from "@/data/examples-sparkles"
 import { examplesBackgroundBeams } from "@/data/examples-background-beams"
 
@@ -1231,6 +1232,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesLightLines,
   ...examplesAnimatedNumber,
   // Lote Aceternity
+  ...examplesBackgroundBeamsWithCollision,
   ...examplesImagesBadge,
   ...examplesParallaxHeroImages,
   ...examplesScales,

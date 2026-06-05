@@ -575,6 +575,14 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "background-beams-with-collision",
+    name: "Background Beams With Collision",
+    category: "Feedback",
+    description:
+      "Efeito de fundo da Aceternity UI: feixes verticais coloridos caem do topo e explodem em partículas ao colidir com a base. Detecção de colisão via getBoundingClientRect; fundo adapta ao tema.",
+    tags: ["background", "beams", "collision", "explosion", "hero", "aceternity"],
+  },
+  {
     slug: "background-ripple-effect",
     name: "Background Ripple Effect",
     category: "Feedback",

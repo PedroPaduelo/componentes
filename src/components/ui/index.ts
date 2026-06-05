@@ -217,6 +217,8 @@ export { AnimatedNumber, AnimatedScore } from "./animated-number"
 export type { AnimatedNumberProps, AnimatedScoreProps } from "./animated-number"
 
 // Lote Aceternity
+export { BackgroundBeamsWithCollision } from "./background-beams-with-collision"
+export type { BackgroundBeamsWithCollisionProps } from "./background-beams-with-collision"
 export { ImagesBadge } from "./images-badge"
 export type { ImagesBadgeProps } from "./images-badge"
 export { Scales, ScalesContainer } from "./scales"
