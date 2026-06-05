@@ -21,6 +21,16 @@
       "domain": "componentes-be-cmq0d9kr.cloud.serendiped.com",
       "path": "/",
       "protocol": "http"
+    },
+    {
+      "name": "fe-preview",
+      "port": 4173,
+      "framework": null,
+      "startCommand": null,
+      "isPrimary": false,
+      "domain": "componentes-fe-preview-cmq0d9kr.cloud.serendiped.com",
+      "path": "/",
+      "protocol": "http"
     }
   ],
   "rules": [
