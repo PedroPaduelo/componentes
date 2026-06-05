@@ -62,7 +62,7 @@ import {
 } from "@/components/ui/tabs"
 import { Settings, User, LogOut } from "lucide-react"
 import { Tree } from "@/components/ui/tree"
-import { GitHubContributions } from "@/components/ui/github-contributions"
+import { MiddleTruncation } from "@/components/ui/middle-truncation"
 
 export type Example = {
   title: string
@@ -743,50 +743,51 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                            github-contributions                             */
+/*                            middle-truncation                                */
 /* -------------------------------------------------------------------------- */
 
-function generateMockContributions(): { date: string; count: number }[] {
-  const data: { date: string; count: number }[] = []
-  const now = new Date()
-  for (let i = 364; i >= 0; i--) {
-    const d = new Date(now)
-    d.setDate(d.getDate() - i)
-    const dateStr = d.toISOString().slice(0, 10)
-    // Simulate realistic contribution patterns
-    const dayOfWeek = d.getDay()
-    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
-    const baseChance = isWeekend ? 0.3 : 0.7
-    const hasContribution = Math.random() < baseChance
-    const count = hasContribution
-      ? Math.floor(Math.random() * 30) + 1
-      : 0
-    data.push({ date: dateStr, count })
-  }
-  return data
+const middleTruncationBasicExample: Example = {
+  title: "Básico",
+  description: "Trunca texto longo no meio, preservando início e fim.",
+  code: `<MiddleTruncation text="/Users/ncdai/Code/chanhdai.com/src/components/ui/button.tsx" />`,
+  render: (
+    <div className="w-full max-w-xs">
+      <MiddleTruncation text="/Users/ncdai/Code/chanhdai.com/src/components/ui/button.tsx" />
+    </div>
+  ),
 }
 
-const mockContributions = generateMockContributions()
-
-const githubContributionsBasicExample: Example = {
-  title: "Básico",
-  description: "Heatmap de contribuições com dados mock de 365 dias.",
-  code: `<GitHubContributions
-  data={[
-    { date: "2025-06-01", count: 14 },
-    { date: "2025-06-02", count: 28 },
-    { date: "2025-06-03", count: 28 },
-    // ... 365 dias de dados
-  ]}
-  weeks={52}
-  colorScale="shadcn"
+const middleTruncationUrlExample: Example = {
+  title: "URL",
+  description: "Ideal para URLs longas em que o domínio e o path final importam.",
+  code: `<MiddleTruncation
+  text="https://example.com/api/v1/users/12345/profile/settings"
+  maxLength={30}
 />`,
   render: (
-    <div className="w-full">
-      <GitHubContributions
-        data={mockContributions}
-        weeks={52}
-        colorScale="shadcn"
+    <div className="w-full max-w-xs">
+      <MiddleTruncation
+        text="https://example.com/api/v1/users/12345/profile/settings"
+        maxLength={30}
+      />
+    </div>
+  ),
+}
+
+const middleTruncationCustomExample: Example = {
+  title: "Ellipsis customizado",
+  description: "Use um separador diferente e controle o tamanho máximo.",
+  code: `<MiddleTruncation
+  text="FY26_Q1_Consolidated_Financial_Statements.pdf"
+  maxLength={24}
+  ellipsis=" ... "
+/>`,
+  render: (
+    <div className="w-full max-w-xs">
+      <MiddleTruncation
+        text="FY26_Q1_Consolidated_Financial_Statements.pdf"
+        maxLength={24}
+        ellipsis=" ... "
       />
     </div>
   ),
@@ -808,7 +809,11 @@ export const examples: Record<string, Example[]> = {
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
   tree: [treeBasicExample, treeSearchExample, treeDensityExample],
-  "github-contributions": [githubContributionsBasicExample],
+  "middle-truncation": [
+    middleTruncationBasicExample,
+    middleTruncationUrlExample,
+    middleTruncationCustomExample,
+  ],
 }
 
 /**

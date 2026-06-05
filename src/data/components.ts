@@ -129,18 +129,18 @@ export const components: ComponentMeta[] = [
     ],
   },
   {
-    slug: "github-contributions",
-    name: "GitHub Contributions",
-    category: "Feedback",
+    slug: "middle-truncation",
+    name: "Middle Truncation",
+    category: "Forms",
     description:
-      "Heatmap estilo contribution graph do GitHub com grid 7×N, tooltips e legenda de intensidade.",
+      "Trunca texto no meio preservando início e fim, com tooltip no hover.",
     tags: [
-      "heatmap",
-      "contributions",
-      "github",
-      "gráfico",
-      "atividade",
-      "calendar",
+      "truncar",
+      "texto",
+      "ellipsis",
+      "meio",
+      "tooltip",
+      "string",
     ],
   },
 ]
