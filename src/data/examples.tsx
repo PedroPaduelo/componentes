@@ -74,6 +74,7 @@ import { examplesCyber } from "@/data/examples-cyber"
 import { animatedButtonExamples } from "@/data/examples-animated"
 import { examplesFlipText } from "@/data/examples-flip-text"
 import { examplesFlipFadeText } from "@/data/examples-flip-fade-text"
+import { examplesLightLines } from "@/data/examples-light-lines"
 import { perspectiveGridExamples } from "@/data/examples-perspective-grid"
 import { examplesGlassDock } from "@/data/examples-glass-dock"
 import { creepyButtonExamples } from "@/data/examples-creepy"
@@ -1217,6 +1218,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesGlassDock,
   ...creepyButtonExamples,
   ...perspectiveGridExamples,
+  ...examplesLightLines,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

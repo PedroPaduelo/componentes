@@ -369,6 +369,14 @@ export const components: ComponentMeta[] = [
       "hover",
     ],
   },
+  {
+    slug: "light-lines",
+    name: "Light Lines",
+    category: "Feedback",
+    description:
+      "Background animado de \"light trails\" em linhas verticais: SVG com 17 luzes que sobem/descem em loop infinito via requestAnimationFrame, sobre linhas estáticas e gradiente configurável.",
+    tags: ["background", "animation", "svg", "hero", "lights", "vengenceui"],
+  },
 
   // Lote Fluid (ONDA 2 lote A)
   {
