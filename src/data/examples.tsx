@@ -749,6 +749,164 @@ const treeDensityExample: Example = {
   ),
 }
 
+const treeIconsColoredExample: Example = {
+  title: "Ícones coloridos",
+  description: "Set \"complete\" + colored: ícones específicos por extensão com cor semântica.",
+  code: `<Tree
+  data={[
+    "src/index.ts",
+    "src/lib/utils.ts",
+    "src/components/ui/button.tsx",
+    "src/data/components.ts",
+    "README.md",
+    "package.json",
+    "tsconfig.json",
+    "vite.config.ts",
+    "Dockerfile",
+    "docker-compose.yml",
+  ]}
+  initialExpansion="open"
+  icons={{ set: "complete", colored: true }}
+/>`,
+  render: (
+    <div className="w-full">
+      <Tree
+        data={[
+          "src/index.ts",
+          "src/lib/utils.ts",
+          "src/components/ui/button.tsx",
+          "src/data/components.ts",
+          "README.md",
+          "package.json",
+          "tsconfig.json",
+          "vite.config.ts",
+          "Dockerfile",
+          "docker-compose.yml",
+        ]}
+        initialExpansion="open"
+        icons={{ set: "complete", colored: true }}
+      />
+    </div>
+  ),
+}
+
+const treeGitStatusExample: Example = {
+  title: "Git status",
+  description: "Bolinhas coloridas indicam arquivos modificados/adicionados/removidos.",
+  code: `<Tree
+  data={[
+    "src/index.ts",
+    "src/lib/utils.ts",
+    "src/components/ui/button.tsx",
+    "src/components/ui/card.tsx",
+    "README.md",
+    "package.json",
+  ]}
+  initialExpansion="open"
+  gitStatus={[
+    { path: "src/index.ts", status: "modified" },
+    { path: "src/lib/utils.ts", status: "added" },
+    { path: "README.md", status: "modified" },
+    { path: "package.json", status: "renamed" },
+  ]}
+/>`,
+  render: (
+    <div className="w-full">
+      <Tree
+        data={[
+          "src/index.ts",
+          "src/lib/utils.ts",
+          "src/components/ui/button.tsx",
+          "src/components/ui/card.tsx",
+          "README.md",
+          "package.json",
+        ]}
+        initialExpansion="open"
+        gitStatus={[
+          { path: "src/index.ts", status: "modified" },
+          { path: "src/lib/utils.ts", status: "added" },
+          { path: "README.md", status: "modified" },
+          { path: "package.json", status: "renamed" },
+        ]}
+      />
+    </div>
+  ),
+}
+
+const treeDragDropRenamingExample: Example = {
+  title: "Drag & drop + Renaming",
+  description: "Arraste arquivos para reordenar, F2 (ou duplo-clique) para renomear in-place.",
+  code: `<Tree
+  data={[
+    "src/index.ts",
+    "src/lib/utils.ts",
+    "src/components/ui/button.tsx",
+    "src/components/ui/card.tsx",
+    "src/components/ui/tree.tsx",
+  ]}
+  initialExpansion="open"
+  dragAndDrop
+  renaming
+/>`,
+  render: (
+    <div className="w-full">
+      <Tree
+        data={[
+          "src/index.ts",
+          "src/lib/utils.ts",
+          "src/components/ui/button.tsx",
+          "src/components/ui/card.tsx",
+          "src/components/ui/tree.tsx",
+        ]}
+        initialExpansion="open"
+        dragAndDrop
+        renaming
+      />
+    </div>
+  ),
+}
+
+const treeCustomHeaderExample: Example = {
+  title: "Header customizado",
+  description: "Slot React acima da árvore com ações (botão \"novo arquivo\").",
+  code: `<Tree
+  data={[
+    "src/index.ts",
+    "src/lib/utils.ts",
+    "src/components/ui/button.tsx",
+  ]}
+  initialExpansion="open"
+  header={
+    <div className="flex items-center justify-between border-b border-border bg-muted/40 px-3 py-2 text-sm">
+      <span className="font-medium text-foreground">Projeto</span>
+      <span className="rounded-md border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
+        main
+      </span>
+    </div>
+  }
+/>`,
+  render: (
+    <div className="w-full">
+      <Tree
+        data={[
+          "src/index.ts",
+          "src/lib/utils.ts",
+          "src/components/ui/button.tsx",
+        ]}
+        initialExpansion="open"
+        header={
+          <div className="flex items-center justify-between border-b border-border bg-muted/40 px-3 py-2 text-sm">
+            <span className="font-medium text-foreground">Projeto</span>
+            <span className="rounded-md border border-border bg-background px-2 py-0.5 text-xs text-muted-foreground">
+              main
+            </span>
+          </div>
+        }
+      />
+    </div>
+  ),
+}
+
 /* -------------------------------------------------------------------------- */
 /*                          work-experience-component                          */
 /* -------------------------------------------------------------------------- */
@@ -1027,7 +1185,15 @@ export const examples: Record<string, Example[]> = {
   input: [inputBasicExample, inputWithLabelExample],
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
-  tree: [treeBasicExample, treeSearchExample, treeDensityExample],
+  tree: [
+    treeBasicExample,
+    treeSearchExample,
+    treeDensityExample,
+    treeIconsColoredExample,
+    treeGitStatusExample,
+    treeDragDropRenamingExample,
+    treeCustomHeaderExample,
+  ],
   "work-experience-component": [workExperienceTimelineExample, workExperienceCardExample],
   // Lote chanhdai (arquivos separados, merge por spread)
   ...examplesChanhdaiA,

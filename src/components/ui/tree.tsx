@@ -1,72 +1,41 @@
 import * as React from "react"
 import { FileTree as FileTreeModel } from "@pierre/trees"
 import { FileTree as FileTreeReact } from "@pierre/trees/react"
-import { type VariantProps } from "class-variance-authority"
 import { useTheme } from "@/components/theme/use-theme"
 import { cn } from "@/lib/utils"
 import { treeVariants } from "@/components/ui/tree-variants"
+import { toNativeDensity, type TreeProps } from "@/components/ui/tree-types"
 
-// ─── Tipos públicos ────────────────────────────────────────────────
+export type { TreeDensity, TreeGitStatus, TreeProps } from "@/components/ui/tree-types"
 
-export type TreeDensity = "compact" | "default" | "relaxed"
-
-export type TreeProps = Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  "children"
-> &
-  VariantProps<typeof treeVariants> & {
-    /**
-     * Lista de paths que formam a árvore.
-     * Ex.: ["src/index.ts", "src/lib/utils.ts", "src/components/ui/button.tsx"]
-     */
-    data: readonly string[]
-
-    /** Cabeçalho opcional renderizado acima da árvore. */
-    header?: React.ReactNode
-
-    /**
-     * Nível de expansão inicial.
-     * - `"closed"`: tudo fechado
-     * - `"open"`: tudo aberto
-     * - `number`: expande até N níveis de profundidade
-     * @default "open"
-     */
-    initialExpansion?: "closed" | "open" | number
-
-    /** Paths a expandir inicialmente (se `initialExpansion` não for "open"). */
-    initialExpandedPaths?: readonly string[]
-
-    /** Habilita busca na árvore. */
-    search?: boolean
-
-    /**
-     * Ordenação dos itens.
-     * @default "default"
-     */
-    sort?: "default" | false
-
-    /** Habilita drag & drop. */
-    dragAndDrop?: boolean
-
-    /** Habilita renomeação in-place. */
-    renaming?: boolean
-
-    /** Callback disparado quando a seleção muda. */
-    onSelectionChange?: (paths: readonly string[]) => void
-  }
-
-// ─── Componente ────────────────────────────────────────────────────
+/** Tipo do primeiro parâmetro do `new FileTreeModel(...)`. */
+type FileTreeModelOptions = ConstructorParameters<typeof FileTreeModel>[0]
 
 function Tree({
   data,
   header,
   initialExpansion = "open",
   initialExpandedPaths,
+  initialSelectedPaths,
   search,
+  initialSearchQuery,
+  fileTreeSearchMode,
+  searchBlurBehavior,
   sort = "default",
   dragAndDrop,
   renaming,
+  icons,
+  gitStatus,
+  renderRowDecoration,
+  itemHeight,
+  overscan,
+  stickyFolders,
+  flattenEmptyDirectories,
+  id,
+  composition,
+  renderContextMenu,
   onSelectionChange,
+  onSearchChange,
   density,
   variant,
   className,
@@ -74,30 +43,79 @@ function Tree({
 }: TreeProps) {
   const { resolvedTheme } = useTheme()
 
-  // O modelo FileTree é criado uma vez, quando data muda.
+  // O modelo FileTree é criado uma vez, quando data ou config mudam.
+  // A lib tem uma união discriminada `paths` XOR `preparedInput` em
+  // `FileTreeOptions`, então construímos `paths` + outros campos opcionais.
+  // O tipo `FileTreeModelOptions` é tipado pelo constructor.
   const model = React.useMemo(() => {
-    return new FileTreeModel({
+    const options: FileTreeModelOptions = {
       paths: data,
-      initialExpansion:
-        initialExpansion === "open"
-          ? "open"
-          : initialExpansion === "closed"
-            ? "closed"
-            : initialExpansion,
+      ...(flattenEmptyDirectories !== undefined
+        ? { flattenEmptyDirectories }
+        : {}),
+      initialExpansion,
       initialExpandedPaths: initialExpandedPaths as string[] | undefined,
-      sort: sort === "default" ? "default" : undefined,
+      ...(initialSelectedPaths
+        ? { initialSelectedPaths: initialSelectedPaths as string[] }
+        : {}),
+      // ─── Densidade: repassada para o modelo para que o itemHeight
+      // interno (FILE_TREE_DENSITY_PRESETS: 24/30/36) bata com o
+      // `--trees-item-height` injetado pelo cva.
+      density: toNativeDensity(density ?? "default"),
+      ...(itemHeight !== undefined ? { itemHeight } : {}),
+      ...(overscan !== undefined ? { overscan } : {}),
+      ...(stickyFolders !== undefined ? { stickyFolders } : {}),
+      // ─── Busca ───────────────────────────────────────────────
       search: search === true,
-      dragAndDrop: dragAndDrop === true,
-      renaming: renaming === true,
-    })
+      ...(initialSearchQuery !== undefined ? { initialSearchQuery } : {}),
+      ...(fileTreeSearchMode ? { fileTreeSearchMode } : {}),
+      ...(searchBlurBehavior ? { searchBlurBehavior } : {}),
+      // ─── Ordenação ──────────────────────────────────────────
+      ...(sort === "default" || sort === undefined
+        ? { sort: "default" as const }
+        : sort === false
+          ? {}
+          : { sort }),
+      // ─── Mutação / interação ─────────────────────────────────
+      ...(dragAndDrop !== undefined ? { dragAndDrop } : {}),
+      ...(renaming !== undefined ? { renaming } : {}),
+      // ─── Customização visual ─────────────────────────────────
+      ...(icons !== undefined ? { icons } : {}),
+      ...(gitStatus ? { gitStatus } : {}),
+      ...(renderRowDecoration ? { renderRowDecoration } : {}),
+      // ─── Identidade / composição ─────────────────────────────
+      ...(id ? { id } : {}),
+      ...(composition ? { composition } : {}),
+      // ─── Callbacks ──────────────────────────────────────────
+      ...(onSelectionChange ? { onSelectionChange } : {}),
+      ...(onSearchChange ? { onSearchChange } : {}),
+    }
+
+    return new FileTreeModel(options)
   }, [
     data,
+    flattenEmptyDirectories,
     initialExpansion,
     initialExpandedPaths,
-    sort,
+    initialSelectedPaths,
+    density,
+    itemHeight,
+    overscan,
+    stickyFolders,
     search,
+    initialSearchQuery,
+    fileTreeSearchMode,
+    searchBlurBehavior,
+    sort,
     dragAndDrop,
     renaming,
+    icons,
+    gitStatus,
+    renderRowDecoration,
+    id,
+    composition,
+    onSelectionChange,
+    onSearchChange,
   ])
 
   // Limpeza ao desmontar
@@ -127,7 +145,8 @@ function Tree({
     >
       <FileTreeReact
         model={model}
-        header={header}
+        {...(header !== undefined ? { header } : {})}
+        {...(renderContextMenu ? { renderContextMenu } : {})}
       />
     </div>
   )

@@ -205,7 +205,16 @@
 /* ─── Tree (componente) ──────────────────────────────────────────── */
 /* O `<file-tree-container>` da lib @pierre/trees usa CSS de shadow DOM
    e assume que o host tem altura. Forçamos 100% da altura do wrapper
-   `<div data-slot="tree">` (cuja altura é --trees-height). */
+   `<div data-slot="tree">` (cuja altura é --trees-height).
+
+   Tema reativo: o wrapper emite `data-theme="light|dark"` via
+   `useTheme().resolvedTheme`. As variáveis `--trees-*-override` são
+   lidas pelo CSS interno da lib (@pierre/trees) e sobrescrevem o
+   fallback `light-dark()` do `:host`. Reaproveitamos os tokens
+   semânticos shadcn (`--foreground`, `--background`, `--accent`,
+   `--muted`, `--border`, `--ring`, `--input`) que JÁ respondem ao
+   ThemeProvider — assim o toggle de tema do Header reativo pinta
+   corretamente o shadow DOM do `<file-tree-container>`. */
 [data-slot="tree"] {
   --trees-height: 420px;
   height: var(--trees-height);
@@ -218,6 +227,60 @@
   min-height: 0;
   display: flex;
   width: 100%;
+}
+
+/* ─── Tree — tema LIGHT (shadcn-friendly) ───────────────────────── */
+[data-slot="tree"][data-theme="light"] {
+  --trees-fg-override: var(--foreground);
+  --trees-fg-muted-override: var(--muted-foreground);
+  --trees-bg-override: var(--background);
+  --trees-bg-muted-override: var(--muted);
+  /* Acento: tom shadcn-friendly próximo do `#009fff` do site oficial,
+     mas puxado pra paleta neutral oklch da vitrine. */
+  --trees-accent-override: oklch(0.55 0.18 250);
+  --trees-border-color-override: var(--border);
+  --trees-focus-ring-color-override: var(--ring);
+  --trees-search-fg-override: var(--foreground);
+  --trees-search-bg-override: var(--muted);
+  --trees-input-bg-override: var(--input);
+  --trees-selected-fg-override: var(--accent-foreground);
+  --trees-selected-bg-override: color-mix(
+    in oklab,
+    var(--accent) 35%,
+    transparent
+  );
+  --trees-scrollbar-thumb-override: color-mix(
+    in oklab,
+    var(--muted-foreground) 25%,
+    transparent
+  );
+}
+
+/* ─── Tree — tema DARK (shadcn-friendly) ────────────────────────── */
+[data-slot="tree"][data-theme="dark"] {
+  --trees-fg-override: var(--foreground);
+  --trees-fg-muted-override: var(--muted-foreground);
+  --trees-bg-override: var(--background);
+  --trees-bg-muted-override: var(--muted);
+  /* Acento: tom shadcn-friendly próximo do `#68cdf2` do site oficial
+     em dark, levemente dessaturado pra não conflitar com --primary. */
+  --trees-accent-override: oklch(0.72 0.15 230);
+  --trees-border-color-override: var(--border);
+  --trees-focus-ring-color-override: var(--ring);
+  --trees-search-fg-override: var(--foreground);
+  --trees-search-bg-override: var(--muted);
+  --trees-input-bg-override: var(--input);
+  --trees-selected-fg-override: var(--accent-foreground);
+  --trees-selected-bg-override: color-mix(
+    in oklab,
+    var(--accent) 35%,
+    transparent
+  );
+  --trees-scrollbar-thumb-override: color-mix(
+    in oklab,
+    var(--muted-foreground) 25%,
+    transparent
+  );
 }
 
 /* ─── Shimmering Text ─────────────────────────────────────────────── */
