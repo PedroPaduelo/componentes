@@ -18,6 +18,9 @@ import {
 import { DropdownFluid, DropdownFluidLabel, DropdownFluidSeparator } from "@/components/ui/dropdown-fluid"
 import { MenuItemFluid } from "@/components/ui/menu-item-fluid"
 import { FileThumbnailFluid } from "@/components/ui/file-thumbnail-fluid"
+import { ColorPickerFluid } from "@/components/ui/color-picker-fluid"
+import { AskUserQuestionsFluid } from "@/components/ui/ask-user-questions-fluid"
+import { InputMessageFluid } from "@/components/ui/input-message-fluid"
 import {
   AccordionGroup as AccordionGroupFluid,
   AccordionItem as AccordionItemFluid,
@@ -59,7 +62,7 @@ import {
   ThinkingStepSources as ThinkingStepSourcesFluid,
   ThinkingStepSource as ThinkingStepSourceFluid,
 } from "@/components/ui/thinking-steps-fluid"
-import { Copy, RefreshCw } from "lucide-react"
+import { Copy, RefreshCw, Paperclip } from "lucide-react"
 
 export function SliderDemo() {
   const [value, setValue] = useState<SliderValue>(40)
@@ -529,5 +532,105 @@ export function ThinkingStepsDemo() {
         </ThinkingStepFluid>
       </ThinkingStepsContentFluid>
     </ThinkingStepsFluid>
+  )
+}
+
+export function ColorPickerDemo() {
+  const [color, setColor] = useState("#6366f1")
+  return (
+    <div className="flex flex-col items-center gap-4">
+      <ColorPickerFluid value={color} onValueChange={(v) => setColor(v)} />
+      <div className="flex items-center gap-2 text-[13px] text-muted-foreground">
+        <span
+          className="inline-block h-5 w-5 rounded-md border border-border"
+          style={{ background: color }}
+        />
+        <code>{color}</code>
+      </div>
+    </div>
+  )
+}
+
+export function AskUserQuestionsDemo() {
+  const [done, setDone] = useState<string | null>(null)
+  return (
+    <div className="flex w-full justify-center">
+      {done ? (
+        <div className="flex flex-col items-center gap-3 py-6">
+          <p className="text-[13px] text-muted-foreground">Respondido: {done}</p>
+          <ButtonFluid variant="secondary" size="sm" onClick={() => setDone(null)}>
+            Recomeçar
+          </ButtonFluid>
+        </div>
+      ) : (
+        <AskUserQuestionsFluid
+          questions={[
+            {
+              id: "framework",
+              title: "Qual framework você prefere?",
+              options: [
+                { id: "react", title: "React", description: "biblioteca de UI" },
+                { id: "vue", title: "Vue", description: "framework progressivo" },
+                { id: "svelte", title: "Svelte", description: "compilador" },
+              ],
+            },
+            {
+              id: "features",
+              title: "Quais recursos importam? (múltipla)",
+              multiSelect: true,
+              allowOther: true,
+              otherPlaceholder: "Outro recurso…",
+              options: [
+                { id: "ssr", title: "SSR" },
+                { id: "ts", title: "TypeScript" },
+                { id: "dx", title: "DX" },
+              ],
+            },
+          ]}
+          onComplete={(answers) =>
+            setDone(
+              Object.values(answers)
+                .flatMap((a) => a.selectedIds)
+                .join(", ") || "(pulado)"
+            )
+          }
+        />
+      )}
+    </div>
+  )
+}
+
+export function InputMessageDemo() {
+  const [value, setValue] = useState("")
+  const [files, setFiles] = useState<File[]>([])
+  const [sent, setSent] = useState<string | null>(null)
+  return (
+    <div className="flex w-full max-w-[520px] flex-col gap-3">
+      <InputMessageFluid
+        value={value}
+        onValueChange={setValue}
+        files={files}
+        onFilesChange={setFiles}
+        placeholder="Escreva uma mensagem…"
+        onSend={(text, sentFiles) => {
+          setSent(`${text}${sentFiles.length ? ` (+${sentFiles.length} arquivo)` : ""}`)
+          setValue("")
+          setFiles([])
+        }}
+        leftSlot={({ openFilePicker }) => (
+          <ButtonFluid
+            variant="ghost"
+            size="icon-sm"
+            aria-label="Anexar"
+            onClick={() => openFilePicker()}
+          >
+            <Paperclip size={16} />
+          </ButtonFluid>
+        )}
+      />
+      {sent && (
+        <p className="text-[13px] text-muted-foreground">Enviado: {sent}</p>
+      )}
+    </div>
   )
 }

@@ -459,6 +459,30 @@ export const components: ComponentMeta[] = [
       "Trilha de raciocínio da Fluid Functionalism: accordion com passos animados, status (ativo/concluído), detalhes aninhados, fontes em badges e imagens — para exibir o pensamento de uma IA.",
     tags: ["fluid", "thinking", "raciocínio", "ia", "passos", "feedback"],
   },
+  {
+    slug: "color-picker-fluid",
+    name: "Color Picker (Fluid)",
+    category: "Forms",
+    description:
+      "Seletor de cor da Fluid Functionalism com quadrado de saturação, sliders de matiz e alpha, conta-gotas, swatches e formatos hex/rgb/hsl/oklch — em painel inline ou popover.",
+    tags: ["fluid", "color", "cor", "picker", "seletor", "formulário"],
+  },
+  {
+    slug: "ask-user-questions-fluid",
+    name: "Ask User Questions (Fluid)",
+    category: "Forms",
+    description:
+      "Fluxo de perguntas da Fluid Functionalism: seleção única ou múltipla, campo 'Outro', mesclagem animada de seleções contíguas, navegação por teclado e Back/Skip/Continue.",
+    tags: ["fluid", "perguntas", "questionário", "seleção", "formulário", "wizard"],
+  },
+  {
+    slug: "input-message-fluid",
+    name: "Input Message (Fluid)",
+    category: "Forms",
+    description:
+      "Composer de mensagem da Fluid Functionalism: textarea auto-expansível, anexos via drag-and-drop e picker, preview de imagens/PDF, slots customizáveis e botão de envio.",
+    tags: ["fluid", "input", "mensagem", "chat", "anexo", "formulário"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

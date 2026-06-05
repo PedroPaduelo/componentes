@@ -59,6 +59,9 @@
   --hover: oklch(0 0 0 / 0.04);
   --active: oklch(0 0 0 / 0.08);
   --destructive-light: oklch(0.936 0.032 17.717);
+  /* Checkerboard tiles behind transparent colors (color-picker-fluid alpha). */
+  --checker-a: oklch(0.92 0 0);
+  --checker-b: oklch(1 0 0);
 }
 
 .dark {
@@ -98,6 +101,9 @@
   --hover: oklch(1 0 0 / 0.06);
   --active: oklch(1 0 0 / 0.10);
   --destructive-light: oklch(0.396 0.133 25.723);
+  /* Checkerboard tiles behind transparent colors (color-picker-fluid alpha). */
+  --checker-a: oklch(0.30 0 0);
+  --checker-b: oklch(0.22 0 0);
 
   /* ─── Fluid Functionalism — surfaces (dark) ────────────────────── */
   --surface-1: #171717;

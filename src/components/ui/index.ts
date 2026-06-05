@@ -166,3 +166,33 @@ export type {
   ThinkingStepProps as ThinkingStepFluidProps,
   StepStatus as ThinkingStepStatus,
 } from "./thinking-steps-fluid"
+
+export {
+  ColorPickerFluid,
+  ColorPickerFluidPopover,
+  ColorPickerFluidPortalContainer,
+  ColorSwatchFluid,
+  ColorTileFluid,
+} from "./color-picker-fluid"
+export type {
+  ColorPickerFluidProps,
+  ColorPickerFluidPopoverProps,
+  ColorSwatchFluidProps,
+  ColorFormat as ColorPickerFluidFormat,
+  ParsedColor as ColorPickerFluidParsedColor,
+} from "./color-picker-fluid"
+export { parseColor as parseColorFluid, buildParsed as buildParsedColorFluid } from "./color-picker-fluid-utils"
+
+export { AskUserQuestionsFluid } from "./ask-user-questions-fluid"
+export type {
+  AskUserOption as AskUserOptionFluid,
+  AskUserQuestion as AskUserQuestionFluid,
+  AskUserAnswer as AskUserAnswerFluid,
+  AskUserQuestionsProps as AskUserQuestionsFluidProps,
+} from "./ask-user-questions-fluid"
+
+export { InputMessageFluid } from "./input-message-fluid"
+export type {
+  InputMessageFluidProps,
+  InputMessageSlotContext as InputMessageFluidSlotContext,
+} from "./input-message-fluid"

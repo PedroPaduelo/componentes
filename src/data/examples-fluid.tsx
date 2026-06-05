@@ -45,6 +45,9 @@ import {
   DialogDemo,
   ChatMessageDemo,
   ThinkingStepsDemo,
+  ColorPickerDemo,
+  AskUserQuestionsDemo,
+  InputMessageDemo,
 } from "@/data/examples-fluid-demos"
 import { ThinkingIndicatorFluid } from "@/components/ui/thinking-indicator-fluid"
 
@@ -693,6 +696,94 @@ const thinkingStepsExample: Example = {
   ),
 }
 
+// ── Color Picker ──────────────────────────────────────────
+
+const colorPickerExample: Example = {
+  title: "Seletor de cor",
+  description:
+    "Saturação + matiz + alpha, com formatos hex/rgb/hsl/oklch e swatches. Controlado via value/onValueChange.",
+  code: `const [color, setColor] = useState("#6366f1")
+
+<ColorPickerFluid value={color} onValueChange={setColor} />`,
+  render: (
+    <div className="flex justify-center py-2">
+      <ColorPickerDemo />
+    </div>
+  ),
+}
+
+// ── Ask User Questions ────────────────────────────────────
+
+const askUserQuestionsExample: Example = {
+  title: "Perguntas ao usuário",
+  description:
+    "Fluxo de perguntas com seleção única, múltipla, campo 'Outro' e navegação Back/Skip/Continue.",
+  code: `<AskUserQuestionsFluid
+  questions={[
+    {
+      id: "framework",
+      title: "Qual framework você prefere?",
+      options: [
+        { id: "react", title: "React", description: "biblioteca de UI" },
+        { id: "vue", title: "Vue", description: "framework progressivo" },
+        { id: "svelte", title: "Svelte", description: "compilador" },
+      ],
+    },
+    {
+      id: "features",
+      title: "Quais recursos importam? (múltipla)",
+      multiSelect: true,
+      allowOther: true,
+      options: [
+        { id: "ssr", title: "SSR" },
+        { id: "ts", title: "TypeScript" },
+        { id: "dx", title: "DX" },
+      ],
+    },
+  ]}
+  onComplete={(answers) => console.log(answers)}
+/>`,
+  render: (
+    <div className="flex justify-center py-2">
+      <AskUserQuestionsDemo />
+    </div>
+  ),
+}
+
+// ── Input Message ─────────────────────────────────────────
+
+const inputMessageExample: Example = {
+  title: "Campo de mensagem",
+  description:
+    "Textarea auto-expansível com anexos (drag-and-drop + picker), preview de arquivos e botão de envio. Enter envia, Shift+Enter quebra linha.",
+  code: `const [value, setValue] = useState("")
+const [files, setFiles] = useState<File[]>([])
+
+<InputMessageFluid
+  value={value}
+  onValueChange={setValue}
+  files={files}
+  onFilesChange={setFiles}
+  placeholder="Escreva uma mensagem…"
+  onSend={(text, files) => console.log(text, files)}
+  leftSlot={({ openFilePicker }) => (
+    <ButtonFluid
+      variant="ghost"
+      size="icon-sm"
+      aria-label="Anexar"
+      onClick={() => openFilePicker()}
+    >
+      <Paperclip size={16} />
+    </ButtonFluid>
+  )}
+/>`,
+  render: (
+    <div className="flex justify-center py-2">
+      <InputMessageDemo />
+    </div>
+  ),
+}
+
 // ── Mapa exportado ────────────────────────────────────────
 
 export const examplesFluid: Record<string, Example[]> = {
@@ -716,4 +807,7 @@ export const examplesFluid: Record<string, Example[]> = {
   "dialog-fluid": [dialogExample],
   "chat-message-fluid": [chatMessageExample],
   "thinking-steps-fluid": [thinkingStepsExample],
+  "color-picker-fluid": [colorPickerExample],
+  "ask-user-questions-fluid": [askUserQuestionsExample],
+  "input-message-fluid": [inputMessageExample],
 }
