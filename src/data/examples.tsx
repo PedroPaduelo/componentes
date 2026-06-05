@@ -61,6 +61,8 @@ import {
 } from "@/components/ui/tabs"
 import { Settings, User, LogOut } from "lucide-react"
 import { Tree } from "@/components/ui/tree"
+import { ConsentManagerProvider } from "@/components/ui/consent-manager"
+import { Shield, Cookie } from "lucide-react"
 
 export type Example = {
   title: string
@@ -741,6 +743,38 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                              consent-manager                                */
+/* -------------------------------------------------------------------------- */
+
+const consentManagerBasicExample: Example = {
+  title: "Básico",
+  description:
+    "Modal de consentimento com toggles por categoria (Essencial, Analytics, Marketing) e botões de ação.",
+  code: `<ConsentManagerProvider>
+  <ConsentManager />
+</ConsentManagerProvider>`,
+  render: (
+    <ConsentManagerProvider>
+      <div className="flex flex-col items-center gap-4 p-4">
+        <div className="flex items-center gap-2 text-sm text-muted-foreground">
+          <Cookie className="size-4" />
+          <span>Clique no botão "Cookies" no canto inferior para abrir o modal</span>
+        </div>
+        <div className="flex items-center gap-2 rounded-lg border border-border p-4">
+          <Shield className="size-5 text-primary" />
+          <div>
+            <p className="text-sm font-medium">Consent Manager</p>
+            <p className="text-xs text-muted-foreground">
+              Gerencia preferências de cookies com persistência em localStorage.
+            </p>
+          </div>
+        </div>
+      </div>
+    </ConsentManagerProvider>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  mapa                                       */
 /* -------------------------------------------------------------------------- */
 
@@ -755,9 +789,12 @@ export const examples: Record<string, Example[]> = {
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
   tree: [treeBasicExample, treeSearchExample, treeDensityExample],
+  "consent-manager": [consentManagerBasicExample],
 }
 
-/** Retorna os exemplos de um slug, ou `undefined` se não houver. */
+/**
+ * Retorna os exemplos de um slug, ou `undefined` se não houver.
+ */
 export function getExamplesBySlug(slug: string): Example[] | undefined {
   return examples[slug]
 }

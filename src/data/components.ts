@@ -120,6 +120,21 @@ export const components: ComponentMeta[] = [
       "explorer",
     ],
   },
+  {
+    slug: "consent-manager",
+    name: "Consent Manager",
+    category: "Forms",
+    description:
+      "Modal de gerenciamento de consentimento de cookies com toggles por categoria e persistência em localStorage.",
+    tags: [
+      "cookies",
+      "consentimento",
+      "lgpd",
+      "privacidade",
+      "modal",
+      "preferências",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
