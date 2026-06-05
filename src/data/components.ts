@@ -120,6 +120,21 @@ export const components: ComponentMeta[] = [
       "explorer",
     ],
   },
+  {
+    slug: "slide-to-unlock",
+    name: "Slide to Unlock",
+    category: "Forms",
+    description:
+      "Controle deslizante estilo iOS para confirmar ações. Arraste o thumb da esquerda para a direita.",
+    tags: [
+      "slider",
+      "deslizar",
+      "confirmar",
+      "ação",
+      "touch",
+      "arrastar",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

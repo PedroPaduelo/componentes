@@ -61,6 +61,7 @@ import {
 } from "@/components/ui/tabs"
 import { Settings, User, LogOut } from "lucide-react"
 import { Tree } from "@/components/ui/tree"
+import { SlideToUnlock } from "@/components/ui/slide-to-unlock"
 
 export type Example = {
   title: string
@@ -741,6 +742,53 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                             slide-to-unlock                                 */
+/* -------------------------------------------------------------------------- */
+
+const slideToUnlockBasicExample: Example = {
+  title: "Básico",
+  description: "Arraste o thumb para desbloquear.",
+  code: `<SlideToUnlock onUnlock={() => alert("Desbloqueado!")} />`,
+  render: (
+    <SlideToUnlock onUnlock={() => alert("Desbloqueado!")} />
+  ),
+}
+
+const slideToUnlockConfirmExample: Example = {
+  title: "Confirmar ação",
+  description: "Variante success para confirmar pagamento ou ação importante.",
+  code: `<SlideToUnlock
+  onUnlock={() => alert("Ação confirmada!")}
+  label="deslize para confirmar"
+  variant="success"
+/>`,
+  render: (
+    <SlideToUnlock
+      onUnlock={() => alert("Ação confirmada!")}
+      label="deslize para confirmar"
+      variant="success"
+    />
+  ),
+}
+
+const slideToUnlockDestructiveExample: Example = {
+  title: "Ação destrutiva",
+  description: "Variante destructive para exclusão ou ações irreversíveis.",
+  code: `<SlideToUnlock
+  onUnlock={() => alert("Item excluído!")}
+  label="deslize para excluir"
+  variant="destructive"
+/>`,
+  render: (
+    <SlideToUnlock
+      onUnlock={() => alert("Item excluído!")}
+      label="deslize para excluir"
+      variant="destructive"
+    />
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  mapa                                       */
 /* -------------------------------------------------------------------------- */
 
@@ -755,6 +803,11 @@ export const examples: Record<string, Example[]> = {
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
   tree: [treeBasicExample, treeSearchExample, treeDensityExample],
+  "slide-to-unlock": [
+    slideToUnlockBasicExample,
+    slideToUnlockConfirmExample,
+    slideToUnlockDestructiveExample,
+  ],
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
