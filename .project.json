@@ -1,0 +1,31 @@
+{
+  "$schema": "project-config-v1",
+  "projectId": "cmq0d9glf0079pg0inzo6lm20",
+  "services": [
+    {
+      "name": "fe",
+      "port": 5173,
+      "framework": "Vite",
+      "startCommand": "npm run dev",
+      "isPrimary": true,
+      "domain": "componentes-fe-cmq0d9kr.cloud.serendiped.com",
+      "path": "/",
+      "protocol": "http"
+    },
+    {
+      "name": "be",
+      "port": 4000,
+      "framework": "Fastify",
+      "startCommand": "npm run dev",
+      "isPrimary": false,
+      "domain": "componentes-be-cmq0d9kr.cloud.serendiped.com",
+      "path": "/",
+      "protocol": "http"
+    }
+  ],
+  "rules": [
+    "NÃO ALTERE as portas listadas. Domínios externos dependem delas.",
+    "Configure cada framework para escutar EXATAMENTE a porta declarada.",
+    "Para validar, leia este arquivo a qualquer momento."
+  ]
+}
