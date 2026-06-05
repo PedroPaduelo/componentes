@@ -298,6 +298,14 @@ export const components: ComponentMeta[] = [
 
   // Lote VengenceUI
   {
+    slug: "animated-number",
+    name: "Animated Number",
+    category: "Feedback",
+    description:
+      "Número slot-machine (dígitos rolando 0–9) + placar com feedback de cor (verde sobe, vermelho desce) e bounce.",
+    tags: ["number", "counter", "animation", "score", "slot-machine", "vengenceui"],
+  },
+  {
     slug: "cyber-glitch-text",
     name: "Cyber Glitch Text",
     category: "Feedback",

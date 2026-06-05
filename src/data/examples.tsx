@@ -78,6 +78,7 @@ import { examplesLightLines } from "@/data/examples-light-lines"
 import { perspectiveGridExamples } from "@/data/examples-perspective-grid"
 import { examplesGlassDock } from "@/data/examples-glass-dock"
 import { creepyButtonExamples } from "@/data/examples-creepy"
+import { examplesAnimatedNumber } from "@/data/examples-animated-number"
 
 export type Example = {
   title: string
@@ -1219,6 +1220,7 @@ export const examples: Record<string, Example[]> = {
   ...creepyButtonExamples,
   ...perspectiveGridExamples,
   ...examplesLightLines,
+  ...examplesAnimatedNumber,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
