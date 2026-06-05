@@ -120,6 +120,21 @@ export const components: ComponentMeta[] = [
       "explorer",
     ],
   },
+  {
+    slug: "github-contributions",
+    name: "GitHub Contributions",
+    category: "Feedback",
+    description:
+      "Heatmap estilo contribution graph do GitHub com grid 7×N, tooltips e legenda de intensidade.",
+    tags: [
+      "heatmap",
+      "contributions",
+      "github",
+      "gráfico",
+      "atividade",
+      "calendar",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

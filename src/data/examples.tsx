@@ -61,6 +61,7 @@ import {
 } from "@/components/ui/tabs"
 import { Settings, User, LogOut } from "lucide-react"
 import { Tree } from "@/components/ui/tree"
+import { GitHubContributions } from "@/components/ui/github-contributions"
 
 export type Example = {
   title: string
@@ -741,6 +742,56 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                            github-contributions                             */
+/* -------------------------------------------------------------------------- */
+
+function generateMockContributions(): { date: string; count: number }[] {
+  const data: { date: string; count: number }[] = []
+  const now = new Date()
+  for (let i = 364; i >= 0; i--) {
+    const d = new Date(now)
+    d.setDate(d.getDate() - i)
+    const dateStr = d.toISOString().slice(0, 10)
+    // Simulate realistic contribution patterns
+    const dayOfWeek = d.getDay()
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
+    const baseChance = isWeekend ? 0.3 : 0.7
+    const hasContribution = Math.random() < baseChance
+    const count = hasContribution
+      ? Math.floor(Math.random() * 30) + 1
+      : 0
+    data.push({ date: dateStr, count })
+  }
+  return data
+}
+
+const mockContributions = generateMockContributions()
+
+const githubContributionsBasicExample: Example = {
+  title: "Básico",
+  description: "Heatmap de contribuições com dados mock de 365 dias.",
+  code: `<GitHubContributions
+  data={[
+    { date: "2025-06-01", count: 14 },
+    { date: "2025-06-02", count: 28 },
+    { date: "2025-06-03", count: 28 },
+    // ... 365 dias de dados
+  ]}
+  weeks={52}
+  colorScale="shadcn"
+/>`,
+  render: (
+    <div className="w-full">
+      <GitHubContributions
+        data={mockContributions}
+        weeks={52}
+        colorScale="shadcn"
+      />
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  mapa                                       */
 /* -------------------------------------------------------------------------- */
 
@@ -755,6 +806,7 @@ export const examples: Record<string, Example[]> = {
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
   tree: [treeBasicExample, treeSearchExample, treeDensityExample],
+  "github-contributions": [githubContributionsBasicExample],
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
