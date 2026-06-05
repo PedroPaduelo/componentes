@@ -38,6 +38,28 @@ import {
   TabItem as TabItemFluid,
   TabPanel as TabPanelFluid,
 } from "@/components/ui/tabs-fluid"
+import {
+  Dialog as DialogFluid,
+  DialogTrigger as DialogTriggerFluid,
+  DialogContent as DialogContentFluid,
+  DialogHeader as DialogHeaderFluid,
+  DialogFooter as DialogFooterFluid,
+  DialogTitle as DialogTitleFluid,
+  DialogDescription as DialogDescriptionFluid,
+  DialogClose as DialogCloseFluid,
+} from "@/components/ui/dialog-fluid"
+import { ButtonFluid } from "@/components/ui/button-fluid"
+import { ChatMessage as ChatMessageFluid } from "@/components/ui/chat-message-fluid"
+import {
+  ThinkingSteps as ThinkingStepsFluid,
+  ThinkingStepsHeader as ThinkingStepsHeaderFluid,
+  ThinkingStepsContent as ThinkingStepsContentFluid,
+  ThinkingStep as ThinkingStepFluid,
+  ThinkingStepDetails as ThinkingStepDetailsFluid,
+  ThinkingStepSources as ThinkingStepSourcesFluid,
+  ThinkingStepSource as ThinkingStepSourceFluid,
+} from "@/components/ui/thinking-steps-fluid"
+import { Copy, RefreshCw } from "lucide-react"
 
 export function SliderDemo() {
   const [value, setValue] = useState<SliderValue>(40)
@@ -411,5 +433,101 @@ export function TabsIconsDemo() {
         <TabItemFluid value="alerts" label="Alertas" icon={Bell} />
       </TabsListFluid>
     </TabsFluid>
+  )
+}
+
+export function DialogDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <DialogFluid open={open} onOpenChange={setOpen}>
+      <DialogTriggerFluid asChild>
+        <ButtonFluid variant="primary">Abrir diálogo</ButtonFluid>
+      </DialogTriggerFluid>
+      <DialogContentFluid>
+        <DialogHeaderFluid>
+          <DialogTitleFluid>Confirmar ação</DialogTitleFluid>
+          <DialogDescriptionFluid>
+            Esta ação não pode ser desfeita. Deseja continuar?
+          </DialogDescriptionFluid>
+        </DialogHeaderFluid>
+        <DialogFooterFluid>
+          <DialogCloseFluid asChild>
+            <ButtonFluid variant="ghost">Cancelar</ButtonFluid>
+          </DialogCloseFluid>
+          <DialogCloseFluid asChild>
+            <ButtonFluid variant="primary">Confirmar</ButtonFluid>
+          </DialogCloseFluid>
+        </DialogFooterFluid>
+      </DialogContentFluid>
+    </DialogFluid>
+  )
+}
+
+export function ChatMessageDemo() {
+  return (
+    <div className="flex w-full flex-col gap-3">
+      <ChatMessageFluid from="user" time="Hoje 14:32">
+        Como faço pra centralizar uma div em CSS?
+      </ChatMessageFluid>
+      <ChatMessageFluid
+        from="assistant"
+        actions={
+          <>
+            <ButtonFluid variant="ghost" size="icon-sm" aria-label="Copiar">
+              <Copy />
+            </ButtonFluid>
+            <ButtonFluid variant="ghost" size="icon-sm" aria-label="Regenerar">
+              <RefreshCw />
+            </ButtonFluid>
+          </>
+        }
+      >
+        Use {"`display: flex`"} no container com {"`align-items: center`"} e{" "}
+        {"`justify-content: center`"}. Pronto, fica centralizado nos dois eixos.
+      </ChatMessageFluid>
+    </div>
+  )
+}
+
+export function ThinkingStepsDemo() {
+  return (
+    <ThinkingStepsFluid defaultOpen>
+      <ThinkingStepsHeaderFluid>Pensando</ThinkingStepsHeaderFluid>
+      <ThinkingStepsContentFluid>
+        <ThinkingStepFluid
+          index={0}
+          icon="search"
+          label="Analisando a pergunta"
+          description="Identificando a intenção e os requisitos."
+          status="complete"
+        />
+        <ThinkingStepFluid
+          index={1}
+          icon="globe"
+          label="Buscando fontes"
+          status="complete"
+        >
+          <ThinkingStepSourcesFluid>
+            <ThinkingStepSourceFluid color="blue">docs.css</ThinkingStepSourceFluid>
+            <ThinkingStepSourceFluid color="green">mdn.dev</ThinkingStepSourceFluid>
+          </ThinkingStepSourcesFluid>
+        </ThinkingStepFluid>
+        <ThinkingStepFluid
+          index={2}
+          icon="check"
+          label="Montando a resposta"
+          status="complete"
+          isLast
+        >
+          <ThinkingStepDetailsFluid
+            summary="Ver detalhes"
+            details={[
+              "Comparou flexbox vs grid.",
+              "Escolheu flexbox pela simplicidade.",
+            ]}
+          />
+        </ThinkingStepFluid>
+      </ThinkingStepsContentFluid>
+    </ThinkingStepsFluid>
   )
 }

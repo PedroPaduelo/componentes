@@ -42,6 +42,9 @@ import {
   SelectIconDemo,
   TabsDemo,
   TabsIconsDemo,
+  DialogDemo,
+  ChatMessageDemo,
+  ThinkingStepsDemo,
 } from "@/data/examples-fluid-demos"
 import { ThinkingIndicatorFluid } from "@/components/ui/thinking-indicator-fluid"
 
@@ -593,6 +596,103 @@ const tabsIconsExample: Example = {
   ),
 }
 
+// ── Dialog ────────────────────────────────────────────────
+
+const dialogExample: Example = {
+  title: "Básico",
+  description: "Modal com cabeçalho, descrição e ações no rodapé.",
+  code: `<Dialog open={open} onOpenChange={setOpen}>
+  <DialogTrigger asChild>
+    <Button variant="primary">Abrir diálogo</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Confirmar ação</DialogTitle>
+      <DialogDescription>
+        Esta ação não pode ser desfeita. Deseja continuar?
+      </DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <DialogClose asChild>
+        <Button variant="ghost">Cancelar</Button>
+      </DialogClose>
+      <DialogClose asChild>
+        <Button variant="primary">Confirmar</Button>
+      </DialogClose>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>`,
+  render: (
+    <div className="flex justify-center py-2">
+      <DialogDemo />
+    </div>
+  ),
+}
+
+// ── Chat Message ──────────────────────────────────────────
+
+const chatMessageExample: Example = {
+  title: "Conversa",
+  description:
+    "Mensagem do usuário (bolha à direita) e resposta do assistente (texto à esquerda) com ações reveladas no hover.",
+  code: `<ChatMessage from="user" time="Hoje 14:32">
+  Como faço pra centralizar uma div em CSS?
+</ChatMessage>
+<ChatMessage
+  from="assistant"
+  actions={
+    <>
+      <Button variant="ghost" size="icon-sm" aria-label="Copiar">
+        <Copy />
+      </Button>
+      <Button variant="ghost" size="icon-sm" aria-label="Regenerar">
+        <RefreshCw />
+      </Button>
+    </>
+  }
+>
+  Use \`display: flex\` no container…
+</ChatMessage>`,
+  render: (
+    <div className="flex justify-center py-2">
+      <div className="w-full max-w-md">
+        <ChatMessageDemo />
+      </div>
+    </div>
+  ),
+}
+
+// ── Thinking Steps ────────────────────────────────────────
+
+const thinkingStepsExample: Example = {
+  title: "Trilha de raciocínio",
+  description:
+    "Passos animados com status, fontes em badges e detalhes aninhados expansíveis.",
+  code: `<ThinkingSteps defaultOpen>
+  <ThinkingStepsHeader>Pensando</ThinkingStepsHeader>
+  <ThinkingStepsContent>
+    <ThinkingStep index={0} icon="search" label="Analisando a pergunta"
+      description="Identificando a intenção." status="complete" />
+    <ThinkingStep index={1} icon="globe" label="Buscando fontes" status="complete">
+      <ThinkingStepSources>
+        <ThinkingStepSource color="blue">docs.css</ThinkingStepSource>
+        <ThinkingStepSource color="green">mdn.dev</ThinkingStepSource>
+      </ThinkingStepSources>
+    </ThinkingStep>
+    <ThinkingStep index={2} icon="check" label="Montando a resposta"
+      status="complete" isLast>
+      <ThinkingStepDetails summary="Ver detalhes"
+        details={["Comparou flexbox vs grid.", "Escolheu flexbox."]} />
+    </ThinkingStep>
+  </ThinkingStepsContent>
+</ThinkingSteps>`,
+  render: (
+    <div className="flex justify-center py-2">
+      <ThinkingStepsDemo />
+    </div>
+  ),
+}
+
 // ── Mapa exportado ────────────────────────────────────────
 
 export const examplesFluid: Record<string, Example[]> = {
@@ -613,4 +713,7 @@ export const examplesFluid: Record<string, Example[]> = {
   "checkbox-group-fluid": [checkboxGroupExample],
   "select-fluid": [selectExample, selectIconExample],
   "tabs-fluid": [tabsExample, tabsIconsExample],
+  "dialog-fluid": [dialogExample],
+  "chat-message-fluid": [chatMessageExample],
+  "thinking-steps-fluid": [thinkingStepsExample],
 }

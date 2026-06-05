@@ -435,6 +435,30 @@ export const components: ComponentMeta[] = [
       "Abas da Fluid Functionalism com indicador de pílula elevada animado, hover por proximidade no eixo horizontal, anel de foco e painéis controlados.",
     tags: ["fluid", "tabs", "abas", "navegação", "pílula", "layout"],
   },
+  {
+    slug: "dialog-fluid",
+    name: "Dialog (Fluid)",
+    category: "Layout",
+    description:
+      "Modal da Fluid Functionalism com overlay e conteúdo animados por mola, elevação de superfície empilhável, formas configuráveis e botão de fechar integrado.",
+    tags: ["fluid", "dialog", "modal", "popup", "overlay", "layout"],
+  },
+  {
+    slug: "chat-message-fluid",
+    name: "Chat Message (Fluid)",
+    category: "Feedback",
+    description:
+      "Bolha de mensagem de chat da Fluid Functionalism com entrada animada, alinhamento por remetente (usuário/assistente), anexos em miniatura e meta-linha revelada no hover.",
+    tags: ["fluid", "chat", "mensagem", "conversa", "assistente", "feedback"],
+  },
+  {
+    slug: "thinking-steps-fluid",
+    name: "Thinking Steps (Fluid)",
+    category: "Feedback",
+    description:
+      "Trilha de raciocínio da Fluid Functionalism: accordion com passos animados, status (ativo/concluído), detalhes aninhados, fontes em badges e imagens — para exibir o pensamento de uma IA.",
+    tags: ["fluid", "thinking", "raciocínio", "ia", "passos", "feedback"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

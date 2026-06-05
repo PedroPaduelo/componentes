@@ -138,3 +138,31 @@ export type {
   TabItemProps as TabItemFluidProps,
   TabPanelProps as TabPanelFluidProps,
 } from "./tabs-fluid"
+export {
+  Dialog as DialogFluid,
+  DialogTrigger as DialogTriggerFluid,
+  DialogContent as DialogContentFluid,
+  DialogHeader as DialogHeaderFluid,
+  DialogFooter as DialogFooterFluid,
+  DialogTitle as DialogTitleFluid,
+  DialogDescription as DialogDescriptionFluid,
+  DialogClose as DialogCloseFluid,
+} from "./dialog-fluid"
+export type { DialogContentProps as DialogContentFluidProps } from "./dialog-fluid"
+export { ChatMessage as ChatMessageFluid } from "./chat-message-fluid"
+export type { ChatMessageProps as ChatMessageFluidProps } from "./chat-message-fluid"
+export {
+  ThinkingSteps as ThinkingStepsFluid,
+  ThinkingStepsHeader as ThinkingStepsHeaderFluid,
+  ThinkingStepsContent as ThinkingStepsContentFluid,
+  ThinkingStep as ThinkingStepFluid,
+  ThinkingStepDetails as ThinkingStepDetailsFluid,
+  ThinkingStepSources as ThinkingStepSourcesFluid,
+  ThinkingStepSource as ThinkingStepSourceFluid,
+  ThinkingStepImage as ThinkingStepImageFluid,
+} from "./thinking-steps-fluid"
+export type {
+  ThinkingStepsProps as ThinkingStepsFluidProps,
+  ThinkingStepProps as ThinkingStepFluidProps,
+  StepStatus as ThinkingStepStatus,
+} from "./thinking-steps-fluid"
