@@ -62,7 +62,7 @@ import {
 } from "@/components/ui/tabs"
 import { Settings, User, LogOut } from "lucide-react"
 import { Tree } from "@/components/ui/tree"
-import { ElasticSlider } from "@/components/ui/elastic-slider"
+import { GitHubContributions } from "@/components/ui/github-contributions"
 
 export type Example = {
   title: string
@@ -743,78 +743,51 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                              elastic-slider                                 */
+/*                            github-contributions                             */
 /* -------------------------------------------------------------------------- */
 
-const elasticSliderVolumeExample: Example = {
-  title: "Volume",
-  description: "Slider de volume com efeito elástico e formatação percentual.",
-  code: `const [volume, setVolume] = useState(65)
-
-<ElasticSlider
-  label="Volume"
-  min={0}
-  max={100}
-  step={1}
-  value={volume}
-  onValueChange={setVolume}
-  formatValue={(v) => \`\${Math.round(v)}%\`}
-/>`,
-  render: (
-    <div className="flex w-full flex-col gap-4">
-      <ElasticSlider
-        label="Volume"
-        min={0}
-        max={100}
-        step={1}
-        defaultValue={65}
-        formatValue={(v) => `${Math.round(v)}%`}
-      />
-    </div>
-  ),
+function generateMockContributions(): { date: string; count: number }[] {
+  const data: { date: string; count: number }[] = []
+  const now = new Date()
+  for (let i = 364; i >= 0; i--) {
+    const d = new Date(now)
+    d.setDate(d.getDate() - i)
+    const dateStr = d.toISOString().slice(0, 10)
+    // Simulate realistic contribution patterns
+    const dayOfWeek = d.getDay()
+    const isWeekend = dayOfWeek === 0 || dayOfWeek === 6
+    const baseChance = isWeekend ? 0.3 : 0.7
+    const hasContribution = Math.random() < baseChance
+    const count = hasContribution
+      ? Math.floor(Math.random() * 30) + 1
+      : 0
+    data.push({ date: dateStr, count })
+  }
+  return data
 }
 
-const elasticSliderPriceExample: Example = {
-  title: "Faixa de preço",
-  description: "Slider de preço com formatação de moeda e elasticidade alta.",
-  code: `const [price, setPrice] = useState(49.9)
+const mockContributions = generateMockContributions()
 
-<ElasticSlider
-  label="Preço"
-  min={0}
-  max={200}
-  step={0.1}
-  value={price}
-  onValueChange={setPrice}
-  elasticity="high"
-  formatValue={(v) => \`R$ \${v.toFixed(2)}\`}
+const githubContributionsBasicExample: Example = {
+  title: "Básico",
+  description: "Heatmap de contribuições com dados mock de 365 dias.",
+  code: `<GitHubContributions
+  data={[
+    { date: "2025-06-01", count: 14 },
+    { date: "2025-06-02", count: 28 },
+    { date: "2025-06-03", count: 28 },
+    // ... 365 dias de dados
+  ]}
+  weeks={52}
+  colorScale="shadcn"
 />`,
   render: (
-    <div className="flex w-full flex-col gap-4">
-      <ElasticSlider
-        label="Preço"
-        min={0}
-        max={200}
-        step={0.1}
-        defaultValue={49.9}
-        elasticity="high"
-        formatValue={(v) => `R$ ${v.toFixed(2)}`}
+    <div className="w-full">
+      <GitHubContributions
+        data={mockContributions}
+        weeks={52}
+        colorScale="shadcn"
       />
-    </div>
-  ),
-}
-
-const elasticSliderDensityExample: Example = {
-  title: "Densidades",
-  description: "Três densidades: compacto, padrão e relaxado.",
-  code: `<ElasticSlider density="compact" label="Compact" defaultValue={0.3} />
-<ElasticSlider density="default" label="Default" defaultValue={0.5} />
-<ElasticSlider density="relaxed" label="Relaxed" defaultValue={0.7} />`,
-  render: (
-    <div className="flex w-full flex-col gap-4">
-      <ElasticSlider density="compact" label="Compact" defaultValue={0.3} />
-      <ElasticSlider density="default" label="Default" defaultValue={0.5} />
-      <ElasticSlider density="relaxed" label="Relaxed" defaultValue={0.7} />
     </div>
   ),
 }
@@ -835,7 +808,7 @@ export const examples: Record<string, Example[]> = {
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
   tree: [treeBasicExample, treeSearchExample, treeDensityExample],
-  "elastic-slider": [elasticSliderVolumeExample, elasticSliderPriceExample, elasticSliderDensityExample],
+  "github-contributions": [githubContributionsBasicExample],
 }
 
 /**
