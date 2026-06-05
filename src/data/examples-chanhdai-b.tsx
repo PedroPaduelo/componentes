@@ -91,9 +91,9 @@ const middleTruncationExample: Example = {
   description:
     "Preserva início e fim do texto, escondendo o miolo — ideal para hashes, paths e emails.",
   code: `<div className="space-y-1">
-  <MiddleTruncation text="0x71C7656EC7ab88b098defB751B7401B5f6d8976F" maxLength={20} ellipsis="..." />
-  <MiddleTruncation text="/usr/local/share/applications/components/vitrine.tsx" maxLength={28} ellipsis="..." />
-  <MiddleTruncation text="contato.suporte.equipe@empresa-exemplo.com.br" maxLength={24} ellipsis="..." />
+  <MiddleTruncation text="0x71C7656EC7ab88b098defB751B7401B5f6d8976F" maxLength={20} ellipsis="..." as="div" />
+  <MiddleTruncation text="/usr/local/share/applications/components/vitrine.tsx" maxLength={28} ellipsis="..." as="div" />
+  <MiddleTruncation text="contato.suporte.equipe@empresa-exemplo.com.br" maxLength={24} ellipsis="..." as="div" />
 </div>`,
   render: (
     <div className="space-y-1">
@@ -120,25 +120,25 @@ const middleTruncationExample: Example = {
 }
 
 const middleTruncationMinEndExample: Example = {
-  title: "Preservar fim (minEnd)",
-  description:
-    "Garante que os últimos N caracteres nunca sejam cortados — útil para preservar a extensão de um path.",
+  title: "minEnd: preserva sufixo",
+  description: "Força N caracteres no fim — útil para preservar extensões como .tsx ou domínios.",
   code: `<div className="space-y-1">
-  <MiddleTruncation
-    text="/usr/local/share/applications/components/button.tsx"
-    maxLength={28}
-    minEnd={4}
-    ellipsis="..."
-  />
+  <MiddleTruncation text="/Users/ncdai/Code/chanhdai/src/components/ui/button.tsx" maxLength={28} ellipsis="..." minEnd={12} />
+  <MiddleTruncation text="https://api.github.com/repos/owner/repository/issues/123" maxLength={30} ellipsis="..." minEnd={15} />
 </div>`,
   render: (
     <div className="space-y-1">
       <MiddleTruncation
-        text="/usr/local/share/applications/components/button.tsx"
+        text="/Users/ncdai/Code/chanhdai/src/components/ui/button.tsx"
         maxLength={28}
-        minEnd={4}
         ellipsis="..."
-        as="div"
+        minEnd={12}
+      />
+      <MiddleTruncation
+        text="https://api.github.com/repos/owner/repository/issues/123"
+        maxLength={30}
+        ellipsis="..."
+        minEnd={15}
       />
     </div>
   ),

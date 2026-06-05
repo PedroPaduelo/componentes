@@ -40,6 +40,10 @@ function SlideToUnlock({
   const draggingRef = React.useRef(false)
   const unlockedRef = React.useRef(false)
 
+  // Latest x value, mirrored on every move so the up/end listeners read the
+  // current position instead of a stale value captured at drag-start.
+  const xRef = React.useRef(0)
+
   const dragStartX = React.useRef(0)
   const dragStartLeft = React.useRef(0)
   const maxX = React.useRef(0)
@@ -65,7 +69,7 @@ function SlideToUnlock({
     draggingRef.current = true
     setDragging(true)
     dragStartX.current = e.clientX
-    dragStartLeft.current = x
+    dragStartLeft.current = xRef.current
 
     const handleMove = (ev: MouseEvent) => {
       if (!draggingRef.current || disabled || unlockedRef.current) return
@@ -74,11 +78,13 @@ function SlideToUnlock({
         0,
         Math.min(maxX.current, dragStartLeft.current + delta),
       )
+      xRef.current = newX
       setX(newX)
     }
 
     const handleUp = () => {
-      if (!draggingRef.current || disabled || unlockedRef.current) {
+      const wasDragging = draggingRef.current
+      if (!wasDragging || disabled || unlockedRef.current) {
         window.removeEventListener("mousemove", handleMove)
         window.removeEventListener("mouseup", handleUp)
         return
@@ -86,16 +92,17 @@ function SlideToUnlock({
       draggingRef.current = false
       setDragging(false)
 
-      // Read latest x from the state captured at drag-start. Since we never
-      // mutate `x` outside of setX, the captured value lags by one frame at
-      // most — acceptable for the bounce/unlock decision.
+      // Read latest x from the ref (state `x` would be one render stale here).
+      const finalX = xRef.current
       const thresholdX = maxX.current * threshold
-      if (x >= thresholdX) {
+      if (finalX >= thresholdX) {
+        xRef.current = maxX.current
         setX(maxX.current)
         unlockedRef.current = true
         setUnlocked(true)
         onUnlock()
       } else {
+        xRef.current = 0
         setX(0)
       }
 
@@ -112,7 +119,7 @@ function SlideToUnlock({
     draggingRef.current = true
     setDragging(true)
     dragStartX.current = e.touches[0].clientX
-    dragStartLeft.current = x
+    dragStartLeft.current = xRef.current
 
     const handleMove = (ev: TouchEvent) => {
       if (!draggingRef.current || disabled || unlockedRef.current) return
@@ -122,11 +129,13 @@ function SlideToUnlock({
         0,
         Math.min(maxX.current, dragStartLeft.current + delta),
       )
+      xRef.current = newX
       setX(newX)
     }
 
     const handleEnd = () => {
-      if (!draggingRef.current || disabled || unlockedRef.current) {
+      const wasDragging = draggingRef.current
+      if (!wasDragging || disabled || unlockedRef.current) {
         window.removeEventListener("touchmove", handleMove)
         window.removeEventListener("touchend", handleEnd)
         return
@@ -134,13 +143,16 @@ function SlideToUnlock({
       draggingRef.current = false
       setDragging(false)
 
+      const finalX = xRef.current
       const thresholdX = maxX.current * threshold
-      if (x >= thresholdX) {
+      if (finalX >= thresholdX) {
+        xRef.current = maxX.current
         setX(maxX.current)
         unlockedRef.current = true
         setUnlocked(true)
         onUnlock()
       } else {
+        xRef.current = 0
         setX(0)
       }
 

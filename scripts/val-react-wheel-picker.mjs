@@ -16,11 +16,13 @@ const ctx = await browser.newContext({ viewport: VIEWPORT })
 // =============== HELPERS =================
 async function newPage({ theme = "light", url } = {}) {
   const page = await ctx.newPage()
-  if (theme === "dark") {
-    await page.addInitScript(() => {
-      localStorage.setItem("vitrine-theme", "dark")
-    })
-  }
+  // IMPORTANTE: setar o localStorage EXPLÍCITAMENTE para o tema desejado
+  // em todas as páginas. O contexto compartilha localStorage, então se
+  // uma página anterior setou "dark" e a próxima quer "light", precisamos
+  // sobrescrever — caso contrário o tema da anterior vaza.
+  await page.addInitScript((t) => {
+    try { localStorage.setItem("vitrine-theme", t) } catch {}
+  }, theme)
   try {
     await page.goto(url, { waitUntil: "networkidle", timeout: 45000 })
   } catch (e) {

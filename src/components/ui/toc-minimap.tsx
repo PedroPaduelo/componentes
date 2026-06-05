@@ -163,6 +163,11 @@ function TOCMinimap({
         {items.map((item) => {
           const isActive = activeId === item.id
           const depth = item.level ?? 1
+          // Literal classes (not interpolated) so Tailwind's scanner
+          // generates them in the production build. Interpolated strings
+          // like `pl-${n}` are NOT detected and get purged in prod.
+          const indentClass =
+            depth === 2 ? "pl-4" : depth >= 3 ? "pl-6" : undefined
 
           return (
             <a
@@ -173,9 +178,7 @@ function TOCMinimap({
               data-slot="toc-minimap-item"
               className={cn(
                 tocMinimapItemVariants({ active: isActive, orientation }),
-                orientation === "vertical" &&
-                  depth > 1 &&
-                  `pl-${depth === 2 ? 4 : 6}`
+                orientation === "vertical" && indentClass
               )}
               aria-current={isActive ? "location" : undefined}
             >
@@ -189,16 +192,18 @@ function TOCMinimap({
                 />
               )}
 
-              {/* Label — show on hover in minimap mode, always in expanded */}
+              {/* Label — hidden in vertical collapsed mode, shown on hover
+                  or when active. Width transitions together with opacity for
+                  a smooth "minimap" expand effect. */}
               <span
                 className={cn(
                   "truncate",
                   orientation === "vertical"
                     ? hovered || isActive
-                      ? "opacity-100"
-                      : "opacity-0 w-0"
+                      ? "w-auto opacity-100"
+                      : "w-0 overflow-hidden opacity-0"
                     : undefined,
-                  "transition-opacity duration-200"
+                  "transition-[width,opacity] duration-200"
                 )}
               >
                 {item.label}

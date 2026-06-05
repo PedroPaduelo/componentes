@@ -4,7 +4,7 @@ import * as React from "react"
 import type { LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-export interface IconSwapProps extends React.HTMLAttributes<HTMLElement> {
+export interface IconSwapProps extends Omit<React.HTMLAttributes<HTMLElement>, "type"> {
   /** Ícone exibido quando active=true (ex.: Sun). */
   iconOn: LucideIcon
   /** Ícone exibido quando active=false (ex.: Moon). */
@@ -12,13 +12,10 @@ export interface IconSwapProps extends React.HTMLAttributes<HTMLElement> {
   /** Controla qual ícone está visível. */
   active: boolean
   /**
-   * Elemento do wrapper. Default: `"span"`. Use `"button"` (ou outro elemento
-   * interativo) para tornar o wrapper focável, anunciável por screen readers e
-   * responsivo a Enter/Space:
+   * Elemento do wrapper. Default: `"button"` — o wrapper é focável, anunciável
+   * por screen readers e responsivo a Enter/Space por padrão:
    *
    *   <IconSwap
-   *     as="button"
-   *     type="button"
    *     onClick={toggle}
    *     aria-label="Alternar tema"
    *     iconOn={Sun}
@@ -26,14 +23,17 @@ export interface IconSwapProps extends React.HTMLAttributes<HTMLElement> {
    *     active={dark}
    *   />
    *
-   * Para o caso comum (decore um botão externo), basta passar `aria-hidden`
-   * e o wrapper continua sendo um `<span>` neutro:
+   * Para usar como decoração de um botão externo, passe `as="span"` + `aria-hidden`:
    *
    *   <Button onClick={toggle} aria-label="Alternar">
-   *     <IconSwap aria-hidden iconOn={Sun} iconOff={Moon} active={dark} />
+   *     <IconSwap as="span" aria-hidden iconOn={Sun} iconOff={Moon} active={dark} />
    *   </Button>
    */
   as?: React.ElementType
+  /** Tipo do botão quando `as="button"` (default `"button"`, nunca submit acidental). */
+  type?: "button" | "submit" | "reset"
+  /** Rótulo acessível do wrapper (default `"Toggle icon"`). */
+  "aria-label"?: string
   /** Classes adicionais no container. */
   className?: string
   /** Duração da transição em ms (default 300). */
@@ -46,7 +46,8 @@ export function IconSwap({
   iconOn: IconOn,
   iconOff: IconOff,
   active,
-  as: Comp = "span",
+  as: Comp = "button",
+  type = "button",
   className,
   duration = 300,
   iconClassName = "size-4",
@@ -58,18 +59,20 @@ export function IconSwap({
     transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1)",
   }
 
-  const ariaLabel = hostProps["aria-label"]
+  const isButton = Comp === "button"
+  const ariaLabel = hostProps["aria-label"] ?? "Toggle icon"
   const ariaHidden = hostProps["aria-hidden"]
-  // Semântica acessível: quando o consumidor fornece um aria-label e NÃO marcou
-  // o wrapper como decorativo (aria-hidden), promovemos o wrapper a role="img"
-  // para que screen readers o anunciem como um gráfico rotulado.
-  const role = !ariaHidden && ariaLabel ? "img" : undefined
+  // Para wrappers NÃO interativos (ex.: span) que recebem um aria-label e não
+  // foram marcados como decorativos, promovemos a role="img" para que screen
+  // readers o anunciem como gráfico rotulado. Um <button> já tem role próprio.
+  const role = !isButton && !ariaHidden && ariaLabel ? "img" : undefined
 
   return (
     <Comp
       data-slot="icon-swap"
+      type={isButton ? type : undefined}
       role={role}
-      aria-label={ariaLabel}
+      aria-label={ariaHidden ? undefined : ariaLabel}
       className={cn(
         "relative inline-flex items-center justify-center",
         className

@@ -176,12 +176,28 @@
   mix-blend-mode: normal;
 }
 
-/* ─── Wheel picker — suaviza cor do texto dos items ────────────────── */
-/* Site de referência usa cinza médio nos items (L ~65 light, L ~48 dark
-   em oklab); a vitrine herdava o --foreground (preto/branco puro) por
-   herança natural. color-mix com 40% do foreground + transparent dá:
-     dark  fg=0.985 bg=0.145 → 0.40·0.985 + 0.60·0.145 = 0.481 (L ~48)
-     light fg=0.145 bg=1     → 0.40·0.145 + 0.60·1     = 0.658 (L ~65) */
+/* ─── Wheel picker — cor do texto dos items ────────────────────────── */
+/* CAMINHO B (DECISÃO INTENCIONAL DO ORQUESTRADOR): "items mais saturados".
+ *
+ * O site de referência (chanhdai.com) usa um cinza médio "leve" nos items
+ * (L ~65 no light, L ~48 no dark). A vitrine usa o caminho oposto:
+ * aplicar color-mix(in oklab, var(--foreground) 65%, transparent), o que
+ * produz items MAIS saturados — um cinza escuro (L ~44) no light e um
+ * cinza claro (L ~69) no dark.
+ *
+ * Cálculo (L efetivo = mix linear com a cor de fundo):
+ *   light: fg=L14.5 bg=L100 → 0.65·14.5 + 0.35·100 = 44.4   → L ~44
+ *   dark:  fg=L98.5 bg=L14.5 → 0.65·98.5 + 0.35·14.5 = 69.1  → L ~69
+ *
+ * Efeito esperado (e o que se quer): MAIS contraste entre o item
+ * central selecionado (cor cheia do --foreground) e os items adjacentes
+ * (65% do --foreground). Resultado: o item central "pulou" mais pra
+ * frente do que no original — destaca a seleção.
+ *
+ * NUNCA trocar para um valor menor (ex.: 40%) achando que "vai ficar
+ * mais parecido com o original" — o caminho B é justamente IR CONTRA
+ * o original a favor de mais legibilidade/contraste. Se um reviewer
+ * futuro questionar, este comentário é a fonte da verdade. */
 [data-slot="react-wheel-picker"] [data-slot="option-item"] {
-  color: color-mix(in oklab, var(--foreground) 40%, transparent);
+  color: color-mix(in oklab, var(--foreground) 65%, transparent);
 }
