@@ -305,6 +305,14 @@ export const components: ComponentMeta[] = [
       "Bloco de texto estilizado com scramble (decodificação hacker) e chromatic aberration RGB no hover.",
     tags: ["glitch", "hacker", "scramble", "chromatic", "efeito"],
   },
+  {
+    slug: "animated-button",
+    name: "Animated Button",
+    category: "Actions",
+    description:
+      "Botão com borda brilhante animada e text reveal (mask gradient deslizante) — ideal para chamadas de ação (CTA).",
+    tags: ["button", "animated", "shiny", "border", "reveal", "cta", "vengenceui"],
+  },
 
   // Lote Fluid (ONDA 2 lote A)
   {

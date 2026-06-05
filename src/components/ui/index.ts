@@ -200,3 +200,5 @@ export type {
 // Lote VengenceUI
 export { CyberGlitchText } from "./cyber-glitch-text"
 export type { CyberGlitchTextProps } from "./cyber-glitch-text"
+export { AnimatedButton } from "./animated-button"
+export type { AnimatedButtonProps } from "./animated-button"
