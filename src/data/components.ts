@@ -710,6 +710,14 @@ export const components: ComponentMeta[] = [
       "Grid de cards da Aceternity UI onde, ao passar o mouse, um fundo destacado desliza suavemente entre os cards via motion (AnimatePresence + layoutId compartilhado). Funciona em light e dark.",
     tags: ["card", "hover", "grid", "slide", "layout", "aceternity"],
   },
+  {
+    slug: "container-scroll-animation",
+    name: "Container Scroll Animation",
+    category: "Layout",
+    description:
+      "Efeito de scroll 3D da Aceternity UI: conforme o usuário rola, um card/mockup rotaciona (rotateX), escala e o título translada para cima. Dirigido por useScroll/useTransform (motion/react); detecção de mobile ajusta a escala. Funciona em light e dark.",
+    tags: ["scroll", "animation", "3d", "hero", "parallax", "aceternity"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
