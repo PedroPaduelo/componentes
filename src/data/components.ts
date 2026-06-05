@@ -212,8 +212,16 @@ export const components: ComponentMeta[] = [
     name: "Mobius Loop Icon",
     category: "Actions",
     description:
-      "Ícone animado de loop infinito (mobius strip) com gradiente fluindo.",
-    tags: ["ícone", "loop", "mobius", "animado"],
+      "Ícono animado de loop infinito (mobius strip) com morphing SVG entre círculos e infinito.",
+    tags: [
+      "ícone",
+      "animação",
+      "svg",
+      "loading",
+      "infinito",
+      "mobius",
+      "loop",
+    ],
   },
   {
     slug: "scroll-fade-effect",
