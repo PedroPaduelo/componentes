@@ -345,6 +345,56 @@ export const components: ComponentMeta[] = [
       "Tabela da Fluid Functionalism com destaque de linha por proximidade do cursor e transições suaves.",
     tags: ["fluid", "table", "tabela", "dados", "linhas", "layout"],
   },
+
+  // Lote Fluid (ONDA 2 lote B1)
+  {
+    slug: "file-thumbnail-fluid",
+    name: "File Thumbnail (Fluid)",
+    category: "Feedback",
+    description:
+      "Miniatura quadrada de arquivo da Fluid Functionalism: pré-visualiza imagens e a primeira página de PDFs (via pdfjs) com spinner enquanto carrega.",
+    tags: ["fluid", "file", "arquivo", "thumbnail", "preview", "pdf", "imagem"],
+  },
+  {
+    slug: "thinking-indicator-fluid",
+    name: "Thinking Indicator (Fluid)",
+    category: "Feedback",
+    description:
+      "Indicador de processamento da Fluid Functionalism com ícone morfando entre formas e texto com efeito shimmer que alterna palavras.",
+    tags: ["fluid", "thinking", "loading", "indicador", "shimmer", "ia"],
+  },
+  {
+    slug: "input-group-fluid",
+    name: "Input Group (Fluid)",
+    category: "Forms",
+    description:
+      "Grupo de campos de texto da Fluid Functionalism com destaque por proximidade do cursor, ícones, foco animado e mensagens de erro.",
+    tags: ["fluid", "input", "campo", "formulário", "grupo", "erro"],
+  },
+  {
+    slug: "input-copy-fluid",
+    name: "Input Copy (Fluid)",
+    category: "Forms",
+    description:
+      "Campo somente leitura da Fluid Functionalism para exibir e copiar um valor, com variantes ícone (tooltip) e botão e animação de check.",
+    tags: ["fluid", "input", "copiar", "clipboard", "copy", "formulário"],
+  },
+  {
+    slug: "tabs-subtle-fluid",
+    name: "Tabs Subtle (Fluid)",
+    category: "Layout",
+    description:
+      "Abas sutis da Fluid Functionalism com pílula selecionada animada, hover por proximidade, anel de foco e modo de rótulo só na ativa.",
+    tags: ["fluid", "tabs", "abas", "navegação", "layout", "pílula"],
+  },
+  {
+    slug: "dropdown-fluid",
+    name: "Dropdown (Fluid)",
+    category: "Actions",
+    description:
+      "Menu dropdown da Fluid Functionalism com itens (MenuItem) selecionáveis, destaque por proximidade, check animado e elevação de superfície.",
+    tags: ["fluid", "dropdown", "menu", "ações", "popover", "seleção"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

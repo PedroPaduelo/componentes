@@ -67,3 +67,32 @@ export {
   TableFluidHead,
   TableFluidCell,
 } from "./table-fluid"
+
+// Lote Fluid (ONDA 2 lote B1)
+export { FileThumbnailFluid } from "./file-thumbnail-fluid"
+export type { FileThumbnailFluidProps } from "./file-thumbnail-fluid"
+export { loadPdfjs, renderPdfFirstPage } from "./file-thumbnail-fluid-pdf"
+export { ThinkingIndicatorFluid } from "./thinking-indicator-fluid"
+export { InputGroupFluid, InputFieldFluid } from "./input-group-fluid"
+export type { InputGroupFluidProps, InputFieldFluidProps } from "./input-group-fluid"
+export { InputCopyFluid } from "./input-copy-fluid"
+export type { InputCopyFluidProps } from "./input-copy-fluid"
+export {
+  TabsSubtleFluid,
+  TabsSubtleFluidItem,
+  TabsSubtleFluidPanel,
+} from "./tabs-subtle-fluid"
+export type {
+  TabsSubtleFluidProps,
+  TabsSubtleFluidItemProps,
+  TabsSubtleFluidPanelProps,
+} from "./tabs-subtle-fluid"
+export {
+  DropdownFluid,
+  DropdownFluidLabel,
+  DropdownFluidSeparator,
+} from "./dropdown-fluid"
+export type { DropdownFluidProps } from "./dropdown-fluid"
+export { useDropdownFluid } from "./dropdown-fluid-context"
+export { MenuItemFluid } from "./menu-item-fluid"
+export type { MenuItemFluidProps } from "./menu-item-fluid"

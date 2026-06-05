@@ -27,7 +27,16 @@ import {
   SliderRangeDemo,
   SwitchDemo,
   SwitchGroupDemo,
+  InputGroupDemo,
+  InputGroupErrorDemo,
+  InputCopyDemo,
+  InputCopyButtonDemo,
+  TabsSubtleDemo,
+  TabsSubtleIconsDemo,
+  DropdownDemo,
+  FileThumbnailDemo,
 } from "@/data/examples-fluid-demos"
+import { ThinkingIndicatorFluid } from "@/components/ui/thinking-indicator-fluid"
 
 // ── Button ────────────────────────────────────────────────
 
@@ -299,6 +308,134 @@ const tableBasicExample: Example = {
   ),
 }
 
+// ── Thinking Indicator ────────────────────────────────────
+
+const thinkingIndicatorExample: Example = {
+  title: "Básico",
+  description: "Ícone que morfa entre formas e texto com shimmer alternando palavras a cada 4s.",
+  code: `<ThinkingIndicatorFluid />`,
+  render: (
+    <div className="rounded-lg border border-border bg-card">
+      <ThinkingIndicatorFluid />
+    </div>
+  ),
+}
+
+// ── File Thumbnail ────────────────────────────────────────
+
+const fileThumbnailExample: Example = {
+  title: "Preview de imagem",
+  description: "Miniatura quadrada que mostra a imagem (object-cover) em três tamanhos.",
+  code: `<FileThumbnailFluid file={file} size={64} />
+<FileThumbnailFluid file={file} size={96} />
+<FileThumbnailFluid file={file} size={128} />`,
+  render: <FileThumbnailDemo />,
+}
+
+// ── Input Group ───────────────────────────────────────────
+
+const inputGroupExample: Example = {
+  title: "Campos com ícones",
+  description: "Grupo com destaque por proximidade do cursor e foco animado.",
+  code: `function Demo() {
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  return (
+    <InputGroupFluid>
+      <InputFieldFluid index={0} label="Nome" icon={User} value={name} onChange={setName} />
+      <InputFieldFluid index={1} label="E-mail" icon={Mail} value={email} onChange={setEmail} />
+    </InputGroupFluid>
+  )
+}`,
+  render: <InputGroupDemo />,
+}
+
+const inputGroupErrorExample: Example = {
+  title: "Com erro",
+  description: "Estado de erro com ring e mensagem.",
+  code: `<InputFieldFluid
+  index={0}
+  label="Senha"
+  icon={Lock}
+  type="password"
+  value={pass}
+  onChange={setPass}
+  error={pass.length < 6 ? "Mínimo de 6 caracteres" : undefined}
+/>`,
+  render: <InputGroupErrorDemo />,
+}
+
+// ── Input Copy ────────────────────────────────────────────
+
+const inputCopyExample: Example = {
+  title: "Variante ícone",
+  description: "Valor monoespaçado com botão de copiar (ícone) e tooltip.",
+  code: `<InputCopyFluid label="Chave de API" value="sk_live_4eC39HqLyjWDarjtT1zdp7dc" />`,
+  render: <InputCopyDemo />,
+}
+
+const inputCopyButtonExample: Example = {
+  title: "Variante botão",
+  description: "Ação de copiar com rótulo \"Copy\"/\"Copied\" e check animado.",
+  code: `<InputCopyFluid label="Comando" variant="button" value="npx shadcn@latest add button" />`,
+  render: <InputCopyButtonDemo />,
+}
+
+// ── Tabs Subtle ───────────────────────────────────────────
+
+const tabsSubtleExample: Example = {
+  title: "Básico",
+  description: "Abas com pílula selecionada animada e hover por proximidade.",
+  code: `function Demo() {
+  const [selected, setSelected] = useState(0)
+  return (
+    <TabsSubtleFluid selectedIndex={selected} onSelect={setSelected} idPrefix="t">
+      <TabsSubtleFluidItem index={0} label="Visão geral" />
+      <TabsSubtleFluidItem index={1} label="Atividade" />
+      <TabsSubtleFluidItem index={2} label="Configurações" />
+    </TabsSubtleFluid>
+  )
+}`,
+  render: <TabsSubtleDemo />,
+}
+
+const tabsSubtleIconsExample: Example = {
+  title: "Rótulo só na ativa",
+  description: "activeLabel: ícones sempre visíveis, rótulo só na aba selecionada.",
+  code: `<TabsSubtleFluid selectedIndex={selected} onSelect={setSelected} activeLabel>
+  <TabsSubtleFluidItem index={0} label="Início" icon={Home} />
+  <TabsSubtleFluidItem index={1} label="Buscar" icon={Search} />
+  <TabsSubtleFluidItem index={2} label="Alertas" icon={Bell} />
+  <TabsSubtleFluidItem index={3} label="Ajustes" icon={Settings} />
+</TabsSubtleFluid>`,
+  render: <TabsSubtleIconsDemo />,
+}
+
+// ── Dropdown ──────────────────────────────────────────────
+
+const dropdownExample: Example = {
+  title: "Menu de seleção",
+  description: "Itens selecionáveis (radio) com check animado, separador e destaque por proximidade.",
+  code: `function Demo() {
+  const [checked, setChecked] = useState(0)
+  return (
+    <DropdownFluid checkedIndex={checked}>
+      <DropdownFluidLabel>Tema</DropdownFluidLabel>
+      <MenuItemFluid index={0} label="Claro" icon={Sun} checked={checked === 0} onSelect={() => setChecked(0)} />
+      <MenuItemFluid index={1} label="Escuro" icon={Moon} checked={checked === 1} onSelect={() => setChecked(1)} />
+      <MenuItemFluid index={2} label="Sistema" icon={Monitor} checked={checked === 2} onSelect={() => setChecked(2)} />
+      <DropdownFluidSeparator />
+      <MenuItemFluid index={3} label="Configurações" icon={Settings} checked={checked === 3} onSelect={() => setChecked(3)} />
+    </DropdownFluid>
+  )
+}`,
+  render: (
+    <div className="flex justify-center py-2">
+      <DropdownDemo />
+    </div>
+  ),
+}
+
 // ── Mapa exportado ────────────────────────────────────────
 
 export const examplesFluid: Record<string, Example[]> = {
@@ -308,4 +445,10 @@ export const examplesFluid: Record<string, Example[]> = {
   "switch-fluid": [switchBasicExample, switchGroupExample],
   "tooltip-fluid": [tooltipBasicExample, tooltipSidesExample],
   "table-fluid": [tableBasicExample],
+  "file-thumbnail-fluid": [fileThumbnailExample],
+  "thinking-indicator-fluid": [thinkingIndicatorExample],
+  "input-group-fluid": [inputGroupExample, inputGroupErrorExample],
+  "input-copy-fluid": [inputCopyExample, inputCopyButtonExample],
+  "tabs-subtle-fluid": [tabsSubtleExample, tabsSubtleIconsExample],
+  "dropdown-fluid": [dropdownExample],
 }

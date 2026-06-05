@@ -54,6 +54,11 @@
   --shadow-6: 0 0 0 1px var(--shadow-color), 0 1px 1px -0.5px var(--shadow-color), 0 3px 3px -1.5px var(--shadow-color), 0 6px 6px -3px var(--shadow-color), 0 12px 12px -6px var(--shadow-color), 0 24px 24px -12px var(--shadow-color);
   --shadow-7: 0 0 0 1px var(--shadow-color), 0 1px 1px -0.5px var(--shadow-color), 0 3px 3px -1.5px var(--shadow-color), 0 6px 6px -3px var(--shadow-color), 0 12px 12px -6px var(--shadow-color), 0 24px 24px -12px var(--shadow-color), 0 48px 48px -24px var(--shadow-color);
   --shadow-8: 0 0 0 1px var(--shadow-color), 0 1px 1px -0.5px var(--shadow-color), 0 3px 3px -1.5px var(--shadow-color), 0 6px 6px -3px var(--shadow-color), 0 12px 12px -6px var(--shadow-color), 0 24px 24px -12px var(--shadow-color), 0 48px 48px -24px var(--shadow-color), 0 96px 96px -48px var(--shadow-color);
+
+  /* ─── Fluid Functionalism — interaction tokens (light) ─────────── */
+  --hover: oklch(0 0 0 / 0.04);
+  --active: oklch(0 0 0 / 0.08);
+  --destructive-light: oklch(0.936 0.032 17.717);
 }
 
 .dark {
@@ -88,6 +93,11 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* ─── Fluid Functionalism — interaction tokens (dark) ──────────── */
+  --hover: oklch(1 0 0 / 0.06);
+  --active: oklch(1 0 0 / 0.10);
+  --destructive-light: oklch(0.396 0.133 25.723);
 
   /* ─── Fluid Functionalism — surfaces (dark) ────────────────────── */
   --surface-1: #171717;
@@ -170,6 +180,11 @@
   --shadow-surface-6: var(--shadow-6);
   --shadow-surface-7: var(--shadow-7);
   --shadow-surface-8: var(--shadow-8);
+
+  /* ─── Fluid Functionalism — interaction colors ─────────────────── */
+  --color-hover: var(--hover);
+  --color-active: var(--active);
+  --color-destructive-light: var(--destructive-light);
 }
 
 @layer base {
@@ -279,4 +294,41 @@
  * futuro questionar, este comentário é a fonte da verdade. */
 [data-slot="react-wheel-picker"] [data-slot="option-item"] {
   color: color-mix(in oklab, var(--foreground) 65%, transparent);
+}
+
+/* ─── Fluid: scrollbar-hide (tabs-subtle overflow row) ────────────── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Fluid: Thinking Indicator — shimmer text ────────────────────── */
+/* Distinto do `@keyframes shimmer` do ShimmeringText (que anima
+   background-position pra 200% center). Aqui a faixa de brilho varre
+   o texto da esquerda pra direita num gradiente fixo. */
+@keyframes thinking-shimmer {
+  0% {
+    background-position: 0% 0;
+  }
+  100% {
+    background-position: 100% 0;
+  }
+}
+.thinking-shimmer-text {
+  color: transparent;
+  background: linear-gradient(
+    90deg,
+    #a3a3a3 0%,
+    #a3a3a3 35%,
+    #525252 50%,
+    #a3a3a3 65%,
+    #a3a3a3 100%
+  );
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  animation: thinking-shimmer 1.5s ease-in-out infinite;
 }
