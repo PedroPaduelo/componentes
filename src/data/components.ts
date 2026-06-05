@@ -573,6 +573,79 @@ export const components: ComponentMeta[] = [
       "Composer de mensagem da Fluid Functionalism: textarea auto-expansível, anexos via drag-and-drop e picker, preview de imagens/PDF, slots customizáveis e botão de envio.",
     tags: ["fluid", "input", "mensagem", "chat", "anexo", "formulário"],
   },
+  // Lote Aceternity
+  {
+    slug: "background-ripple-effect",
+    name: "Background Ripple Effect",
+    category: "Feedback",
+    description:
+      "Grade de células quadradas da Aceternity UI: ao clicar numa célula, um ripple (onda de opacidade) se propaga pelas vizinhas com delay proporcional à distância. Cores reativas ao tema.",
+    tags: ["background", "ripple", "grid", "interactive", "click", "aceternity"],
+  },
+  {
+    slug: "images-badge",
+    name: "Images Badge",
+    category: "Feedback",
+    description:
+      "Badge da Aceternity UI com ícone de pasta + texto; no hover, até 3 imagens saem da pasta num leque animado (fan-out via translate/spread/rotation) usando motion.",
+    tags: ["badge", "images", "hover", "fan", "gallery", "aceternity"],
+  },
+  {
+    slug: "parallax-hero-images",
+    name: "Parallax Hero Images",
+    category: "Layout",
+    description:
+      "Hero com imagens em profundidades distintas que transladam em parallax ao mover o mouse; entrada com fade-in + blur. Variante default vs edge-focus muda o mapa de profundidade.",
+    tags: ["parallax", "hero", "images", "mouse", "depth", "aceternity"],
+  },
+  {
+    slug: "scales",
+    name: "Scales",
+    category: "Layout",
+    description:
+      "Background decorativo da Aceternity UI: pattern de linhas repetidas via CSS puro, com orientação (horizontal/vertical/diagonal), densidade e cor configuráveis. ScalesContainer posiciona o pattern atrás do conteúdo.",
+    tags: ["background", "pattern", "lines", "diagonal", "decorative", "aceternity"],
+  },
+  {
+    slug: "sparkles",
+    name: "Sparkles",
+    category: "Feedback",
+    description:
+      "Campo de partículas brancas cintilantes (twinkle + leve drift) em canvas puro, reimplementado a partir do SparklesCore da Aceternity UI. Ideal como background de hero ou efeito standalone.",
+    tags: ["sparkles", "particles", "background", "hero", "canvas", "aceternity"],
+  },
+  {
+    slug: "dotted-glow-background",
+    name: "Dotted Glow Background",
+    category: "Feedback",
+    description:
+      "Fundo em canvas da Aceternity UI: grade de pontos que pulsam (alpha animado) com efeito glow, via requestAnimationFrame. Cores reativas ao tema (light/dark) por CSS variables, alta densidade (devicePixelRatio) e ResizeObserver.",
+    tags: ["background", "dots", "glow", "animation", "canvas", "aceternity"],
+  },
+  {
+    slug: "background-boxes",
+    name: "Background Boxes",
+    category: "Feedback",
+    description:
+      "Grid de células da Aceternity UI sobre fundo escuro; ao passar o mouse, cada célula acende com uma cor de highlight aleatória. Container com perspectiva isométrica (skew/translate/scale) e ícones \"+\" esparsos, via motion.",
+    tags: ["background", "boxes", "grid", "hover", "highlight", "aceternity"],
+  },
+  {
+    slug: "wavy-background",
+    name: "Wavy Background",
+    category: "Feedback",
+    description:
+      "Ondas coloridas suaves animadas em canvas atrás de um conteúdo (hero escuro), com movimento orgânico gerado por simplex noise 3D reimplementado inline (zero dependência externa).",
+    tags: ["background", "waves", "canvas", "hero", "animation", "aceternity"],
+  },
+  {
+    slug: "background-beams",
+    name: "Background Beams",
+    category: "Feedback",
+    description:
+      "Feixes de luz (\"beams\") da Aceternity UI que seguem dezenas de paths SVG curvos animados via linearGradients em movimento (x1/y1/x2/y2 percorrendo o caminho), sobre fundo escuro. Ideal como background de hero.",
+    tags: ["background", "beams", "svg", "hero", "animation", "aceternity"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

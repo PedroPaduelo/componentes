@@ -215,3 +215,37 @@ export { LightLines } from "./light-lines"
 export type { LightLinesProps } from "./light-lines-types"
 export { AnimatedNumber, AnimatedScore } from "./animated-number"
 export type { AnimatedNumberProps, AnimatedScoreProps } from "./animated-number"
+
+// Lote Aceternity
+export { ImagesBadge } from "./images-badge"
+export type { ImagesBadgeProps } from "./images-badge"
+export { Scales, ScalesContainer } from "./scales"
+export type {
+  ScalesProps,
+  ScalesContainerProps,
+  ScalesOrientation,
+} from "./scales"
+export { ParallaxHeroImages } from "./parallax-hero-images"
+export type {
+  ParallaxHeroImagesProps,
+  ParallaxHeroVariant,
+} from "./parallax-hero-images-types"
+export {
+  BackgroundRippleEffect,
+  DivGrid,
+} from "./background-ripple-effect"
+export type {
+  BackgroundRippleEffectProps,
+  DivGridProps,
+  RippleCell,
+  CellStyle,
+} from "./background-ripple-effect-types"
+export { SparklesCore } from "./sparkles"
+export type { SparklesCoreProps } from "./sparkles-types"
+export { DottedGlowBackground } from "./dotted-glow-background"
+export type { DottedGlowBackgroundProps } from "./dotted-glow-background-types"
+export { Boxes } from "./background-boxes"
+export { WavyBackground } from "./wavy-background"
+export type { WavyBackgroundProps } from "./wavy-background"
+export { BackgroundBeams } from "./background-beams"
+export type { BackgroundBeamsProps } from "./background-beams-types"

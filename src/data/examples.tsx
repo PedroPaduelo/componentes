@@ -79,6 +79,15 @@ import { perspectiveGridExamples } from "@/data/examples-perspective-grid"
 import { examplesGlassDock } from "@/data/examples-glass-dock"
 import { creepyButtonExamples } from "@/data/examples-creepy"
 import { examplesAnimatedNumber } from "@/data/examples-animated-number"
+import { examplesParallaxHeroImages } from "@/data/examples-parallax-hero-images"
+import { examplesImagesBadge } from "@/data/examples-images-badge"
+import { examplesDottedGlowBackground } from "@/data/examples-dotted-glow-background"
+import { examplesScales } from "@/data/examples-scales"
+import { examplesBackgroundBoxes } from "@/data/examples-background-boxes"
+import { examplesWavyBackground } from "@/data/examples-wavy-background"
+import { examplesBackgroundRippleEffect } from "@/data/examples-background-ripple-effect"
+import { examplesSparkles } from "@/data/examples-sparkles"
+import { examplesBackgroundBeams } from "@/data/examples-background-beams"
 
 export type Example = {
   title: string
@@ -1221,6 +1230,16 @@ export const examples: Record<string, Example[]> = {
   ...perspectiveGridExamples,
   ...examplesLightLines,
   ...examplesAnimatedNumber,
+  // Lote Aceternity
+  ...examplesImagesBadge,
+  ...examplesParallaxHeroImages,
+  ...examplesScales,
+  ...examplesBackgroundRippleEffect,
+  ...examplesSparkles,
+  ...examplesDottedGlowBackground,
+  ...examplesWavyBackground,
+  ...examplesBackgroundBoxes,
+  ...examplesBackgroundBeams,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
