@@ -575,6 +575,14 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "expandable-cards",
+    name: "Expandable Cards",
+    category: "Layout",
+    description:
+      "Lista de cards da Aceternity UI que expandem para um modal centralizado fullscreen via shared layout (layoutId/motion). Overlay com blur, fecha com Escape ou clique fora, e trava o scroll do body enquanto aberto.",
+    tags: ["card", "expand", "modal", "layout", "animation", "aceternity"],
+  },
+  {
     slug: "3d-card-effect",
     name: "3D Card Effect",
     category: "Layout",
@@ -717,6 +725,14 @@ export const components: ComponentMeta[] = [
     description:
       "Efeito de scroll 3D da Aceternity UI: conforme o usuário rola, um card/mockup rotaciona (rotateX), escala e o título translada para cima. Dirigido por useScroll/useTransform (motion/react); detecção de mobile ajusta a escala. Funciona em light e dark.",
     tags: ["scroll", "animation", "3d", "hero", "parallax", "aceternity"],
+  },
+  {
+    slug: "hero-parallax",
+    name: "Hero Parallax",
+    category: "Layout",
+    description:
+      "Hero da Aceternity UI: header (título + descrição) sobre 3 fileiras de 5 thumbnails de produtos que transladam horizontalmente em direções opostas conforme o scroll, com o conjunto rotacionando (rotateX/rotateZ), transladando e esmaecendo — suavizado por springs (useScroll/useTransform/useSpring de motion/react).",
+    tags: ["hero", "parallax", "scroll", "products", "grid", "aceternity"],
   },
 ]
 

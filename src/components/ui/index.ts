@@ -217,6 +217,9 @@ export { AnimatedNumber, AnimatedScore } from "./animated-number"
 export type { AnimatedNumberProps, AnimatedScoreProps } from "./animated-number"
 
 // Lote Aceternity
+export { ExpandableCards } from "./expandable-cards"
+export type { ExpandableCardsProps } from "./expandable-cards"
+export type { ExpandableCard } from "./expandable-cards-types"
 export { CardContainer, CardBody, CardItem } from "./3d-card"
 export type {
   CardContainerProps,
@@ -273,3 +276,5 @@ export type { MaskContainerProps } from "./svg-mask-effect-types"
 export { HoverEffect } from "./card-hover-effect"
 export { ContainerScroll } from "./container-scroll-animation"
 export type { ContainerScrollProps } from "./container-scroll-animation"
+export { HeroParallax } from "./hero-parallax"
+export type { HeroParallaxProps, Product } from "./hero-parallax-types"

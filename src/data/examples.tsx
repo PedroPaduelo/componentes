@@ -90,12 +90,15 @@ import { examplesBackgroundBeamsWithCollision } from "@/data/examples-background
 import { examplesSparkles } from "@/data/examples-sparkles"
 import { examplesBackgroundBeams } from "@/data/examples-background-beams"
 import { examplesCardHoverEffect } from "@/data/examples-card-hover-effect"
+import { examplesContainerScrollAnimation } from "@/data/examples-container-scroll-animation"
 import { examplesSvgMaskEffect } from "@/data/examples-svg-mask-effect"
 import { examplesVortex } from "@/data/examples-vortex"
 import { examplesBackgroundLines } from "@/data/examples-background-lines"
 import { examplesCardStack } from "@/data/examples-card-stack"
 import { examples3dCard } from "@/data/examples-3d-card"
 import { examplesTooltipCard } from "@/data/examples-tooltip-card"
+import { examplesExpandableCards } from "@/data/examples-expandable-cards"
+import { examplesHeroParallax } from "@/data/examples-hero-parallax"
 
 export type Example = {
   title: string
@@ -1239,6 +1242,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesLightLines,
   ...examplesAnimatedNumber,
   // Lote Aceternity
+  ...examplesExpandableCards,
   ...examples3dCard,
   ...examplesCardStack,
   ...examplesBackgroundLines,
@@ -1254,8 +1258,10 @@ export const examples: Record<string, Example[]> = {
   ...examplesBackgroundBoxes,
   ...examplesBackgroundBeams,
   ...examplesCardHoverEffect,
+  ...examplesContainerScrollAnimation,
   ...examplesVortex,
   ...examplesTooltipCard,
+  ...examplesHeroParallax,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
