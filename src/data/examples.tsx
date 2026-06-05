@@ -18,6 +18,7 @@
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { CopyButton } from "@/components/ui/copy-button"
 import {
   Card,
   CardContent,
@@ -743,34 +744,62 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                              consent-manager                                */
+/*                               copy-button                                   */
 /* -------------------------------------------------------------------------- */
 
-const consentManagerBasicExample: Example = {
+const copyButtonBasicExample: Example = {
   title: "Básico",
-  description:
-    "Modal de consentimento com toggles por categoria (Essencial, Analytics, Marketing) e botões de ação.",
-  code: `<ConsentManagerProvider>
-  <ConsentManager />
-</ConsentManagerProvider>`,
+  description: "Copia um texto para a área de transferência com feedback visual.",
+  code: `<CopyButton value="npm install @vitrine/ui" />`,
   render: (
-    <ConsentManagerProvider>
-      <div className="flex flex-col items-center gap-4 p-4">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Cookie className="size-4" />
-          <span>Clique no botão "Cookies" no canto inferior para abrir o modal</span>
-        </div>
-        <div className="flex items-center gap-2 rounded-lg border border-border p-4">
-          <Shield className="size-5 text-primary" />
-          <div>
-            <p className="text-sm font-medium">Consent Manager</p>
-            <p className="text-xs text-muted-foreground">
-              Gerencia preferências de cookies com persistência em localStorage.
-            </p>
-          </div>
-        </div>
-      </div>
-    </ConsentManagerProvider>
+    <CopyButton value="npm install @vitrine/ui" />
+  ),
+}
+
+const copyButtonVariantsExample: Example = {
+  title: "Variantes",
+  description: "Diferentes estilos visuais para combinar com o contexto.",
+  code: `<CopyButton value="Texto para copiar" variant="default" />
+<CopyButton value="Texto para copiar" variant="secondary" />
+<CopyButton value="Texto para copiar" variant="outline" />
+<CopyButton value="Texto para copiar" variant="ghost" />`,
+  render: (
+    <div className="flex flex-wrap gap-2">
+      <CopyButton value="Texto para copiar" variant="default" />
+      <CopyButton value="Texto para copiar" variant="secondary" />
+      <CopyButton value="Texto para copiar" variant="outline" />
+      <CopyButton value="Texto para copiar" variant="ghost" />
+    </div>
+  ),
+}
+
+const copyButtonSizesExample: Example = {
+  title: "Tamanhos",
+  description: "Três tamanhos para diferentes densidades de interface.",
+  code: `<CopyButton value="npm run build" size="sm" />
+<CopyButton value="npm run build" size="default" />
+<CopyButton value="npm run build" size="lg" />`,
+  render: (
+    <div className="flex flex-wrap items-center gap-2">
+      <CopyButton value="npm run build" size="sm" />
+      <CopyButton value="npm run build" size="default" />
+      <CopyButton value="npm run build" size="lg" />
+    </div>
+  ),
+}
+
+const copyButtonCustomLabelExample: Example = {
+  title: "Label customizado",
+  description: "Substitui o label padrão por um texto personalizado.",
+  code: `<CopyButton
+  value="https://github.com/vitrine/ui"
+  label="Copiar URL"
+/>`,
+  render: (
+    <CopyButton
+      value="https://github.com/vitrine/ui"
+      label="Copiar URL"
+    />
   ),
 }
 
@@ -780,6 +809,7 @@ const consentManagerBasicExample: Example = {
 
 export const examples: Record<string, Example[]> = {
   button: [buttonVariantsExample, buttonSizesExample, buttonDisabledExample],
+  "copy-button": [copyButtonBasicExample, copyButtonVariantsExample, copyButtonSizesExample, copyButtonCustomLabelExample],
   "dropdown-menu": [dropdownBasicExample, dropdownIconExample],
   card: [cardBasicExample, cardInteractiveExample],
   dialog: [dialogBasicExample, dialogFormExample],

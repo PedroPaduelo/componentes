@@ -98,6 +98,14 @@ export const components: ComponentMeta[] = [
     tags: ["caixa", "seleção", "formulário", "booleano", "marcar"],
   },
   {
+    slug: "copy-button",
+    name: "Copy Button",
+    category: "Actions",
+    description:
+      "Botão para copiar texto ou código para a área de transferência com feedback visual animado.",
+    tags: ["copiar", "clipboard", "botão", "ação", "feedback"],
+  },
+  {
     slug: "badge",
     name: "Badge",
     category: "Feedback",
