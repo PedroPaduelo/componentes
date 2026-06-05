@@ -35,6 +35,13 @@ import {
   TabsSubtleIconsDemo,
   DropdownDemo,
   FileThumbnailDemo,
+  AccordionDemo,
+  RadioGroupDemo,
+  CheckboxGroupDemo,
+  SelectDemo,
+  SelectIconDemo,
+  TabsDemo,
+  TabsIconsDemo,
 } from "@/data/examples-fluid-demos"
 import { ThinkingIndicatorFluid } from "@/components/ui/thinking-indicator-fluid"
 
@@ -436,6 +443,156 @@ const dropdownExample: Example = {
   ),
 }
 
+const accordionExample: Example = {
+  title: "Single (padrão)",
+  description:
+    "Accordion com um item aberto por vez, expansão por mola e destaque por proximidade do cursor.",
+  code: `<AccordionGroup type="single" defaultValue="item-1">
+  <AccordionItem value="item-1" index={0}>
+    <AccordionTrigger>O que é a Fluid Functionalism?</AccordionTrigger>
+    <AccordionContent>Uma biblioteca de componentes React…</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="item-2" index={1}>
+    <AccordionTrigger>Como funciona o destaque?</AccordionTrigger>
+    <AccordionContent>O fundo de hover segue o cursor…</AccordionContent>
+  </AccordionItem>
+  <AccordionItem value="item-3" index={2}>
+    <AccordionTrigger>Posso abrir vários itens?</AccordionTrigger>
+    <AccordionContent>Sim — use type="multiple".</AccordionContent>
+  </AccordionItem>
+</AccordionGroup>`,
+  render: (
+    <div className="flex justify-center py-2">
+      <AccordionDemo />
+    </div>
+  ),
+}
+
+const radioGroupExample: Example = {
+  title: "Básico",
+  description:
+    "Grupo de opções exclusivas com fundo selecionado animado, ponto que aparece com mola e navegação por teclado.",
+  code: `const [value, setValue] = useState("comfortable")
+
+<RadioGroup value={value} onValueChange={setValue}>
+  <RadioItem index={0} value="default" label="Padrão" />
+  <RadioItem index={1} value="comfortable" label="Confortável" />
+  <RadioItem index={2} value="compact" label="Compacto" />
+</RadioGroup>`,
+  render: (
+    <div className="flex justify-center py-2">
+      <RadioGroupDemo />
+    </div>
+  ),
+}
+
+const checkboxGroupExample: Example = {
+  title: "Merge / split",
+  description:
+    "Caixas de seleção cujos fundos contíguos se fundem em um bloco único e se separam quando uma linha do meio é desmarcada.",
+  code: `const [checked, setChecked] = useState(new Set([0, 1]))
+const toggle = (i) =>
+  setChecked((prev) => {
+    const next = new Set(prev)
+    next.has(i) ? next.delete(i) : next.add(i)
+    return next
+  })
+
+<CheckboxGroup checkedIndices={checked}>
+  {items.map((label, i) => (
+    <CheckboxItem key={label} index={i} label={label}
+      checked={checked.has(i)} onToggle={() => toggle(i)} />
+  ))}
+</CheckboxGroup>`,
+  render: (
+    <div className="flex justify-center py-2">
+      <CheckboxGroupDemo />
+    </div>
+  ),
+}
+
+const selectExample: Example = {
+  title: "Básico",
+  description:
+    "Select com popover em portal, destaque por proximidade, check animado na opção selecionada e fechamento por clique externo/Escape.",
+  code: `const [value, setValue] = useState("")
+
+<Select value={value} onValueChange={setValue}>
+  <SelectTrigger placeholder="Selecione uma fruta…" />
+  <SelectContent>
+    <SelectItem index={0} value="apple">Maçã</SelectItem>
+    <SelectItem index={1} value="banana">Banana</SelectItem>
+    <SelectItem index={2} value="orange">Laranja</SelectItem>
+    <SelectItem index={3} value="grape">Uva</SelectItem>
+  </SelectContent>
+</Select>`,
+  render: (
+    <div className="flex justify-center py-2">
+      <SelectDemo />
+    </div>
+  ),
+}
+
+const selectIconExample: Example = {
+  title: "Com ícones",
+  description:
+    "Trigger e itens com ícones lucide. O ícone do trigger ganha peso de traço no hover.",
+  code: `<Select value={value} onValueChange={setValue}>
+  <SelectTrigger icon={Home} placeholder="Navegar…" />
+  <SelectContent>
+    <SelectItem index={0} value="home" icon={Home}>Início</SelectItem>
+    <SelectItem index={1} value="search" icon={Search}>Buscar</SelectItem>
+    <SelectItem index={2} value="notifications" icon={Bell}>Notificações</SelectItem>
+    <SelectItem index={3} value="settings" icon={Settings}>Configurações</SelectItem>
+  </SelectContent>
+</Select>`,
+  render: (
+    <div className="flex justify-center py-2">
+      <SelectIconDemo />
+    </div>
+  ),
+}
+
+const tabsExample: Example = {
+  title: "Básico",
+  description:
+    "Abas com indicador de pílula elevada que desliza por mola, hover por proximidade horizontal e painéis controlados.",
+  code: `const [value, setValue] = useState("overview")
+
+<Tabs value={value} onValueChange={setValue}>
+  <TabsList>
+    <TabItem value="overview" label="Visão geral" />
+    <TabItem value="analytics" label="Análises" />
+    <TabItem value="reports" label="Relatórios" />
+  </TabsList>
+  <TabPanel value="overview">Resumo geral…</TabPanel>
+  <TabPanel value="analytics">Gráficos e métricas…</TabPanel>
+  <TabPanel value="reports">Exportações e relatórios…</TabPanel>
+</Tabs>`,
+  render: (
+    <div className="flex justify-center py-2">
+      <TabsDemo />
+    </div>
+  ),
+}
+
+const tabsIconsExample: Example = {
+  title: "Com ícones",
+  description: "Abas com ícone à esquerda do rótulo.",
+  code: `<Tabs value={value} onValueChange={setValue}>
+  <TabsList>
+    <TabItem value="home" label="Início" icon={Home} />
+    <TabItem value="search" label="Buscar" icon={Search} />
+    <TabItem value="alerts" label="Alertas" icon={Bell} />
+  </TabsList>
+</Tabs>`,
+  render: (
+    <div className="flex justify-center py-2">
+      <TabsIconsDemo />
+    </div>
+  ),
+}
+
 // ── Mapa exportado ────────────────────────────────────────
 
 export const examplesFluid: Record<string, Example[]> = {
@@ -451,4 +608,9 @@ export const examplesFluid: Record<string, Example[]> = {
   "input-copy-fluid": [inputCopyExample, inputCopyButtonExample],
   "tabs-subtle-fluid": [tabsSubtleExample, tabsSubtleIconsExample],
   "dropdown-fluid": [dropdownExample],
+  "accordion-fluid": [accordionExample],
+  "radio-group-fluid": [radioGroupExample],
+  "checkbox-group-fluid": [checkboxGroupExample],
+  "select-fluid": [selectExample, selectIconExample],
+  "tabs-fluid": [tabsExample, tabsIconsExample],
 }

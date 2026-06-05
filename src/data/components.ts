@@ -395,6 +395,46 @@ export const components: ComponentMeta[] = [
       "Menu dropdown da Fluid Functionalism com itens (MenuItem) selecionáveis, destaque por proximidade, check animado e elevação de superfície.",
     tags: ["fluid", "dropdown", "menu", "ações", "popover", "seleção"],
   },
+  {
+    slug: "accordion-fluid",
+    name: "Accordion (Fluid)",
+    category: "Layout",
+    description:
+      "Accordion da Fluid Functionalism com expansão animada por mola, destaque por proximidade do cursor, anel de foco e modos single/multiple.",
+    tags: ["fluid", "accordion", "acordeão", "expansível", "collapse", "layout"],
+  },
+  {
+    slug: "radio-group-fluid",
+    name: "Radio Group (Fluid)",
+    category: "Forms",
+    description:
+      "Grupo de opções exclusivas da Fluid Functionalism com fundo selecionado animado, destaque por proximidade, navegação por teclado e ponto animado.",
+    tags: ["fluid", "radio", "rádio", "seleção", "opções", "formulário"],
+  },
+  {
+    slug: "checkbox-group-fluid",
+    name: "Checkbox Group (Fluid)",
+    category: "Forms",
+    description:
+      "Grupo de caixas de seleção da Fluid Functionalism com fundos contíguos que se fundem/separam (merge/split), check animado e destaque por proximidade.",
+    tags: ["fluid", "checkbox", "seleção", "múltipla", "marcar", "formulário"],
+  },
+  {
+    slug: "select-fluid",
+    name: "Select (Fluid)",
+    category: "Forms",
+    description:
+      "Select da Fluid Functionalism com popover em portal, destaque por proximidade, check animado, variantes bordered/borderless e suporte a ícones e erro.",
+    tags: ["fluid", "select", "combobox", "dropdown", "seleção", "formulário"],
+  },
+  {
+    slug: "tabs-fluid",
+    name: "Tabs (Fluid)",
+    category: "Layout",
+    description:
+      "Abas da Fluid Functionalism com indicador de pílula elevada animado, hover por proximidade no eixo horizontal, anel de foco e painéis controlados.",
+    tags: ["fluid", "tabs", "abas", "navegação", "pílula", "layout"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

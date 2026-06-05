@@ -96,3 +96,45 @@ export type { DropdownFluidProps } from "./dropdown-fluid"
 export { useDropdownFluid } from "./dropdown-fluid-context"
 export { MenuItemFluid } from "./menu-item-fluid"
 export type { MenuItemFluidProps } from "./menu-item-fluid"
+
+// Lote Fluid (ONDA 2 lote B2)
+export {
+  Accordion as AccordionFluid,
+  AccordionGroup as AccordionGroupFluid,
+  AccordionItem as AccordionItemFluid,
+  AccordionTrigger as AccordionTriggerFluid,
+  AccordionContent as AccordionContentFluid,
+} from "./accordion-fluid"
+export { RadioGroup as RadioGroupFluid, RadioItem as RadioItemFluid } from "./radio-group-fluid"
+export {
+  CheckboxGroup as CheckboxGroupFluid,
+  CheckboxItem as CheckboxItemFluid,
+} from "./checkbox-group-fluid"
+export {
+  Select as SelectFluid,
+  SelectTrigger as SelectTriggerFluid,
+  SelectContent as SelectContentFluid,
+  SelectItem as SelectItemFluid,
+  SelectGroup as SelectGroupFluid,
+  SelectLabel as SelectLabelFluid,
+  SelectSeparator as SelectSeparatorFluid,
+} from "./select-fluid"
+export type {
+  SelectProps as SelectFluidProps,
+  SelectTriggerProps as SelectTriggerFluidProps,
+  SelectContentProps as SelectContentFluidProps,
+  SelectItemProps as SelectItemFluidProps,
+} from "./select-fluid"
+export { triggerVariants as selectFluidTriggerVariants } from "./select-fluid-variants"
+export {
+  Tabs as TabsFluid,
+  TabsList as TabsListFluid,
+  TabItem as TabItemFluid,
+  TabPanel as TabPanelFluid,
+} from "./tabs-fluid"
+export type {
+  TabsProps as TabsFluidProps,
+  TabsListProps as TabsListFluidProps,
+  TabItemProps as TabItemFluidProps,
+  TabPanelProps as TabPanelFluidProps,
+} from "./tabs-fluid"

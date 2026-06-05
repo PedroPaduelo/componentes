@@ -18,6 +18,26 @@ import {
 import { DropdownFluid, DropdownFluidLabel, DropdownFluidSeparator } from "@/components/ui/dropdown-fluid"
 import { MenuItemFluid } from "@/components/ui/menu-item-fluid"
 import { FileThumbnailFluid } from "@/components/ui/file-thumbnail-fluid"
+import {
+  AccordionGroup as AccordionGroupFluid,
+  AccordionItem as AccordionItemFluid,
+  AccordionTrigger as AccordionTriggerFluid,
+  AccordionContent as AccordionContentFluid,
+} from "@/components/ui/accordion-fluid"
+import { RadioGroup as RadioGroupFluid, RadioItem as RadioItemFluid } from "@/components/ui/radio-group-fluid"
+import { CheckboxGroup as CheckboxGroupFluid, CheckboxItem as CheckboxItemFluid } from "@/components/ui/checkbox-group-fluid"
+import {
+  Select as SelectFluid,
+  SelectTrigger as SelectTriggerFluid,
+  SelectContent as SelectContentFluid,
+  SelectItem as SelectItemFluid,
+} from "@/components/ui/select-fluid"
+import {
+  Tabs as TabsFluid,
+  TabsList as TabsListFluid,
+  TabItem as TabItemFluid,
+  TabPanel as TabPanelFluid,
+} from "@/components/ui/tabs-fluid"
 
 export function SliderDemo() {
   const [value, setValue] = useState<SliderValue>(40)
@@ -246,5 +266,150 @@ export function FileThumbnailDemo() {
         <span className="text-[13px] text-muted-foreground">Gerando preview…</span>
       )}
     </div>
+  )
+}
+
+export function AccordionDemo() {
+  return (
+    <AccordionGroupFluid type="single" defaultValue="item-1">
+      <AccordionItemFluid value="item-1" index={0}>
+        <AccordionTriggerFluid>O que é a Fluid Functionalism?</AccordionTriggerFluid>
+        <AccordionContentFluid>
+          Uma biblioteca de componentes React com microinterações fluidas
+          baseadas em molas e destaque por proximidade do cursor.
+        </AccordionContentFluid>
+      </AccordionItemFluid>
+      <AccordionItemFluid value="item-2" index={1}>
+        <AccordionTriggerFluid>Como funciona o destaque?</AccordionTriggerFluid>
+        <AccordionContentFluid>
+          O fundo de hover segue o cursor e a expansão usa uma mola criticamente
+          amortecida para abrir suavemente.
+        </AccordionContentFluid>
+      </AccordionItemFluid>
+      <AccordionItemFluid value="item-3" index={2}>
+        <AccordionTriggerFluid>Posso abrir vários itens?</AccordionTriggerFluid>
+        <AccordionContentFluid>
+          Sim — use type="multiple" para permitir múltiplos itens abertos ao
+          mesmo tempo.
+        </AccordionContentFluid>
+      </AccordionItemFluid>
+    </AccordionGroupFluid>
+  )
+}
+
+export function RadioGroupDemo() {
+  const [value, setValue] = useState("comfortable")
+  return (
+    <RadioGroupFluid value={value} onValueChange={setValue}>
+      <RadioItemFluid index={0} value="default" label="Padrão" />
+      <RadioItemFluid index={1} value="comfortable" label="Confortável" />
+      <RadioItemFluid index={2} value="compact" label="Compacto" />
+    </RadioGroupFluid>
+  )
+}
+
+export function CheckboxGroupDemo() {
+  const [checked, setChecked] = useState<Set<number>>(new Set([0, 1]))
+  const toggle = (i: number) =>
+    setChecked((prev) => {
+      const next = new Set(prev)
+      if (next.has(i)) next.delete(i)
+      else next.add(i)
+      return next
+    })
+  const items = ["Notificações por e-mail", "Notificações push", "SMS", "Resumo semanal"]
+  return (
+    <CheckboxGroupFluid checkedIndices={checked}>
+      {items.map((label, i) => (
+        <CheckboxItemFluid
+          key={label}
+          index={i}
+          label={label}
+          checked={checked.has(i)}
+          onToggle={() => toggle(i)}
+        />
+      ))}
+    </CheckboxGroupFluid>
+  )
+}
+
+export function SelectDemo() {
+  const [value, setValue] = useState("")
+  return (
+    <SelectFluid value={value} onValueChange={setValue}>
+      <SelectTriggerFluid placeholder="Selecione uma fruta…" />
+      <SelectContentFluid>
+        <SelectItemFluid index={0} value="apple">
+          Maçã
+        </SelectItemFluid>
+        <SelectItemFluid index={1} value="banana">
+          Banana
+        </SelectItemFluid>
+        <SelectItemFluid index={2} value="orange">
+          Laranja
+        </SelectItemFluid>
+        <SelectItemFluid index={3} value="grape">
+          Uva
+        </SelectItemFluid>
+      </SelectContentFluid>
+    </SelectFluid>
+  )
+}
+
+export function SelectIconDemo() {
+  const [value, setValue] = useState("home")
+  return (
+    <SelectFluid value={value} onValueChange={setValue}>
+      <SelectTriggerFluid icon={Home} placeholder="Navegar…" />
+      <SelectContentFluid>
+        <SelectItemFluid index={0} value="home" icon={Home}>
+          Início
+        </SelectItemFluid>
+        <SelectItemFluid index={1} value="search" icon={Search}>
+          Buscar
+        </SelectItemFluid>
+        <SelectItemFluid index={2} value="notifications" icon={Bell}>
+          Notificações
+        </SelectItemFluid>
+        <SelectItemFluid index={3} value="settings" icon={Settings}>
+          Configurações
+        </SelectItemFluid>
+      </SelectContentFluid>
+    </SelectFluid>
+  )
+}
+
+export function TabsDemo() {
+  const [value, setValue] = useState("overview")
+  return (
+    <TabsFluid value={value} onValueChange={setValue}>
+      <TabsListFluid>
+        <TabItemFluid value="overview" label="Visão geral" />
+        <TabItemFluid value="analytics" label="Análises" />
+        <TabItemFluid value="reports" label="Relatórios" />
+      </TabsListFluid>
+      <TabPanelFluid value="overview" className="pt-4 text-[13px] text-muted-foreground">
+        Resumo geral da conta e dos principais indicadores.
+      </TabPanelFluid>
+      <TabPanelFluid value="analytics" className="pt-4 text-[13px] text-muted-foreground">
+        Gráficos e métricas detalhadas de uso ao longo do tempo.
+      </TabPanelFluid>
+      <TabPanelFluid value="reports" className="pt-4 text-[13px] text-muted-foreground">
+        Exportações e relatórios agendados.
+      </TabPanelFluid>
+    </TabsFluid>
+  )
+}
+
+export function TabsIconsDemo() {
+  const [value, setValue] = useState("home")
+  return (
+    <TabsFluid value={value} onValueChange={setValue}>
+      <TabsListFluid>
+        <TabItemFluid value="home" label="Início" icon={Home} />
+        <TabItemFluid value="search" label="Buscar" icon={Search} />
+        <TabItemFluid value="alerts" label="Alertas" icon={Bell} />
+      </TabsListFluid>
+    </TabsFluid>
   )
 }
