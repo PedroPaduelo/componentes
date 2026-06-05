@@ -573,6 +573,14 @@ export const components: ComponentMeta[] = [
       "Composer de mensagem da Fluid Functionalism: textarea auto-expansível, anexos via drag-and-drop e picker, preview de imagens/PDF, slots customizáveis e botão de envio.",
     tags: ["fluid", "input", "mensagem", "chat", "anexo", "formulário"],
   },
+  {
+    slug: "logo-slider",
+    name: "Logo Slider",
+    category: "Layout",
+    description:
+      "Marquee infinito de logos (CSS puro) com loop sem emenda e blur progressivo nas bordas; configurável por direção, velocidade e pause-on-hover.",
+    tags: ["marquee", "logos", "slider", "infinite", "blur", "vengenceui"],
+  },
   // Lote Aceternity
   {
     slug: "expandable-cards",

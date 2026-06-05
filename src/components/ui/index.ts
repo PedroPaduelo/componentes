@@ -215,6 +215,8 @@ export { LightLines } from "./light-lines"
 export type { LightLinesProps } from "./light-lines-types"
 export { AnimatedNumber, AnimatedScore } from "./animated-number"
 export type { AnimatedNumberProps, AnimatedScoreProps } from "./animated-number"
+export { LogoSlider } from "./logo-slider"
+export type { LogoSliderProps } from "./logo-slider-types"
 
 // Lote Aceternity
 export { ExpandableCards } from "./expandable-cards"

@@ -79,6 +79,7 @@ import { perspectiveGridExamples } from "@/data/examples-perspective-grid"
 import { examplesGlassDock } from "@/data/examples-glass-dock"
 import { creepyButtonExamples } from "@/data/examples-creepy"
 import { examplesAnimatedNumber } from "@/data/examples-animated-number"
+import { examplesLogoSlider } from "@/data/examples-logo-slider"
 import { examplesParallaxHeroImages } from "@/data/examples-parallax-hero-images"
 import { examplesImagesBadge } from "@/data/examples-images-badge"
 import { examplesDottedGlowBackground } from "@/data/examples-dotted-glow-background"
@@ -1241,6 +1242,7 @@ export const examples: Record<string, Example[]> = {
   ...perspectiveGridExamples,
   ...examplesLightLines,
   ...examplesAnimatedNumber,
+  ...examplesLogoSlider,
   // Lote Aceternity
   ...examplesExpandableCards,
   ...examples3dCard,
