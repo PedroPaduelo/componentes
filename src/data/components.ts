@@ -575,6 +575,14 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "3d-card-effect",
+    name: "3D Card Effect",
+    category: "Layout",
+    description:
+      "Card que inclina seguindo o cursor com elementos internos flutuando em profundidades distintas (perspectiva 3D real).",
+    tags: ["card", "3d", "perspective", "hover", "tilt", "aceternity"],
+  },
+  {
     slug: "card-stack",
     name: "Card Stack",
     category: "Layout",

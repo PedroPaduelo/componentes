@@ -217,18 +217,6 @@ export { AnimatedNumber, AnimatedScore } from "./animated-number"
 export type { AnimatedNumberProps, AnimatedScoreProps } from "./animated-number"
 
 // Lote Aceternity
-export { CardContainer, CardBody, CardItem } from "./3d-card"
-export type {
-  CardContainerProps,
-  CardBodyProps,
-  CardItemProps,
-} from "./3d-card-types"
-export { CardStack, Highlight } from "./card-stack"
-export type {
-  CardStackItem,
-  CardStackProps,
-  HighlightProps,
-} from "./card-stack-types"
 export { BackgroundLines } from "./background-lines"
 export type { BackgroundLinesProps } from "./background-lines"
 export { BackgroundBeamsWithCollision } from "./background-beams-with-collision"

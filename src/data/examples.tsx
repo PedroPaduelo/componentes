@@ -94,6 +94,7 @@ import { examplesSvgMaskEffect } from "@/data/examples-svg-mask-effect"
 import { examplesVortex } from "@/data/examples-vortex"
 import { examplesBackgroundLines } from "@/data/examples-background-lines"
 import { examplesCardStack } from "@/data/examples-card-stack"
+import { examples3dCard } from "@/data/examples-3d-card"
 import { examplesTooltipCard } from "@/data/examples-tooltip-card"
 
 export type Example = {
@@ -1238,6 +1239,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesLightLines,
   ...examplesAnimatedNumber,
   // Lote Aceternity
+  ...examples3dCard,
   ...examplesCardStack,
   ...examplesBackgroundLines,
   ...examplesSvgMaskEffect,
