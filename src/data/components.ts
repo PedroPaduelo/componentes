@@ -129,19 +129,12 @@ export const components: ComponentMeta[] = [
     ],
   },
   {
-    slug: "slide-to-unlock",
-    name: "Slide to Unlock",
-    category: "Forms",
+    slug: "theme-switcher",
+    name: "Theme Switcher",
+    category: "Actions",
     description:
-      "Controle deslizante estilo iOS para confirmar ações. Arraste o thumb da esquerda para a direita.",
-    tags: [
-      "slider",
-      "deslizar",
-      "confirmar",
-      "ação",
-      "touch",
-      "arrastar",
-    ],
+      "Seletor de tema com dropdown para alternar entre Light, Dark e System.",
+    tags: ["tema", "dark mode", "light mode", "system", "toggle", "switch", "appear\u00e2ncia"],
   },
 ]
 
