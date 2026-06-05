@@ -73,6 +73,7 @@ import { examplesFluid } from "@/data/examples-fluid"
 import { examplesCyber } from "@/data/examples-cyber"
 import { animatedButtonExamples } from "@/data/examples-animated"
 import { examplesFlipText } from "@/data/examples-flip-text"
+import { examplesFlipFadeText } from "@/data/examples-flip-fade-text"
 import { perspectiveGridExamples } from "@/data/examples-perspective-grid"
 import { examplesGlassDock } from "@/data/examples-glass-dock"
 import { creepyButtonExamples } from "@/data/examples-creepy"
@@ -1212,6 +1213,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesCyber,
   ...animatedButtonExamples,
   ...examplesFlipText,
+  ...examplesFlipFadeText,
   ...examplesGlassDock,
   ...creepyButtonExamples,
   ...perspectiveGridExamples,

@@ -314,6 +314,14 @@ export const components: ComponentMeta[] = [
     tags: ["button", "animated", "shiny", "border", "reveal", "cta", "vengenceui"],
   },
   {
+    slug: "flip-fade-text",
+    name: "Flip Fade Text",
+    category: "Feedback",
+    description:
+      "Texto 3D flip animado por letra, ciclando por palavras com stagger configurável. Ideal para loading states e hero sections.",
+    tags: ["flip", "3d", "animação", "texto", "efeito", "loading", "hero", "vengenceui"],
+  },
+  {
     slug: "flip-text",
     name: "Flip Text",
     category: "Feedback",
