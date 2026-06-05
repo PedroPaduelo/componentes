@@ -575,12 +575,28 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "card-stack",
+    name: "Card Stack",
+    category: "Layout",
+    description:
+      "Pilha de cards de testimonials da Aceternity UI que rotaciona automaticamente: a cada ~5s o card do topo vai pro fundo. Empilhamento com offset vertical e escala decrescente por profundidade, animado com motion. Inclui o helper Highlight pra destacar trechos em emerald.",
+    tags: ["card", "stack", "testimonials", "carousel", "animation", "aceternity"],
+  },
+  {
     slug: "background-lines",
     name: "Background Lines",
     category: "Feedback",
     description:
       "Efeito de fundo da Aceternity UI: SVG com múltiplos paths curvos coloridos que animam em padrão de onda (wave) em loop, atrás do conteúdo. Inspirado no height.app; fundo transparente que adapta ao tema.",
     tags: ["background", "lines", "svg", "wave", "hero", "aceternity"],
+  },
+  {
+    slug: "svg-mask-effect",
+    name: "SVG Mask Effect",
+    category: "Feedback",
+    description:
+      "Efeito de revelação da Aceternity UI: o texto base fica escondido por uma camada; ao mover o mouse, uma máscara circular segue o cursor e revela o conteúdo por baixo, crescendo no hover. Funciona em light e dark.",
+    tags: ["mask", "reveal", "hover", "cursor", "effect", "aceternity"],
   },
   {
     slug: "background-beams-with-collision",
@@ -677,6 +693,14 @@ export const components: ComponentMeta[] = [
     description:
       "Tooltip da Aceternity UI que aparece no hover e SEGUE o cursor (motion/react com AnimatePresence + spring). O conteúdo pode ser texto simples ou um card React rico (avatar, nome, bio); posição calculada a partir do mouse com clamp nas bordas do viewport.",
     tags: ["tooltip", "card", "hover", "cursor", "follow", "aceternity"],
+  },
+  {
+    slug: "card-hover-effect",
+    name: "Card Hover Effect",
+    category: "Layout",
+    description:
+      "Grid de cards da Aceternity UI onde, ao passar o mouse, um fundo destacado desliza suavemente entre os cards via motion (AnimatePresence + layoutId compartilhado). Funciona em light e dark.",
+    tags: ["card", "hover", "grid", "slide", "layout", "aceternity"],
   },
 ]
 

@@ -89,8 +89,11 @@ import { examplesBackgroundRippleEffect } from "@/data/examples-background-rippl
 import { examplesBackgroundBeamsWithCollision } from "@/data/examples-background-beams-with-collision"
 import { examplesSparkles } from "@/data/examples-sparkles"
 import { examplesBackgroundBeams } from "@/data/examples-background-beams"
+import { examplesCardHoverEffect } from "@/data/examples-card-hover-effect"
+import { examplesSvgMaskEffect } from "@/data/examples-svg-mask-effect"
 import { examplesVortex } from "@/data/examples-vortex"
 import { examplesBackgroundLines } from "@/data/examples-background-lines"
+import { examplesCardStack } from "@/data/examples-card-stack"
 import { examplesTooltipCard } from "@/data/examples-tooltip-card"
 
 export type Example = {
@@ -1235,7 +1238,9 @@ export const examples: Record<string, Example[]> = {
   ...examplesLightLines,
   ...examplesAnimatedNumber,
   // Lote Aceternity
+  ...examplesCardStack,
   ...examplesBackgroundLines,
+  ...examplesSvgMaskEffect,
   ...examplesBackgroundBeamsWithCollision,
   ...examplesImagesBadge,
   ...examplesParallaxHeroImages,
@@ -1246,6 +1251,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesWavyBackground,
   ...examplesBackgroundBoxes,
   ...examplesBackgroundBeams,
+  ...examplesCardHoverEffect,
   ...examplesVortex,
   ...examplesTooltipCard,
 }
