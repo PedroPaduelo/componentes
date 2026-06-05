@@ -18,6 +18,7 @@
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { CopyButton } from "@/components/ui/copy-button"
 import {
   Card,
   CardContent,
@@ -741,11 +742,72 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                               copy-button                                   */
+/* -------------------------------------------------------------------------- */
+
+const copyButtonBasicExample: Example = {
+  title: "Básico",
+  description: "Copia um texto para a área de transferência com feedback visual.",
+  code: `<CopyButton value="npm install @vitrine/ui" />`,
+  render: (
+    <CopyButton value="npm install @vitrine/ui" />
+  ),
+}
+
+const copyButtonVariantsExample: Example = {
+  title: "Variantes",
+  description: "Diferentes estilos visuais para combinar com o contexto.",
+  code: `<CopyButton value="Texto para copiar" variant="default" />
+<CopyButton value="Texto para copiar" variant="secondary" />
+<CopyButton value="Texto para copiar" variant="outline" />
+<CopyButton value="Texto para copiar" variant="ghost" />`,
+  render: (
+    <div className="flex flex-wrap gap-2">
+      <CopyButton value="Texto para copiar" variant="default" />
+      <CopyButton value="Texto para copiar" variant="secondary" />
+      <CopyButton value="Texto para copiar" variant="outline" />
+      <CopyButton value="Texto para copiar" variant="ghost" />
+    </div>
+  ),
+}
+
+const copyButtonSizesExample: Example = {
+  title: "Tamanhos",
+  description: "Três tamanhos para diferentes densidades de interface.",
+  code: `<CopyButton value="npm run build" size="sm" />
+<CopyButton value="npm run build" size="default" />
+<CopyButton value="npm run build" size="lg" />`,
+  render: (
+    <div className="flex flex-wrap items-center gap-2">
+      <CopyButton value="npm run build" size="sm" />
+      <CopyButton value="npm run build" size="default" />
+      <CopyButton value="npm run build" size="lg" />
+    </div>
+  ),
+}
+
+const copyButtonCustomLabelExample: Example = {
+  title: "Label customizado",
+  description: "Substitui o label padrão por um texto personalizado.",
+  code: `<CopyButton
+  value="https://github.com/vitrine/ui"
+  label="Copiar URL"
+/>`,
+  render: (
+    <CopyButton
+      value="https://github.com/vitrine/ui"
+      label="Copiar URL"
+    />
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  mapa                                       */
 /* -------------------------------------------------------------------------- */
 
 export const examples: Record<string, Example[]> = {
   button: [buttonVariantsExample, buttonSizesExample, buttonDisabledExample],
+  "copy-button": [copyButtonBasicExample, copyButtonVariantsExample, copyButtonSizesExample, copyButtonCustomLabelExample],
   "dropdown-menu": [dropdownBasicExample, dropdownIconExample],
   card: [cardBasicExample, cardInteractiveExample],
   dialog: [dialogBasicExample, dialogFormExample],
