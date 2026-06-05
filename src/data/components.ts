@@ -662,6 +662,22 @@ export const components: ComponentMeta[] = [
       "Feixes de luz (\"beams\") da Aceternity UI que seguem dezenas de paths SVG curvos animados via linearGradients em movimento (x1/y1/x2/y2 percorrendo o caminho), sobre fundo escuro. Ideal como background de hero.",
     tags: ["background", "beams", "svg", "hero", "animation", "aceternity"],
   },
+  {
+    slug: "vortex",
+    name: "Vortex",
+    category: "Feedback",
+    description:
+      "Fundo de partículas em redemoinho (swirl) animado em canvas via simplex noise 3D, com glow aditivo e CTA sobreposto. Cor, contagem de partículas, amplitude e velocidade configuráveis; fundo escuro fixo (brand do efeito).",
+    tags: ["background", "vortex", "particles", "swirl", "canvas", "aceternity"],
+  },
+  {
+    slug: "tooltip-card",
+    name: "Tooltip Card",
+    category: "Feedback",
+    description:
+      "Tooltip da Aceternity UI que aparece no hover e SEGUE o cursor (motion/react com AnimatePresence + spring). O conteúdo pode ser texto simples ou um card React rico (avatar, nome, bio); posição calculada a partir do mouse com clamp nas bordas do viewport.",
+    tags: ["tooltip", "card", "hover", "cursor", "follow", "aceternity"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
