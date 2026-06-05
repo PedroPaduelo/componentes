@@ -61,6 +61,7 @@ import {
 } from "@/components/ui/tabs"
 import { Settings, User, LogOut } from "lucide-react"
 import { Tree } from "@/components/ui/tree"
+import { ThemeSwitcher } from "@/components/ui/theme-switcher"
 
 export type Example = {
   title: string
@@ -741,6 +742,36 @@ const treeDensityExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                              theme-switcher                                 */
+/* -------------------------------------------------------------------------- */
+
+const themeSwitcherBasicExample: Example = {
+  title: "Básico",
+  description: "Dropdown com opções Light, Dark e System. Ícone reflete o tema ativo.",
+  code: `<ThemeSwitcher />`,
+  render: (
+    <div className="flex items-center gap-4">
+      <ThemeSwitcher />
+      <span className="text-sm text-muted-foreground">
+        Clique para alternar o tema
+      </span>
+    </div>
+  ),
+}
+
+const themeSwitcherCustomExample: Example = {
+  title: "Customizado",
+  description: "Switcher com classes customizadas para diferentes contextos.",
+  code: `<ThemeSwitcher className="size-10 rounded-full" />`,
+  render: (
+    <div className="flex items-center gap-4">
+      <ThemeSwitcher className="size-10 rounded-full" />
+      <ThemeSwitcher className="size-8 border-0 bg-transparent" />
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  mapa                                       */
 /* -------------------------------------------------------------------------- */
 
@@ -755,6 +786,7 @@ export const examples: Record<string, Example[]> = {
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
   tree: [treeBasicExample, treeSearchExample, treeDensityExample],
+  "theme-switcher": [themeSwitcherBasicExample, themeSwitcherCustomExample],
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

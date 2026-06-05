@@ -120,6 +120,14 @@ export const components: ComponentMeta[] = [
       "explorer",
     ],
   },
+  {
+    slug: "theme-switcher",
+    name: "Theme Switcher",
+    category: "Actions",
+    description:
+      "Seletor de tema com dropdown para alternar entre Light, Dark e System.",
+    tags: ["tema", "dark mode", "light mode", "system", "toggle", "switch", "appear\u00e2ncia"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
