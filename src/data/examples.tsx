@@ -60,6 +60,7 @@ import {
   TabsTrigger,
 } from "@/components/ui/tabs"
 import { Settings, User, LogOut } from "lucide-react"
+import { Tree } from "@/components/ui/tree"
 
 export type Example = {
   title: string
@@ -622,6 +623,124 @@ const badgeUseCaseExample: Example = {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                                  tree                                       */
+/* -------------------------------------------------------------------------- */
+
+const treeBasicExample: Example = {
+  title: "Básico",
+  description: "Árvore de arquivos com expansão total e ícones automáticos.",
+  code: `<Tree
+  data={[
+    "src/index.ts",
+    "src/lib/utils.ts",
+    "src/components/ui/button.tsx",
+    "src/components/ui/card.tsx",
+    "src/components/ui/tree.tsx",
+    "src/data/components.ts",
+    "src/data/examples.tsx",
+    "README.md",
+    "package.json",
+    "tsconfig.json",
+  ]}
+  initialExpansion="open"
+/>`,
+  render: (
+    <div className="w-full">
+      <Tree
+        data={[
+          "src/index.ts",
+          "src/lib/utils.ts",
+          "src/components/ui/button.tsx",
+          "src/components/ui/card.tsx",
+          "src/components/ui/tree.tsx",
+          "src/data/components.ts",
+          "src/data/examples.tsx",
+          "README.md",
+          "package.json",
+          "tsconfig.json",
+        ]}
+        initialExpansion="open"
+      />
+    </div>
+  ),
+}
+
+const treeSearchExample: Example = {
+  title: "Com busca",
+  description: "Árvore com campo de busca embutido para filtrar arquivos.",
+  code: `<Tree
+  data={[
+    "src/index.ts",
+    "src/lib/utils.ts",
+    "src/components/ui/button.tsx",
+    "src/components/ui/card.tsx",
+    "src/components/ui/tree.tsx",
+    "src/data/components.ts",
+    "README.md",
+    "package.json",
+  ]}
+  initialExpansion={2}
+  search
+/>`,
+  render: (
+    <div className="w-full">
+      <Tree
+        data={[
+          "src/index.ts",
+          "src/lib/utils.ts",
+          "src/components/ui/button.tsx",
+          "src/components/ui/card.tsx",
+          "src/components/ui/tree.tsx",
+          "src/data/components.ts",
+          "README.md",
+          "package.json",
+        ]}
+        initialExpansion={2}
+        search
+      />
+    </div>
+  ),
+}
+
+const treeDensityExample: Example = {
+  title: "Densidades",
+  description: "Compacto, padrão e relaxado — controle de espaçamento.",
+  code: `<div className="flex flex-col gap-4">
+  <Tree density="compact" data={...} initialExpansion={1} />
+  <Tree density="default" data={...} initialExpansion={1} />
+  <Tree density="relaxed" data={...} initialExpansion={1} />
+</div>`,
+  render: (
+    <div className="flex w-full flex-col gap-6">
+      <div className="space-y-2">
+        <span className="text-xs font-medium text-muted-foreground">Compact</span>
+        <Tree
+          data={["src/index.ts", "src/lib/utils.ts", "src/components/ui/button.tsx", "README.md"]}
+          initialExpansion={1}
+          density="compact"
+        />
+      </div>
+      <div className="space-y-2">
+        <span className="text-xs font-medium text-muted-foreground">Default</span>
+        <Tree
+          data={["src/index.ts", "src/lib/utils.ts", "src/components/ui/button.tsx", "README.md"]}
+          initialExpansion={1}
+          density="default"
+        />
+      </div>
+      <div className="space-y-2">
+        <span className="text-xs font-medium text-muted-foreground">Relaxed</span>
+        <Tree
+          data={["src/index.ts", "src/lib/utils.ts", "src/components/ui/button.tsx", "README.md"]}
+          initialExpansion={1}
+          density="relaxed"
+        />
+      </div>
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  mapa                                       */
 /* -------------------------------------------------------------------------- */
 
@@ -635,6 +754,7 @@ export const examples: Record<string, Example[]> = {
   input: [inputBasicExample, inputWithLabelExample],
   checkbox: [checkboxBasicExample],
   badge: [badgeVariantsExample, badgeUseCaseExample],
+  tree: [treeBasicExample, treeSearchExample, treeDensityExample],
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

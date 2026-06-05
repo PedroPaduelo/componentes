@@ -105,6 +105,21 @@ export const components: ComponentMeta[] = [
       "Etiqueta compacta para destacar status, contagens ou rótulos contextuais.",
     tags: ["etiqueta", "status", "rótulo", "tag", "destaque"],
   },
+  {
+    slug: "tree",
+    name: "Tree",
+    category: "Layout",
+    description:
+      "Árvore de arquivos interativa com busca, drag & drop e navegação por teclado. Baseada em @pierre/trees.",
+    tags: [
+      "árvore",
+      "arquivos",
+      "navegação",
+      "diretório",
+      "file tree",
+      "explorer",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
