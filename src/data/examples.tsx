@@ -59,6 +59,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
+import { Settings, User, LogOut } from "lucide-react"
 
 export type Example = {
   title: string
@@ -150,6 +151,48 @@ const dropdownBasicExample: Example = {
   ),
 }
 
+
+const dropdownIconExample: Example = {
+  title: "Com ícones",
+  description: "Itens com ícones Lucide para melhor identificação visual.",
+  code: `<DropdownMenu>
+  <DropdownMenuTrigger asChild>
+    <Button variant="outline">Ações</Button>
+  </DropdownMenuTrigger>
+  <DropdownMenuContent>
+    <DropdownMenuItem>
+      <User className="size-4" /> Perfil
+    </DropdownMenuItem>
+    <DropdownMenuItem>
+      <Settings className="size-4" /> Configurações
+    </DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem variant="destructive">
+      <LogOut className="size-4" /> Sair
+    </DropdownMenuItem>
+  </DropdownMenuContent>
+</DropdownMenu>`,
+  render: (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">Ações</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuItem>
+          <User className="size-4" /> Perfil
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Settings className="size-4" /> Configurações
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem variant="destructive">
+          <LogOut className="size-4" /> Sair
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  ),
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                  card                                       */
 /* -------------------------------------------------------------------------- */
@@ -182,6 +225,53 @@ const cardBasicExample: Example = {
       </CardContent>
       <CardFooter>
         <Button size="sm">Ver mais</Button>
+      </CardFooter>
+    </Card>
+  ),
+}
+
+const cardInteractiveExample: Example = {
+  title: "Com imagem",
+  description: "Card com área de mídia, conteúdo e link de ação.",
+  code: `<Card className="w-full max-w-sm">
+  <div className="aspect-video w-full rounded-t-lg bg-muted flex items-center justify-center text-muted-foreground text-sm">
+    16:9
+  </div>
+  <CardHeader>
+    <CardTitle>Tailwind CSS v4</CardTitle>
+    <CardDescription>
+      Novo sistema de estilos utilitários.
+    </CardDescription>
+  </CardHeader>
+  <CardContent>
+    <p className="text-sm text-muted-foreground">
+      Versão 4 traz @theme, CSS first config e performance melhorada.
+    </p>
+  </CardContent>
+  <CardFooter className="flex gap-2">
+    <Button size="sm">Ler mais</Button>
+    <Button size="sm" variant="outline">Compartilhar</Button>
+  </CardFooter>
+</Card>`,
+  render: (
+    <Card className="w-full max-w-sm">
+      <div className="flex aspect-video w-full items-center justify-center rounded-t-lg bg-muted text-sm text-muted-foreground">
+        16:9
+      </div>
+      <CardHeader>
+        <CardTitle>Tailwind CSS v4</CardTitle>
+        <CardDescription>Novo sistema de estilos utilitários.</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p className="text-sm text-muted-foreground">
+          Versão 4 traz @theme, CSS first config e performance melhorada.
+        </p>
+      </CardContent>
+      <CardFooter className="flex gap-2">
+        <Button size="sm">Ler mais</Button>
+        <Button size="sm" variant="outline">
+          Compartilhar
+        </Button>
       </CardFooter>
     </Card>
   ),
@@ -232,6 +322,67 @@ const dialogBasicExample: Example = {
   ),
 }
 
+const dialogFormExample: Example = {
+  title: "Com formulário",
+  description: "Modal com campos de entrada para criação de registro.",
+  code: `<Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline">Novo projeto</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Criar projeto</DialogTitle>
+      <DialogDescription>
+        Preencha os dados para criar um novo projeto.
+      </DialogDescription>
+    </DialogHeader>
+    <div className="space-y-4 py-4">
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Nome</label>
+        <Input placeholder="Meu projeto" />
+      </div>
+      <div className="space-y-2">
+        <label className="text-sm font-medium">Descrição</label>
+        <Input placeholder="Descrição opcional" />
+      </div>
+    </div>
+    <DialogFooter>
+      <Button variant="outline">Cancelar</Button>
+      <Button>Criar</Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>`,
+  render: (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline">Novo projeto</Button>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Criar projeto</DialogTitle>
+          <DialogDescription>
+            Preencha os dados para criar um novo projeto.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Nome</label>
+            <Input placeholder="Meu projeto" />
+          </div>
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Descrição</label>
+            <Input placeholder="Descrição opcional" />
+          </div>
+        </div>
+        <DialogFooter>
+          <Button variant="outline">Cancelar</Button>
+          <Button>Criar</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  ),
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                  sheet                                      */
 /* -------------------------------------------------------------------------- */
@@ -264,6 +415,49 @@ const sheetBasicExample: Example = {
             Faça mudanças e salve quando terminar.
           </SheetDescription>
         </SheetHeader>
+      </SheetContent>
+    </Sheet>
+  ),
+}
+
+const sheetSideExample: Example = {
+  title: "Lado esquerdo",
+  description: "Painel que desliza a partir da borda esquerda.",
+  code: `<Sheet>
+  <SheetTrigger asChild>
+    <Button variant="outline">Abrir menu</Button>
+  </SheetTrigger>
+  <SheetContent side="left">
+    <SheetHeader>
+      <SheetTitle>Navegação</SheetTitle>
+      <SheetDescription>
+        Links principais do sistema.
+      </SheetDescription>
+    </SheetHeader>
+    <nav className="mt-6 flex flex-col gap-2">
+      <a href="#" className="text-sm">Dashboard</a>
+      <a href="#" className="text-sm">Projetos</a>
+      <a href="#" className="text-sm">Configurações</a>
+    </nav>
+  </SheetContent>
+</Sheet>`,
+  render: (
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline">Abrir menu</Button>
+      </SheetTrigger>
+      <SheetContent side="left">
+        <SheetHeader>
+          <SheetTitle>Navegação</SheetTitle>
+          <SheetDescription>
+            Links principais do sistema.
+          </SheetDescription>
+        </SheetHeader>
+        <nav className="mt-6 flex flex-col gap-2">
+          <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Dashboard</a>
+          <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Projetos</a>
+          <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Configurações</a>
+        </nav>
       </SheetContent>
     </Sheet>
   ),
@@ -433,10 +627,10 @@ const badgeUseCaseExample: Example = {
 
 export const examples: Record<string, Example[]> = {
   button: [buttonVariantsExample, buttonSizesExample, buttonDisabledExample],
-  "dropdown-menu": [dropdownBasicExample],
-  card: [cardBasicExample],
-  dialog: [dialogBasicExample],
-  sheet: [sheetBasicExample],
+  "dropdown-menu": [dropdownBasicExample, dropdownIconExample],
+  card: [cardBasicExample, cardInteractiveExample],
+  dialog: [dialogBasicExample, dialogFormExample],
+  sheet: [sheetBasicExample, sheetSideExample],
   tabs: [tabsBasicExample],
   input: [inputBasicExample, inputWithLabelExample],
   checkbox: [checkboxBasicExample],
