@@ -83,8 +83,11 @@ function GlowCardGrid({
       const grid = gridRef.current
       if (!grid) return
       const rect = grid.getBoundingClientRect()
-      const x = ((e.clientX - rect.left) / rect.width) * 100
-      const y = ((e.clientY - rect.top) / rect.height) * 100
+      // Range: -1 (left/top edge) to +1 (right/bottom edge), 0 = center.
+      // Pairs with the translate-x/y-[calc(...*50cqi)] below; -10 stays as
+      // the off-screen default so the glow hides until the first mouse-move.
+      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1
+      const y = ((e.clientY - rect.top) / rect.height) * 2 - 1
       grid.style.setProperty("--pointer-x", `${x}`)
       grid.style.setProperty("--pointer-y", `${y}`)
     },
@@ -137,8 +140,11 @@ function GlowCard({
       const card = cardRef.current
       if (!card) return
       const rect = card.getBoundingClientRect()
-      const x = ((e.clientX - rect.left) / rect.width) * 100
-      const y = ((e.clientY - rect.top) / rect.height) * 100
+      // Range: -1 (left/top edge) to +1 (right/bottom edge), 0 = center.
+      // Pairs with the translate-x/y-[calc(...*50cqi)] below; -10 stays as
+      // the off-screen default so the glow hides until the first mouse-move.
+      const x = ((e.clientX - rect.left) / rect.width) * 2 - 1
+      const y = ((e.clientY - rect.top) / rect.height) * 2 - 1
       card.style.setProperty("--pointer-x", `${x}`)
       card.style.setProperty("--pointer-y", `${y}`)
     },
@@ -150,7 +156,11 @@ function GlowCard({
       ref={cardRef}
       data-slot="glow-card"
       className={cn(
-        "relative h-52 w-full cursor-pointer overflow-hidden rounded-[var(--card-radius)]",
+        // @container-size turns the card into a container query scope so
+        // cqi/cqh units in the translate resolve against the card's own
+        // size (not the viewport). Without it the glow translate lands
+        // thousands of px off-screen and the colored border is invisible.
+        "group/glow-card @container-size relative h-52 w-full cursor-pointer overflow-hidden rounded-[var(--card-radius)]",
         "ring-1 ring-border transition-[translate,scale]",
         "select-none active:scale-[0.98]",
         className,
@@ -179,6 +189,9 @@ function GlowCard({
               "brightness-[var(--card-icon-brightness)]",
               "saturate-[var(--card-icon-saturate)]",
               "opacity-[var(--card-icon-opacity)]",
+              // On hover, intensify the neon so the colored border becomes obvious.
+              "group-hover/glow-card:opacity-[calc(var(--card-icon-opacity)*1.8)]",
+              "transition-opacity duration-300",
               "will-change-[transform,filter]",
             )}
           >
