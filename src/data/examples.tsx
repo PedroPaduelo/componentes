@@ -63,6 +63,13 @@ import { Settings, User, LogOut } from "lucide-react"
 import { Tree } from "@/components/ui/tree"
 import { WorkExperienceComponent } from "@/components/ui/work-experience-component"
 
+// Exemplos do lote chanhdai — divididos em arquivos por grupo para evitar
+// edições concorrentes no mesmo arquivo. Cada um exporta um Record parcial.
+import { examplesChanhdaiA } from "@/data/examples-chanhdai-a"
+import { examplesChanhdaiB } from "@/data/examples-chanhdai-b"
+import { examplesChanhdaiC } from "@/data/examples-chanhdai-c"
+import { examplesInteractive } from "@/data/examples-interactive"
+
 export type Example = {
   title: string
   description?: string
@@ -897,6 +904,11 @@ export const examples: Record<string, Example[]> = {
   badge: [badgeVariantsExample, badgeUseCaseExample],
   tree: [treeBasicExample, treeSearchExample, treeDensityExample],
   "work-experience-component": [workExperienceTimelineExample, workExperienceCardExample],
+  // Lote chanhdai (arquivos separados, merge por spread)
+  ...examplesChanhdaiA,
+  ...examplesChanhdaiB,
+  ...examplesChanhdaiC,
+  ...examplesInteractive,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

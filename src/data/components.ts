@@ -247,6 +247,54 @@ export const components: ComponentMeta[] = [
       "Seletor de tema elaborado com opções light/dark/system (e talvez accent color).",
     tags: ["tema", "switcher", "light", "dark", "system"],
   },
+  {
+    slug: "consent-manager",
+    name: "Consent Manager",
+    category: "Forms",
+    description:
+      "Gerenciador de consentimento de cookies com categorias, switches e persistência local.",
+    tags: ["cookies", "consent", "lgpd", "gdpr", "privacidade", "preferências"],
+  },
+  {
+    slug: "copy-button",
+    name: "Copy Button",
+    category: "Actions",
+    description:
+      "Botão de copiar para a área de transferência com feedback visual e fallback execCommand.",
+    tags: ["copiar", "clipboard", "copy", "botão", "feedback"],
+  },
+  {
+    slug: "elastic-slider",
+    name: "Elastic Slider",
+    category: "Forms",
+    description:
+      "Slider com efeito elástico (rubber-band) ao arrastar além dos limites, estilo iOS.",
+    tags: ["slider", "elastic", "range", "arrastar", "iOS", "controle"],
+  },
+  {
+    slug: "github-contributions",
+    name: "GitHub Contributions",
+    category: "Feedback",
+    description:
+      "Heatmap de contribuições estilo GitHub, com células por dia, tooltips e escalas de cor.",
+    tags: ["github", "heatmap", "contribuições", "calendário", "atividade"],
+  },
+  {
+    slug: "middle-truncation",
+    name: "Middle Truncation",
+    category: "Forms",
+    description:
+      "Trunca texto no meio preservando início e fim — ideal para hashes, paths e e-mails.",
+    tags: ["texto", "truncar", "ellipsis", "hash", "path", "overflow"],
+  },
+  {
+    slug: "toc-minimap",
+    name: "TOC Minimap",
+    category: "Layout",
+    description:
+      "Sumário/minimap de navegação com seção ativa via IntersectionObserver e barra de progresso.",
+    tags: ["toc", "sumário", "navegação", "minimap", "scroll", "âncora"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
