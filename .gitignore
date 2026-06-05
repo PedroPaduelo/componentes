@@ -26,3 +26,14 @@ shots/
 *.sln
 *.sw?
 .fluid-analysis/
+
+# Análise / docs gerados por agents (específicos + curinga p/ futuros)
+.pierre-analysis/
+.*analysis/
+
+# Scripts efêmeros de probe/review (convenção: prefixo _)
+scripts/_*.mjs
+scripts/_*.html
+scripts/_*.js
+scripts/_*.ts
+scripts/_*.tsx
