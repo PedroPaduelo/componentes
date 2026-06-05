@@ -2,7 +2,7 @@ import * as React from "react"
 import { FileTree as FileTreeModel } from "@pierre/trees"
 import { FileTree as FileTreeReact } from "@pierre/trees/react"
 import { type VariantProps } from "class-variance-authority"
-import { useTheme } from "@/components/theme/theme-provider"
+import { useTheme } from "@/components/theme/use-theme"
 import { cn } from "@/lib/utils"
 import { treeVariants } from "@/components/ui/tree-variants"
 
@@ -126,8 +126,7 @@ function Tree({
       {...hostProps}
     >
       <FileTreeReact
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        model={model as any}
+        model={model}
         header={header}
       />
     </div>

@@ -70,11 +70,8 @@ for (const config of CONFIGS) {
     // Find the button for this variant
     let selector
     if (config.withEffect === false) {
-      // Find button with withEffect=false — it's the last one without data-variant or with data-variant="none"
-      // Actually, the "no effect" button doesn't have data-variant attr set to "none"
-      // It's the one with withEffect={false}. We'll find by text "sem efeito" nearby or by index.
-      // Simpler: find all buttons, the last one is "sem efeito"
-      selector = `[data-slot="theme-toggle-effect"]:last-of-type`
+      // Botão sem efeito tem data-with-effect="false" (atributo adicionado pelo componente)
+      selector = `[data-slot="theme-toggle-effect"][data-with-effect="false"]`
     } else {
       selector = `[data-slot="theme-toggle-effect"][data-variant="${config.variant}"]`
     }

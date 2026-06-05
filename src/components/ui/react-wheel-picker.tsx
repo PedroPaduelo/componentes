@@ -7,7 +7,7 @@ import {
 } from "@ncdai/react-wheel-picker"
 import "@ncdai/react-wheel-picker/dist/style.css"
 import { type VariantProps } from "class-variance-authority"
-import { useTheme } from "@/components/theme/theme-provider"
+import { useTheme } from "@/components/theme/use-theme"
 import { cn } from "@/lib/utils"
 import { reactWheelPickerVariants } from "@/components/ui/react-wheel-picker-variants"
 

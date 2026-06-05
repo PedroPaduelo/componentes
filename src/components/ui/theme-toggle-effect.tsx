@@ -1,6 +1,6 @@
 import * as React from "react"
 import { Moon, Sun } from "lucide-react"
-import { useTheme } from "@/components/theme/theme-provider"
+import { useTheme } from "@/components/theme/use-theme"
 import { cn } from "@/lib/utils"
 import {
   type ThemeToggleEffectVariant,
@@ -48,7 +48,7 @@ function ThemeToggleEffect({
     transition.ready.then(() => {
       const root = document.documentElement
       const { innerWidth, innerHeight } = window
-      const maxDim = Math.max(innerWidth, innerHeight) * 1.5
+      const maxDim = Math.max(innerWidth, innerHeight)
 
       const origin = getVariantOrigin(
         variant,
@@ -72,6 +72,7 @@ function ThemeToggleEffect({
       type="button"
       data-slot="theme-toggle-effect"
       data-variant={variant}
+      data-with-effect={withEffect ? "true" : "false"}
       aria-label="Alternar tema"
       className={cn(
         "inline-flex size-9 items-center justify-center rounded-lg border border-border bg-background text-foreground transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",

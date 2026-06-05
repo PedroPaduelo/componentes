@@ -1,6 +1,6 @@
 import * as React from "react"
 import { type VariantProps } from "class-variance-authority"
-import { useTheme } from "@/components/theme/theme-provider"
+import { useTheme } from "@/components/theme/use-theme"
 import { cn } from "@/lib/utils"
 import { CopyButton } from "@/components/showcase/CopyButton"
 import { codeBlockCommandVariants } from "@/components/ui/code-block-command-variants"

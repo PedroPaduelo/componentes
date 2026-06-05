@@ -3,7 +3,7 @@ import { ChevronsUpDown } from "lucide-react"
 import { type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
-import { useTheme } from "@/components/theme/theme-provider"
+import { useTheme } from "@/components/theme/use-theme"
 import { chevronsUpDownIconVariants } from "@/components/ui/chevrons-up-down-icon-variants"
 
 export type ChevronsUpDownIconHandle = {

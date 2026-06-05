@@ -55,9 +55,8 @@ function FluidGradientText({
       style={{
         backgroundImage: `linear-gradient(90deg, ${gradientColors})`,
         backgroundSize: "200% 100%",
-        // @ts-expect-error CSS custom property for animation duration
         "--gradient-duration": duration,
-      }}
+      } as React.CSSProperties & Record<`--${string}`, string>}
     >
       {children}
     </Tag>
