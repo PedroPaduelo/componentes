@@ -9,6 +9,7 @@ import { BackgroundsShowcase } from "./backgrounds-showcase"
 import { TextEffectsShowcase } from "./text-effects-showcase"
 import { SignupForm } from "./signup-form"
 import { ChatApp } from "./chat-app"
+import { ChatInboxPro } from "./chat-inbox-pro"
 import { ComponentPlayground } from "./component-playground"
 import { AiAgentsPlatform } from "./ai-agents-platform"
 
@@ -27,6 +28,7 @@ export const compositionScreens: Record<string, ComponentType> = {
   "text-effects-showcase": TextEffectsShowcase,
   "signup-form": SignupForm,
   "chat-app": ChatApp,
+  "chat-inbox-pro": ChatInboxPro,
   "component-playground": ComponentPlayground,
   "ai-agents-platform": AiAgentsPlatform,
 }

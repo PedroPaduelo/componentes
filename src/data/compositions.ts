@@ -93,6 +93,14 @@ export const compositions: Composition[] = [
     category: "Aplicação",
   },
   {
+    slug: "chat-inbox-pro",
+    name: "Chat / Inbox Completo",
+    description:
+      "Inbox de mensagens com lista de conversas, thread por conversa e composer: trocar de conversa muda o histórico, selecionar zera não-lidas e enviar adiciona a mensagem na thread certa.",
+    tags: ["chat", "inbox", "mensagens", "app"],
+    category: "Aplicação",
+  },
+  {
     slug: "component-playground",
     name: "Component Playground",
     description:
