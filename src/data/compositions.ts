@@ -29,6 +29,14 @@ export const compositions: Composition[] = [
     category: "Aplicação",
   },
   {
+    slug: "saas-dashboard-pro",
+    name: "Dashboard SaaS Completo",
+    description:
+      "App de gestão navegável: sidebar troca seções (Overview/Analytics/Customers/Settings), tabela de clientes filtrável e paginada com detalhe em overlay, e preferências com toggles funcionais.",
+    tags: ["dashboard", "app", "interativo"],
+    category: "Aplicação",
+  },
+  {
     slug: "pricing-page",
     name: "Pricing",
     description:

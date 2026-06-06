@@ -1,6 +1,7 @@
 import type { ComponentType } from "react"
 import { LandingPage } from "./landing-page"
 import { SaasDashboard } from "./saas-dashboard"
+import { SaasDashboardPro } from "./saas-dashboard-pro"
 import { PricingPage } from "./pricing-page"
 import { TestimonialsWall } from "./testimonials-wall"
 import { HeroGallery } from "./hero-gallery"
@@ -18,6 +19,7 @@ import { AiAgentsPlatform } from "./ai-agents-platform"
 export const compositionScreens: Record<string, ComponentType> = {
   "landing-page": LandingPage,
   "saas-dashboard": SaasDashboard,
+  "saas-dashboard-pro": SaasDashboardPro,
   "pricing-page": PricingPage,
   "testimonials-wall": TestimonialsWall,
   "hero-gallery": HeroGallery,
