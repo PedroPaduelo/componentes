@@ -157,6 +157,8 @@ import { examplesKeyboard } from "./examples-keyboard"
 import { examplesPlaceholdersAndVanishInput } from "./examples-placeholders-and-vanish-input"
 import { examplesWebcamPixelGrid } from "./examples-webcam-pixel-grid"
 import { examplesAppleCardsCarousel } from "./examples-apple-cards-carousel"
+import { examplesFocusCards } from "./examples-focus-cards"
+import { examplesStickyScrollReveal } from "./examples-sticky-scroll-reveal"
 import { examplesAnimatedTooltip } from "./examples-animated-tooltip"
 import { examplesAsciiArt } from "./examples-ascii-art"
 import { examplesCanvasText } from "./examples-canvas-text"
@@ -1384,6 +1386,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesPlaceholdersAndVanishInput,
   ...examplesWebcamPixelGrid,
   ...examplesAppleCardsCarousel,
+  ...examplesFocusCards,
+  ...examplesStickyScrollReveal,
   ...examplesAnimatedTooltip,
   ...examplesAsciiArt,
   ...examplesCanvasText,
