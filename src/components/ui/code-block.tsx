@@ -107,7 +107,7 @@ const TOKEN_COLOR: Record<TokenType, string> = {
 }
 
 const TOKEN_RE =
-  /(\/\/[^\n]*)|(\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|(\b\d+(?:\.\d+)?\b)|(\b[A-Za-z_$][A-Za-z0-9_$]*\b)|(#+\s.*)|(.)/g
+  /(\/\/[^\n]*)|(\/\*[\s\S]*?\*\/)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|(\b\d+(?:\.\d+)?\b)|(\b[A-Za-z_$][A-Za-z0-9_$]*\b)|(#+\s.*)|([\s\S])/g
 
 function tokenize(code: string, language: string): Token[] {
   const norm = (LANG_ALIAS[language.toLowerCase()] ?? language.toLowerCase()) as
