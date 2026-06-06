@@ -81,6 +81,7 @@ import { creepyButtonExamples } from "@/data/examples-creepy"
 import { examplesAnimatedNumber } from "@/data/examples-animated-number"
 import { examplesLogoSlider } from "@/data/examples-logo-slider"
 import { examplesParallaxHeroImages } from "@/data/examples-parallax-hero-images"
+import { examplesParallaxHeroImages2 } from "@/data/examples-parallax-hero-images-2"
 import { examplesImagesBadge } from "@/data/examples-images-badge"
 import { examplesDottedGlowBackground } from "@/data/examples-dotted-glow-background"
 import { examplesScales } from "@/data/examples-scales"
@@ -105,6 +106,8 @@ import { examplesGlowingStarsEffect } from "@/data/examples-glowing-stars-effect
 import { examplesTextGenerateEffect } from "@/data/examples-text-generate-effect"
 import { examplesHeroSectionWithMousemove } from "@/data/examples-hero-section-with-mousemove"
 import { examplesNoiseBackground } from "@/data/examples-noise-background"
+import { examplesTimeline } from "@/data/examples-timeline"
+import { examplesTracingBeam } from "@/data/examples-tracing-beam"
 import { examplesShootingStarsAndStarsBackground } from "@/data/examples-shooting-stars-and-stars-background"
 import { examplesMeteors } from "@/data/examples-meteors"
 import { examplesLoader } from "@/data/examples-loader"
@@ -139,8 +142,11 @@ import { examplesFileUpload } from "./examples-file-upload"
 import { examplesHoverBorderGradient } from "./examples-hover-border-gradient"
 import { examplesMovingBorder } from "./examples-moving-border"
 import { examplesMagneticButton } from "./examples-magnetic-button"
+import { examplesNotch } from "./examples-notch"
+import { examplesTerminal } from "./examples-terminal"
 import { animatedModalExamples } from "./examples-animated-modal"
 import { examplesGooeyInput } from "./examples-gooey-input"
+import { examplesParallaxScroll } from "./examples-parallax-scroll"
 
 export type Example = {
   title: string
@@ -1285,6 +1291,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesAnimatedNumber,
   ...examplesLogoSlider,
   // Lote Aceternity
+  ...examplesTimeline,
   ...examplesNoiseBackground,
   ...examplesBackgroundGradient,
   ...examplesAuroraBackground,
@@ -1303,6 +1310,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesBackgroundBeamsWithCollision,
   ...examplesImagesBadge,
   ...examplesParallaxHeroImages,
+  ...examplesParallaxHeroImages2,
   ...examplesScales,
   ...examplesBackgroundRippleEffect,
   ...examplesSparkles,
@@ -1342,6 +1350,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesGooeyInput,
   ...examplesMovingBorder,
   ...examplesMagneticButton,
+  ...examplesNotch,
+  ...examplesTerminal,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

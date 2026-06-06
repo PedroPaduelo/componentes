@@ -609,6 +609,46 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "timeline",
+    name: "Timeline",
+    category: "Layout",
+    description:
+      "Linha do tempo vertical da Aceternity UI com uma barra de progresso que cresce (gradiente roxo→azul) conforme a rolagem, dirigida por motion useScroll. Cada entrada tem um marco com título (data) e conteúdo arbitrário; sticky labels no desktop. Cabeçalho e descrição configuráveis.",
+    tags: ["timeline", "scroll", "progress", "changelog", "layout", "aceternity"],
+  },
+  {
+    slug: "terminal",
+    name: "Terminal",
+    category: "Feedback",
+    description:
+      "Mock de terminal/console da Aceternity UI que datilografa comandos linha a linha com cursor piscante, syntax highlight de bash (comandos, flags, strings, paths) e saídas opcionais por comando. Anima ao entrar na viewport; velocidade, usuário e atrasos configuráveis.",
+    tags: ["terminal", "console", "typewriter", "cli", "bash", "aceternity"],
+  },
+  {
+    slug: "parallax-hero-images-2",
+    name: "Parallax Hero Images 2",
+    category: "Layout",
+    description:
+      "Variante 2 (scroll-driven) do parallax hero da Aceternity UI: imagens distribuídas em 3 colunas que deslizam verticalmente conforme a rolagem avança (laterais sobem, meio desce, com leve zoom-out), criando profundidade. Aceita uma área scrollável própria via scrollRef para hero sections com conteúdo sobreposto.",
+    tags: ["hero", "parallax", "scroll", "images", "layout", "aceternity"],
+  },
+  {
+    slug: "tracing-beam",
+    name: "Tracing Beam",
+    category: "Layout",
+    description:
+      "Feixe luminoso da Aceternity UI que acompanha a rolagem ao lado do conteúdo: um caminho SVG preenchido por um gradiente (ciano → violeta) cujo progresso evolui com o scroll, dirigido por motion (useScroll + useSpring). Ideal para artigos longos e landing pages narrativas; envolve qualquer conteúdo e mede sua altura automaticamente.",
+    tags: ["tracing", "beam", "scroll", "gradient", "layout", "aceternity"],
+  },
+  {
+    slug: "parallax-scroll",
+    name: "Parallax Scroll",
+    category: "Layout",
+    description:
+      "Galeria de imagens da Aceternity UI em 3 colunas que se movem em velocidades e direções diferentes conforme o scroll da própria área (altura fixa, overflow-y-auto): as laterais sobem e a do meio desce, criando profundidade. Usa useScroll/useTransform da motion.",
+    tags: ["parallax", "scroll", "gallery", "images", "grid", "aceternity"],
+  },
+  {
     slug: "noise-background",
     name: "Noise Background",
     category: "Feedback",
@@ -1322,6 +1362,43 @@ export const components: ComponentMeta[] = [
     tags: ["button", "magnetic", "hover", "spring", "aceternity"],
     usage:
       "Envolva qualquer elemento (tipicamente um <button>) com <MagneticButton> e o filho será magneticamente atraído pelo cursor. Use `strength` (0..1) para controlar a força do deslocamento e `maxDistance` (px) para limitar a área de influência. Mantenha o `children` com tamanho próprio (o wrapper não força dimensões).",
+  },
+  {
+    slug: "notch",
+    name: "Notch",
+    category: "Layout",
+    description:
+      "Barra/notch fixa no topo ou base do viewport (estilo iOS Dynamic Island) com grupos de triggers que abrem um popover de opções animado via motion/react. Cores dark hardcoded (bg-neutral-950/95, text-neutral-100/300/400) — brand do efeito, não segue tema shadcn.",
+    tags: [
+      "notch",
+      "bar",
+      "dock",
+      "menu",
+      "popover",
+      "dynamic-island",
+      "aceternity",
+      "layout",
+    ],
+    usage:
+      "Use `Notch` para grupos de filtros/ordenação/controles sempre visíveis em uma ilha flutuante. Suporta múltiplos grupos (separados por dividers tracejados) com estado controlled/uncontrolled. `closeOnSelect` (default true) fecha o popover após selecionar. `accentColor` customiza o highlight do item ativo. Cores são fixas — se precisar de tema claro, sobrescreva `className`.",
+  },
+  {
+    slug: "sticky-scroll-reveal",
+    name: "Sticky Scroll Reveal",
+    category: "Layout",
+    description:
+      "Container scrollável vertical com seções de texto à esquerda e um card sticky à direita que troca conteúdo e gradiente de fundo conforme a seção ativa muda. O progresso do scroll interno é medido por `useScroll({ container })` (motion v12) e mapeado em breakpoints normalizados (i/N) para decidir qual card está em foco. Cores são hardcoded (slate-900/black + gradientes cyan/pink/orange) — brand do efeito, não segue tema shadcn.",
+    tags: [
+      "scroll",
+      "sticky",
+      "reveal",
+      "scroll-driven",
+      "container",
+      "aceternity",
+      "layout",
+    ],
+    usage:
+      "Passe `content` como um array de `{ title, description, content? }` (3-5 itens rendem bem). O wrapper impõe `h-[30rem] overflow-y-auto` e a borda sticky `top-10`; ajuste via `className` se precisar de outra altura. O card sticky à direita é `hidden lg:block` por default — passe `contentClassName` para customizar (cor de fundo, borda, etc.) ou desabilite o responsivo via wrapper externo.",
   },
 ]
 
