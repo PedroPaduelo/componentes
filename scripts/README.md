@@ -35,3 +35,27 @@ Os artefatos (`shots/`) são gerados localmente e **não** vão pro repo
 - Scripts efêmeros de diagnóstico/probe (`probe-*`, `diag-*`, `inspect-*`,
   `debug-*`, `_*`, etc.) **não** são commitados — o `.gitignore` ignora tudo
   em `scripts/` que não seja `val-*.mjs` ou este `README.md`.
+
+## Output: SEMPRE em `shots/`
+
+**Regra fixa do projeto:** todo output gerado por scripts Playwright
+(screenshots `.png`, JSONs de inspeção, relatórios, dumps de DOM) vai
+**exclusivamente** para `/workspace/shots`. Nunca escreva em:
+
+- `scripts/` → é `root:root`, o shell não tem permissão (`EACCES`).
+- `/tmp` → não persiste entre comandos isolados do sandbox.
+
+Use o helper compartilhado `scripts/_shots.mjs`:
+
+```js
+import { shot, saveJSON, saveText, outPath, SHOTS_DIR } from "./_shots.mjs"
+
+await shot(page, "landing-light")                 // -> shots/landing-light.png
+await shot(page, "preview", { sub: "vortex" })    // -> shots/vortex/preview.png
+saveJSON("vortex/inspect", data)                  // -> shots/vortex/inspect.json
+saveText("dump.html", html)                       // -> shots/dump.html
+const p = outPath("foo.png")                       // caminho absoluto em shots/
+```
+
+O helper cria as subpastas sozinho e ancora o caminho em `/workspace/shots`
+independentemente do `cwd`. `shots/` está no `.gitignore` (artefatos locais).
