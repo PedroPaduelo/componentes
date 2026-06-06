@@ -50,6 +50,7 @@ import {
   TabsSubtleFluidItem,
   TabsSubtleFluidPanel,
   // Accordion (Fluid)
+  AccordionFluid,
   AccordionGroupFluid,
   AccordionItemFluid,
   AccordionTriggerFluid,
@@ -449,6 +450,50 @@ function DockSection() {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                                   faq                                       */
+/* -------------------------------------------------------------------------- */
+
+function FaqSection() {
+  return (
+    <Section
+      title="Perguntas frequentes"
+      description="Accordion standalone com mola (AccordionFluid) — single + collapsible."
+    >
+      <div className="w-full max-w-md">
+        <AccordionFluid type="single" collapsible defaultValue="faq-1">
+          <AccordionItemFluid value="faq-1">
+            <AccordionTriggerFluid>
+              Posso cancelar quando quiser?
+            </AccordionTriggerFluid>
+            <AccordionContentFluid>
+              Sim — cancele a qualquer momento, sem multa nem letras miúdas.
+            </AccordionContentFluid>
+          </AccordionItemFluid>
+          <AccordionItemFluid value="faq-2">
+            <AccordionTriggerFluid>
+              Os componentes seguem o tema?
+            </AccordionTriggerFluid>
+            <AccordionContentFluid>
+              Tudo usa tokens shadcn, então responde ao toggle de tema
+              automaticamente em light e dark.
+            </AccordionContentFluid>
+          </AccordionItemFluid>
+          <AccordionItemFluid value="faq-3">
+            <AccordionTriggerFluid>
+              Preciso instalar dependências extras?
+            </AccordionTriggerFluid>
+            <AccordionContentFluid>
+              Não — todos os componentes desta bancada vêm do mesmo barrel
+              `@/components/ui`.
+            </AccordionContentFluid>
+          </AccordionItemFluid>
+        </AccordionFluid>
+      </div>
+    </Section>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  página                                     */
 /* -------------------------------------------------------------------------- */
 
@@ -473,6 +518,7 @@ export function ComponentPlayground() {
       <ContentSection />
       <OverlaysSection />
       <DockSection />
+      <FaqSection />
     </div>
   )
 }

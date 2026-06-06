@@ -1,5 +1,5 @@
 /**
- * Backgrounds Showcase — galeria vertical que reúne os 10 componentes de fundo
+ * Backgrounds Showcase — galeria vertical que reúne os 11 componentes de fundo
  * animado do registry, cada um contido numa seção própria (`relative` + altura
  * fixa + `overflow-hidden`) com um label/título sobreposto (`absolute z-10`).
  *
@@ -9,6 +9,7 @@
  */
 
 import {
+  BackgroundBeams,
   BackgroundBeamsWithCollision,
   BackgroundLines,
   BackgroundRippleEffect,
@@ -78,7 +79,8 @@ export function BackgroundsShowcase() {
           Backgrounds Showcase
         </h1>
         <p className="mt-2 text-muted-foreground">
-          Dez fundos animados do registry, cada um contido em sua própria seção.
+          Onze fundos animados do registry, cada um contido em sua própria
+          seção.
         </p>
       </header>
 
@@ -243,6 +245,21 @@ export function BackgroundsShowcase() {
           <div className="pointer-events-none absolute inset-0 z-[4] flex items-center justify-center">
             <span className="text-3xl font-bold tracking-tight md:text-5xl">
               Ripple Effect
+            </span>
+          </div>
+        </ShowcaseSection>
+
+        {/* 11 — Background Beams */}
+        <ShowcaseSection
+          index={11}
+          title="Background Beams"
+          subtitle="Feixes de gradiente animados subindo na diagonal (Aceternity)."
+          className="bg-neutral-950"
+        >
+          <BackgroundBeams className="opacity-100" />
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+            <span className="relative z-20 text-3xl font-bold text-white md:text-5xl">
+              Background Beams
             </span>
           </div>
         </ShowcaseSection>
