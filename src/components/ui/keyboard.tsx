@@ -479,11 +479,8 @@ const KeystrokePreview = () => {
   );
 };
 
-export type KeyboardProps = {
-  className?: string;
-  enableSound?: boolean;
-  showPreview?: boolean;
-};
+import type { KeyboardProps } from "./keyboard-types";
+export type { KeyboardProps };
 
 export const Keyboard = ({
   className,

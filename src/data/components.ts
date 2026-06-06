@@ -1521,7 +1521,7 @@ export const components: ComponentMeta[] = [
   {
     slug: "keyboard",
     name: "Keyboard",
-    category: "Layout",
+    category: "Feedback",
     description:
       "Teclado virtual estilo Apple com teclas que afundam ao clicar ou ao pressionar a tecla física correspondente. Suporte a layout QWERTZ/ANSI e preview animado da última tecla pressionada.",
     tags: ["keyboard", "teclado", "virtual", "apple", "aceternity"],
@@ -1632,6 +1632,40 @@ export const components: ComponentMeta[] = [
       "animation",
       "aceternity",
       "feedback",
+    ],
+  },
+  {
+    slug: "link-preview",
+    name: "Link Preview",
+    category: "Feedback",
+    description:
+      "Hover-card que mostra um screenshot da URL apontada por um link, com leve parallax no eixo X seguindo o cursor. Usa @radix-ui/react-hover-card + qss.",
+    tags: [
+      "link",
+      "preview",
+      "hover",
+      "screenshot",
+      "parallax",
+      "aceternity",
+      "feedback",
+    ],
+  },
+  {
+    slug: "layout-grid",
+    name: "Layout Grid",
+    category: "Layout",
+    description:
+      "Grid bento responsivo (1 col mobile, 3 col desktop) com cards clicáveis que expandem em overlay centralizado usando layoutId compartilhado do motion. Cards com thumbnail e conteúdo JSX customizável.",
+    tags: [
+      "grid",
+      "bento",
+      "layout",
+      "cards",
+      "expand",
+      "overlay",
+      "motion",
+      "aceternity",
+      "layout",
     ],
   },
 ]
