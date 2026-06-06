@@ -613,7 +613,7 @@ export function AiAgentsPlatform() {
   }
 
   return (
-    <div className="flex h-[80vh] w-full overflow-hidden rounded-xl border border-border bg-background text-foreground shadow-sm">
+    <div className="flex h-[80vh] w-full overflow-hidden bg-background text-foreground">
       {/* ── Sidebar de agentes ─────────────────────────────────────────── */}
       <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-card/40 md:flex">
         <div className="flex min-h-[3.75rem] items-center gap-2 border-b border-border px-4 py-3">

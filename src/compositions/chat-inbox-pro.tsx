@@ -350,7 +350,7 @@ export function ChatInboxPro() {
   }
 
   return (
-    <div className="flex h-[78vh] overflow-hidden rounded-2xl border border-border bg-card text-card-foreground shadow-sm">
+    <div className="flex h-[78vh] overflow-hidden bg-card text-card-foreground">
       {/* ── Conversation list ──────────────────────────────────────────── */}
       <aside className="flex w-72 shrink-0 flex-col border-r border-border">
         <header className="flex min-h-[3.75rem] shrink-0 items-center justify-between gap-2 border-b border-border px-4 py-3">
