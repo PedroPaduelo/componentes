@@ -219,8 +219,18 @@ export { LogoSlider } from "./logo-slider"
 export type { LogoSliderProps } from "./logo-slider-types"
 
 // Lote Aceternity
+export { NoiseBackground } from "./noise-background"
+export type { NoiseBackgroundProps } from "./noise-background-types"
+export { HeroSectionWithMousemove } from "./hero-section-with-mousemove"
+export type {
+  HeroFloatingItem,
+  HeroSectionWithMousemoveProps,
+} from "./hero-section-with-mousemove-types"
 export { BackgroundGradient } from "./background-gradient"
 export type { BackgroundGradientProps } from "./background-gradient-types"
+export { AuroraBackground, type AuroraBackgroundProps } from "./aurora-background"
+export { GlowingEffect } from "./glowing-effect"
+export type { GlowingEffectProps } from "./glowing-effect"
 export { GridAndDotBackgrounds } from "./grid-and-dot-backgrounds"
 export type {
   GridAndDotBackgroundsProps,
@@ -302,6 +312,8 @@ export { BackgroundGradientAnimation } from "./background-gradient-animation"
 export type { BackgroundGradientAnimationProps } from "./background-gradient-animation"
 export { LampContainer } from "./lamp-effect"
 export type { LampContainerProps } from "./lamp-effect"
+export { TextHoverEffect } from "./text-hover-effect"
+export type { TextHoverEffectProps, TextHoverEffectGradientStop } from "./text-hover-effect-types"
 export {
   ShootingStars,
   StarsBackground,
@@ -310,6 +322,17 @@ export type {
   ShootingStarsProps,
   StarsBackgroundProps,
 } from "./shooting-stars-and-stars-background"
+export { FlipWords } from "./flip-words"
+export type { FlipWordsProps } from "./flip-words"
+export {
+  TypewriterEffect,
+  TypewriterEffectSmooth,
+} from "./typewriter-effect"
+export type {
+  TypewriterEffectProps,
+  TypewriterEffectSmoothProps,
+  TypewriterWord,
+} from "./typewriter-effect-types"
 export {
   GlowingStarsBackgroundCard,
   GlowingStarsDescription,

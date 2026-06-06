@@ -609,6 +609,22 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "noise-background",
+    name: "Noise Background",
+    category: "Feedback",
+    description:
+      "Fundo da Aceternity UI com camadas de gradiente radial que flutuam aleatoriamente em loop, sobrepostas por uma textura de ruído sutil (mix-blend overlay) e uma faixa de luz no topo. Cores, intensidade do ruído e velocidade configuráveis; envolve qualquer conteúdo.",
+    tags: ["noise", "background", "gradient", "grain", "texture", "aceternity"],
+  },
+  {
+    slug: "hero-section-with-mousemove",
+    name: "Hero Section with Mousemove",
+    category: "Layout",
+    description:
+      "Hero imersivo da Aceternity UI com elementos flutuantes que reagem ao movimento do mouse: cada cartão se desloca em parallax proporcional à sua profundidade (depth), sobre um fundo escuro com grade e brilho radial. Título, descrição e itens são configuráveis.",
+    tags: ["hero", "mousemove", "parallax", "interactive", "layout", "aceternity"],
+  },
+  {
     slug: "background-gradient",
     name: "Background Gradient",
     category: "Feedback",
@@ -624,6 +640,24 @@ export const components: ComponentMeta[] = [
     ],
     usage:
       "Envolva qualquer conteúdo em <BackgroundGradient className=\"rounded-[22px] bg-white p-4\"> para ganhar a borda em gradiente animado.",
+  },
+  {
+    slug: "glowing-effect",
+    name: "Glowing Effect",
+    category: "Feedback",
+    description:
+      "Borda luminosa que segue o cursor: gradiente cônico rotacionado em torno do card via máscara, atualizado por pointermove e interpolado com easing do motion.",
+    tags: [
+      "glow",
+      "border",
+      "cursor",
+      "conic-gradient",
+      "mask",
+      "aceternity",
+      "feedback",
+    ],
+    usage:
+      "Posicione <GlowingEffect> dentro de um card (precisa de relative + rounded-[inherit] para a máscara acompanhar o formato) e ative-o passando disabled={false} para o ponteiro ser rastreado.",
   },
   {
     slug: "hero-highlight",
@@ -658,6 +692,24 @@ export const components: ComponentMeta[] = [
       "hero",
       "aceternity",
     ],
+  },
+  {
+    slug: "typewriter-effect",
+    name: "Typewriter Effect",
+    category: "Feedback",
+    description:
+      "Efeito de datilografia da Aceternity UI em duas variantes: TypewriterEffect revela cada caractere com stagger de 0.1s quando entra na viewport; TypewriterEffectSmooth (máquina de escrever) anima a largura do container de 0% até fit-content em 2s. Cursor (token --primary do shadcn) pisca em loop infinito em ambas. Ideal para títulos de hero, slogans e CTAs animados.",
+    tags: [
+      "typewriter",
+      "datilografia",
+      "texto",
+      "animação",
+      "cursor",
+      "hero",
+      "aceternity",
+    ],
+    usage:
+      "Use <TypewriterEffect words={[{text:'Crie'}, {text:'experiências', className:'text-primary'}]}/> para títulos animados ou <TypewriterEffectSmooth> para frases de impacto com largura animada.",
   },
   {
     slug: "grid-and-dot-backgrounds",
@@ -852,12 +904,48 @@ export const components: ComponentMeta[] = [
     tags: ["hero", "parallax", "scroll", "products", "grid", "aceternity"],
   },
   {
+    slug: "text-hover-effect",
+    name: "Text Hover Effect",
+    category: "Feedback",
+    description:
+      "SVG com texto em stroke que, ao passar o mouse, ganha um realce gradiente multicolor (amarelo/vermelho/azul/ciano/violeta) revelado por uma máscara radial seguindo o cursor, com stroke inicial animado via strokeDasharray. Reimplementado padronizado shadcn com motion/react, palette de gradiente configurável e variantes de densidade.",
+    tags: [
+      "text",
+      "hover",
+      "svg",
+      "mask",
+      "gradient",
+      "cursor",
+      "aceternity",
+    ],
+    usage:
+      "Passe o texto desejado em <TextHoverEffect text=\"Hover me\" /> dentro de um wrapper com largura definida; ajuste density (compact/default/relaxed) para a altura do container e duration para suavizar o追随 do cursor.",
+  },
+  {
     slug: "lamp-effect",
     name: "Lamp Effect",
     category: "Feedback",
     description:
       "Efeito \"lâmpada\" da Aceternity UI: dois cones de luz cônicos (conic-gradient) com blur que crescem ao entrar na viewport, acompanhados de uma linha brilhante horizontal, projetando luz ciano sobre um fundo escuro (slate-950) para revelar um título abaixo. Animado por whileInView de motion/react.",
     tags: ["lamp", "light", "glow", "hero", "conic", "aceternity"],
+  },
+  {
+    slug: "background-gradient-animation",
+    name: "Background Gradient Animation",
+    category: "Feedback",
+    description:
+      "Fundo da Aceternity UI com blobs de gradiente radial que se movem continuamente (CSS keyframes) e se misturam via mix-blend-mode + filtro goo (feGaussianBlur/feColorMatrix). Um blob extra segue o cursor quando interactive. Cores, tamanho e blend configuráveis.",
+    tags: ["background", "gradient", "blobs", "animation", "interactive", "aceternity"],
+  },
+  {
+    slug: "flip-words",
+    name: "Flip Words",
+    category: "Feedback",
+    description:
+      "Ciclador de palavras da Aceternity UI: AnimatePresence com troca animada por letra (entrada com stagger blur→nítido, saída dramática com scale, blur e deslocamento). Tema segue token semântico text-foreground; aceita lista de palavras e duração customizável.",
+    tags: ["flip", "words", "texto", "animação", "letra", "aceternity"],
+    usage:
+      "Use <FlipWords words={['rápido','bonito','moderno']} /> inline em qualquer cabeçalho ou frase para dar vida ao copy.",
   },
 ]
 

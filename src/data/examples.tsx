@@ -96,16 +96,25 @@ import { examplesSvgMaskEffect } from "@/data/examples-svg-mask-effect"
 import { examplesVortex } from "@/data/examples-vortex"
 import { examplesBackgroundLines } from "@/data/examples-background-lines"
 import { examplesCardStack } from "@/data/examples-card-stack"
+import { examplesBackgroundGradientAnimation } from "@/data/examples-background-gradient-animation"
 import { examples3dCard } from "@/data/examples-3d-card"
 import { examplesTooltipCard } from "@/data/examples-tooltip-card"
 import { examplesExpandableCards } from "@/data/examples-expandable-cards"
 import { examplesHeroParallax } from "@/data/examples-hero-parallax"
+import { examplesGlowingStarsEffect } from "@/data/examples-glowing-stars-effect"
+import { examplesHeroSectionWithMousemove } from "@/data/examples-hero-section-with-mousemove"
+import { examplesNoiseBackground } from "@/data/examples-noise-background"
 import { examplesShootingStarsAndStarsBackground } from "@/data/examples-shooting-stars-and-stars-background"
 import { examplesMeteors } from "@/data/examples-meteors"
 import { examplesGridAndDotBackgrounds } from "@/data/examples-grid-and-dot-backgrounds"
 import { examplesSpotlightNew } from "@/data/examples-spotlight-new"
 import { examplesLampEffect } from "@/data/examples-lamp-effect"
 import { examplesSpotlight } from "@/data/examples-spotlight"
+import { examplesBackgroundGradient } from "@/data/examples-background-gradient"
+import { examplesHeroHighlight } from "@/data/examples-hero-highlight"
+import { examplesGlowingEffect } from "@/data/examples-glowing-effect"
+import { examplesTypewriterEffect } from "@/data/examples-typewriter-effect"
+import { examplesFlipWords } from "@/data/examples-flip-words"
 
 export type Example = {
   title: string
@@ -1250,7 +1259,11 @@ export const examples: Record<string, Example[]> = {
   ...examplesAnimatedNumber,
   ...examplesLogoSlider,
   // Lote Aceternity
+  ...examplesNoiseBackground,
+  ...examplesBackgroundGradient,
+  ...examplesHeroSectionWithMousemove,
   ...examplesGridAndDotBackgrounds,
+  ...examplesGlowingEffect,
   ...examplesMeteors,
   ...examplesSpotlightNew,
   ...examplesSpotlight,
@@ -1272,10 +1285,15 @@ export const examples: Record<string, Example[]> = {
   ...examplesCardHoverEffect,
   ...examplesContainerScrollAnimation,
   ...examplesVortex,
+  ...examplesBackgroundGradientAnimation,
   ...examplesTooltipCard,
   ...examplesHeroParallax,
   ...examplesLampEffect,
   ...examplesShootingStarsAndStarsBackground,
+  ...examplesGlowingStarsEffect,
+  ...examplesHeroHighlight,
+  ...examplesTypewriterEffect,
+  ...examplesFlipWords,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
