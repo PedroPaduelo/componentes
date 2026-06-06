@@ -219,6 +219,8 @@ export { LogoSlider } from "./logo-slider"
 export type { LogoSliderProps } from "./logo-slider-types"
 
 // Lote Aceternity
+export { ThreeDGlobe } from "./3d-globe"
+export type { ThreeDGlobeProps, ThreeDGlobeMarker } from "./3d-globe"
 export { GitHubGlobe } from "./github-globe"
 export type {
   GitHubGlobeProps,
@@ -440,3 +442,9 @@ export { ParallaxScroll } from "./parallax-scroll"
 export type { ParallaxScrollProps } from "./parallax-scroll"
 export { Timeline } from "./timeline"
 export type { TimelineEntry, TimelineProps } from "./timeline-types"
+export { WorldMap } from "./world-map"
+export type {
+  WorldMapDot,
+  WorldMapLocation,
+  WorldMapProps,
+} from "./world-map-types"
