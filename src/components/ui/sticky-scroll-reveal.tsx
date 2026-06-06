@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import { motion, useMotionValueEvent, useScroll } from "motion/react"
 import { cn } from "@/lib/utils"
@@ -15,7 +13,7 @@ export type StickyScrollContentItem = {
 
 export type StickyScrollProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
-  "children" | "content"
+  "children" | "content" | "onDrag" | "onDragEnd" | "onDragStart" | "onAnimationStart" | "onAnimationEnd" | "onAnimationIteration" | "onTransitionEnd"
 > & {
   /**
    * Lista de seções. Cada item vira um bloco no lado esquerdo; o card sticky
