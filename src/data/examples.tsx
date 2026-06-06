@@ -168,6 +168,8 @@ import { examplesCardSpotlight } from "./examples-card-spotlight"
 import { examplesTextFlippingBoard } from "./examples-text-flipping-board"
 import { examplesStickyBanner } from "./examples-sticky-banner"
 import { examplesMultiStepLoader } from "./examples-multi-step-loader"
+import { examplesLinkPreview } from "./examples-link-preview"
+import { examplesLayoutGrid } from "./examples-layout-grid"
 
 export type Example = {
   title: string
@@ -1400,6 +1402,9 @@ export const examples: Record<string, Example[]> = {
   ...examplesTextFlippingBoard,
   ...examplesStickyBanner,
   ...examplesMultiStepLoader,
+  ...examplesLayoutGrid,
+  ...examplesLinkPreview,
+  ...examplesMacbookScroll,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

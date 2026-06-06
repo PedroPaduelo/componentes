@@ -1668,6 +1668,23 @@ export const components: ComponentMeta[] = [
       "layout",
     ],
   },
+  {
+    slug: "macbook-scroll",
+    name: "Macbook Scroll",
+    category: "Layout",
+    description:
+      "Mock de MacBook Pro com tampa que abre ao rolar a página. useScroll mede o progresso e useTransform aplica scaleX/scaleY/translate/rotate no lid + parallax no título. Imagem reveal dentro da tela.",
+    tags: [
+      "macbook",
+      "scroll",
+      "reveal",
+      "mockup",
+      "laptop",
+      "animation",
+      "motion",
+      "aceternity",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
