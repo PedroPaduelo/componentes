@@ -128,7 +128,7 @@ import { examplesCometCard } from "@/data/examples-comet-card"
 import { examplesDraggableCard } from "@/data/examples-draggable-card"
 import { examplesDirectionAwareHover } from "@/data/examples-direction-aware-hover"
 import { examplesGlareCard } from "@/data/examples-glare-card"
-import { examplesSquigglyText } from "./examples-squiggly-text"
+import { examplesSquigglyText } from "@/data/examples-squiggly-text"
 import { examples3dPin } from "./examples-3d-pin"
 
 export type Example = {
