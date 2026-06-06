@@ -9,6 +9,7 @@ import { TextEffectsShowcase } from "./text-effects-showcase"
 import { SignupForm } from "./signup-form"
 import { ChatApp } from "./chat-app"
 import { ComponentPlayground } from "./component-playground"
+import { AiAgentsPlatform } from "./ai-agents-platform"
 
 /**
  * Mapa slug → componente de tela. Compartilhado entre a página de
@@ -25,4 +26,5 @@ export const compositionScreens: Record<string, ComponentType> = {
   "signup-form": SignupForm,
   "chat-app": ChatApp,
   "component-playground": ComponentPlayground,
+  "ai-agents-platform": AiAgentsPlatform,
 }

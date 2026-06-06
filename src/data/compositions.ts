@@ -92,6 +92,14 @@ export const compositions: Composition[] = [
     tags: ["primitivos", "overlays", "playground"],
     category: "Aplicação",
   },
+  {
+    slug: "ai-agents-platform",
+    name: "Plataforma de Agentes de IA",
+    description:
+      "App de 3 painéis: sidebar de agentes, chat com painel de execução (steps + indicador) e painel de ferramentas com toggles e métricas animadas.",
+    tags: ["agentes", "ia", "app"],
+    category: "Aplicação",
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
