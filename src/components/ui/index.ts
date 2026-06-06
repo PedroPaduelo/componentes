@@ -394,3 +394,10 @@ export { DitherShader } from "./dither-shader"
 export type { DitherShaderProps, DitheringMode, ColorMode } from "./dither-shader"
 export { FileUpload } from "./file-upload"
 export type { FileUploadProps } from "./file-upload-types"
+export {
+  AnimatedModalProvider,
+  AnimatedModalTrigger,
+  AnimatedModalBody,
+  AnimatedModalContent,
+  AnimatedModalFooter,
+} from "./animated-modal"

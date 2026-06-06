@@ -1223,6 +1223,32 @@ export const components: ComponentMeta[] = [
     usage:
       "Envolva o <DitherShader> num wrapper com altura+largura explícitas (ex.: relative h-[420px] w-full rounded-xl overflow-hidden) — o componente preenche 100% do container via absolute inset-0. Use `gridSize` 3-5 para pixel art, 6-10 para efeito mais fino. Picsum ou outros hosts CORS-friendly funcionam com crossOrigin='anonymous'.",
   },
+  {
+    slug: "file-upload",
+    name: "File Upload",
+    category: "Forms",
+    description: "...",
+    tags: ["file", "upload", "drag", "drop", "aceternity"],
+  },
+  {
+    slug: "animated-modal",
+    name: "Animated Modal",
+    category: "Feedback",
+    description:
+      "Modal da Aceternity UI com animação de entrada cinematográfica (scale + rotateX + translateY), overlay com backdrop-blur, click-outside e body scroll-lock enquanto aberto. Composto por 5 peças (Provider, Trigger, Body, Content, Footer) que se combinam via Context.",
+    tags: [
+      "modal",
+      "animated",
+      "dialog",
+      "overlay",
+      "backdrop",
+      "motion",
+      "aceternity",
+      "feedback",
+    ],
+    usage:
+      "Envolva o gatilho + o Body num <AnimatedModalProvider>. Use <AnimatedModalTrigger> como botão que abre, e dentro do <AnimatedModalBody> posicione <AnimatedModalContent> (texto) e <AnimatedModalFooter> (botões). O fechamento é por click-outside, X ou setOpen(false) via useAnimatedModal().",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

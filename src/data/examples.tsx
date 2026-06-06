@@ -135,6 +135,7 @@ import { examplesAnimatedTestimonials } from "./examples-animated-testimonials"
 import { examplesCodeBlock } from "./examples-code-block"
 import { examplesDitherShader } from "./examples-dither-shader"
 import { examplesFileUpload } from "./examples-file-upload"
+import { animatedModalExamples } from "./examples-animated-modal"
 
 export type Example = {
   title: string
@@ -1331,6 +1332,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesAnimatedTestimonials,
   ...examplesWobbleCard,
   ...examplesContainerTextFlip,
+  ...animatedModalExamples,
   ...examplesCodeBlock,
   ...examplesDitherShader,
   ...examplesFileUpload,
