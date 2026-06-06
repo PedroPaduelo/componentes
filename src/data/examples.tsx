@@ -149,6 +149,9 @@ import { examplesTerminal } from "./examples-terminal"
 import { animatedModalExamples } from "./examples-animated-modal"
 import { examplesGooeyInput } from "./examples-gooey-input"
 import { examplesParallaxScroll } from "./examples-parallax-scroll"
+import { examplesWorldMap } from "./examples-world-map"
+import { examples3dGlobe } from "./examples-3d-globe"
+import { examplesGitHubGlobe } from "./examples-github-globe"
 
 export type Example = {
   title: string
@@ -1293,6 +1296,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesAnimatedNumber,
   ...examplesLogoSlider,
   // Lote Aceternity
+  ...examples3dGlobe,
+  ...examplesGitHubGlobe,
   ...examplesPixelatedCanvas,
   ...examplesTracingBeam,
   ...examplesTimeline,
@@ -1357,6 +1362,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesMagneticButton,
   ...examplesNotch,
   ...examplesTerminal,
+  ...examplesWorldMap,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

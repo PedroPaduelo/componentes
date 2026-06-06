@@ -219,6 +219,12 @@ export { LogoSlider } from "./logo-slider"
 export type { LogoSliderProps } from "./logo-slider-types"
 
 // Lote Aceternity
+export { GitHubGlobe } from "./github-globe"
+export type {
+  GitHubGlobeProps,
+  GlobeArc,
+  GlobeConfig,
+} from "./github-globe-types"
 export { GoogleGeminiEffect } from "./google-gemini-effect"
 export type { GoogleGeminiEffectProps } from "./google-gemini-effect"
 export { PixelatedCanvas } from "./pixelated-canvas"

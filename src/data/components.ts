@@ -609,6 +609,33 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "3d-globe",
+    name: "3D Globe",
+    category: "Feedback",
+    description:
+      "Globo terrestre 3D que rotaciona automaticamente, reimplementado com a lib leve cobe (~5kb) sobre WebGL — sem texturas ou imagens remotas. Os pontos do mapa e os markers são desenhados por shader. Cores dark fixas (globo escuro + markers ciano) são a assinatura visual do efeito (estilo Aceternity), então não seguem o tema shadcn. Faz cleanup do contexto WebGL (globe.destroy() + cancelAnimationFrame) ao desmontar.",
+    tags: ["3d", "globe", "webgl", "cobe", "map", "aceternity", "feedback"],
+  },
+  {
+    slug: "github-globe",
+    name: "GitHub Globe",
+    category: "Feedback",
+    description:
+      "Globo 3D interativo estilo GitHub (Aceternity UI) renderizado com three + three-globe sobre WebGL: continentes em hex-polígonos, arcos animados (com dash + gap) entre pares de coordenadas, anéis pulsantes nos pontos de origem e rotação automática via OrbitControls. Cores dark hardcoded (fundo preto, globo azul-marinho, atmosfera) — brand do efeito, não segue tema shadcn. Faz cleanup completo do contexto WebGL (dispose de geometrias/materiais/renderer, cancelAnimationFrame) ao desmontar.",
+    tags: [
+      "globe",
+      "3d",
+      "three",
+      "webgl",
+      "arcs",
+      "map",
+      "aceternity",
+      "feedback",
+    ],
+    usage:
+      "Use `GitHubGlobe` em hero sections ou seções de 'alcance global'. Sem props, renderiza um conjunto demonstrativo de arcos entre cidades. Passe `arcs` (array de `{ order, startLat, startLng, endLat, endLng, arcColor }`) para definir suas próprias rotas e `globeConfig` para ajustar paleta (globeColor, emissive, atmosphereColor), rotação (autoRotate, autoRotateSpeed) e timing dos arcos/anéis. O wrapper impõe `h-[28rem]` e fundo preto — ajuste a altura via `className`. É pesado (three.js + WebGL); use uma instância por viewport.",
+  },
+  {
     slug: "google-gemini-effect",
     name: "Google Gemini Effect",
     category: "Feedback",
@@ -1431,6 +1458,14 @@ export const components: ComponentMeta[] = [
     ],
     usage:
       "Passe `content` como um array de `{ title, description, content? }` (3-5 itens rendem bem). O wrapper impõe `h-[30rem] overflow-y-auto` e a borda sticky `top-10`; ajuste via `className` se precisar de outra altura. O card sticky à direita é `hidden lg:block` por default — passe `contentClassName` para customizar (cor de fundo, borda, etc.) ou desabilite o responsivo via wrapper externo.",
+  },
+  {
+    slug: "world-map",
+    name: "World Map",
+    category: "Feedback",
+    description:
+      "Mapa-múndi pontilhado da Aceternity UI (SVG gerado em runtime pela lib dotted-map) com arcos curvos que se desenham progressivamente (pathLength animado por motion) entre pares de coordenadas, e pontos pulsantes (animate SVG) nas pontas. Útil para ilustrar conexões/rotas globais. Cor das linhas configurável e fundo adaptativo ao tema (branco no claro, preto no escuro).",
+    tags: ["world", "map", "globe", "connections", "svg", "aceternity"],
   },
 ]
 
