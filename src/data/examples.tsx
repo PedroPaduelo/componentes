@@ -107,6 +107,7 @@ import { examplesHeroSectionWithMousemove } from "@/data/examples-hero-section-w
 import { examplesNoiseBackground } from "@/data/examples-noise-background"
 import { examplesShootingStarsAndStarsBackground } from "@/data/examples-shooting-stars-and-stars-background"
 import { examplesMeteors } from "@/data/examples-meteors"
+import { examplesLoader } from "@/data/examples-loader"
 import { examplesGridAndDotBackgrounds } from "@/data/examples-grid-and-dot-backgrounds"
 import { examplesSpotlightNew } from "@/data/examples-spotlight-new"
 import { examplesLampEffect } from "@/data/examples-lamp-effect"
@@ -136,6 +137,8 @@ import { examplesCodeBlock } from "./examples-code-block"
 import { examplesDitherShader } from "./examples-dither-shader"
 import { examplesFileUpload } from "./examples-file-upload"
 import { examplesHoverBorderGradient } from "./examples-hover-border-gradient"
+import { examplesMovingBorder } from "./examples-moving-border"
+import { examplesMagneticButton } from "./examples-magnetic-button"
 import { animatedModalExamples } from "./examples-animated-modal"
 import { examplesGooeyInput } from "./examples-gooey-input"
 
@@ -1289,6 +1292,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesGridAndDotBackgrounds,
   ...examplesGlowingEffect,
   ...examplesMeteors,
+  ...examplesLoader,
   ...examplesSpotlightNew,
   ...examplesSpotlight,
   ...examplesExpandableCards,
@@ -1336,11 +1340,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesContainerTextFlip,
   ...animatedModalExamples,
   ...examplesGooeyInput,
-  ...examplesCodeBlock,
-  ...examplesDitherShader,
-  ...examplesFileUpload,
-  ...examplesHoverBorderGradient,
-  ...examplesGooeyInput,
+  ...examplesMovingBorder,
+  ...examplesMagneticButton,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

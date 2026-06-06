@@ -1276,6 +1276,53 @@ export const components: ComponentMeta[] = [
     usage:
       "Use como botão padrão (`as='button'`, default) ou polimórfico (`as='a'`, etc.) — propague `href` e outros atributos HTML via spread. `containerClassName` estiliza a casca (a borda em si), `className` estiliza o miolo (fundo + texto). Cores são fixas; se precisar de tema, sobrescreva `bg-black`/`text-white`/`bg-black/20` nas classes extras.",
   },
+  {
+    slug: "loader",
+    name: "Loader",
+    category: "Feedback",
+    description:
+      "Coleção de cinco loaders animados da Aceternity UI: três pontos saltitantes em onda, três pontos deslizando horizontalmente, raio SVG com pathLength 0→1 e fill animado, texto com skew/scale glitch e camadas RGB (verde+violeta) atrás, e caracteres pulsando com text-shadow. Cores são fixas (assinatura visual do efeito) e não seguem o tema shadcn.",
+    tags: [
+      "loader",
+      "spinner",
+      "loading",
+      "animation",
+      "feedback",
+      "aceternity",
+    ],
+    usage:
+      "Use `<Loader variant='one' />` (default) para três pontos saltitantes; `variant='two'` para pontos deslizando; `variant='three'` para o raio SVG; `variant='four' text='Carregando' />` para o glitch de texto; `variant='five' text='Aguarde...' />` para caracteres pulsantes. O wrapper centraliza o conteúdo e impõe altura mínima; passe `className` para customizar (ex.: cor de texto no dark).",
+  },
+  {
+    slug: "moving-border",
+    name: "Moving Border",
+    category: "Actions",
+    description:
+      "Botão (ou wrapper polimórfico via `as`) com borda que se move continuamente ao longo do perímetro, implementada com um `<rect>` SVG invisível percorrido por um gradiente radial via `getPointAtLength` + `useAnimationFrame` (motion v12). Duração configurável em ms, raio da borda customizável e gradiente da 'bola' substituível. Cores são fixas (slate-900 + cyan, brand do efeito) — não segue tema shadcn.",
+    tags: [
+      "button",
+      "border",
+      "moving",
+      "animated",
+      "gradient",
+      "perimeter",
+      "aceternity",
+      "action",
+      "cta",
+    ],
+    usage:
+      "Use `MovingBorderButton` como botão pronto (slate-900 + cyan) ou `MovingBorder` puro dentro de qualquer wrapper com altura/largura (`relative h-* w-* overflow-hidden`) para fazer a borda viajante percorrer contornos customizados. `containerClassName` estiliza a casca externa, `borderClassName` estiliza a bola gradiente (substitua o `bg-[radial-gradient(...)]` para trocar a cor), `className` estiliza o miolo (fundo + texto). O polimorfismo via `as` propaga href e atributos HTML via spread.",
+  },
+  {
+    slug: "magnetic-button",
+    name: "Magnetic Button",
+    category: "Actions",
+    description:
+      "Wrapper que atrai o conteúdo em direção ao cursor com spring (useMotionValue + useSpring). Quando o mouse se aproxima, o filho é deslocado proporcionalmente em direção ao ponteiro; ao sair, retorna ao centro com física de mola. A borda azul aparece no hover como feedback visual. Útil para CTAs e botões interativos.",
+    tags: ["button", "magnetic", "hover", "spring", "aceternity"],
+    usage:
+      "Envolva qualquer elemento (tipicamente um <button>) com <MagneticButton> e o filho será magneticamente atraído pelo cursor. Use `strength` (0..1) para controlar a força do deslocamento e `maxDistance` (px) para limitar a área de influência. Mantenha o `children` com tamanho próprio (o wrapper não força dimensões).",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
