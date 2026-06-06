@@ -2,26 +2,13 @@ import * as React from "react"
 import { motion, type MotionProps, type TargetAndTransition } from "motion/react"
 import { cn } from "@/lib/utils"
 
-type AnimatedElement = "button" | "a" | "div" | "span"
-
-export type AnimatedButtonProps = Omit<
-  React.HTMLAttributes<HTMLElement>,
-  "children"
-> &
-  Omit<MotionProps, "initial" | "animate" | "transition"> & {
-    /** Conteúdo do botão. Default: "Browse Components". */
-    children?: React.ReactNode
-    /** Classes CSS adicionais. */
-    className?: string
-    /** Elemento motion a renderizar. Default: "button". */
-    as?: AnimatedElement
-    /** Estado desabilitado (atributo HTML nativo, passado para a raiz). */
-    disabled?: boolean
-    /** Animação de tap. Default: { scale: 0.97 }. */
-    whileTap?: MotionProps["whileTap"]
-    /** Transição. Default: spring custom. */
-    transition?: MotionProps["transition"]
-  }
+export type AnimatedButtonProps = React.HTMLAttributes<HTMLButtonElement> & {
+  children?: React.ReactNode
+  className?: string
+  disabled?: boolean
+  whileTap?: MotionProps["whileTap"]
+  transition?: MotionProps["transition"]
+}
 
 const DEFAULT_TAP = { scale: 0.97 }
 const DEFAULT_TRANSITION = {
@@ -31,12 +18,6 @@ const DEFAULT_TRANSITION = {
   scale: { type: "spring" as const, stiffness: 10, damping: 5, mass: 0.1 },
 }
 
-/**
- * Cast de CSS custom property objects (ex.: `{ '--mask-x': '100%' }`) para o
- * formato aceito por `initial`/`animate` do motion. Não é `as any` — é um
- * double-cast intermediário (`unknown` → `TargetAndTransition`) que preserva
- * a checagem estrita de tipos no resto do código.
- */
 const asMotion = (
   vars: Record<string, string | number | string[] | number[]>,
 ): TargetAndTransition => vars as unknown as TargetAndTransition
@@ -44,29 +25,13 @@ const asMotion = (
 function AnimatedButton({
   children = "Browse Components",
   className = "",
-  as = "button",
   whileTap = DEFAULT_TAP,
   transition = DEFAULT_TRANSITION,
   ...rest
 }: AnimatedButtonProps) {
-  // Switch tipado (substitui `(motion as any)[as]`). O cast explícito para
-  // `React.ElementType` evita a explosão combinatória de tipos do union
-  // `motion.a | motion.div | motion.span | motion.button` quando combinado
-  // com o spread de `rest`.
-  const Component = (
-    as === "a"
-      ? motion.a
-      : as === "div"
-        ? motion.div
-        : as === "span"
-          ? motion.span
-          : motion.button
-  ) as React.ElementType
-
   return (
-    <Component
+    <motion.button
       data-slot="animated-button"
-      {...rest}
       whileTap={whileTap}
       transition={transition}
       className={cn(
@@ -74,6 +39,7 @@ function AnimatedButton({
         "text-neutral-900 dark:text-neutral-100 [--shine:rgba(0,0,0,.66)] dark:[--shine:rgba(255,255,255,.66)]",
         className,
       )}
+      {...(rest as MotionProps)}
     >
       <motion.span
         className="tracking-wide font-light h-full w-full flex items-center justify-center relative z-10"
@@ -121,7 +87,7 @@ function AnimatedButton({
           repeatDelay: 1,
         }}
       />
-    </Component>
+    </motion.button>
   )
 }
 

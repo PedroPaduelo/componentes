@@ -1,6 +1,5 @@
 import * as React from "react"
 import {
-  motion,
   useAnimationFrame,
   useMotionTemplate,
   useMotionValue,
@@ -10,36 +9,13 @@ import {
 import { cn } from "@/lib/utils"
 
 export type MovingBorderProps = {
-  /** Conteúdo que viaja ao longo do perímetro (ex.: bola de gradiente). */
   children: React.ReactNode
-  /** Duração (ms) de uma volta completa ao longo do perímetro. Default: 3000. */
   duration?: number
-  /** Raio-X do `<rect>` invisível que define o caminho SVG. Default: "30%". */
   rx?: string
-  /** Raio-Y do `<rect>` invisível que define o caminho SVG. Default: "30%". */
   ry?: string
-  /** Props adicionais aplicadas ao `<svg>` que define o caminho. */
   svgProps?: React.SVGAttributes<SVGSVGElement>
 }
 
-/**
- * MovingBorder (Aceternity UI) — núcleo que renderiza um SVG invisível
- * (`<rect>` 100%×100% com `rx`/`ry`) percorrido por um `motion.div` filho
- * (`children`). A cada frame de animação, `useAnimationFrame` calcula o
- * comprimento do `<rect>` e move um `useMotionValue<number>` (progress) de 0
- * a `length`. `useTransform` mapeia esse progresso num par (x, y) usando
- * `getPointAtLength(progress)` e o template `translateX/Y(...)` desloca o
- * `children` exatamente sobre o perímetro do retângulo, com `translateX/Y
- * -50%)` para centralizar o "ponteiro" no traço.
- *
- * O `pathRef` precisa ser `<rect>` (não `<path>`) porque o Aceternity usa o
- * perímetro do retângulo (mais previsível que um `<path>` calculado). A
- * referência tipada como `SVGRectElement` ativa `getTotalLength()` e
- * `getPointAtLength()` da SVGGeometryElement.
- *
- * Renderiza um Fragment (svg + motion.div) — sem `data-slot` próprio. O
- * `data-slot="moving-border"` fica no **wrapper** (`MovingBorderButton`).
- */
 function MovingBorder({
   children,
   duration = 3000,
@@ -88,78 +64,60 @@ function MovingBorder({
           ref={pathRef}
         />
       </svg>
-      <motion.div
+      <div
         style={{
           position: "absolute",
           top: 0,
           left: 0,
           display: "inline-block",
-          transform,
+          transform: transform as unknown as string,
         }}
       >
         {children}
-      </motion.div>
+      </div>
     </>
   )
 }
 
-/**
- * Polimórfico: `T` é inferido a partir de `as` (default `"button"`), e o
- * spread propaga as props HTML do elemento escolhido (ex.: `href`/`target`
- * para `as="a"`, `type`/`disabled` para `as="button"`). Mesmo padrão do
- * `HoverBorderGradient` Aceternity.
- */
-export type MovingBorderButtonProps<
-  T extends React.ElementType = "button"
-> = Omit<React.ComponentPropsWithoutRef<T>, "children"> & {
-  /** Conteúdo do botão (texto/ícone). */
+export type MovingBorderButtonProps = {
   children: React.ReactNode
-  /** Raio da borda (CSS `border-radius`). Default: "1.75rem". */
   borderRadius?: string
-  /** Elemento raiz a renderizar (polimórfico). Default: "button". */
-  as?: T
-  /** Classes extras aplicadas ao container externo (onde a borda se move). */
   containerClassName?: string
-  /** Classes extras aplicadas à bola de gradiente que viaja. */
   borderClassName?: string
-  /** Duração (ms) de uma volta completa. Default: 3000. */
   duration?: number
+  className?: string
+  style?: React.CSSProperties
+  onClick?: React.MouseEventHandler
+  type?: "button" | "submit" | "reset"
+  disabled?: boolean
+  "aria-label"?: string
 }
 
-/**
- * MovingBorderButton (Aceternity UI) — wrapper polimórfico pronto para uso
- * que aplica a "borda que se move" do `MovingBorder` sobre um botão com
- * fundo escuro (slate-900), borda fina slate-800 e backdrop-blur. Cores são
- * fixas (brand do efeito), alinhado com glare-card / text-reveal-card /
- * hover-border-gradient.
- *
- * Estrutura: o container externo (radius=`borderRadius`) tem padding de 1px
- * (`p-[1px]`) e dentro dele um div absolute que renderiza o `MovingBorder`
- * com a "bola" gradiente. A camada visual do botão (texto, fundo escuro,
- * borda fina) é um div relativo por cima, com o mesmo border-radius
- * levemente menor (`* 0.96`) para o gradiente aparecer como uma borda de
- * ~1px no perímetro.
- */
-function MovingBorderButton<T extends React.ElementType = "button">({
+function MovingBorderButton({
   borderRadius = "1.75rem",
   children,
-  as,
   containerClassName,
   borderClassName,
   duration,
   className,
-  ...otherProps
-}: MovingBorderButtonProps<T>) {
-  const Component = (as ?? "button") as React.ElementType
+  style,
+  onClick,
+  type,
+  disabled,
+  "aria-label": ariaLabel,
+}: MovingBorderButtonProps) {
   return (
-    <Component
+    <button
       data-slot="moving-border"
+      type={type}
+      disabled={disabled}
+      aria-label={ariaLabel}
+      onClick={onClick}
       className={cn(
         "relative h-16 w-40 overflow-hidden bg-transparent p-[1px] text-xl",
         containerClassName,
       )}
-      style={{ borderRadius }}
-      {...otherProps}
+      style={{ borderRadius, ...style }}
     >
       <div
         className="absolute inset-0"
@@ -184,7 +142,7 @@ function MovingBorderButton<T extends React.ElementType = "button">({
       >
         {children}
       </div>
-    </Component>
+    </button>
   )
 }
 

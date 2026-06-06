@@ -26,30 +26,32 @@ const movingBorderBasic: Example = {
   ),
 }
 
-const movingBorderPolymorphic: Example = {
-  title: "Polimórfico (as)",
+const movingBorderLink: Example = {
+  title: "Como link (wrapper <a>)",
   description:
-    "A prop `as` aceita qualquer elemento (a, div, button) e repassa atributos HTML via spread. Aqui um link `<a>` com `href` recebe a borda animada — útil para CTAs dentro de texto.",
-  code: `<MovingBorderButton
-  as="a"
-  href="#moving-border"
-  borderRadius="1.5rem"
-  duration={2500}
-  className="bg-slate-900 text-white"
->
-  Veja o demo
-</MovingBorderButton>`,
+    "Para usar como link, envolva o MovingBorderButton em um <a>. A borda animada continua funcionando normalmente.",
+  code: `<div className="flex items-center justify-center">
+  <a href="#moving-border" className="rounded-3xl">
+    <MovingBorderButton
+      borderRadius="1.5rem"
+      duration={2500}
+      className="bg-slate-900 text-white"
+    >
+      Veja o demo
+    </MovingBorderButton>
+  </a>
+</div>`,
   render: (
     <div className="flex w-full items-center justify-center gap-4 py-8">
-      <MovingBorderButton
-        as="a"
-        href="#moving-border"
-        borderRadius="1.5rem"
-        duration={2500}
-        className="bg-slate-900 text-white"
-      >
-        Veja o demo
-      </MovingBorderButton>
+      <a href="#moving-border" className="rounded-3xl">
+        <MovingBorderButton
+          borderRadius="1.5rem"
+          duration={2500}
+          className="bg-slate-900 text-white"
+        >
+          Veja o demo
+        </MovingBorderButton>
+      </a>
     </div>
   ),
 }
@@ -109,7 +111,7 @@ const movingBorderCore: Example = {
 export const examplesMovingBorder: Record<string, Example[]> = {
   "moving-border": [
     movingBorderBasic,
-    movingBorderPolymorphic,
+    movingBorderLink,
     movingBorderCustomGradient,
     movingBorderCore,
   ],

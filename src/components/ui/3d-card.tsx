@@ -104,7 +104,6 @@ function CardItem({
 }: CardItemProps) {
   const ref = useRef<HTMLDivElement>(null)
   const [isMouseEntered] = useMouseEnter()
-  const Tag = (as ?? "div") as React.ElementType
 
   React.useEffect(() => {
     if (!ref.current) return
@@ -123,15 +122,17 @@ function CardItem({
     rotateZ,
   ])
 
-  return (
-    <Tag
-      ref={ref as React.Ref<HTMLDivElement>}
-      data-slot="card-item"
-      className={cn("w-fit transition duration-200 ease-linear", className)}
-      {...rest}
-    >
-      {children}
-    </Tag>
+  const Tag = as ?? "div"
+
+  return React.createElement(
+    Tag,
+    {
+      ref,
+      "data-slot": "card-item",
+      className: cn("w-fit transition duration-200 ease-linear", className),
+      ...rest,
+    } as React.HTMLAttributes<HTMLElement> & { ref?: React.Ref<HTMLDivElement>; "data-slot"?: string },
+    children,
   )
 }
 

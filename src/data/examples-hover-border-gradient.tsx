@@ -4,7 +4,7 @@ import type { Example } from "@/data/examples"
 const hoverBorderGradientButton: Example = {
   title: "Botão com borda gradiente",
   description:
-    "Passe o mouse no botão: a borda deixa de ciclar e preenche com o highlight azul (#3275F8). `duration` controla a velocidade do ciclo (1s = uma rotação por segundo). `as='button'` é o default.",
+    "Passe o mouse no botão: a borda deixa de ciclar e preenche com o highlight azul (#3275F8). `duration` controla a velocidade do ciclo (1s = uma rotação por segundo).",
   code: `<div className="flex min-h-[120px] items-center justify-center">
   <HoverBorderGradient
     containerClassName="rounded-full"
@@ -26,33 +26,39 @@ const hoverBorderGradientButton: Example = {
 }
 
 const hoverBorderGradientLink: Example = {
-  title: "Como link (polimórfico)",
+  title: "Como link (wrapper <a>)",
   description:
-    "Use `as='a'` (ou qualquer outro tag) e propague `href`. As cores de borda/miolo continuam fixas — a paleta é parte do efeito visual, não segue o tema.",
+    "Para usar como link, envolva o HoverBorderGradient em um <a>. As cores de borda/miolo continuam fixas — a paleta é parte do efeito visual, não segue o tema.",
   code: `<div className="flex min-h-[120px] items-center justify-center">
-  <HoverBorderGradient
-    as="a"
+  <a
     href="https://ui.aceternity.com/components/hover-border-gradient"
     target="_blank"
     rel="noreferrer"
-    containerClassName="rounded-full"
-    className="px-6 py-2 text-sm font-medium"
+    className="rounded-full"
   >
-    Ver referência ↗
-  </HoverBorderGradient>
+    <HoverBorderGradient
+      containerClassName="rounded-full"
+      className="px-6 py-2 text-sm font-medium"
+    >
+      Ver referência ↗
+    </HoverBorderGradient>
+  </a>
 </div>`,
   render: (
     <div className="flex min-h-[120px] items-center justify-center">
-      <HoverBorderGradient
-        as="a"
+      <a
         href="https://ui.aceternity.com/components/hover-border-gradient"
         target="_blank"
         rel="noreferrer"
-        containerClassName="rounded-full"
-        className="px-6 py-2 text-sm font-medium"
+        className="rounded-full"
       >
-        Ver referência ↗
-      </HoverBorderGradient>
+        <HoverBorderGradient
+          containerClassName="rounded-full"
+          className="px-6 py-2 text-sm font-medium"
+        >
+          Ver referência ↗
+        </HoverBorderGradient>
+      </a>
     </div>
   ),
 }

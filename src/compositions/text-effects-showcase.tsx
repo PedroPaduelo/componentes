@@ -84,7 +84,6 @@ function IconSwapToggle({
       className="inline-flex size-11 items-center justify-center rounded-lg border border-border bg-background text-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
     >
       <IconSwap
-        as="span"
         aria-hidden
         iconOn={on}
         iconOff={off}
