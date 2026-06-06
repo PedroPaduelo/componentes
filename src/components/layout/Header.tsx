@@ -18,6 +18,7 @@ type HeaderProps = {
 const navItems = [
   { to: "/", label: "Início" },
   { to: "/components", label: "Componentes" },
+  { to: "/compositions", label: "Composições" },
 ]
 
 export function Header({ searchSlot }: HeaderProps) {
