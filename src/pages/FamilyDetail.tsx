@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CodeBlockCommand } from "@/components/ui/code-block-command"
 import { ExampleBlock } from "@/components/showcase/ExampleBlock"
 import { CodeBlock } from "@/components/showcase/CodeBlock"
+import { OnThisPage, type TocSection } from "@/components/showcase/OnThisPage"
 import { OriginBadge } from "@/components/catalog/OriginBadge"
 import { ORIGIN_DESCRIPTIONS } from "@/components/catalog/origin-meta"
 import type { ComponentMeta } from "@/data/components"
@@ -97,67 +98,99 @@ function FamilyView({ family, hash }: { family: Family; hash: string }) {
     [scrollTo]
   )
 
-  return (
-    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-8 sm:py-12 xl:max-w-4xl">
-      {/* Breadcrumb leve — a navegação principal é a sidebar. */}
-      <nav
-        aria-label="Trilha de navegação"
-        className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground"
-      >
-        <Link
-          to="/components"
-          className="transition-colors hover:text-foreground"
-        >
-          Componentes
-        </Link>
-        <ChevronRight className="size-3.5 shrink-0 opacity-60" aria-hidden />
-        <span className="font-medium text-foreground">{family.name}</span>
-      </nav>
+  const tocSections = buildTocSections(family, multi)
 
-      {/* Header da página */}
-      <header className="space-y-4 border-b border-border pb-8">
-        <div className="flex flex-wrap items-center gap-2">
-          <Badge variant="secondary">{family.category}</Badge>
-          {family.origins.map((origin) => (
-            <OriginBadge key={origin} origin={origin} />
+  return (
+    <div className="mx-auto flex w-full max-w-6xl gap-10 px-4 py-8 sm:px-8 sm:py-12">
+      <article className="min-w-0 max-w-3xl flex-1">
+        {/* Breadcrumb leve — a navegação principal é a sidebar. */}
+        <nav
+          aria-label="Trilha de navegação"
+          className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground"
+        >
+          <Link
+            to="/components"
+            className="transition-colors hover:text-foreground"
+          >
+            Componentes
+          </Link>
+          <ChevronRight className="size-3.5 shrink-0 opacity-60" aria-hidden />
+          <span className="font-medium text-foreground">{family.name}</span>
+        </nav>
+
+        {/* Header da página */}
+        <header className="space-y-4 border-b border-border pb-8">
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge variant="secondary">{family.category}</Badge>
+            {family.origins.map((origin) => (
+              <OriginBadge key={origin} origin={origin} />
+            ))}
+          </div>
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+            {family.name}
+          </h1>
+          <p className="text-base leading-relaxed text-muted-foreground">
+            {representative.description}
+          </p>
+          {multi ? (
+            <p className="text-sm text-muted-foreground">
+              {family.variants.length} variantes nesta família.
+            </p>
+          ) : null}
+        </header>
+
+        {/* Abas de navegação — só quando há mais de uma variante. */}
+        {multi ? (
+          <nav className="mt-8" aria-label="Variantes da família">
+            <Tabs value={active} onValueChange={handleTabChange}>
+              <TabsList className="flex-wrap">
+                {family.variants.map((variant) => (
+                  <TabsTrigger key={variant.slug} value={variant.slug}>
+                    {variant.name}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </nav>
+        ) : null}
+
+        {/* Seções por variante */}
+        <div className="mt-10 space-y-20">
+          {family.variants.map((variant) => (
+            <VariantSection key={variant.slug} variant={variant} multi={multi} />
           ))}
         </div>
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          {family.name}
-        </h1>
-        <p className="text-base leading-relaxed text-muted-foreground">
-          {representative.description}
-        </p>
-        {multi ? (
-          <p className="text-sm text-muted-foreground">
-            {family.variants.length} variantes nesta família.
-          </p>
-        ) : null}
-      </header>
+      </article>
 
-      {/* Abas de navegação — só quando há mais de uma variante. */}
-      {multi ? (
-        <nav className="mt-8" aria-label="Variantes da família">
-          <Tabs value={active} onValueChange={handleTabChange}>
-            <TabsList className="flex-wrap">
-              {family.variants.map((variant) => (
-                <TabsTrigger key={variant.slug} value={variant.slug}>
-                  {variant.name}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-          </Tabs>
-        </nav>
-      ) : null}
-
-      {/* Seções por variante */}
-      <div className="mt-10 space-y-20">
-        {family.variants.map((variant) => (
-          <VariantSection key={variant.slug} variant={variant} multi={multi} />
-        ))}
-      </div>
+      {/* TOC "Nesta página" — coluna direita (xl+) */}
+      <OnThisPage sections={tocSections} />
     </div>
   )
+}
+
+/**
+ * Deriva as seções do índice "Nesta página" a partir da família.
+ *
+ * - Família multi-variante: uma entrada por variante (depth 1, âncora
+ *   `section-<slug>`) com as três subseções (Uso/Instalação/Dica, depth 2).
+ * - Família de variante única: as três subseções viram entradas de topo
+ *   (depth 1), apontando para `<slug>-uso` / `-instalacao` / `-dica`.
+ */
+function buildTocSections(family: Family, multi: boolean): TocSection[] {
+  if (!multi) {
+    const slug = family.variants[0].slug
+    return [
+      { id: `${slug}-uso`, label: "Uso", depth: 1 },
+      { id: `${slug}-instalacao`, label: "Instalação", depth: 1 },
+      { id: `${slug}-dica`, label: "Dica de uso", depth: 1 },
+    ]
+  }
+  return family.variants.flatMap((variant) => [
+    { id: `section-${variant.slug}`, label: variant.name, depth: 1 as const },
+    { id: `${variant.slug}-uso`, label: "Uso", depth: 2 as const },
+    { id: `${variant.slug}-instalacao`, label: "Instalação", depth: 2 as const },
+    { id: `${variant.slug}-dica`, label: "Dica de uso", depth: 2 as const },
+  ])
 }
 
 /**
@@ -295,14 +328,19 @@ function VariantSection({
 }
 
 /**
- * Gera um parágrafo curto de "quando usar / boas práticas" derivado de
- * description + tags do registry. NÃO inventa API nem props — só recombina os
- * metadados existentes em uma frase orientativa.
+ * Gera um parágrafo curto de "quando usar / boas práticas".
+ *
+ * Prioriza o texto curado em `variant.usage` (registry). Quando ausente, cai
+ * no fallback derivado de description + tags — que NÃO inventa API nem props,
+ * só recombina os metadados existentes em uma frase orientativa.
  */
 function buildUsageTip(
   variant: ComponentMeta,
   origin: ComponentOrigin
 ): string {
+  if (variant.usage && variant.usage.trim().length > 0) {
+    return variant.usage.trim()
+  }
   const keywords = variant.tags
     .filter((t) => t !== "fluid" && t !== origin.toLowerCase())
     .slice(0, 3)

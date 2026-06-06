@@ -26,6 +26,12 @@ export interface ComponentMeta {
   description: string
   /** Palavras-chave para busca (além do nome). */
   tags: string[]
+  /**
+   * Dica de uso curada (opcional). Quando presente, substitui o texto
+   * derivado de description/tags na seção "Dica de uso" da página doc.
+   * Aditivo: não afeta o catálogo nem `families.ts`.
+   */
+  usage?: string
 }
 
 /**
@@ -40,6 +46,8 @@ export const components: ComponentMeta[] = [
     description:
       "Botão acionável com variantes de estilo e tamanho para disparar ações.",
     tags: ["botão", "ação", "cta", "clique", "variantes"],
+    usage:
+      "Use a variante `default` para a ação principal de uma tela e reserve `outline`/`ghost` para ações secundárias. Em diálogos de confirmação destrutiva, use `destructive`. Evite mais de um botão primário no mesmo agrupamento para não competir pela atenção.",
   },
   {
     slug: "dropdown-menu",
@@ -48,6 +56,8 @@ export const components: ComponentMeta[] = [
     description:
       "Menu suspenso acionado por um gatilho, com itens, separadores e submenus.",
     tags: ["menu", "dropdown", "ações", "contexto", "opções"],
+    usage:
+      "Ideal para agrupar ações secundárias atrás de um único gatilho (ex.: menu \"…\" de uma linha de tabela). Agrupe itens relacionados com separadores e evite listas muito longas — acima de ~7 itens, considere um comando/busca. Não use para navegação primária do app.",
   },
   {
     slug: "card",
@@ -56,6 +66,8 @@ export const components: ComponentMeta[] = [
     description:
       "Contêiner com cabeçalho, conteúdo e rodapé para agrupar informação relacionada.",
     tags: ["cartão", "container", "layout", "painel", "superfície"],
+    usage:
+      "Use para agrupar informação relacionada em uma superfície elevada (resumo, métrica, item de lista rica). Mantenha um único assunto por card e use `CardHeader`/`CardContent`/`CardFooter` para hierarquia clara. Evite aninhar cards dentro de cards.",
   },
   {
     slug: "dialog",
@@ -64,6 +76,8 @@ export const components: ComponentMeta[] = [
     description:
       "Janela modal sobreposta ao conteúdo para fluxos focados e confirmações.",
     tags: ["modal", "diálogo", "overlay", "popup", "janela"],
+    usage:
+      "Use para fluxos focados que exigem uma decisão imediata (confirmar, editar um item curto). Sempre forneça um título acessível via `DialogTitle` e uma forma clara de fechar. Para formulários longos ou navegação lateral, prefira `Sheet`; para mensagens não-bloqueantes, prefira um toast.",
   },
   {
     slug: "sheet",
@@ -72,6 +86,8 @@ export const components: ComponentMeta[] = [
     description:
       "Painel deslizante a partir da borda da tela para navegação ou formulários.",
     tags: ["drawer", "painel", "lateral", "deslizante", "overlay"],
+    usage:
+      "Bom para navegação em telas estreitas e para formulários/filtros que precisam de mais espaço vertical que um diálogo. Escolha o `side` conforme o contexto (esquerda para navegação, direita para detalhes/edição). Garanta um `SheetTitle` para acessibilidade.",
   },
   {
     slug: "tabs",
@@ -80,6 +96,8 @@ export const components: ComponentMeta[] = [
     description:
       "Abas para alternar entre seções de conteúdo dentro de um mesmo contexto.",
     tags: ["abas", "navegação", "seções", "tabs", "alternar"],
+    usage:
+      "Use para alternar entre seções equivalentes de um mesmo contexto sem trocar de página. Mantenha rótulos curtos e um número pequeno de abas; se o conteúdo for sequencial ou independente, prefira páginas ou um accordion. A aba ativa deve refletir o estado atual de forma óbvia.",
   },
   {
     slug: "input",
@@ -88,6 +106,8 @@ export const components: ComponentMeta[] = [
     description:
       "Campo de texto para entrada de dados em formulários, com estados de foco e erro.",
     tags: ["campo", "texto", "formulário", "entrada", "input"],
+    usage:
+      "Sempre associe um `<label>` ao campo (não confie só no placeholder). Use o `type` correto (`email`, `password`, `number`) para teclado e validação nativos, e comunique erros com texto descritivo além da cor. Mantenha a largura proporcional ao conteúdo esperado.",
   },
   {
     slug: "checkbox",
@@ -96,6 +116,8 @@ export const components: ComponentMeta[] = [
     description:
       "Caixa de seleção para opções booleanas, com estados marcado e indeterminado.",
     tags: ["caixa", "seleção", "formulário", "booleano", "marcar"],
+    usage:
+      "Use para opções independentes que podem ser marcadas em conjunto (múltipla escolha). Para escolha única e mutuamente exclusiva, prefira radio buttons; para ligar/desligar um estado com efeito imediato, prefira um switch. Sempre rotule o checkbox e torne o rótulo clicável.",
   },
   {
     slug: "badge",
@@ -104,6 +126,8 @@ export const components: ComponentMeta[] = [
     description:
       "Etiqueta compacta para destacar status, contagens ou rótulos contextuais.",
     tags: ["etiqueta", "status", "rótulo", "tag", "destaque"],
+    usage:
+      "Use para rótulos curtos de status, contagem ou categoria — não para ações (badge não é botão). Padronize as cores por significado (ex.: sucesso, atenção, erro) e mantenha o texto em poucas palavras. Não comunique estado apenas por cor; inclua texto legível.",
   },
   {
     slug: "tree",
@@ -119,6 +143,8 @@ export const components: ComponentMeta[] = [
       "file tree",
       "explorer",
     ],
+    usage:
+      "Ideal para representar hierarquias de arquivos/diretórios com expandir-recolher, busca e navegação por teclado. Forneça uma altura definida ao contêiner (o componente virtualiza a lista) e use a busca quando a árvore tiver muitos nós. Para listas planas, prefira uma lista simples.",
   },
   {
     slug: "work-experience-component",
