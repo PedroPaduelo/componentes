@@ -401,3 +401,7 @@ export {
   AnimatedModalContent,
   AnimatedModalFooter,
 } from "./animated-modal"
+export { HoverBorderGradient } from "./hover-border-gradient"
+export type { HoverBorderGradientProps } from "./hover-border-gradient"
+export { GooeyInput } from "./gooey-input"
+export type { GooeyInputClassNames, GooeyInputProps } from "./gooey-input-types"

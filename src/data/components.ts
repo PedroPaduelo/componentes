@@ -1249,6 +1249,33 @@ export const components: ComponentMeta[] = [
     usage:
       "Envolva o gatilho + o Body num <AnimatedModalProvider>. Use <AnimatedModalTrigger> como botão que abre, e dentro do <AnimatedModalBody> posicione <AnimatedModalContent> (texto) e <AnimatedModalFooter> (botões). O fechamento é por click-outside, X ou setOpen(false) via useAnimatedModal().",
   },
+  {
+    slug: "gooey-input",
+    name: "Gooey Input",
+    category: "Forms",
+    description:
+      "Search input com efeito gooey da Aceternity UI: filtro SVG (feGaussianBlur + feColorMatrix com alpha boost 20 -10) que faz o ícone circular 'derreter' e se fundir com a barra de search expandida. O ícone da lupa compartilha um layoutId entre o botão e o bubble destacado, criando uma transição orgânica via motion/react. Ao desfocar com campo vazio, o controle volta ao estado colapsado.",
+    tags: ["search", "input", "gooey", "animation", "aceternity"],
+  },
+  {
+    slug: "hover-border-gradient",
+    name: "Hover Border Gradient",
+    category: "Actions",
+    description:
+      "Botão (ou wrapper polimórfico via `as`) com borda que ganha gradiente radial animado ao passar o mouse. Em repouso a direção do gradiente rotaciona ciclicamente (TOP→LEFT→BOTTOM→RIGHT) a cada `duration`s; no hover a borda preenche com o highlight azul (#3275F8). Cores são fixas (brand do efeito) — não segue tema shadcn.",
+    tags: [
+      "button",
+      "gradient",
+      "border",
+      "hover",
+      "animated",
+      "aceternity",
+      "action",
+      "cta",
+    ],
+    usage:
+      "Use como botão padrão (`as='button'`, default) ou polimórfico (`as='a'`, etc.) — propague `href` e outros atributos HTML via spread. `containerClassName` estiliza a casca (a borda em si), `className` estiliza o miolo (fundo + texto). Cores são fixas; se precisar de tema, sobrescreva `bg-black`/`text-white`/`bg-black/20` nas classes extras.",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

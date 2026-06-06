@@ -135,7 +135,9 @@ import { examplesAnimatedTestimonials } from "./examples-animated-testimonials"
 import { examplesCodeBlock } from "./examples-code-block"
 import { examplesDitherShader } from "./examples-dither-shader"
 import { examplesFileUpload } from "./examples-file-upload"
+import { examplesHoverBorderGradient } from "./examples-hover-border-gradient"
 import { animatedModalExamples } from "./examples-animated-modal"
+import { examplesGooeyInput } from "./examples-gooey-input"
 
 export type Example = {
   title: string
@@ -1333,9 +1335,12 @@ export const examples: Record<string, Example[]> = {
   ...examplesWobbleCard,
   ...examplesContainerTextFlip,
   ...animatedModalExamples,
+  ...examplesGooeyInput,
   ...examplesCodeBlock,
   ...examplesDitherShader,
   ...examplesFileUpload,
+  ...examplesHoverBorderGradient,
+  ...examplesGooeyInput,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
