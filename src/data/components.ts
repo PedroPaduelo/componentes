@@ -1131,6 +1131,24 @@ export const components: ComponentMeta[] = [
     usage:
       "Use <DirectionAwareHover imageUrl=\"...\"> com qualquer conteúdo React como children (ex.: nome + handle) — o card reage à direção da qual o mouse entrou.",
   },
+  {
+    slug: "comet-card",
+    name: "Comet Card",
+    category: "Layout",
+    description:
+      "Card 3D da Aceternity UI que segue o cursor com tilt (rotateX/Y), parallax (translateX/Y) e um glare radial que se move com o mouse. Profundidade de rotação e translação configuráveis via props; aceita qualquer conteúdo como children dentro de um card visual com overflow-hidden.",
+    tags: [
+      "card",
+      "3d",
+      "tilt",
+      "glare",
+      "mouse-tracking",
+      "motion",
+      "aceternity",
+    ],
+    usage:
+      "Envolva o conteúdo visual do card (imagem + textos) em <CometCard className='h-full w-full'> dentro de um wrapper com altura (ex.: h-[420px] w-[300px]) para a área 3D ter onde operar.",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
