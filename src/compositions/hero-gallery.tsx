@@ -1,11 +1,258 @@
 /**
- * Stub da composição "Hero Gallery".
- * A montagem real chega nas próximas fases da feature Compositions.
+ * Composição "Hero Gallery".
+ *
+ * Showcase coeso de uma galeria/portfólio montado APENAS com componentes do
+ * registry da vitrine:
+ * - Hero topo: `ParallaxHeroImages` (parallax dirigido pelo mouse) + heading.
+ * - Destaques 3D: `CardContainer`/`CardBody`/`CardItem` (inclinam no hover).
+ * - Scroll reveal: `ContainerScroll` (via demo com área scrollável própria).
+ * - Galeria parallax: `HeroParallax` (via demo com área scrollável própria).
+ * - Coleção: `ExpandableCards` (cards que expandem para um modal).
+ *
+ * Os sub-componentes scroll-driven (que usam `useScroll`/refs) vivem em
+ * `hero-gallery-demo.tsx` para não disparar o lint
+ * `react-refresh/only-export-components`.
  */
+
+import { Button } from "@/components/ui/button"
+import {
+  CardBody,
+  CardContainer,
+  CardItem,
+} from "@/components/ui/3d-card"
+import { ExpandableCards } from "@/components/ui/expandable-cards"
+import type { ExpandableCard } from "@/components/ui/expandable-cards-types"
+import { ParallaxHeroImages } from "@/components/ui/parallax-hero-images"
+
+import {
+  HeroGalleryContainerScroll,
+  HeroGalleryParallax,
+} from "./hero-gallery-demo"
+
+const HERO_IMAGES = [
+  "https://picsum.photos/seed/hg-hero-1/400/300",
+  "https://picsum.photos/seed/hg-hero-2/400/300",
+  "https://picsum.photos/seed/hg-hero-3/400/300",
+  "https://picsum.photos/seed/hg-hero-4/400/300",
+  "https://picsum.photos/seed/hg-hero-5/400/300",
+  "https://picsum.photos/seed/hg-hero-6/400/300",
+]
+
+const FEATURED = [
+  {
+    title: "Aurora",
+    blurb: "Uma paisagem de luzes em movimento capturada ao amanhecer.",
+    seed: "hg-card-aurora",
+  },
+  {
+    title: "Concreto",
+    blurb: "Linhas e texturas brutalistas em tons monocromáticos.",
+    seed: "hg-card-concrete",
+  },
+  {
+    title: "Litoral",
+    blurb: "O encontro entre o mar e a areia em uma manhã calma.",
+    seed: "hg-card-coast",
+  },
+]
+
+const collection: ExpandableCard[] = [
+  {
+    title: "Montanhas",
+    description: "Coleção Alpina",
+    src: "https://picsum.photos/seed/hg-coll-mountains/300/300",
+    ctaText: "Ver",
+    ctaLink: "#",
+    content: () => (
+      <p>
+        Picos cobertos de neve fotografados ao longo de uma travessia de cinco
+        dias pelos Alpes. A série explora a escala monumental da paisagem e a
+        solidão luminosa das altitudes.
+      </p>
+    ),
+  },
+  {
+    title: "Metrópole",
+    description: "Coleção Urbana",
+    src: "https://picsum.photos/seed/hg-coll-city/300/300",
+    ctaText: "Ver",
+    ctaLink: "#",
+    content: () => (
+      <p>
+        Ensaios noturnos em grandes centros urbanos, com longa exposição para
+        capturar os rastros de luz do tráfego e a vida que pulsa entre os
+        arranha-céus.
+      </p>
+    ),
+  },
+  {
+    title: "Deserto",
+    description: "Coleção Árida",
+    src: "https://picsum.photos/seed/hg-coll-desert/300/300",
+    ctaText: "Ver",
+    ctaLink: "#",
+    content: () => (
+      <p>
+        Dunas e formações rochosas registradas na hora dourada, quando as
+        sombras alongadas revelam a textura escultural do deserto.
+      </p>
+    ),
+  },
+  {
+    title: "Floresta",
+    description: "Coleção Verde",
+    src: "https://picsum.photos/seed/hg-coll-forest/300/300",
+    ctaText: "Ver",
+    ctaLink: "#",
+    content: () => (
+      <p>
+        Florestas temperadas envoltas em neblina, onde a luz difusa atravessa o
+        dossel e desenha feixes suaves entre os troncos.
+      </p>
+    ),
+  },
+]
+
 export function HeroGallery() {
   return (
-    <div className="flex min-h-[40vh] items-center justify-center">
-      <p className="text-muted-foreground">Composição em breve…</p>
+    <div className="flex flex-col">
+      {/* ----------------------------------------------------------------- */}
+      {/* Hero — Parallax Hero Images                                       */}
+      {/* ----------------------------------------------------------------- */}
+      <section className="relative h-[460px] w-full overflow-hidden bg-neutral-50 dark:bg-neutral-950">
+        <ParallaxHeroImages variant="default" images={HERO_IMAGES} />
+        <div className="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-6 text-center">
+          <span className="pointer-events-auto mb-5 inline-flex items-center rounded-full border border-border bg-background/70 px-4 py-1.5 text-sm font-medium text-foreground backdrop-blur">
+            Galeria interativa
+          </span>
+          <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl">
+            Hero Gallery
+          </h1>
+          <p className="mt-4 max-w-xl text-base text-muted-foreground sm:text-lg">
+            Uma vitrine de imagens com profundidade, inclinação 3D e revelações
+            ao rolar — tudo montado só com peças do registry.
+          </p>
+          <div className="pointer-events-auto mt-8 flex flex-col items-center gap-3 sm:flex-row">
+            <Button asChild size="lg">
+              <a href="#destaques">Explorar destaques</a>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <a href="#colecao">Ver coleção</a>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* ----------------------------------------------------------------- */}
+      {/* Destaques — 3D Cards                                              */}
+      {/* ----------------------------------------------------------------- */}
+      <section id="destaques" className="bg-background py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Destaques da semana
+            </h2>
+            <p className="mt-4 text-base text-muted-foreground">
+              Passe o mouse sobre cada cartão — ele inclina seguindo o cursor e
+              os elementos flutuam em profundidades distintas.
+            </p>
+          </div>
+          <div className="mt-12 flex flex-wrap justify-center gap-6">
+            {FEATURED.map((item) => (
+              <CardContainer key={item.title} className="inter-var">
+                <CardBody className="group/card relative h-auto w-[20rem] rounded-xl border border-border bg-card p-6 text-card-foreground">
+                  <CardItem translateZ={50} className="text-xl font-bold">
+                    {item.title}
+                  </CardItem>
+                  <CardItem
+                    as="p"
+                    translateZ={60}
+                    className="mt-2 max-w-sm text-sm text-muted-foreground"
+                  >
+                    {item.blurb}
+                  </CardItem>
+                  <CardItem translateZ={100} className="mt-4 w-full">
+                    <img
+                      src={`https://picsum.photos/seed/${item.seed}/600/400`}
+                      height={400}
+                      width={600}
+                      className="h-52 w-full rounded-xl object-cover group-hover/card:shadow-xl"
+                      alt={item.title}
+                    />
+                  </CardItem>
+                  <div className="mt-6 flex items-center justify-between">
+                    <CardItem
+                      translateZ={20}
+                      as="a"
+                      href="#"
+                      className="text-xs font-normal"
+                    >
+                      Ver série →
+                    </CardItem>
+                    <CardItem translateZ={20}>
+                      <Button size="sm">Curtir</Button>
+                    </CardItem>
+                  </div>
+                </CardBody>
+              </CardContainer>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ----------------------------------------------------------------- */}
+      {/* Scroll reveal — Container Scroll Animation                        */}
+      {/* ----------------------------------------------------------------- */}
+      <section className="border-t bg-muted/30 py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mx-auto mb-10 max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Imagem em destaque
+            </h2>
+            <p className="mt-4 text-base text-muted-foreground">
+              Role a área abaixo para revelar a foto principal com uma animação
+              3D dirigida pelo scroll.
+            </p>
+          </div>
+          <HeroGalleryContainerScroll />
+        </div>
+      </section>
+
+      {/* ----------------------------------------------------------------- */}
+      {/* Galeria parallax — Hero Parallax                                  */}
+      {/* ----------------------------------------------------------------- */}
+      <section className="bg-background py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mx-auto mb-10 max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Toda a coleção em movimento
+            </h2>
+            <p className="mt-4 text-base text-muted-foreground">
+              Role a galeria — as fileiras deslizam em direções opostas com
+              profundidade e leve rotação.
+            </p>
+          </div>
+          <HeroGalleryParallax />
+        </div>
+      </section>
+
+      {/* ----------------------------------------------------------------- */}
+      {/* Coleção — Expandable Cards                                        */}
+      {/* ----------------------------------------------------------------- */}
+      <section id="colecao" className="border-t bg-muted/30 py-20">
+        <div className="mx-auto max-w-2xl px-6">
+          <div className="mb-10 text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Coleções
+            </h2>
+            <p className="mt-4 text-base text-muted-foreground">
+              Clique em uma coleção para expandi-la em um modal — Escape ou
+              clique fora para fechar.
+            </p>
+          </div>
+          <ExpandableCards cards={collection} />
+        </div>
+      </section>
     </div>
   )
 }
