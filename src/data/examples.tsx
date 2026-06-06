@@ -1333,6 +1333,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesContainerTextFlip,
   ...examplesCodeBlock,
   ...examplesDitherShader,
+  ...examplesFileUpload,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
