@@ -23,6 +23,7 @@ import {
   CardHeader,
   CardTitle,
   DottedGlowBackground,
+  ScalesContainer,
   SwitchFluid,
 } from "@/components/ui"
 import { cn } from "@/lib/utils"
@@ -138,6 +139,19 @@ export function PricingPage() {
             2 meses grátis
           </Badge>
         </div>
+
+        {/* Faixa decorativa (Scales) separando o toggle da grade */}
+        <ScalesContainer
+          orientation="diagonal"
+          size={12}
+          containerClassName="mt-10 overflow-hidden rounded-lg border border-border/60 bg-card/40"
+        >
+          <div className="flex items-center justify-center px-6 py-4">
+            <p className="text-center text-xs font-medium uppercase tracking-widest text-muted-foreground">
+              Sem taxas escondidas · Cancele quando quiser
+            </p>
+          </div>
+        </ScalesContainer>
 
         {/* Grade de planos */}
         <div className="mt-10 grid gap-6 md:grid-cols-3 md:items-stretch">

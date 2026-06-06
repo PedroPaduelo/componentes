@@ -17,6 +17,7 @@ import {
   HoverEffect,
   ImagesBadge,
   TooltipCard,
+  WorkExperienceComponent,
 } from "@/components/ui"
 
 type Author = {
@@ -159,6 +160,40 @@ const GRID_ITEMS = [
   },
 ]
 
+const EXPERIENCES = [
+  {
+    company: "Northwind",
+    role: "Staff Frontend Engineer",
+    period: "2023 — Presente",
+    description:
+      "Lidera o design system da empresa usando a vitrine como base de componentes.",
+    technologies: ["React", "TypeScript", "Tailwind"],
+    logo: "https://picsum.photos/seed/exp-northwind/64/64",
+    stats: [
+      { label: "Telas", value: "120+" },
+      { label: "Adoção", value: "98%" },
+    ],
+  },
+  {
+    company: "Indie Labs",
+    role: "Founder & Product Engineer",
+    period: "2021 — 2023",
+    description:
+      "Lançou três produtos SaaS reaproveitando composições inteiras da vitrine.",
+    technologies: ["Next.js", "Vite", "shadcn/ui"],
+    logo: "https://picsum.photos/seed/exp-indie/64/64",
+  },
+  {
+    company: "Mayhem Studio",
+    role: "Frontend Developer",
+    period: "2019 — 2021",
+    description:
+      "Construiu landing pages de alta conversão com os efeitos animados do catálogo.",
+    technologies: ["React", "Framer Motion"],
+    logo: "https://picsum.photos/seed/exp-mayhem/64/64",
+  },
+]
+
 export function TestimonialsWall() {
   return (
     <section className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
@@ -225,6 +260,19 @@ export function TestimonialsWall() {
           Mais histórias da comunidade
         </h3>
         <HoverEffect items={GRID_ITEMS} />
+      </div>
+
+      {/* Trajetória / Experiência da comunidade */}
+      <div className="mx-auto mt-16 max-w-2xl">
+        <h3 className="text-center text-xl font-semibold tracking-tight text-foreground">
+          Trajetória de quem usa a vitrine
+        </h3>
+        <p className="mt-3 text-center text-sm text-muted-foreground">
+          A experiência de um dos nossos usuários mais ativos ao longo dos anos.
+        </p>
+        <div className="mt-8">
+          <WorkExperienceComponent experiences={EXPERIENCES} variant="timeline" />
+        </div>
       </div>
     </section>
   )

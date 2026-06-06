@@ -39,6 +39,8 @@ import {
   TabsList,
   TabsTrigger,
   TabsContent,
+  Tree,
+  TOCMinimap,
 } from "@/components/ui"
 import type { ContributionDay } from "@/components/ui/github-contributions"
 
@@ -186,6 +188,25 @@ const NAV = [
   { label: "Configurações", icon: Settings, active: false },
 ]
 
+/* Árvore de arquivos do projeto exibida na sidebar. */
+const PROJECT_FILES = [
+  "src/app/layout.tsx",
+  "src/app/dashboard/page.tsx",
+  "src/app/dashboard/settings.tsx",
+  "src/components/kpi-card.tsx",
+  "src/components/data-table.tsx",
+  "src/lib/api.ts",
+  "src/lib/utils.ts",
+  "package.json",
+]
+
+/* Índice de navegação das seções do dashboard. */
+const TOC_ITEMS = [
+  { id: "section-kpis", label: "KPIs" },
+  { id: "section-activity", label: "Atividade" },
+  { id: "section-breakdown", label: "Detalhamento" },
+]
+
 /* -------------------------------------------------------------------------- */
 /*                              sub-componentes                                */
 /* -------------------------------------------------------------------------- */
@@ -278,6 +299,22 @@ export function SaasDashboard() {
             Fazer upgrade
           </Button>
         </div>
+
+        {/* Árvore de arquivos do projeto */}
+        <div className="mt-4">
+          <p className="mb-2 px-2 text-xs font-medium text-muted-foreground">
+            Arquivos do projeto
+          </p>
+          <Tree
+            data={PROJECT_FILES}
+            initialExpansion="open"
+            density="compact"
+            style={
+              { "--trees-height": "220px" } as React.CSSProperties &
+                Record<`--${string}`, string>
+            }
+          />
+        </div>
       </aside>
 
       {/* Conteúdo */}
@@ -311,15 +348,29 @@ export function SaasDashboard() {
 
         {/* Body */}
         <div className="flex flex-col gap-6 p-4 sm:p-6">
+          {/* Índice de navegação das seções */}
+          <TOCMinimap
+            items={TOC_ITEMS}
+            orientation="horizontal"
+            showProgress={false}
+            className="flex-wrap rounded-lg border border-border bg-card/40 px-3 py-2"
+          />
+
           {/* KPIs */}
-          <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <section
+            id="section-kpis"
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
+          >
             {KPIS.map((kpi) => (
               <KpiCard key={kpi.label} kpi={kpi} />
             ))}
           </section>
 
           {/* Heatmap de atividade */}
-          <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+          <section
+            id="section-activity"
+            className="rounded-xl border border-border bg-card p-5 shadow-sm"
+          >
             <div className="mb-4 flex items-center justify-between">
               <div>
                 <h2 className="text-sm font-semibold">Atividade da equipe</h2>
@@ -337,7 +388,10 @@ export function SaasDashboard() {
           </section>
 
           {/* Tabelas com abas */}
-          <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
+          <section
+            id="section-breakdown"
+            className="rounded-xl border border-border bg-card p-5 shadow-sm"
+          >
             <Tabs defaultValue="customers">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>

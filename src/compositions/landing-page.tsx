@@ -23,6 +23,7 @@ import {
 
 import { Button } from "@/components/ui/button"
 import { HoverEffect } from "@/components/ui/card-hover-effect"
+import { GlowCard, GlowCardGrid } from "@/components/ui"
 import { LogoSlider } from "@/components/ui/logo-slider"
 import { WavyBackground } from "@/components/ui/wavy-background"
 
@@ -62,6 +63,24 @@ const features = [
     description:
       "Backgrounds em canvas, marquees infinitos e efeitos de hover construídos com motion e CSS moderno.",
     link: "/components#animado",
+  },
+]
+
+const glowReasons = [
+  {
+    title: "Velocidade real",
+    description: "Do protótipo à produção em horas, não semanas.",
+    icon: "https://picsum.photos/seed/glow-speed/160/160",
+  },
+  {
+    title: "Acessível por padrão",
+    description: "Foco, teclado e ARIA já cuidados em cada peça.",
+    icon: "https://picsum.photos/seed/glow-a11y/160/160",
+  },
+  {
+    title: "Sem bloqueio de fornecedor",
+    description: "Código seu, no seu repo, sem caixa-preta.",
+    icon: "https://picsum.photos/seed/glow-open/160/160",
   },
 ]
 
@@ -151,6 +170,42 @@ export function LandingPage() {
           </div>
           <div className="mt-10">
             <HoverEffect items={features} />
+          </div>
+        </div>
+      </section>
+
+      {/* ----------------------------------------------------------------- */}
+      {/* Por que escolher (GlowCardGrid)                                   */}
+      {/* ----------------------------------------------------------------- */}
+      <section className="border-t bg-muted/20 py-20">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
+              Por que escolher a Vitrine
+            </h2>
+            <p className="mt-4 text-base text-muted-foreground">
+              Passe o mouse sobre os cards para ver o brilho seguir o cursor.
+            </p>
+          </div>
+          <div className="mt-10">
+            <GlowCardGrid columns={3}>
+              {glowReasons.map((reason) => (
+                <GlowCard
+                  key={reason.title}
+                  icon={reason.icon}
+                  iconAlt={reason.title}
+                >
+                  <div className="px-6 text-center">
+                    <h3 className="text-lg font-semibold text-foreground">
+                      {reason.title}
+                    </h3>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {reason.description}
+                    </p>
+                  </div>
+                </GlowCard>
+              ))}
+            </GlowCardGrid>
           </div>
         </div>
       </section>
