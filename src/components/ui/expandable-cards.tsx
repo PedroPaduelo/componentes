@@ -27,7 +27,7 @@ function CloseIcon() {
       strokeWidth="2"
       strokeLinecap="round"
       strokeLinejoin="round"
-      className="h-4 w-4 text-black"
+      className="h-4 w-4"
     >
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M18 6l-12 12" />
@@ -89,7 +89,7 @@ function ExpandableCards({ cards, className }: ExpandableCardsProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0, transition: { duration: 0.05 } }}
-              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-white lg:hidden"
+              className="absolute top-2 right-2 flex h-6 w-6 items-center justify-center rounded-full bg-popover text-popover-foreground lg:hidden"
               onClick={() => setActive(null)}
             >
               <CloseIcon />
@@ -98,7 +98,7 @@ function ExpandableCards({ cards, className }: ExpandableCardsProps) {
             <motion.div
               layoutId={`card-${active.title}-${id}`}
               ref={ref}
-              className="flex h-full w-full max-w-[500px] flex-col overflow-hidden bg-white sm:rounded-3xl md:h-fit md:max-h-[90%] dark:bg-neutral-900"
+              className="flex h-full w-full max-w-[500px] flex-col overflow-hidden bg-popover text-popover-foreground sm:rounded-3xl md:h-fit md:max-h-[90%]"
             >
               <motion.div layoutId={`image-${active.title}-${id}`}>
                 <img
@@ -115,13 +115,13 @@ function ExpandableCards({ cards, className }: ExpandableCardsProps) {
                   <div>
                     <motion.h3
                       layoutId={`title-${active.title}-${id}`}
-                      className="font-medium text-neutral-700 dark:text-neutral-200"
+                      className="font-medium text-popover-foreground"
                     >
                       {active.title}
                     </motion.h3>
                     <motion.p
                       layoutId={`description-${active.description}-${id}`}
-                      className="text-neutral-600 dark:text-neutral-400"
+                      className="text-muted-foreground"
                     >
                       {active.description}
                     </motion.p>
@@ -144,7 +144,7 @@ function ExpandableCards({ cards, className }: ExpandableCardsProps) {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="flex h-40 flex-col items-start gap-4 overflow-auto pb-10 text-xs text-neutral-600 [scrollbar-width:none] [-webkit-overflow-scrolling:touch] md:h-fit md:text-sm lg:text-base dark:text-neutral-400"
+                    className="flex h-40 flex-col items-start gap-4 overflow-auto pb-10 text-xs text-muted-foreground [scrollbar-width:none] [-webkit-overflow-scrolling:touch] md:h-fit md:text-sm lg:text-base"
                   >
                     {renderContent(active.content)}
                   </motion.div>
@@ -166,7 +166,7 @@ function ExpandableCards({ cards, className }: ExpandableCardsProps) {
             layoutId={`card-${card.title}-${id}`}
             key={`card-${card.title}-${id}`}
             onClick={() => setActive(card)}
-            className="flex cursor-pointer flex-col items-center justify-between rounded-xl p-4 hover:bg-neutral-50 md:flex-row dark:hover:bg-neutral-800"
+            className="flex cursor-pointer flex-col items-center justify-between rounded-xl p-4 hover:bg-accent md:flex-row"
           >
             <div className="flex flex-col gap-4 md:flex-row">
               <motion.div layoutId={`image-${card.title}-${id}`}>
@@ -181,13 +181,13 @@ function ExpandableCards({ cards, className }: ExpandableCardsProps) {
               <div>
                 <motion.h3
                   layoutId={`title-${card.title}-${id}`}
-                  className="text-center font-medium text-neutral-800 md:text-left dark:text-neutral-200"
+                  className="text-center font-medium text-foreground md:text-left"
                 >
                   {card.title}
                 </motion.h3>
                 <motion.p
                   layoutId={`description-${card.description}-${id}`}
-                  className="text-center text-neutral-600 md:text-left dark:text-neutral-400"
+                  className="text-center text-muted-foreground md:text-left"
                 >
                   {card.description}
                 </motion.p>
@@ -195,7 +195,7 @@ function ExpandableCards({ cards, className }: ExpandableCardsProps) {
             </div>
             <motion.button
               layoutId={`button-${card.title}-${id}`}
-              className="mt-4 rounded-full bg-gray-100 px-4 py-2 text-sm font-bold text-black hover:bg-green-500 hover:text-white md:mt-0 dark:bg-neutral-800 dark:text-white"
+              className="mt-4 rounded-full bg-muted px-4 py-2 text-sm font-bold text-muted-foreground hover:bg-green-500 hover:text-white md:mt-0"
             >
               {card.ctaText}
             </motion.button>

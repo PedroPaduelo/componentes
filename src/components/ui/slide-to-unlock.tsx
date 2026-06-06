@@ -222,7 +222,7 @@ function SlideToUnlock({
         <div
           data-slot="handle"
           className={cn(
-            "absolute top-0 left-0 flex h-10 cursor-grab items-center justify-center rounded-lg bg-white text-zinc-400 shadow-sm",
+            "absolute top-0 left-0 flex h-10 cursor-grab items-center justify-center rounded-lg border border-border bg-background text-muted-foreground shadow-sm",
             "active:cursor-grabbing",
             isDisabledOrUnlocked && "cursor-default",
             variant === "success" &&

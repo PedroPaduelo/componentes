@@ -12,6 +12,14 @@
  * - Sem `any`: subcomponentes tipados com `MotionValue<number>`.
  * - `data-slot="container-scroll-animation"` no JSX raiz.
  * - Detecção de mobile via `window.innerWidth` com listener `resize` + cleanup.
+ *
+ * Tema (decisão de tokenização): o mockup de device tinha cores hardcoded
+ * (`border-[#6C6C6C] bg-[#222222]` na moldura, `bg-gray-100 dark:bg-zinc-900`
+ * na tela). Foram trocadas por tokens para reagir ao tema: a moldura/bezel usa
+ * `border-border bg-muted` (mantém o aspecto de "frame" físico, neutro e visível
+ * tanto no light quanto no dark, sem o preto chapado que parecia bug no light) e
+ * a tela interna usa `bg-background` (superfície de conteúdo coerente com o
+ * resto da vitrine).
  */
 
 import * as React from "react"
@@ -123,9 +131,9 @@ function Card({ rotate, scale, children }: CardProps) {
         boxShadow:
           "0 0 #0000004d, 0 9px 20px #0000004a, 0 37px 37px #00000042, 0 84px 50px #00000026, 0 149px 60px #0000000a, 0 233px 65px #00000003",
       }}
-      className="mx-auto -mt-12 h-[30rem] w-full max-w-5xl rounded-[30px] border-4 border-[#6C6C6C] bg-[#222222] p-2 shadow-2xl md:h-[40rem] md:p-6"
+      className="mx-auto -mt-12 h-[30rem] w-full max-w-5xl rounded-[30px] border-4 border-border bg-muted p-2 shadow-2xl md:h-[40rem] md:p-6"
     >
-      <div className="h-full w-full overflow-hidden rounded-2xl bg-gray-100 md:rounded-2xl md:p-4 dark:bg-zinc-900">
+      <div className="h-full w-full overflow-hidden rounded-2xl bg-background md:rounded-2xl md:p-4">
         {children}
       </div>
     </motion.div>

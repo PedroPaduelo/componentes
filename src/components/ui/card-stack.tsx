@@ -47,7 +47,7 @@ function CardStack({
       {cards.map((card, index) => (
         <motion.div
           key={card.id}
-          className="absolute flex h-60 w-60 flex-col justify-between rounded-3xl border border-neutral-200 bg-white p-4 shadow-xl shadow-black/[0.1] md:h-60 md:w-96 dark:border-white/[0.1] dark:bg-black dark:shadow-white/[0.05]"
+          className="absolute flex h-60 w-60 flex-col justify-between rounded-3xl border border-border bg-card p-4 text-card-foreground shadow-xl shadow-black/[0.1] md:h-60 md:w-96 dark:shadow-white/[0.05]"
           style={{ transformOrigin: "top center" }}
           animate={{
             top: index * -offset,
@@ -55,14 +55,10 @@ function CardStack({
             zIndex: cards.length - index,
           }}
         >
-          <div className="font-normal text-neutral-700 dark:text-neutral-200">
-            {card.content}
-          </div>
+          <div className="font-normal text-foreground">{card.content}</div>
           <div>
-            <p className="font-medium text-neutral-500 dark:text-white">
-              {card.name}
-            </p>
-            <p className="font-normal text-neutral-400 dark:text-neutral-200">
+            <p className="font-medium text-foreground">{card.name}</p>
+            <p className="font-normal text-muted-foreground">
               {card.designation}
             </p>
           </div>
