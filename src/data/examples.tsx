@@ -151,10 +151,15 @@ import { examplesGooeyInput } from "./examples-gooey-input"
 import { examplesParallaxScroll } from "./examples-parallax-scroll"
 import { examplesWorldMap } from "./examples-world-map"
 import { examples3dGlobe } from "./examples-3d-globe"
+import { examplesCompare } from "./examples-compare"
 import { examplesGitHubGlobe } from "./examples-github-globe"
 import { examplesKeyboard } from "./examples-keyboard"
+import { examplesFocusCards } from "./examples-focus-cards"
 import { examplesPlaceholdersAndVanishInput } from "./examples-placeholders-and-vanish-input"
 import { examplesWebcamPixelGrid } from "./examples-webcam-pixel-grid"
+import { examplesAsciiArt } from "./examples-ascii-art"
+import { examplesCanvasText } from "./examples-canvas-text"
+import { examplesCanvasRevealEffect } from "./examples-canvas-reveal-effect"
 
 export type Example = {
   title: string
@@ -1299,6 +1304,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesAnimatedNumber,
   ...examplesLogoSlider,
   // Lote Aceternity
+  ...examplesCompare,
   ...examples3dGlobe,
   ...examplesGitHubGlobe,
   ...examplesPixelatedCanvas,
@@ -1374,6 +1380,10 @@ export const examples: Record<string, Example[]> = {
   ...examplesKeyboard,
   ...examplesPlaceholdersAndVanishInput,
   ...examplesWebcamPixelGrid,
+  ...examplesAnimatedTooltip,
+  ...examplesAsciiArt,
+  ...examplesCanvasText,
+  ...examplesCanvasRevealEffect,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

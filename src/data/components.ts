@@ -609,6 +609,40 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "compare",
+    name: "Compare",
+    category: "Layout",
+    description:
+      "Slider de comparação de 2 imagens com handle arrastável. Suporta modo hover (segue o mouse) e drag (arrastar explícito), com animação de autoplay opcional. Usa clip-path para recorte e requestAnimationFrame para movimento suave.",
+    tags: [
+      "compare",
+      "slider",
+      "before-after",
+      "drag",
+      "hover",
+      "image",
+      "aceternity",
+      "layout",
+    ],
+  },
+  {
+    slug: "focus-cards",
+    name: "Focus Cards",
+    category: "Layout",
+    description:
+      "Grid de cards de imagem com efeito de foco reverso: ao passar o mouse sobre um card, os demais ganham blur leve e scale reduzido, destacando o item hovered. Cada card exibe uma imagem com overlay escuro e título em gradiente claro. Sem dependências externas — transições CSS puras com transition-all.",
+    tags: [
+      "cards",
+      "grid",
+      "focus",
+      "hover",
+      "blur",
+      "image",
+      "aceternity",
+      "layout",
+    ],
+  },
+  {
     slug: "3d-globe",
     name: "3D Globe",
     category: "Feedback",
@@ -1490,6 +1524,58 @@ export const components: ComponentMeta[] = [
     description:
       "Grid de pixels que captura frames da webcam e renderiza em tempo real como uma matriz de cores. Fallback elegante quando webcam não está disponível.",
     tags: ["webcam", "pixel", "grid", "camera", "realtime", "aceternity"],
+  },
+  {
+    slug: "apple-cards-carousel",
+    name: "Apple Cards Carousel",
+    category: "Layout",
+    description:
+      "Carrossel horizontal estilo Apple com cards que expandem em modal via layoutId (motion/react). Navegação por setas, scroll e botão X. Fecha com Escape ou clique fora.",
+    tags: ["carousel", "cards", "apple", "modal", "layout", "motion", "gallery", "image"],
+  },
+  {
+    slug: "ascii-art",
+    name: "ASCII Art",
+    category: "Feedback",
+    description:
+      "Renderizador de imagem como ASCII art em canvas com animação (fade/typewriter/matrix). Suporta múltiplos charsets (standard, blocks, braille, dense, etc.), cores customizadas, ASCII colorido e efeito matrix com caracteres katakana.",
+    tags: [
+      "ascii",
+      "art",
+      "canvas",
+      "render",
+      "image",
+      "typewriter",
+      "matrix",
+      "charset",
+      "aceternity",
+    ],
+    usage:
+      "Envolva o <AsciiArt> num wrapper com altura+largura explícitas (ex.: relative h-[400px] w-full rounded-xl overflow-hidden) — o componente preenche 100% do container via absolute inset-0. Use `resolution` 60-100 para detalhe, `charset` para o estilo de caracteres, e `animationStyle` para fade/typewriter/matrix. Imagens CORS-friendly (ex.: picsum.photos) funcionam com crossOrigin='anonymous'.",
+  },
+  {
+    slug: "canvas-reveal-effect",
+    name: "Canvas Reveal Effect",
+    category: "Feedback",
+    description:
+      "Efeito de revelação com dot matrix WebGL usando shader customizada via @react-three/fiber + three. Animação surge do centro para as bordas com opacidade progressiva.",
+    tags: ["canvas", "webgl", "shader", "dot-matrix", "reveal", "three", "animation", "aceternity"],
+  },
+  {
+    slug: "canvas-text",
+    name: "Canvas Text",
+    category: "Feedback",
+    description:
+      "Texto renderizado em canvas com animação e efeitos visuais.",
+    tags: ["canvas", "text", "animation", "aceternity"],
+  },
+  {
+    slug: "animated-tooltip",
+    name: "Animated Tooltip",
+    category: "Feedback",
+    description:
+      "Fileira de avatares com tooltip animado que segue o cursor — useSpring + useTransform + AnimatePresence. O tooltip inclina e translada conforme a posição do mouse sobre o avatar. Cores dark hardcoded (fundo preto + gradientes emerald/sky) são a assinatura visual do efeito, não seguem tema shadcn.",
+    tags: ["tooltip", "avatar", "spring", "animation", "hover", "aceternity", "feedback"],
   },
 ]
 
