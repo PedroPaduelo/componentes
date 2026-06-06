@@ -1291,6 +1291,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesAnimatedNumber,
   ...examplesLogoSlider,
   // Lote Aceternity
+  ...examplesTracingBeam,
   ...examplesTimeline,
   ...examplesNoiseBackground,
   ...examplesBackgroundGradient,
