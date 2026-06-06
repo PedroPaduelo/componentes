@@ -58,7 +58,10 @@ export function HeroGalleryContainerScroll() {
       ref={scrollRef}
       className="h-[520px] w-full overflow-y-auto rounded-xl border border-border bg-background"
     >
-      <div className="flex min-h-[150vh] flex-col">
+      <div className="flex flex-col">
+        {/* Espaçador inicial: garante que, no topo do scroll, o target comece
+            ABAIXO da viewport (scrollYProgress = 0). */}
+        <div className="h-[30vh] shrink-0" aria-hidden />
         <ContainerScroll
           scrollRef={scrollRef}
           titleComponent={
@@ -77,6 +80,9 @@ export function HeroGalleryContainerScroll() {
             draggable={false}
           />
         </ContainerScroll>
+        {/* Espaçador final: garante que o target consiga SAIR por cima da
+            viewport, levando scrollYProgress até 1. */}
+        <div className="h-[260vh] shrink-0" aria-hidden />
       </div>
     </div>
   )

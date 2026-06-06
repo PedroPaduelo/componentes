@@ -31,19 +31,19 @@ const features = [
     title: "Componentes prontos",
     description:
       "Dezenas de componentes shadcn e adaptações de bibliotecas externas, todos com a mesma API e tema reativo.",
-    link: "/components",
+    link: "/components#prontos",
   },
   {
     title: "Dark / Light nativo",
     description:
       "Tudo responde ao tema da vitrine via tokens shadcn — sem cores quebradas ou ajustes manuais.",
-    link: "/components",
+    link: "/components#dark",
   },
   {
     title: "Copiar & colar",
     description:
       "Cada componente traz código pronto na aba Código, com botão de copiar em um clique.",
-    link: "/components",
+    link: "/components#copia",
   },
   {
     title: "Composições reais",
@@ -55,13 +55,13 @@ const features = [
     title: "TypeScript estrito",
     description:
       "Build e lint sem dívida técnica: zero any, zero ts-ignore, tipos completos em toda a base.",
-    link: "/components",
+    link: "/components#tipado",
   },
   {
     title: "Animações suaves",
     description:
       "Backgrounds em canvas, marquees infinitos e efeitos de hover construídos com motion e CSS moderno.",
-    link: "/components",
+    link: "/components#animado",
   },
 ]
 
