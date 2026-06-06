@@ -1,6 +1,8 @@
 import { Routes, Route } from "react-router-dom"
 import { Layout } from "@/components/layout/Layout"
+import { DocsLayout } from "@/components/layout/DocsLayout"
 import { Home } from "@/pages/Home"
+import { ComponentsIndex } from "@/pages/ComponentsIndex"
 import { FamilyDetail } from "@/pages/FamilyDetail"
 import { Compositions } from "@/pages/Compositions"
 import { CompositionDetail } from "@/pages/CompositionDetail"
@@ -12,12 +14,16 @@ function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         {/*
-          Uma única rota resolve família e variante:
-          - base de família (ex.: "button")  → renderiza FamilyDetail
-          - slug de variante (ex.: "button-fluid") → redireciona pra
-            /components/<base>#<slug> (dentro do FamilyDetail).
+          Área de documentação: sidebar de navegação + conteúdo central.
+          - /components            → índice (redireciona pra primeira família)
+          - /components/:id        → família (ex.: "button") renderiza FamilyDetail;
+            slug de variante (ex.: "button-fluid") redireciona pra
+            /components/<base>#<slug> (tratado dentro do FamilyDetail).
         */}
-        <Route path="/components/:id" element={<FamilyDetail />} />
+        <Route element={<DocsLayout />}>
+          <Route path="/components" element={<ComponentsIndex />} />
+          <Route path="/components/:id" element={<FamilyDetail />} />
+        </Route>
         <Route path="/compositions" element={<Compositions />} />
         <Route path="/compositions/:slug" element={<CompositionDetail />} />
         <Route path="*" element={<NotFound />} />

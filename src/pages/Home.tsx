@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react"
 
-import { groupByFamily, type Family } from "@/data/families"
+import { groupByFamily } from "@/data/families"
+import { filterFamilies } from "@/lib/family-filter"
 import { ComponentCard } from "@/components/catalog/ComponentCard"
 import { SearchInput } from "@/components/catalog/SearchInput"
 import {
@@ -9,38 +10,6 @@ import {
   type CategoryFilterValue,
 } from "@/components/catalog/CategoryFilter"
 import { EmptyState } from "@/components/catalog/EmptyState"
-
-/** Texto pesquisável de uma família: base, nome, e slug/nome/tags de cada variant. */
-function familyHaystack(family: Family): string {
-  const parts: string[] = [family.base, family.name, ...family.origins]
-  for (const v of family.variants) {
-    parts.push(v.slug, v.name, ...v.tags)
-  }
-  return parts.join(" ").toLowerCase()
-}
-
-/** Família casa a categoria se QUALQUER variant tem a categoria selecionada. */
-function familyMatchesCategory(
-  family: Family,
-  category: CategoryFilterValue
-): boolean {
-  if (category === ALL_CATEGORIES) return true
-  return family.variants.some((v) => v.category === category)
-}
-
-/** Filtro em memória: busca (case-insensitive) + categoria (AND). */
-function filterFamilies(
-  list: Family[],
-  query: string,
-  category: CategoryFilterValue
-): Family[] {
-  const q = query.trim().toLowerCase()
-  return list.filter((family) => {
-    if (!familyMatchesCategory(family, category)) return false
-    if (!q) return true
-    return familyHaystack(family).includes(q)
-  })
-}
 
 export function Home() {
   const [query, setQuery] = useState("")
