@@ -67,7 +67,7 @@ function Card({
   return (
     <div
       className={cn(
-        "relative z-20 h-full w-full overflow-hidden rounded-2xl border border-transparent bg-card p-4 group-hover:border-border dark:border-white/[0.2]",
+        "relative z-20 h-full w-full overflow-hidden rounded-2xl border border-border bg-card p-4 transition-colors group-hover:border-foreground/30 dark:group-hover:border-foreground/40",
         className,
       )}
     >

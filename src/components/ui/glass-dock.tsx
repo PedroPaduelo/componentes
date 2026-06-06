@@ -163,9 +163,7 @@ const GlassDock = React.forwardRef<HTMLDivElement, GlassDockProps>(
                     strokeWidth={2}
                     className={cn(
                       "transition-colors duration-200",
-                      isHovered
-                        ? "text-neutral-900 dark:text-white"
-                        : "text-neutral-500 dark:text-neutral-400"
+                      isHovered ? "text-foreground" : "text-muted-foreground"
                     )}
                   />
                 </motion.div>

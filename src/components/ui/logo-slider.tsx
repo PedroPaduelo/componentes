@@ -41,7 +41,7 @@ function LogoSlider({
           {logos.map((logo, index) => (
             <span
               key={`logo-a-${index}`}
-              className="inline-flex items-center justify-center fill-zinc-800 text-zinc-800 grayscale brightness-100 dark:fill-zinc-200 dark:text-zinc-200"
+              className="inline-flex items-center justify-center fill-current text-foreground grayscale brightness-100"
             >
               {logo}
             </span>
@@ -51,7 +51,7 @@ function LogoSlider({
           {logos.map((logo, index) => (
             <span
               key={`logo-b-${index}`}
-              className="inline-flex items-center justify-center fill-zinc-800 text-zinc-800 grayscale brightness-100 dark:fill-zinc-200 dark:text-zinc-200"
+              className="inline-flex items-center justify-center fill-current text-foreground grayscale brightness-100"
             >
               {logo}
             </span>
