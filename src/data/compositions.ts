@@ -52,6 +52,46 @@ export const compositions: Composition[] = [
     tags: ["galeria", "showcase", "portfólio"],
     category: "Showcase",
   },
+  {
+    slug: "backgrounds-showcase",
+    name: "Backgrounds Showcase",
+    description:
+      "Galeria de fundos animados — partículas, beams, grids e máscaras — cada seção com um efeito de background diferente.",
+    tags: ["backgrounds", "animação", "galeria"],
+    category: "Showcase",
+  },
+  {
+    slug: "text-effects-showcase",
+    name: "Text Effects Showcase",
+    description:
+      "Vitrine de efeitos animados de texto, ícones e botões: glitch, flip, shimmer, gradiente e mais.",
+    tags: ["texto", "efeitos", "animação"],
+    category: "Showcase",
+  },
+  {
+    slug: "signup-form",
+    name: "Onboarding Form",
+    description:
+      "Formulário de cadastro/onboarding em múltiplas seções, reunindo todos os campos e controles de entrada da vitrine.",
+    tags: ["formulário", "onboarding", "inputs"],
+    category: "Aplicação",
+  },
+  {
+    slug: "chat-app",
+    name: "Chat / IA",
+    description:
+      "Interface de chat com assistente: mensagens, indicador de raciocínio, anexos, composer e controles de tema.",
+    tags: ["chat", "ia", "app"],
+    category: "Aplicação",
+  },
+  {
+    slug: "component-playground",
+    name: "Component Playground",
+    description:
+      "Bancada de primitivos e overlays — abas, accordion, diálogos, sheets, dropdowns e blocos de código.",
+    tags: ["primitivos", "overlays", "playground"],
+    category: "Aplicação",
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
