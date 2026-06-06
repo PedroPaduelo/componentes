@@ -609,6 +609,38 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "google-gemini-effect",
+    name: "Google Gemini Effect",
+    category: "Feedback",
+    description:
+      "Cinco curvas SVG onduladas e coloridas (rosa, laranja, azul-claro, azul e azul-forte) que se desenham progressivamente via pathLength conforme o scroll, com cópias borradas (Gaussian blur) por baixo formando um glow. Os MotionValue do pathLength vêm de useScroll + useTransform na área scrollável, inspirado na animação de aterrissagem do Google Gemini.",
+    tags: [
+      "gemini",
+      "google",
+      "scroll",
+      "svg",
+      "path",
+      "motion",
+      "effect",
+      "aceternity",
+    ],
+  },
+  {
+    slug: "pixelated-canvas",
+    name: "Pixelated Canvas",
+    category: "Feedback",
+    description:
+      "Renderiza uma imagem como uma malha de pixels (quadrados ou círculos) sobre canvas 2D, com amostragem por célula, dropout em regiões de baixo contraste, tint, grayscale e object-fit. No modo interativo, os pixels se distorcem ao redor do cursor (repel/attract/swirl) com jitter e fade suave ao sair, tudo via requestAnimationFrame com limpeza de listeners e rAF.",
+    tags: [
+      "pixelated",
+      "canvas",
+      "image",
+      "interactive",
+      "distortion",
+      "aceternity",
+    ],
+  },
+  {
     slug: "timeline",
     name: "Timeline",
     category: "Layout",

@@ -93,6 +93,7 @@ import { examplesSparkles } from "@/data/examples-sparkles"
 import { examplesBackgroundBeams } from "@/data/examples-background-beams"
 import { examplesCardHoverEffect } from "@/data/examples-card-hover-effect"
 import { examplesContainerScrollAnimation } from "@/data/examples-container-scroll-animation"
+import { examplesGoogleGeminiEffect } from "@/data/examples-google-gemini-effect"
 import { examplesSvgMaskEffect } from "@/data/examples-svg-mask-effect"
 import { examplesVortex } from "@/data/examples-vortex"
 import { examplesBackgroundLines } from "@/data/examples-background-lines"
@@ -128,6 +129,7 @@ import { examplesContainerTextFlip } from "@/data/examples-container-text-flip"
 import { examplesLayoutTextFlip } from "@/data/examples-layout-text-flip"
 import { examplesWobbleCard } from "@/data/examples-wobble-card"
 import { examplesColourfulText } from "@/data/examples-colourful-text"
+import { examplesPixelatedCanvas } from "@/data/examples-pixelated-canvas"
 import { examplesCometCard } from "@/data/examples-comet-card"
 import { examplesDraggableCard } from "@/data/examples-draggable-card"
 import { examplesDirectionAwareHover } from "@/data/examples-direction-aware-hover"
@@ -1291,6 +1293,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesAnimatedNumber,
   ...examplesLogoSlider,
   // Lote Aceternity
+  ...examplesPixelatedCanvas,
   ...examplesTracingBeam,
   ...examplesTimeline,
   ...examplesNoiseBackground,
@@ -1321,6 +1324,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesBackgroundBeams,
   ...examplesCardHoverEffect,
   ...examplesContainerScrollAnimation,
+  ...examplesGoogleGeminiEffect,
   ...examplesVortex,
   ...examplesBackgroundGradientAnimation,
   ...examplesTooltipCard,

@@ -219,6 +219,10 @@ export { LogoSlider } from "./logo-slider"
 export type { LogoSliderProps } from "./logo-slider-types"
 
 // Lote Aceternity
+export { GoogleGeminiEffect } from "./google-gemini-effect"
+export type { GoogleGeminiEffectProps } from "./google-gemini-effect"
+export { PixelatedCanvas } from "./pixelated-canvas"
+export type { PixelatedCanvasProps } from "./pixelated-canvas-types"
 export { Terminal } from "./terminal"
 export type { TerminalProps } from "./terminal"
 export { ParallaxHeroImages2 } from "./parallax-hero-images-2"
