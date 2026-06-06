@@ -1562,6 +1562,14 @@ export const components: ComponentMeta[] = [
     tags: ["canvas", "webgl", "shader", "dot-matrix", "reveal", "three", "animation", "aceternity"],
   },
   {
+    slug: "card-spotlight",
+    name: "Card Spotlight",
+    category: "Feedback",
+    description:
+      "Card com spotlight radial que segue o cursor (CSS custom props --mouse-x/--mouse-y) e grid de dots animado via CanvasRevealEffect no hover. Cores dark fixas (brand do efeito).",
+    tags: ["card", "spotlight", "radial", "cursor", "dots", "canvas", "webgl", "aceternity"],
+  },
+  {
     slug: "canvas-text",
     name: "Canvas Text",
     category: "Feedback",
@@ -1576,6 +1584,14 @@ export const components: ComponentMeta[] = [
     description:
       "Fileira de avatares com tooltip animado que segue o cursor — useSpring + useTransform + AnimatePresence. O tooltip inclina e translada conforme a posição do mouse sobre o avatar. Cores dark hardcoded (fundo preto + gradientes emerald/sky) são a assinatura visual do efeito, não seguem tema shadcn.",
     tags: ["tooltip", "avatar", "spring", "animation", "hover", "aceternity", "feedback"],
+  },
+  {
+    slug: "text-flipping-board",
+    name: "Text Flipping Board",
+    category: "Feedback",
+    description:
+      "Split-flap board estilo aeroporto: cada caractere gira pra revelar a letra, com delay em cascata por linha e coluna.",
+    tags: ["text", "split-flap", "board", "flip", "animation", "airport", "aceternity"],
   },
 ]
 

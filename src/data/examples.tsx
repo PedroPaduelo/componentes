@@ -157,9 +157,13 @@ import { examplesKeyboard } from "./examples-keyboard"
 import { examplesFocusCards } from "./examples-focus-cards"
 import { examplesPlaceholdersAndVanishInput } from "./examples-placeholders-and-vanish-input"
 import { examplesWebcamPixelGrid } from "./examples-webcam-pixel-grid"
+import { examplesAppleCardsCarousel } from "./examples-apple-cards-carousel"
+import { examplesAnimatedTooltip } from "./examples-animated-tooltip"
 import { examplesAsciiArt } from "./examples-ascii-art"
 import { examplesCanvasText } from "./examples-canvas-text"
 import { examplesCanvasRevealEffect } from "./examples-canvas-reveal-effect"
+import { examplesCardSpotlight } from "./examples-card-spotlight"
+import { examplesTextFlippingBoard } from "./examples-text-flipping-board"
 
 export type Example = {
   title: string
@@ -1380,10 +1384,13 @@ export const examples: Record<string, Example[]> = {
   ...examplesKeyboard,
   ...examplesPlaceholdersAndVanishInput,
   ...examplesWebcamPixelGrid,
+  ...examplesAppleCardsCarousel,
   ...examplesAnimatedTooltip,
   ...examplesAsciiArt,
   ...examplesCanvasText,
   ...examplesCanvasRevealEffect,
+  ...examplesCardSpotlight,
+  ...examplesTextFlippingBoard,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

@@ -286,6 +286,8 @@ export type {
   HeroHighlightProps,
   HeroHighlightTextProps,
 } from "./hero-highlight-types"
+export { TextFlippingBoard } from "./text-flipping-board"
+export type { TextFlippingBoardProps } from "./text-flipping-board-types"
 export { BackgroundLines } from "./background-lines"
 export type { BackgroundLinesProps } from "./background-lines"
 export { BackgroundBeamsWithCollision } from "./background-beams-with-collision"
