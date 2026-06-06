@@ -2,7 +2,8 @@ import { AuroraBackground } from "@/components/ui/aurora-background"
 
 import type { Example } from "./examples"
 
-export const examplesAuroraBackground: Example[] = [
+export const examplesAuroraBackground: Record<string, Example[]> = {
+  "aurora-background": [
   {
     title: "Básico",
     description:
@@ -72,4 +73,5 @@ export const examplesAuroraBackground: Example[] = [
       </div>
     ),
   },
-]
+],
+}
