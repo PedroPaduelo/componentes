@@ -14,7 +14,6 @@ export interface PinContainerProps {
 
 export interface PinPerspectiveProps {
   title?: string
-  href?: string
 }
 
 /**
@@ -69,12 +68,12 @@ function PinContainer({
           <div className={cn("relative z-50", className)}>{children}</div>
         </div>
       </div>
-      <PinPerspective title={title} href={href} />
+      <PinPerspective title={title} />
     </a>
   )
 }
 
-function PinPerspective({ title, href }: PinPerspectiveProps) {
+function PinPerspective({ title }: PinPerspectiveProps) {
   return (
     <motion.div className="pointer-events-none w-96 h-80 flex items-center justify-center opacity-0 group-hover/pin:opacity-100 z-[60] transition duration-500">
       <div className="w-full h-full -mt-7 flex-none inset-0">
