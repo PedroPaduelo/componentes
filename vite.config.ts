@@ -1,11 +1,49 @@
 import path from 'node:path'
-import { defineConfig } from 'vite'
+import { readFileSync } from 'node:fs'
+import { defineConfig, type PluginOption } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
+/**
+ * Dev-only SPA fallback para a rota nua `/components`.
+ *
+ * A rota de docs `/components` (sem segmento) colide com o arquivo de config
+ * `components.json` na raiz: o middleware do Vite resolve `/components` para
+ * esse arquivo e o serve como módulo JS (`text/javascript`), impedindo o React
+ * de montar em acesso direto/refresh. Este plugin intercepta requisições HTML
+ * para exatamente `/components` e devolve o `index.html`, deixando o roteador
+ * client-side resolver. Em produção o fallback do servidor estático já cobre
+ * isso, então o plugin só atua no dev server.
+ */
+function componentsRouteSpaFallback(): PluginOption {
+  return {
+    name: 'components-route-spa-fallback',
+    apply: 'serve',
+    configureServer(server) {
+      server.middlewares.use((req, res, next) => {
+        const url = req.url?.split('?')[0]
+        const wantsHtml = (req.headers.accept ?? '').includes('text/html')
+        if (url === '/components' && wantsHtml) {
+          const indexPath = path.resolve(__dirname, 'index.html')
+          const html = readFileSync(indexPath, 'utf-8')
+          server
+            .transformIndexHtml(req.url ?? '/components', html)
+            .then((transformed) => {
+              res.setHeader('Content-Type', 'text/html')
+              res.end(transformed)
+            })
+            .catch(next)
+          return
+        }
+        next()
+      })
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss()],
+  plugins: [react(), tailwindcss(), componentsRouteSpaFallback()],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
