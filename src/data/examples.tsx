@@ -1323,6 +1323,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesDraggableCard,
   ...examples3dPin,
   ...examplesWobbleCard,
+  ...examplesContainerTextFlip,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
