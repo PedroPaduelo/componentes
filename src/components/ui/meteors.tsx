@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils"
 export type MeteorsProps = {
   /** Quantidade de meteoros renderizados. Padrão: 20. */
   number?: number
-  /** Classes extras aplicadas a cada meteoro. */
+  /** Classes extras aplicadas ao wrapper raiz (motion.div). */
   className?: string
 }
 
@@ -17,6 +17,10 @@ function Meteors({ number = 20, className }: MeteorsProps) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
+      className={cn(
+        "pointer-events-none absolute inset-0 overflow-hidden",
+        className
+      )}
     >
       {meteors.map((_, idx) => {
         const position = idx * (800 / number) - 400
@@ -25,8 +29,7 @@ function Meteors({ number = 20, className }: MeteorsProps) {
             key={"meteor" + idx}
             className={cn(
               "animate-meteor-effect absolute h-0.5 w-0.5 rotate-[45deg] rounded-[9999px] bg-slate-500 shadow-[0_0_0_1px_#ffffff10]",
-              "before:absolute before:top-1/2 before:h-px before:w-[50px] before:-translate-y-1/2 before:bg-gradient-to-r before:from-[#64748b] before:to-transparent before:content-['']",
-              className
+              "before:absolute before:top-1/2 before:h-px before:w-[50px] before:-translate-y-1/2 before:bg-gradient-to-r before:from-[#64748b] before:to-transparent before:content-['']"
             )}
             style={{
               top: "-40px",
