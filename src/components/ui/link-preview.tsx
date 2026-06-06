@@ -52,7 +52,7 @@ export const LinkPreview = ({
   }
 
   return (
-    <>
+    <span data-slot="link-preview" className="inline-block">
       {isMounted ? (
         <div className="hidden">
           <img
@@ -123,6 +123,6 @@ export const LinkPreview = ({
           </AnimatePresence>
         </HoverCardPrimitive.Content>
       </HoverCardPrimitive.Root>
-    </>
+    </span>
   )
 }
