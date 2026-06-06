@@ -239,6 +239,14 @@ export { Terminal } from "./terminal"
 export type { TerminalProps } from "./terminal"
 export { ParallaxHeroImages2 } from "./parallax-hero-images-2"
 export type { ParallaxHeroImages2Props } from "./parallax-hero-images-2-types"
+export { NavbarMenu, MenuItem, ProductItem, HoveredLink } from "./navbar-menu"
+export type {
+  NavbarMenuProps,
+  MenuItemProps,
+  MenuProps,
+  ProductItemProps,
+  HoveredLinkProps,
+} from "./navbar-menu-types"
 export { TracingBeam } from "./tracing-beam"
 export type { TracingBeamProps } from "./tracing-beam-types"
 export { NoiseBackground } from "./noise-background"
@@ -472,3 +480,7 @@ export { CanvasRevealEffect } from "./canvas-reveal-effect"
 export type { CanvasRevealEffectProps } from "./canvas-reveal-effect"
 export { CardSpotlight } from "./card-spotlight"
 export type { CardSpotlightProps } from "./card-spotlight"
+export { MultiStepLoader } from "./multi-step-loader"
+export type { MultiStepLoaderProps, LoadingState } from "./multi-step-loader"
+export { StickyBanner } from "./sticky-banner"
+export type { StickyBannerProps } from "./sticky-banner-types"

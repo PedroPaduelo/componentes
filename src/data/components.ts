@@ -609,6 +609,23 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "navbar-menu",
+    name: "Navbar Menu",
+    category: "Layout",
+    description:
+      "Navbar pill (rounded-full) com menu hover-dropdown fullscreen-blur. Hover num item (MenuItem) abre card dropdown com backdrop-blur-sm rounded-2xl border shadow-xl. Itens internos: ProductItem (img + título + descrição) e HoveredLink (link simples).",
+    tags: [
+      "navbar",
+      "menu",
+      "dropdown",
+      "hover",
+      "blur",
+      "pill",
+      "aceternity",
+      "layout",
+    ],
+  },
+  {
     slug: "compare",
     name: "Compare",
     category: "Layout",
@@ -1592,6 +1609,30 @@ export const components: ComponentMeta[] = [
     description:
       "Split-flap board estilo aeroporto: cada caractere gira pra revelar a letra, com delay em cascata por linha e coluna.",
     tags: ["text", "split-flap", "board", "flip", "animation", "airport", "aceternity"],
+  },
+  {
+    slug: "sticky-banner",
+    name: "Sticky Banner",
+    category: "Layout",
+    description:
+      "Banner fixo no topo (sticky) que oculta/mostra conforme a posição de scroll, com botão de fechar interno. Wrapper bg-transparent — cor fica nos children.",
+    tags: ["sticky", "banner", "scroll", "hide", "top", "aceternity", "layout"],
+  },
+  {
+    slug: "multi-step-loader",
+    name: "Multi Step Loader",
+    category: "Feedback",
+    description:
+      "Loader fullscreen com overlay blur, lista de etapas com índice ativo controlado por state, ícone Check progressivo (vazio → preenchido → lime), e AnimatePresence para entrada/saída. Cada etapa avança automaticamente com duração configurável e loop opcional.",
+    tags: [
+      "loader",
+      "multi-step",
+      "overlay",
+      "progress",
+      "animation",
+      "aceternity",
+      "feedback",
+    ],
   },
 ]
 

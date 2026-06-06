@@ -160,11 +160,13 @@ import { examplesAppleCardsCarousel } from "./examples-apple-cards-carousel"
 import { examplesFocusCards } from "./examples-focus-cards"
 import { examplesStickyScrollReveal } from "./examples-sticky-scroll-reveal"
 import { examplesAnimatedTooltip } from "./examples-animated-tooltip"
+import { examplesNavbarMenu } from "./examples-navbar-menu"
 import { examplesAsciiArt } from "./examples-ascii-art"
 import { examplesCanvasText } from "./examples-canvas-text"
 import { examplesCanvasRevealEffect } from "./examples-canvas-reveal-effect"
 import { examplesCardSpotlight } from "./examples-card-spotlight"
 import { examplesTextFlippingBoard } from "./examples-text-flipping-board"
+import { examplesStickyBanner } from "./examples-sticky-banner"
 
 export type Example = {
   title: string
@@ -1309,6 +1311,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesAnimatedNumber,
   ...examplesLogoSlider,
   // Lote Aceternity
+  ...examplesNavbarMenu,
   ...examplesCompare,
   ...examples3dGlobe,
   ...examplesGitHubGlobe,
@@ -1394,6 +1397,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesCanvasRevealEffect,
   ...examplesCardSpotlight,
   ...examplesTextFlippingBoard,
+  ...examplesStickyBanner,
+  ...examplesMultiStepLoader,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
