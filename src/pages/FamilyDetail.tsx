@@ -1,11 +1,12 @@
 import { useCallback, useEffect, useState } from "react"
 import { Link, Navigate, useLocation, useParams } from "react-router-dom"
-import { ArrowLeft } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { CodeBlockCommand } from "@/components/ui/code-block-command"
 import { ExampleBlock } from "@/components/showcase/ExampleBlock"
+import { CodeBlock } from "@/components/showcase/CodeBlock"
 import { OriginBadge } from "@/components/catalog/OriginBadge"
 import { ORIGIN_DESCRIPTIONS } from "@/components/catalog/origin-meta"
 import type { ComponentMeta } from "@/data/components"
@@ -17,6 +18,7 @@ import {
   type Family,
 } from "@/data/families"
 import { getExamplesBySlug } from "@/data/examples"
+import { getComponentInstall } from "@/data/component-install"
 import { NotFound } from "@/pages/NotFound"
 
 /** Resolve a família cujo base bate exatamente com o param. */
@@ -66,6 +68,7 @@ export function FamilyDetail() {
 function FamilyView({ family, hash }: { family: Family; hash: string }) {
   const multi = family.variants.length > 1
   const [active, setActive] = useState<string>(family.variants[0].slug)
+  const representative = family.variants[0]
 
   const scrollTo = useCallback((slug: string) => {
     const el = document.getElementById(slug)
@@ -95,35 +98,41 @@ function FamilyView({ family, hash }: { family: Family; hash: string }) {
   )
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14">
-      {/* Voltar */}
-      <div className="mb-6">
-        <Button asChild variant="ghost" size="sm">
-          <Link to="/">
-            <ArrowLeft className="size-4" />
-            Voltar ao catálogo
-          </Link>
-        </Button>
-      </div>
+    <div className="mx-auto max-w-3xl px-4 py-8 sm:px-8 sm:py-12 xl:max-w-4xl">
+      {/* Breadcrumb leve — a navegação principal é a sidebar. */}
+      <nav
+        aria-label="Trilha de navegação"
+        className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground"
+      >
+        <Link
+          to="/components"
+          className="transition-colors hover:text-foreground"
+        >
+          Componentes
+        </Link>
+        <ChevronRight className="size-3.5 shrink-0 opacity-60" aria-hidden />
+        <span className="font-medium text-foreground">{family.name}</span>
+      </nav>
 
-      {/* Header da família */}
-      <header className="space-y-3">
-        <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            {family.name}
-          </h1>
-          <Badge variant="secondary">{family.category}</Badge>
-        </div>
+      {/* Header da página */}
+      <header className="space-y-4 border-b border-border pb-8">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-sm text-muted-foreground">
-            {family.variants.length === 1
-              ? "1 variante de"
-              : `${family.variants.length} variantes de`}
-          </span>
+          <Badge variant="secondary">{family.category}</Badge>
           {family.origins.map((origin) => (
             <OriginBadge key={origin} origin={origin} />
           ))}
         </div>
+        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          {family.name}
+        </h1>
+        <p className="text-base leading-relaxed text-muted-foreground">
+          {representative.description}
+        </p>
+        {multi ? (
+          <p className="text-sm text-muted-foreground">
+            {family.variants.length} variantes nesta família.
+          </p>
+        ) : null}
       </header>
 
       {/* Abas de navegação — só quando há mais de uma variante. */}
@@ -142,27 +151,52 @@ function FamilyView({ family, hash }: { family: Family; hash: string }) {
       ) : null}
 
       {/* Seções por variante */}
-      <div className="mt-10 space-y-16">
+      <div className="mt-10 space-y-20">
         {family.variants.map((variant) => (
-          <VariantSection key={variant.slug} variant={variant} />
+          <VariantSection key={variant.slug} variant={variant} multi={multi} />
         ))}
       </div>
     </div>
   )
 }
 
-/** Uma seção da página: header com badge de origem + examples da variante. */
-function VariantSection({ variant }: { variant: ComponentMeta }) {
+/**
+ * Seção de documentação de uma variante, no formato doc:
+ * header → Uso (exemplos via ExampleBlock) → Instalação → Dica de uso.
+ *
+ * Headings semânticos: h2 para o nome da variante (quando multi-variante) ou
+ * para as subseções (quando família de variante única); h3 para subseções
+ * dentro de uma variante multi. Todos com `id` para ancoragem do TOC (FASE 3).
+ */
+function VariantSection({
+  variant,
+  multi,
+}: {
+  variant: ComponentMeta
+  multi: boolean
+}) {
   const origin = originOf(variant)
   const items = getExamplesBySlug(variant.slug)
+  const install = getComponentInstall(variant.slug)
+  const tip = buildUsageTip(variant, origin)
+
+  // Em família multi-variante, o título da variante é h2 e as subseções são h3.
+  // Em família de variante única, as subseções viram h2 diretamente.
+  const SubHeading = multi ? "h3" : "h2"
+  const usageId = `${variant.slug}-uso`
+  const installId = `${variant.slug}-instalacao`
+  const tipId = `${variant.slug}-dica`
+
+  const importSnippet = `import { ${install.exportName} } from "${install.importPath}"`
 
   return (
     <section
       id={variant.slug}
       aria-labelledby={`section-${variant.slug}`}
-      className="scroll-mt-20 space-y-6"
+      className="scroll-mt-24 space-y-10"
     >
-      <header className="space-y-2 border-b border-border pb-4">
+      {/* Header da variante (sempre h2 — âncora do TOC) */}
+      <header className="space-y-2">
         <div className="flex flex-wrap items-center gap-3">
           <h2
             id={`section-${variant.slug}`}
@@ -172,29 +206,113 @@ function VariantSection({ variant }: { variant: ComponentMeta }) {
           </h2>
           <OriginBadge origin={origin} />
         </div>
-        <p className="text-sm text-muted-foreground">{variant.description}</p>
+        {multi ? (
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {variant.description}
+          </p>
+        ) : null}
         <p className="text-xs text-muted-foreground">
           {ORIGIN_DESCRIPTIONS[origin]}
         </p>
       </header>
 
-      {items && items.length > 0 ? (
-        <div className="space-y-10">
-          {items.map((example, index) => (
-            <ExampleBlock
-              key={`${variant.slug}-${index}-${example.title}`}
-              title={example.title}
-              description={example.description}
-              code={example.code}
-              render={example.render}
-            />
-          ))}
+      {/* Uso — exemplos ao vivo (preview + código copiável) */}
+      <div className="space-y-6">
+        <SubHeading
+          id={usageId}
+          className="scroll-mt-24 text-lg font-semibold tracking-tight"
+        >
+          Uso
+        </SubHeading>
+        {items && items.length > 0 ? (
+          <div className="space-y-10">
+            {items.map((example, index) => (
+              <ExampleBlock
+                key={`${variant.slug}-${index}-${example.title}`}
+                title={example.title}
+                description={example.description}
+                code={example.code}
+                render={example.render}
+              />
+            ))}
+          </div>
+        ) : (
+          <p className="rounded-lg border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
+            Exemplos em breve para <strong>{variant.name}</strong>.
+          </p>
+        )}
+      </div>
+
+      {/* Instalação — comando de dep (quando houver) + import path */}
+      <div className="space-y-4">
+        <SubHeading
+          id={installId}
+          className="scroll-mt-24 text-lg font-semibold tracking-tight"
+        >
+          Instalação
+        </SubHeading>
+        {install.depCommand ? (
+          <div className="space-y-2">
+            <p className="text-sm text-muted-foreground">
+              Instale a dependência necessária:
+            </p>
+            <CodeBlockCommand code={install.depCommand} />
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            Sem dependência externa — copie o arquivo do componente para o seu
+            projeto.
+          </p>
+        )}
+        <div className="space-y-2">
+          <p className="text-sm text-muted-foreground">
+            Importe e use no seu código:
+          </p>
+          <CodeBlock code={importSnippet} language="tsx" />
+          {!install.exportConfirmed ? (
+            <p className="text-xs text-muted-foreground">
+              O nome do export é derivado do componente — confira o arquivo
+              fonte para o nome e a API exatos.
+            </p>
+          ) : null}
         </div>
-      ) : (
-        <p className="rounded-lg border border-dashed border-border px-4 py-8 text-center text-sm text-muted-foreground">
-          Exemplos em breve para <strong>{variant.name}</strong>.
-        </p>
-      )}
+      </div>
+
+      {/* Dica de uso — parágrafo curto derivado de description/tags */}
+      <div className="space-y-3">
+        <SubHeading
+          id={tipId}
+          className="scroll-mt-24 text-lg font-semibold tracking-tight"
+        >
+          Dica de uso
+        </SubHeading>
+        <div className="rounded-lg border border-border bg-muted/40 px-4 py-3">
+          <p className="text-sm leading-relaxed text-muted-foreground">{tip}</p>
+        </div>
+      </div>
     </section>
   )
+}
+
+/**
+ * Gera um parágrafo curto de "quando usar / boas práticas" derivado de
+ * description + tags do registry. NÃO inventa API nem props — só recombina os
+ * metadados existentes em uma frase orientativa.
+ */
+function buildUsageTip(
+  variant: ComponentMeta,
+  origin: ComponentOrigin
+): string {
+  const keywords = variant.tags
+    .filter((t) => t !== "fluid" && t !== origin.toLowerCase())
+    .slice(0, 3)
+  const keywordPart =
+    keywords.length > 0
+      ? ` Boa escolha em contextos de ${keywords.join(", ")}.`
+      : ""
+  const originPart =
+    origin === "shadcn"
+      ? ""
+      : ` Variante ${origin}, indicada quando você quer o acabamento visual dessa coleção.`
+  return `${variant.description}${keywordPart}${originPart}`
 }
