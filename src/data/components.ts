@@ -948,6 +948,14 @@ export const components: ComponentMeta[] = [
       "Use <FlipWords words={['rápido','bonito','moderno']} /> inline em qualquer cabeçalho ou frase para dar vida ao copy.",
   },
   {
+    slug: "layout-text-flip",
+    name: "Layout Text Flip",
+    category: "Feedback",
+    description:
+      "Título fixo + palavra que rotaciona com flip vertical (y -40 → 0 → +50) e blur de entrada/saída (Aceternity UI). O layoutId do título permite transição suave entre seções; a palavra rotativa usa popLayout para preservar posição. A pill rotativa usa tokens semânticos shadcn (bg-card + ring-border), aceitando duration customizável e children opcional (ex.: separador).",
+    tags: ["flip", "layout", "texto", "animação", "hero", "aceternity"],
+  },
+  {
     slug: "aurora-background",
     name: "Aurora Background",
     category: "Feedback",
@@ -979,6 +987,25 @@ export const components: ComponentMeta[] = [
     description:
       "Card da Aceternity UI com uma malha de estrelinhas (108 pontos em 18 colunas) que brilham aleatoriamente a cada 3s e acendem todas no hover, com glows azuis (motion/react). Inclui subcomponentes GlowingStarsTitle e GlowingStarsDescription para o conteúdo do card.",
     tags: ["card", "stars", "glow", "animation", "aceternity"],
+  },
+  {
+    slug: "container-text-flip",
+    name: "Container Text Flip",
+    category: "Feedback",
+    description:
+      "Container animado da Aceternity UI que muda de largura suavemente para acomodar a palavra atual e cicla por uma lista de palavras com stagger de blur por letra (10px → nítido). Tema segue tokens semânticos shadcn (text-foreground, bg-muted, border). Aceita lista de palavras, intervalo entre trocas e duração da animação.",
+    tags: [
+      "container",
+      "text",
+      "flip",
+      "palavras",
+      "animação",
+      "blur",
+      "stagger",
+      "aceternity",
+    ],
+    usage:
+      "Use <ContainerTextFlip words={['rápido','bonito','moderno']} /> inline em qualquer cabeçalho ou hero para dar vida ao copy com troca animada de palavras.",
   },
 ]
 

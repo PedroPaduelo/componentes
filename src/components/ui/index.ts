@@ -324,6 +324,8 @@ export type {
 } from "./shooting-stars-and-stars-background"
 export { FlipWords } from "./flip-words"
 export type { FlipWordsProps } from "./flip-words"
+export { LayoutTextFlip } from "./layout-text-flip"
+export type { LayoutTextFlipProps } from "./layout-text-flip"
 export {
   TypewriterEffect,
   TypewriterEffectSmooth,
@@ -355,3 +357,5 @@ export type {
   TextRevealCardProps,
   TextRevealCardTitleProps,
 } from "./text-reveal-card"
+export { ContainerTextFlip } from "./container-text-flip"
+export type { ContainerTextFlipProps } from "./container-text-flip"

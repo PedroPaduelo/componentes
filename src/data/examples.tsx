@@ -119,6 +119,8 @@ import { examplesGlowingEffect } from "@/data/examples-glowing-effect"
 import { examplesTypewriterEffect } from "@/data/examples-typewriter-effect"
 import { examplesFlipWords } from "@/data/examples-flip-words"
 import { examplesTextRevealCard } from "@/data/examples-text-reveal-card"
+import { examplesContainerTextFlip } from "@/data/examples-container-text-flip"
+import { examplesLayoutTextFlip } from "@/data/examples-layout-text-flip"
 
 export type Example = {
   title: string
@@ -1302,6 +1304,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesFlipWords,
   ...examplesTextGenerateEffect,
   ...examplesTextRevealCard,
+  ...examplesLayoutTextFlip,
+  ...examplesContainerTextFlip,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
