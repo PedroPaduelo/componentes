@@ -219,6 +219,19 @@ export { LogoSlider } from "./logo-slider"
 export type { LogoSliderProps } from "./logo-slider-types"
 
 // Lote Aceternity
+export { BackgroundGradient } from "./background-gradient"
+export type { BackgroundGradientProps } from "./background-gradient-types"
+export { GridAndDotBackgrounds } from "./grid-and-dot-backgrounds"
+export type {
+  GridAndDotBackgroundsProps,
+  GridDotVariant,
+} from "./grid-and-dot-backgrounds-types"
+export { Meteors } from "./meteors"
+export type { MeteorsProps } from "./meteors"
+export { Spotlight } from "./spotlight"
+export type { SpotlightProps } from "./spotlight"
+export { SpotlightNew } from "./spotlight-new"
+export type { SpotlightNewProps } from "./spotlight-new"
 export { ExpandableCards } from "./expandable-cards"
 export type { ExpandableCardsProps } from "./expandable-cards"
 export type { ExpandableCard } from "./expandable-cards-types"
@@ -234,6 +247,11 @@ export type {
   CardStackProps,
   HighlightProps,
 } from "./card-stack-types"
+export { HeroHighlight, HeroHighlightText } from "./hero-highlight"
+export type {
+  HeroHighlightProps,
+  HeroHighlightTextProps,
+} from "./hero-highlight-types"
 export { BackgroundLines } from "./background-lines"
 export type { BackgroundLinesProps } from "./background-lines"
 export { BackgroundBeamsWithCollision } from "./background-beams-with-collision"
@@ -280,3 +298,25 @@ export { ContainerScroll } from "./container-scroll-animation"
 export type { ContainerScrollProps } from "./container-scroll-animation"
 export { HeroParallax } from "./hero-parallax"
 export type { HeroParallaxProps, Product } from "./hero-parallax-types"
+export { BackgroundGradientAnimation } from "./background-gradient-animation"
+export type { BackgroundGradientAnimationProps } from "./background-gradient-animation"
+export { LampContainer } from "./lamp-effect"
+export type { LampContainerProps } from "./lamp-effect"
+export {
+  ShootingStars,
+  StarsBackground,
+} from "./shooting-stars-and-stars-background"
+export type {
+  ShootingStarsProps,
+  StarsBackgroundProps,
+} from "./shooting-stars-and-stars-background"
+export {
+  GlowingStarsBackgroundCard,
+  GlowingStarsDescription,
+  GlowingStarsTitle,
+} from "./glowing-stars-effect"
+export type {
+  GlowingStarsBackgroundCardProps,
+  GlowingStarsDescriptionProps,
+  GlowingStarsTitleProps,
+} from "./glowing-stars-effect"

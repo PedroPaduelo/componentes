@@ -609,6 +609,89 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "background-gradient",
+    name: "Background Gradient",
+    category: "Feedback",
+    description:
+      "Borda em gradiente radial multicolor (verde/violeta/amarelo/azul) animada em loop suave que intensifica o brilho no hover, ideal para destacar cards e botões. Reimplementado padronizado shadcn com motion/react.",
+    tags: [
+      "background",
+      "gradient",
+      "border",
+      "card",
+      "hover",
+      "aceternity",
+    ],
+    usage:
+      "Envolva qualquer conteúdo em <BackgroundGradient className=\"rounded-[22px] bg-white p-4\"> para ganhar a borda em gradiente animado.",
+  },
+  {
+    slug: "hero-highlight",
+    name: "Hero Highlight",
+    category: "Layout",
+    description:
+      "Seção hero com fundo de pontos que revela um realce indigo seguindo o cursor (radial mask) e texto destacado com fundo gradiente animado.",
+    tags: [
+      "hero",
+      "highlight",
+      "spotlight",
+      "mask",
+      "mouse",
+      "gradient",
+      "aceternity",
+    ],
+    usage:
+      "Envolva o conteúdo do hero em <HeroHighlight> e use <HeroHighlightText> para destacar trechos do título com o gradiente animado.",
+  },
+  {
+    slug: "shooting-stars-and-stars-background",
+    name: "Shooting Stars and Stars Background",
+    category: "Feedback",
+    description:
+      "Céu noturno da Aceternity UI em duas camadas: StarsBackground desenha estrelas estáticas cintilando em <canvas> (densidade e velocidade de twinkle configuráveis) e ShootingStars dispara estrelas cadentes em <svg> que atravessam a tela em ângulos aleatórios, com gradiente de cauda configurável. Animado via requestAnimationFrame com cleanup. Fundo escuro fixo (brand do efeito).",
+    tags: [
+      "background",
+      "stars",
+      "shooting",
+      "canvas",
+      "svg",
+      "hero",
+      "aceternity",
+    ],
+  },
+  {
+    slug: "grid-and-dot-backgrounds",
+    name: "Grid and Dot Backgrounds",
+    category: "Layout",
+    description:
+      "Fundos decorativos da Aceternity UI em CSS puro: malha de linhas (grid / grid-small) ou pontos (dot) desenhados via background-image (linear/radial-gradient) com máscara radial que esmaece nas bordas. Wrapper relative com altura própria e conteúdo sobreposto; cores derivam dos tokens shadcn, adaptando a light/dark.",
+    tags: ["background", "grid", "dot", "pattern", "hero", "aceternity"],
+  },
+  {
+    slug: "meteors",
+    name: "Meteors",
+    category: "Feedback",
+    description:
+      "Efeito de fundo da Aceternity UI: uma chuva de meteoros diagonais que cruzam a tela em loop, cada um com atraso e duração aleatórios. Fica atrás do conteúdo (card/hero) para dar movimento sutil. Quantidade configurável via prop number.",
+    tags: ["meteors", "background", "animation", "stars", "hero", "aceternity"],
+  },
+  {
+    slug: "spotlight",
+    name: "Spotlight",
+    category: "Feedback",
+    description:
+      "Efeito de holofote da Aceternity UI: um SVG com elipse desfocada que simula um facho de luz vindo de um canto, com fade-in suave (animate-spotlight). Posicionado de forma absoluta dentro de um container relative de fundo escuro, atrás do conteúdo. Cor configurável via prop fill.",
+    tags: ["spotlight", "light", "glow", "hero", "background", "aceternity"],
+  },
+  {
+    slug: "spotlight-new",
+    name: "Spotlight New",
+    category: "Feedback",
+    description:
+      "Versão nova do spotlight da Aceternity UI: dois feixes de luz (radial-gradient) que balançam em loop suave sobre um fundo escuro, ideal para destacar um hero. Cores, amplitude e velocidade configuráveis.",
+    tags: ["spotlight", "light", "beam", "hero", "background", "aceternity"],
+  },
+  {
     slug: "expandable-cards",
     name: "Expandable Cards",
     category: "Layout",
@@ -767,6 +850,14 @@ export const components: ComponentMeta[] = [
     description:
       "Hero da Aceternity UI: header (título + descrição) sobre 3 fileiras de 5 thumbnails de produtos que transladam horizontalmente em direções opostas conforme o scroll, com o conjunto rotacionando (rotateX/rotateZ), transladando e esmaecendo — suavizado por springs (useScroll/useTransform/useSpring de motion/react).",
     tags: ["hero", "parallax", "scroll", "products", "grid", "aceternity"],
+  },
+  {
+    slug: "lamp-effect",
+    name: "Lamp Effect",
+    category: "Feedback",
+    description:
+      "Efeito \"lâmpada\" da Aceternity UI: dois cones de luz cônicos (conic-gradient) com blur que crescem ao entrar na viewport, acompanhados de uma linha brilhante horizontal, projetando luz ciano sobre um fundo escuro (slate-950) para revelar um título abaixo. Animado por whileInView de motion/react.",
+    tags: ["lamp", "light", "glow", "hero", "conic", "aceternity"],
   },
 ]
 

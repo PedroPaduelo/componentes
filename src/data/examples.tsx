@@ -100,6 +100,12 @@ import { examples3dCard } from "@/data/examples-3d-card"
 import { examplesTooltipCard } from "@/data/examples-tooltip-card"
 import { examplesExpandableCards } from "@/data/examples-expandable-cards"
 import { examplesHeroParallax } from "@/data/examples-hero-parallax"
+import { examplesShootingStarsAndStarsBackground } from "@/data/examples-shooting-stars-and-stars-background"
+import { examplesMeteors } from "@/data/examples-meteors"
+import { examplesGridAndDotBackgrounds } from "@/data/examples-grid-and-dot-backgrounds"
+import { examplesSpotlightNew } from "@/data/examples-spotlight-new"
+import { examplesLampEffect } from "@/data/examples-lamp-effect"
+import { examplesSpotlight } from "@/data/examples-spotlight"
 
 export type Example = {
   title: string
@@ -1244,6 +1250,10 @@ export const examples: Record<string, Example[]> = {
   ...examplesAnimatedNumber,
   ...examplesLogoSlider,
   // Lote Aceternity
+  ...examplesGridAndDotBackgrounds,
+  ...examplesMeteors,
+  ...examplesSpotlightNew,
+  ...examplesSpotlight,
   ...examplesExpandableCards,
   ...examples3dCard,
   ...examplesCardStack,
@@ -1264,6 +1274,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesVortex,
   ...examplesTooltipCard,
   ...examplesHeroParallax,
+  ...examplesLampEffect,
+  ...examplesShootingStarsAndStarsBackground,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
