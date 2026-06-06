@@ -118,6 +118,7 @@ import { examplesHeroHighlight } from "@/data/examples-hero-highlight"
 import { examplesGlowingEffect } from "@/data/examples-glowing-effect"
 import { examplesTypewriterEffect } from "@/data/examples-typewriter-effect"
 import { examplesFlipWords } from "@/data/examples-flip-words"
+import { examplesTextRevealCard } from "@/data/examples-text-reveal-card"
 
 export type Example = {
   title: string
@@ -1300,6 +1301,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesTypewriterEffect,
   ...examplesFlipWords,
   ...examplesTextGenerateEffect,
+  ...examplesTextRevealCard,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

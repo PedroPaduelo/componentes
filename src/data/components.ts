@@ -972,6 +972,14 @@ export const components: ComponentMeta[] = [
     usage:
       "Passe text e revealText em <TextRevealCard> e use <TextRevealCardTitle>/<TextRevealCardDescription> como children para título/descrição do topo.",
   },
+  {
+    slug: "glowing-stars-effect",
+    name: "Glowing Stars Effect",
+    category: "Feedback",
+    description:
+      "Card da Aceternity UI com uma malha de estrelinhas (108 pontos em 18 colunas) que brilham aleatoriamente a cada 3s e acendem todas no hover, com glows azuis (motion/react). Inclui subcomponentes GlowingStarsTitle e GlowingStarsDescription para o conteúdo do card.",
+    tags: ["card", "stars", "glow", "animation", "aceternity"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
