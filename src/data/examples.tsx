@@ -152,6 +152,9 @@ import { examplesParallaxScroll } from "./examples-parallax-scroll"
 import { examplesWorldMap } from "./examples-world-map"
 import { examples3dGlobe } from "./examples-3d-globe"
 import { examplesGitHubGlobe } from "./examples-github-globe"
+import { examplesKeyboard } from "./examples-keyboard"
+import { examplesPlaceholdersAndVanishInput } from "./examples-placeholders-and-vanish-input"
+import { examplesWebcamPixelGrid } from "./examples-webcam-pixel-grid"
 
 export type Example = {
   title: string
@@ -1363,6 +1366,14 @@ export const examples: Record<string, Example[]> = {
   ...examplesNotch,
   ...examplesTerminal,
   ...examplesWorldMap,
+  ...examplesCodeBlock,
+  ...examplesDitherShader,
+  ...examplesFileUpload,
+  ...examplesHoverBorderGradient,
+  ...examplesParallaxScroll,
+  ...examplesKeyboard,
+  ...examplesPlaceholdersAndVanishInput,
+  ...examplesWebcamPixelGrid,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

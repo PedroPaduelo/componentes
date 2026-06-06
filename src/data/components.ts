@@ -1467,6 +1467,30 @@ export const components: ComponentMeta[] = [
       "Mapa-múndi pontilhado da Aceternity UI (SVG gerado em runtime pela lib dotted-map) com arcos curvos que se desenham progressivamente (pathLength animado por motion) entre pares de coordenadas, e pontos pulsantes (animate SVG) nas pontas. Útil para ilustrar conexões/rotas globais. Cor das linhas configurável e fundo adaptativo ao tema (branco no claro, preto no escuro).",
     tags: ["world", "map", "globe", "connections", "svg", "aceternity"],
   },
+  {
+    slug: "keyboard",
+    name: "Keyboard",
+    category: "Layout",
+    description:
+      "Teclado virtual estilo Apple com teclas que afundam ao clicar ou ao pressionar a tecla física correspondente. Suporte a layout QWERTZ/ANSI e preview animado da última tecla pressionada.",
+    tags: ["keyboard", "teclado", "virtual", "apple", "aceternity"],
+  },
+  {
+    slug: "placeholders-and-vanish-input",
+    name: "Placeholders and Vanish Input",
+    category: "Forms",
+    description:
+      "Campo de texto com placeholders animados que desaparecem ao focar, e botão de submit com loading animado. Efeito de 'vanish' no texto ao enviar.",
+    tags: ["input", "placeholder", "vanish", "animation", "aceternity"],
+  },
+  {
+    slug: "webcam-pixel-grid",
+    name: "Webcam Pixel Grid",
+    category: "Feedback",
+    description:
+      "Grid de pixels que captura frames da webcam e renderiza em tempo real como uma matriz de cores. Fallback elegante quando webcam não está disponível.",
+    tags: ["webcam", "pixel", "grid", "camera", "realtime", "aceternity"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

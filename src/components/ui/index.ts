@@ -448,3 +448,9 @@ export type {
   WorldMapLocation,
   WorldMapProps,
 } from "./world-map-types"
+export { Keyboard } from "./keyboard"
+export type { KeyboardProps } from "./keyboard"
+export { PlaceholdersAndVanishInput } from "./placeholders-and-vanish-input"
+export type { PlaceholdersAndVanishInputProps } from "./placeholders-and-vanish-input-types"
+export { WebcamPixelGrid } from "./webcam-pixel-grid"
+export type { WebcamPixelGridProps } from "./webcam-pixel-grid-types"
