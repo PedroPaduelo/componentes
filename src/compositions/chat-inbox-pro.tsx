@@ -353,7 +353,7 @@ export function ChatInboxPro() {
     <div className="flex h-[78vh] overflow-hidden rounded-2xl border border-border bg-card text-card-foreground shadow-sm">
       {/* ── Conversation list ──────────────────────────────────────────── */}
       <aside className="flex w-72 shrink-0 flex-col border-r border-border">
-        <header className="flex shrink-0 items-center justify-between gap-2 border-b border-border px-4 py-3">
+        <header className="flex min-h-[3.75rem] shrink-0 items-center justify-between gap-2 border-b border-border px-4 py-3">
           <h2 className="text-sm font-semibold">Mensagens</h2>
           <TooltipFluid content="Buscar conversas">
             <ButtonFluid variant="ghost" size="icon-sm" aria-label="Buscar">
@@ -377,7 +377,7 @@ export function ChatInboxPro() {
       {/* ── Thread ─────────────────────────────────────────────────────── */}
       <section className="flex min-w-0 flex-1 flex-col">
         {/* Thread header */}
-        <header className="flex shrink-0 items-center justify-between gap-3 border-b border-border px-4 py-3">
+        <header className="flex min-h-[3.75rem] shrink-0 items-center justify-between gap-3 border-b border-border px-4 py-3">
           <div className="flex min-w-0 items-center gap-3">
             <img
               src={avatarUrl(selected.seed)}
