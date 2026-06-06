@@ -22,6 +22,15 @@ import {
   Vortex,
 } from "@/components/ui"
 import { cn } from "@/lib/utils"
+import { useTheme } from "@/components/theme/use-theme"
+
+/**
+ * Tom de preto unificado para as seções cujo efeito (canvas/partículas/feixes)
+ * exige fundo escuro mesmo no tema light. Antes cada seção usava um tom
+ * diferente (`bg-black`, `#000000`, `bg-slate-900`, `bg-neutral-950`); agora
+ * todas convergem para o mesmo valor.
+ */
+const DARK_PREVIEW_BG = "#0a0a0a"
 
 type SectionProps = {
   index: number
@@ -31,6 +40,12 @@ type SectionProps = {
   heightClassName?: string
   /** Classe extra do container (ex.: fundo escuro). */
   className?: string
+  /**
+   * Quando `true`, a seção mantém fundo escuro mesmo no tema light (o efeito
+   * exige). No light recebe uma moldura clara + rótulo "preview dark" para não
+   * parecer um card quebrado.
+   */
+  forcedDark?: boolean
   children: React.ReactNode
 }
 
@@ -44,21 +59,34 @@ function ShowcaseSection({
   subtitle,
   heightClassName = "h-[400px]",
   className,
+  forcedDark = false,
   children,
 }: SectionProps) {
+  const { resolvedTheme } = useTheme()
+  const isLight = resolvedTheme === "light"
+  const showDarkBadge = forcedDark && isLight
+
   return (
     <section
       className={cn(
         "relative w-full overflow-hidden rounded-xl border",
+        // No light, seções escuras ganham moldura clara mais evidente.
+        forcedDark && isLight && "border-border ring-1 ring-border",
         heightClassName,
         className,
       )}
+      style={forcedDark ? { backgroundColor: DARK_PREVIEW_BG } : undefined}
     >
       {children}
 
       <div className="pointer-events-none absolute left-4 top-4 z-10 flex flex-col gap-1">
-        <span className="inline-flex w-fit items-center rounded-full bg-black/50 px-2.5 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
+        <span className="inline-flex w-fit items-center gap-2 rounded-full bg-black/50 px-2.5 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
           {String(index).padStart(2, "0")}
+          {showDarkBadge && (
+            <span className="rounded-full bg-white/20 px-1.5 py-px text-[10px] uppercase tracking-wide">
+              preview dark
+            </span>
+          )}
         </span>
         <h3 className="text-lg font-semibold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.8)]">
           {title}
@@ -72,6 +100,19 @@ function ShowcaseSection({
 }
 
 export function BackgroundsShowcase() {
+  const { resolvedTheme } = useTheme()
+  const isLight = resolvedTheme === "light"
+
+  // No tema light o ripple usa `var(--border)` (quase invisível) e o dot-grid
+  // usa `var(--muted-foreground)`. Sobrescrevemos essas vars localmente nas
+  // seções desses efeitos para reforçar o contraste sem tocar nos componentes.
+  const lightContrastVars = isLight
+    ? ({
+        "--border": "oklch(0.78 0 0)",
+        "--muted-foreground": "oklch(0.45 0 0)",
+      } as React.CSSProperties)
+    : undefined
+
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-8">
       <header className="mb-8">
@@ -90,7 +131,7 @@ export function BackgroundsShowcase() {
           index={1}
           title="Sparkles Core"
           subtitle="Campo de partículas brancas em canvas sobre fundo escuro."
-          className="bg-black"
+          forcedDark
         >
           <SparklesCore
             background="transparent"
@@ -112,9 +153,10 @@ export function BackgroundsShowcase() {
           index={2}
           title="Vortex"
           subtitle="Redemoinho de partículas animado em canvas."
+          forcedDark
         >
           <Vortex
-            backgroundColor="#000000"
+            backgroundColor={DARK_PREVIEW_BG}
             className="flex h-full w-full items-center justify-center px-4"
           >
             <span className="text-3xl font-bold text-white md:text-5xl">
@@ -128,13 +170,15 @@ export function BackgroundsShowcase() {
           index={3}
           title="Background Boxes"
           subtitle="Grid de células que acendem em cores aleatórias no hover."
-          className="flex items-center justify-center bg-slate-900"
+          className="flex items-center justify-center"
+          forcedDark
         >
           <div
             className={cn(
-              "pointer-events-none absolute inset-0 z-20 h-full w-full bg-slate-900",
+              "pointer-events-none absolute inset-0 z-20 h-full w-full",
               "[mask-image:radial-gradient(transparent,white)]",
             )}
+            style={{ backgroundColor: DARK_PREVIEW_BG }}
           />
           <Boxes />
           <span className="relative z-20 text-3xl font-bold text-white md:text-5xl">
@@ -174,7 +218,10 @@ export function BackgroundsShowcase() {
           title="Dot Grid Spotlight"
           subtitle="Grade de pontos revelada por um holofote que segue o cursor."
         >
-          <DotGridSpotlight className="h-full w-full bg-background">
+          <DotGridSpotlight
+            className="h-full w-full bg-background"
+            style={lightContrastVars}
+          >
             <div className="flex h-[400px] items-center justify-center">
               <span className="text-3xl font-bold md:text-5xl">
                 Dot Grid Spotlight
@@ -241,7 +288,9 @@ export function BackgroundsShowcase() {
           title="Background Ripple Effect"
           subtitle="Clique numa célula: o ripple se propaga pelas vizinhas."
         >
-          <BackgroundRippleEffect rows={7} cols={16} cellSize={40} />
+          <div className="absolute inset-0" style={lightContrastVars}>
+            <BackgroundRippleEffect rows={7} cols={16} cellSize={40} />
+          </div>
           <div className="pointer-events-none absolute inset-0 z-[4] flex items-center justify-center">
             <span className="text-3xl font-bold tracking-tight md:text-5xl">
               Ripple Effect
@@ -254,7 +303,7 @@ export function BackgroundsShowcase() {
           index={11}
           title="Background Beams"
           subtitle="Feixes de gradiente animados subindo na diagonal (Aceternity)."
-          className="bg-neutral-950"
+          forcedDark
         >
           <BackgroundBeams className="opacity-100" />
           <div className="pointer-events-none absolute inset-0 flex items-center justify-center">

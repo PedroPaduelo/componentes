@@ -26,6 +26,7 @@ import { HoverEffect } from "@/components/ui/card-hover-effect"
 import { GlowCard, GlowCardGrid } from "@/components/ui"
 import { LogoSlider } from "@/components/ui/logo-slider"
 import { WavyBackground } from "@/components/ui/wavy-background"
+import { useTheme } from "@/components/theme/use-theme"
 
 const features = [
   {
@@ -85,6 +86,14 @@ const glowReasons = [
 ]
 
 export function LandingPage() {
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === "dark"
+
+  // O WavyBackground pinta o fundo do canvas a cada frame com esta cor.
+  // Casamos com o token --background de cada tema (branco no light,
+  // quase-preto no dark) para o hero não ficar escuro fixo no light.
+  const heroBackgroundFill = isDark ? "#0a0a0a" : "#ffffff"
+
   return (
     <div className="flex flex-col">
       {/* ----------------------------------------------------------------- */}
@@ -96,17 +105,17 @@ export function LandingPage() {
           colors={["#6366f1", "#8b5cf6", "#ec4899", "#0ea5e9", "#22d3ee"]}
           waveWidth={60}
           waveOpacity={0.5}
-          backgroundFill="#0a0a0a"
+          backgroundFill={heroBackgroundFill}
         >
           <div className="mx-auto flex max-w-3xl flex-col items-center px-6 text-center">
-            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-sm font-medium text-white/90 backdrop-blur">
+            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-4 py-1.5 text-sm font-medium text-foreground backdrop-blur">
               <Sparkles className="h-4 w-4" />
               Vitrine de componentes React
             </span>
-            <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">
+            <h1 className="text-4xl font-bold tracking-tight text-foreground sm:text-5xl md:text-6xl">
               Construa interfaces lindas em minutos
             </h1>
-            <p className="mt-6 max-w-2xl text-base text-white/80 sm:text-lg">
+            <p className="mt-6 max-w-2xl text-base text-muted-foreground sm:text-lg">
               Uma coleção de componentes shadcn e efeitos modernos, com API
               unificada, tema dark/light e código pronto para copiar.
             </p>
@@ -121,7 +130,7 @@ export function LandingPage() {
                 asChild
                 size="lg"
                 variant="outline"
-                className="border-white/30 bg-white/5 text-white hover:bg-white/10 hover:text-white"
+                className="border-border bg-background/60 text-foreground backdrop-blur hover:bg-background/80 hover:text-foreground"
               >
                 <a href="/compositions">Ver composições</a>
               </Button>
