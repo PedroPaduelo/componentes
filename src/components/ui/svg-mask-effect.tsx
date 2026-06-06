@@ -18,6 +18,12 @@ import type { MaskContainerProps } from "@/components/ui/svg-mask-effect-types"
  * Em repouso a máscara tem tamanho `size` (pequena); no hover cresce até
  * `revealSize`, revelando o `children`. Usa `radial-gradient` inline (sem asset
  * externo `/mask.svg`), tornando o componente portátil.
+ *
+ * Contraste/tema: em repouso o fundo do container segue `var(--background)` e o
+ * `revealText` usa `text-foreground`, garantindo legibilidade no light E no dark
+ * (antes o fundo era `white` fixo, deixando o `revealText` branco invisível no
+ * dark). No hover o container escurece para `slate-900` e a camada mascarada
+ * (`bg-black dark:bg-white`) revela o `children`, preservando o efeito.
  */
 const asMotion = (
   vars: Record<string, string | number | string[] | number[]>,
@@ -69,7 +75,7 @@ function MaskContainer({
       animate={{
         backgroundColor: isHovered
           ? "var(--color-slate-900)"
-          : "var(--color-white)",
+          : "var(--background)",
       }}
       transition={{
         backgroundColor: { duration: 0.3 },
@@ -99,7 +105,7 @@ function MaskContainer({
         </div>
       </motion.div>
 
-      <div className="flex h-full w-full items-center justify-center px-6 text-center text-xl text-slate-800 sm:text-2xl dark:text-white">
+      <div className="flex h-full w-full items-center justify-center px-6 text-center text-xl text-foreground sm:text-2xl">
         {revealText}
       </div>
     </motion.div>
