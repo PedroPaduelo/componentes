@@ -343,3 +343,15 @@ export type {
   GlowingStarsDescriptionProps,
   GlowingStarsTitleProps,
 } from "./glowing-stars-effect"
+export { TextGenerateEffect } from "./text-generate-effect"
+export type { TextGenerateEffectProps } from "./text-generate-effect"
+export {
+  TextRevealCard,
+  TextRevealCardDescription,
+  TextRevealCardTitle,
+} from "./text-reveal-card"
+export type {
+  TextRevealCardDescriptionProps,
+  TextRevealCardProps,
+  TextRevealCardTitleProps,
+} from "./text-reveal-card"

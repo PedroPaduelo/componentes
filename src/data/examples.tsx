@@ -102,6 +102,7 @@ import { examplesTooltipCard } from "@/data/examples-tooltip-card"
 import { examplesExpandableCards } from "@/data/examples-expandable-cards"
 import { examplesHeroParallax } from "@/data/examples-hero-parallax"
 import { examplesGlowingStarsEffect } from "@/data/examples-glowing-stars-effect"
+import { examplesTextGenerateEffect } from "@/data/examples-text-generate-effect"
 import { examplesHeroSectionWithMousemove } from "@/data/examples-hero-section-with-mousemove"
 import { examplesNoiseBackground } from "@/data/examples-noise-background"
 import { examplesShootingStarsAndStarsBackground } from "@/data/examples-shooting-stars-and-stars-background"
@@ -109,8 +110,10 @@ import { examplesMeteors } from "@/data/examples-meteors"
 import { examplesGridAndDotBackgrounds } from "@/data/examples-grid-and-dot-backgrounds"
 import { examplesSpotlightNew } from "@/data/examples-spotlight-new"
 import { examplesLampEffect } from "@/data/examples-lamp-effect"
+import { examplesTextHoverEffect } from "@/data/examples-text-hover-effect"
 import { examplesSpotlight } from "@/data/examples-spotlight"
 import { examplesBackgroundGradient } from "@/data/examples-background-gradient"
+import { examplesAuroraBackground } from "@/data/examples-aurora-background"
 import { examplesHeroHighlight } from "@/data/examples-hero-highlight"
 import { examplesGlowingEffect } from "@/data/examples-glowing-effect"
 import { examplesTypewriterEffect } from "@/data/examples-typewriter-effect"
@@ -1261,6 +1264,7 @@ export const examples: Record<string, Example[]> = {
   // Lote Aceternity
   ...examplesNoiseBackground,
   ...examplesBackgroundGradient,
+  ...examplesAuroraBackground,
   ...examplesHeroSectionWithMousemove,
   ...examplesGridAndDotBackgrounds,
   ...examplesGlowingEffect,
@@ -1289,11 +1293,13 @@ export const examples: Record<string, Example[]> = {
   ...examplesTooltipCard,
   ...examplesHeroParallax,
   ...examplesLampEffect,
+  ...examplesTextHoverEffect,
   ...examplesShootingStarsAndStarsBackground,
   ...examplesGlowingStarsEffect,
   ...examplesHeroHighlight,
   ...examplesTypewriterEffect,
   ...examplesFlipWords,
+  ...examplesTextGenerateEffect,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

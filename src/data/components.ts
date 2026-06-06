@@ -919,7 +919,7 @@ export const components: ComponentMeta[] = [
       "aceternity",
     ],
     usage:
-      "Passe o texto desejado em <TextHoverEffect text=\"Hover me\" /> dentro de um wrapper com largura definida; ajuste density (compact/default/relaxed) para a altura do container e duration para suavizar o追随 do cursor.",
+      "Passe o texto desejado em <TextHoverEffect text=\"Hover me\" /> dentro de um wrapper com largura definida; ajuste density (compact/default/relaxed) para a altura do container e duration para suavizar o seguimento do cursor.",
   },
   {
     slug: "lamp-effect",
@@ -930,12 +930,12 @@ export const components: ComponentMeta[] = [
     tags: ["lamp", "light", "glow", "hero", "conic", "aceternity"],
   },
   {
-    slug: "background-gradient-animation",
-    name: "Background Gradient Animation",
+    slug: "text-generate-effect",
+    name: "Text Generate Effect",
     category: "Feedback",
     description:
-      "Fundo da Aceternity UI com blobs de gradiente radial que se movem continuamente (CSS keyframes) e se misturam via mix-blend-mode + filtro goo (feGaussianBlur/feColorMatrix). Um blob extra segue o cursor quando interactive. Cores, tamanho e blend configuráveis.",
-    tags: ["background", "gradient", "blobs", "animation", "interactive", "aceternity"],
+      "Texto da Aceternity UI em que cada palavra entra com fade + blur desfocado (10px) com stagger de 0.2s. Tema via token semântico text-foreground; aceita frase, flag de blur e duração customizada. Animado na montagem via useAnimate (motion/react).",
+    tags: ["text", "gerar", "blur", "stagger", "animação", "aceternity"],
   },
   {
     slug: "flip-words",
@@ -946,6 +946,31 @@ export const components: ComponentMeta[] = [
     tags: ["flip", "words", "texto", "animação", "letra", "aceternity"],
     usage:
       "Use <FlipWords words={['rápido','bonito','moderno']} /> inline em qualquer cabeçalho ou frase para dar vida ao copy.",
+  },
+  {
+    slug: "aurora-background",
+    name: "Aurora Background",
+    category: "Feedback",
+    description:
+      "Fundo animado da Aceternity UI com gradiente aurora (repeating-linear-gradient em tons azul/índigo/violeta) que desliza horizontalmente em loop infinito (keyframe aurora 60s). Inclui mask radial opcional, variação automática para dark mode e blend difference para contraste orgânico do conteúdo. Cores do efeito são fixas (assinatura visual).",
+    tags: [
+      "aurora",
+      "background",
+      "gradient",
+      "animado",
+      "feedback",
+      "aceternity",
+    ],
+  },
+  {
+    slug: "text-reveal-card",
+    name: "Text Reveal Card",
+    category: "Feedback",
+    description:
+      "Card Aceternity UI: arraste o mouse sobre o card e um texto escondido é revelado progressivamente da esquerda pra direita via clip-path animado por motion, com estrelinhas piscando ao fundo. Background escuro fixo (brand do efeito).",
+    tags: ["text", "reveal", "card", "mask", "mouse", "stars", "aceternity"],
+    usage:
+      "Passe text e revealText em <TextRevealCard> e use <TextRevealCardTitle>/<TextRevealCardDescription> como children para título/descrição do topo.",
   },
 ]
 
