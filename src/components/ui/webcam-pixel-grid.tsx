@@ -25,6 +25,7 @@ function WebcamPixelGrid({
   const videoRef = React.useRef<HTMLVideoElement>(null)
   const animFrameRef = React.useRef<number>(0)
   const prevFrameRef = React.useRef<Uint8ClampedArray | null>(null)
+  const elevationRef = React.useRef<Float32Array>(new Float32Array(gridCols * gridRows))
   const [webcamActive, setWebcamActive] = React.useState(false)
   const [webcamFailed, setWebcamFailed] = React.useState(false)
 
@@ -112,16 +113,20 @@ function WebcamPixelGrid({
               const g = frame[i + 1]
               const b = frame[i + 2]
 
-              let elevation = 0
+              let targetElevation = 0
               if (hasPrev) {
                 const dr = Math.abs(r - prev![i])
                 const dg = Math.abs(g - prev![i + 1])
                 const db = Math.abs(b - prev![i + 2])
                 const diff = (dr + dg + db) / 3
                 if (diff > motionSensitivity * 255) {
-                  elevation = (diff / 255) * maxElevation
+                  targetElevation = (diff / 255) * maxElevation
                 }
               }
+              const idx = row * gridCols + col
+              const prevElev = elevationRef.current[idx] ?? 0
+              const elevation = prevElev + (targetElevation - prevElev) * (1 - elevationSmoothing)
+              elevationRef.current[idx] = elevation
 
               const x = col * cellW + gap / 2
               const y = row * cellH + gap / 2
@@ -191,7 +196,7 @@ function WebcamPixelGrid({
       running = false
       cancelAnimationFrame(animFrameRef.current)
     }
-  }, [webcamActive, webcamFailed, gridCols, gridRows, maxElevation, motionSensitivity, colorMode, monochromeColor, mirror, gapRatio, borderColor, borderOpacity])
+  }, [webcamActive, webcamFailed, gridCols, gridRows, maxElevation, motionSensitivity, elevationSmoothing, colorMode, monochromeColor, mirror, gapRatio, borderColor, borderOpacity])
 
   return (
     <div
