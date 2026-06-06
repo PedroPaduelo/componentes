@@ -387,3 +387,10 @@ export type {
   AnimatedTestimonialsProps,
   Testimonial,
 } from "./animated-testimonials-types"
+export { ThreeDMarquee } from "./3d-marquee"
+export type { ThreeDMarqueeProps } from "./3d-marquee-types"
+export { useAnimatedModal, useAnimatedModalOutsideClick } from "./animated-modal-hooks"
+export { DitherShader } from "./dither-shader"
+export type { DitherShaderProps, DitheringMode, ColorMode } from "./dither-shader"
+export { FileUpload } from "./file-upload"
+export type { FileUploadProps } from "./file-upload-types"

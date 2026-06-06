@@ -133,6 +133,8 @@ import { examples3dPin } from "./examples-3d-pin"
 import { examples3dMarquee } from "./examples-3d-marquee"
 import { examplesAnimatedTestimonials } from "./examples-animated-testimonials"
 import { examplesCodeBlock } from "./examples-code-block"
+import { examplesDitherShader } from "./examples-dither-shader"
+import { examplesFileUpload } from "./examples-file-upload"
 
 export type Example = {
   title: string
@@ -1330,6 +1332,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesWobbleCard,
   ...examplesContainerTextFlip,
   ...examplesCodeBlock,
+  ...examplesDitherShader,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

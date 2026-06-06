@@ -1200,6 +1200,29 @@ export const components: ComponentMeta[] = [
     usage:
       "Passe `code` (string) OU `tabs` (array) — nunca ambos. Use `filename` (com `code`) ou apenas `tabs` (filename é omitido no modo com abas). `highlightLines` é por aba quando há tabs, ou da raiz no modo simples.",
   },
+  {
+    slug: "dither-shader",
+    name: "Dither Shader",
+    category: "Feedback",
+    description:
+      "Aplica dithering (Bayer / halftone / noise / crosshatch) sobre uma imagem renderizada num <canvas>, com modos de cor original / grayscale / duotone / custom. Usa Canvas 2D puro (sem WebGL/three.js) e suporta animação contínua no modo noise. Imagem via prop `src` (CORS-friendly, ex.: picsum.photos).",
+    tags: [
+      "dither",
+      "dithering",
+      "shader",
+      "bayer",
+      "halftone",
+      "noise",
+      "duotone",
+      "grayscale",
+      "pixel-art",
+      "retro",
+      "aceternity",
+      "feedback",
+    ],
+    usage:
+      "Envolva o <DitherShader> num wrapper com altura+largura explícitas (ex.: relative h-[420px] w-full rounded-xl overflow-hidden) — o componente preenche 100% do container via absolute inset-0. Use `gridSize` 3-5 para pixel art, 6-10 para efeito mais fino. Picsum ou outros hosts CORS-friendly funcionam com crossOrigin='anonymous'.",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
