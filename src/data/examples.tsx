@@ -167,6 +167,7 @@ import { examplesCanvasRevealEffect } from "./examples-canvas-reveal-effect"
 import { examplesCardSpotlight } from "./examples-card-spotlight"
 import { examplesTextFlippingBoard } from "./examples-text-flipping-board"
 import { examplesStickyBanner } from "./examples-sticky-banner"
+import { examplesMultiStepLoader } from "./examples-multi-step-loader"
 
 export type Example = {
   title: string

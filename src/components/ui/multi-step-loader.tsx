@@ -1,7 +1,7 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
 import { AnimatePresence, motion } from "motion/react"
-import { Check, Loader2 } from "lucide-react"
+import { Check } from "lucide-react"
 
 export type LoadingState = {
   text: string
@@ -121,8 +121,8 @@ export function MultiStepLoader({
             "w-full h-full fixed inset-0 z-[100] flex items-center justify-center backdrop-blur-2xl",
             className
           )}
+          {...(props as Record<string, unknown>)}
           data-slot="multi-step-loader"
-          {...props}
         >
           <div className="h-96 relative">
             <LoaderCore value={currentState} loadingStates={loadingStates} />
