@@ -6,12 +6,13 @@ const examplesWebcamPixelGridBasic: Example = {
   description:
     "Grid de pixels que captura frames da webcam em tempo real. Quando a webcam não está disponível, exibe um fallback com gradiente animado.",
   code: `<WebcamPixelGrid
-  gridSize={16}
+  gridCols={16}
+  gridRows={16}
   className="rounded-lg"
 />`,
   render: (
     <div className="flex w-full items-center justify-center p-6">
-      <WebcamPixelGrid gridSize={16} className="rounded-lg" />
+      <WebcamPixelGrid gridCols={16} gridRows={16} className="rounded-lg" />
     </div>
   ),
 }

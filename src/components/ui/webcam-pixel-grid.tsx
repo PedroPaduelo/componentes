@@ -1,6 +1,6 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import type { WebcamPixelGridProps, WebcamPixelColorMode } from "./webcam-pixel-grid-types"
+import type { WebcamPixelGridProps } from "./webcam-pixel-grid-types"
 
 function WebcamPixelGrid({
   gridCols = 16,
