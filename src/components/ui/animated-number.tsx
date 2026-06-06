@@ -17,13 +17,16 @@ function RenderStrip({ digit }: { digit: number }) {
     <motion.span
       className="flex flex-col"
       initial={false}
-      animate={{ y: `-${digit * 10}%` }}
+      // Cada dígito ocupa exatamente 1em de altura, então o deslocamento é em
+      // unidades de em (não %): assim o dígito alvo encaixa perfeito na janela
+      // de 1em do holder, sem sobra de line-height desalinhando.
+      animate={{ y: `-${digit}em` }}
       transition={{ type: "spring", stiffness: 200, damping: 20 }}
     >
       {Array.from({ length: 10 }, (_, i) => (
         <span
           key={i}
-          className="flex h-[1em] items-center justify-center tabular-nums"
+          className="flex h-[1em] items-center justify-center leading-none tabular-nums"
         >
           {i}
         </span>
@@ -34,7 +37,7 @@ function RenderStrip({ digit }: { digit: number }) {
 
 function SingleNumberHolder({ digit }: { digit: number }) {
   return (
-    <span className="relative inline-flex h-[1em] overflow-hidden tabular-nums">
+    <span className="relative inline-flex h-[1em] overflow-hidden leading-none tabular-nums">
       <RenderStrip digit={digit} />
     </span>
   )
@@ -56,7 +59,10 @@ function AnimatedNumber({ value, className }: AnimatedNumberProps) {
         /\d/.test(ch) ? (
           <SingleNumberHolder key={i} digit={Number(ch)} />
         ) : (
-          <span key={i} className="inline-flex h-[1em] items-center">
+          <span
+            key={i}
+            className="inline-flex h-[1em] items-center leading-none"
+          >
             {ch}
           </span>
         )
