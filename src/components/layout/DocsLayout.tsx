@@ -12,20 +12,27 @@ import {
 import { DocsSidebar, DocsSidebarNav } from "@/components/layout/DocsSidebar"
 
 /**
- * Layout de DOCUMENTAÇÃO (estilo shadcn docs): sidebar de navegação à esquerda
- * + conteúdo central (Outlet). Renderiza DENTRO do Layout existente (o Header
- * permanece fixo no topo). Em telas pequenas (< lg) a sidebar vira um drawer
- * (Sheet) acionado por um botão "Componentes".
+ * Layout de DOCUMENTAÇÃO (estilo shadcn/Aceternity docs): sidebar de navegação
+ * ENCOSTADA na borda esquerda da viewport (não centralizada) + conteúdo central
+ * que flui à direita com sua própria largura legível. Renderiza DENTRO do Layout
+ * existente (o Header permanece fixo no topo). Em telas pequenas (< lg) a sidebar
+ * vira um drawer (Sheet) acionado por um botão "Componentes".
+ *
+ * Decisão de layout: o wrapper externo ocupa a largura total e a sidebar fica
+ * colada à esquerda (como docs reais). NÃO há `mx-auto max-w-*` envolvendo o
+ * conjunto sidebar+conteúdo — só o CONTEÚDO central (no FamilyDetail) impõe seu
+ * próprio max-width. Assim a navegação acompanha a borda da tela e o miolo se
+ * adapta à largura disponível.
  */
 export function DocsLayout() {
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
-    <div className="mx-auto flex w-full max-w-7xl">
-      {/* Sidebar fixa (desktop ≥ lg) */}
+    <div className="flex w-full">
+      {/* Sidebar encostada na borda esquerda (desktop ≥ lg) */}
       <DocsSidebar />
 
-      {/* Coluna central */}
+      {/* Coluna central — ocupa o resto da largura, à direita da sidebar */}
       <div className="min-w-0 flex-1">
         {/* Barra do drawer mobile (< lg) */}
         <div className="border-b border-border px-4 py-3 lg:hidden">
@@ -52,8 +59,7 @@ export function DocsLayout() {
 
         {/*
           A coluna central não impõe max-width/padding próprios: o conteúdo
-          (FamilyDetail) controla seu próprio container legível. Evita
-          double-wrap e mantém o conteúdo da página intacto nesta fase.
+          (FamilyDetail) controla seu container legível (conteúdo + TOC).
         */}
         <Outlet />
       </div>
