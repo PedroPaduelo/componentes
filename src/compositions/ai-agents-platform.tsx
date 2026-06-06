@@ -616,7 +616,7 @@ export function AiAgentsPlatform() {
     <div className="flex h-[80vh] w-full overflow-hidden bg-background text-foreground">
       {/* ── Sidebar de agentes ─────────────────────────────────────────── */}
       <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-card/40 md:flex">
-        <div className="flex min-h-[3.75rem] items-center gap-2 border-b border-border px-4 py-3">
+        <div className="flex h-[3.75rem] items-center gap-2 border-b border-border px-4 py-3">
           <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Bot className="size-4" />
           </span>
@@ -641,7 +641,7 @@ export function AiAgentsPlatform() {
 
       {/* ── Painel central — conversa + execução + composer ────────────── */}
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex min-h-[3.75rem] shrink-0 items-center justify-between gap-3 border-b border-border px-4 py-3">
+        <header className="flex h-[3.75rem] shrink-0 items-center justify-between gap-3 border-b border-border px-4 py-3">
           <div className="flex items-center gap-2.5">
             <AgentAvatar agent={activeAgent} />
             <div className="flex flex-col leading-tight">
@@ -703,7 +703,7 @@ export function AiAgentsPlatform() {
 
       {/* ── Painel direito — tools + métricas ──────────────────────────── */}
       <aside className="hidden w-72 shrink-0 flex-col border-l border-border bg-card/40 lg:flex">
-        <div className="flex min-h-[3.75rem] shrink-0 items-center gap-2 border-b border-border px-4 py-3">
+        <div className="flex h-[3.75rem] shrink-0 items-center gap-2 border-b border-border px-4 py-3">
           <span className="text-sm font-semibold">Ferramentas & métricas</span>
         </div>
         <div className="flex flex-1 flex-col gap-5 overflow-y-auto p-4">
