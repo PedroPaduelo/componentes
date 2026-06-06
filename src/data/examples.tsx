@@ -130,6 +130,9 @@ import { examplesDirectionAwareHover } from "@/data/examples-direction-aware-hov
 import { examplesGlareCard } from "@/data/examples-glare-card"
 import { examplesSquigglyText } from "@/data/examples-squiggly-text"
 import { examples3dPin } from "./examples-3d-pin"
+import { examples3dMarquee } from "./examples-3d-marquee"
+import { examplesAnimatedTestimonials } from "./examples-animated-testimonials"
+import { examplesCodeBlock } from "./examples-code-block"
 
 export type Example = {
   title: string
@@ -1322,8 +1325,11 @@ export const examples: Record<string, Example[]> = {
   ...examplesDirectionAwareHover,
   ...examplesDraggableCard,
   ...examples3dPin,
+  ...examples3dMarquee,
+  ...examplesAnimatedTestimonials,
   ...examplesWobbleCard,
   ...examplesContainerTextFlip,
+  ...examplesCodeBlock,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

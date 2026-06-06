@@ -1149,6 +1149,57 @@ export const components: ComponentMeta[] = [
     usage:
       "Envolva o conteúdo visual do card (imagem + textos) em <CometCard className='h-full w-full'> dentro de um wrapper com altura (ex.: h-[420px] w-[300px]) para a área 3D ter onde operar.",
   },
+  {
+    slug: "3d-marquee",
+    name: "3D Marquee",
+    category: "Layout",
+    description:
+      "Grid 4 colunas em perspectiva 3D (rotateX 55°, rotateZ -45°) onde cada coluna rola verticalmente em loop infinito reverso, com durações alternadas (10s nas pares, 15s nas ímpares). Cada imagem ganha um leve translateY no hover. Inclui overlays decorativos de linhas horizontais/verticais com mask gradient nas bordas. Imagens mínimas: 16 (4 por coluna) — ideal 24 (6 por coluna).",
+    tags: ["3d", "marquee", "grid", "gallery", "infinite", "aceternity"],
+    usage:
+      "Passe ao menos 16 URLs de imagem em <ThreeDMarquee images={...}> dentro de um wrapper com altura controlada (h-[600px] recomendado) — o grid é dimensionado para preencher 600px de altura com margem para o efeito 3D.",
+  },
+  {
+    slug: "animated-testimonials",
+    name: "Animated Testimonials",
+    category: "Feedback",
+    description:
+      "Carrossel de depoimentos da Aceternity UI com AnimatePresence (motion v12): imagem rotaciona 3D aleatoriamente e entra com scale + z-index, nome/cargo/citação trocam com stagger de blur por palavra. Suporta autoplay (5s) e lista arbitrária de testemunhos via prop `testimonials`.",
+    tags: [
+      "testimonials",
+      "depoimentos",
+      "carrossel",
+      "carousel",
+      "quotes",
+      "citacoes",
+      "animated",
+      "animatepresence",
+      "motion",
+      "aceternity",
+    ],
+    usage:
+      "Passe uma lista de `{ quote, name, designation, src }` em <AnimatedTestimonials testimonials={...} />; use `autoplay` para o carrossel avançar a cada 5s. O componente cuida de z-index, scale e rotação 3D por testemunho — basta fornecer o array.",
+  },
+  {
+    slug: "code-block",
+    name: "Code Block",
+    category: "Feedback",
+    description:
+      "Bloco de código da Aceternity UI com syntax highlight manual leve (regex para keywords, strings, números, comentários e identificadores), números de linha, linhas destacáveis, abas com indicator animado (motion v12) e botão de copiar inline com feedback visual (ícone Check + cor emerald por 2s). Suporta múltiplas linguagens (ts/tsx, js/jsx, py, bash, json, css) via prop `language` ou por aba. Fundo slate-900 com borda slate-800 (brand dark, alinhado com glare-card/text-reveal-card).",
+    tags: [
+      "code",
+      "syntax",
+      "highlight",
+      "block",
+      "snippet",
+      "tabs",
+      "copy",
+      "line-numbers",
+      "aceternity",
+    ],
+    usage:
+      "Passe `code` (string) OU `tabs` (array) — nunca ambos. Use `filename` (com `code`) ou apenas `tabs` (filename é omitido no modo com abas). `highlightLines` é por aba quando há tabs, ou da raiz no modo simples.",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

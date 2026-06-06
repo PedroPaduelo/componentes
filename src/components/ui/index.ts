@@ -380,3 +380,10 @@ export { ColourfulText } from "./colourful-text"
 export type { ColourfulTextProps } from "./colourful-text-types"
 export { CometCard } from "./comet-card"
 export type { CometCardProps } from "./comet-card"
+export { CodeBlock } from "./code-block"
+export type { CodeBlockProps, CodeBlockTab } from "./code-block"
+export { AnimatedTestimonials } from "./animated-testimonials"
+export type {
+  AnimatedTestimonialsProps,
+  Testimonial,
+} from "./animated-testimonials-types"
