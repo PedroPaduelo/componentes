@@ -359,3 +359,22 @@ export type {
 } from "./text-reveal-card"
 export { ContainerTextFlip } from "./container-text-flip"
 export type { ContainerTextFlipProps } from "./container-text-flip"
+export { ColourfulText } from "./colourful-text"
+export type { ColourfulTextProps } from "./colourful-text-types"
+export { GlareCard } from "./glare-card"
+export type { GlareCardProps } from "./glare-card"
+export { SquigglyText } from "./squiggly-text"
+export type { SquigglyTextProps } from "./squiggly-text"
+export { WobbleCard } from "./wobble-card"
+export type { WobbleCardProps } from "./wobble-card-types"
+export { DirectionAwareHover } from "./direction-aware-hover"
+export type { DirectionAwareHoverProps } from "./direction-aware-hover"
+export { DraggableCardBody, DraggableCardContainer } from "./draggable-card"
+export type {
+  DraggableCardContainerProps,
+  DraggableCardBodyProps,
+} from "./draggable-card-types"
+export { PinContainer, PinPerspective } from "./3d-pin"
+export type { PinContainerProps, PinPerspectiveProps } from "./3d-pin"
+export { EvervaultCard } from "./evervault-card"
+export type { EvervaultCardProps } from "./evervault-card-types"

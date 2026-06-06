@@ -119,8 +119,17 @@ import { examplesGlowingEffect } from "@/data/examples-glowing-effect"
 import { examplesTypewriterEffect } from "@/data/examples-typewriter-effect"
 import { examplesFlipWords } from "@/data/examples-flip-words"
 import { examplesTextRevealCard } from "@/data/examples-text-reveal-card"
+import { examplesEvervaultCard } from "@/data/examples-evervault-card"
 import { examplesContainerTextFlip } from "@/data/examples-container-text-flip"
 import { examplesLayoutTextFlip } from "@/data/examples-layout-text-flip"
+import { examplesWobbleCard } from "@/data/examples-wobble-card"
+import { examplesColourfulText } from "@/data/examples-colourful-text"
+import { examplesCometCard } from "@/data/examples-comet-card"
+import { examplesDraggableCard } from "@/data/examples-draggable-card"
+import { examplesDirectionAwareHover } from "@/data/examples-direction-aware-hover"
+import { examplesGlareCard } from "@/data/examples-glare-card"
+import { examplesSquigglyText } from "./examples-squiggly-text"
+import { examples3dPin } from "./examples-3d-pin"
 
 export type Example = {
   title: string
@@ -1305,7 +1314,15 @@ export const examples: Record<string, Example[]> = {
   ...examplesTextGenerateEffect,
   ...examplesTextRevealCard,
   ...examplesLayoutTextFlip,
-  ...examplesContainerTextFlip,
+  ...examplesColourfulText,
+  ...examplesCometCard,
+  ...examplesEvervaultCard,
+  ...examplesGlareCard,
+  ...examplesSquigglyText,
+  ...examplesDirectionAwareHover,
+  ...examplesDraggableCard,
+  ...examples3dPin,
+  ...examplesWobbleCard,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

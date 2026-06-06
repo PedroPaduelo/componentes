@@ -1007,6 +1007,130 @@ export const components: ComponentMeta[] = [
     usage:
       "Use <ContainerTextFlip words={['rápido','bonito','moderno']} /> inline em qualquer cabeçalho ou hero para dar vida ao copy com troca animada de palavras.",
   },
+  {
+    slug: "squiggly-text",
+    name: "Squiggly Text",
+    category: "Feedback",
+    description:
+      "Texto da Aceternity UI que 'treme' ciclicamente entre filtros SVG (feTurbulence + feDisplacementMap) com seeds diferentes, criando efeito de vibração/ondulação configurável (steps, stepDuration, scale, baseFrequency, numOctaves). Animação por useTime + useTransform de motion/react; o filtro aplica em qualquer texto inline ou em bloco (as='span'|'div').",
+    tags: ["squiggly", "wobble", "text", "svg", "filter", "aceternity"],
+  },
+  {
+    slug: "wobble-card",
+    name: "Wobble Card",
+    category: "Layout",
+    description:
+      "Card que balança e translada com o mouse via motion (tilt 3D + scale do conteúdo + noise overlay).",
+    tags: ["card", "tilt", "parallax", "motion", "aceternity", "feedback"],
+  },
+  {
+    slug: "evervault-card",
+    name: "Evervault Card",
+    category: "Layout",
+    description:
+      "Card da Aceternity UI que revela uma chuva de caracteres aleatórios sob um mask radial que segue o cursor: ao passar o mouse, um gradient verde→azul com efeito de mix-blend-overlay exibe uma string alfanumérica gerada dinamicamente, mantendo no centro um badge circular desfocado com o texto da prop `text`. Ideal para hero, CTAs criptografados e destaque visual. Reimplementado padronizado shadcn com motion/react.",
+    tags: [
+      "evervault",
+      "card",
+      "mask",
+      "radial",
+      "random",
+      "characters",
+      "encryption",
+      "encrypt",
+      "aceternity",
+    ],
+    usage:
+      "Envolva o card em um wrapper com altura fixa (ex.: h-[400px]) — sem altura o aspect-square interno colapsa para 0×0.",
+  },
+  {
+    slug: "glare-card",
+    name: "Glare Card",
+    category: "Layout",
+    description:
+      "Card Aceternity com brilho/glare 3D seguindo o mouse: rotaciona (rotateX/rotateY) conforme o cursor e revela um gradiente rainbow/foil/diagonal sobre fundo escuro. Efeito brand fixo (precedente: text-reveal-card, vortex).",
+    tags: ["glare", "card", "3d", "shine", "rainbow", "aceternity"],
+  },
+  {
+    slug: "3d-pin",
+    name: "3D Pin",
+    category: "Layout",
+    description:
+      "Card da Aceternity UI que inclina em 3D (rotateX + scale) no hover, acompanhado de um PinPerspective (linhas cyan e bolhas concêntricas em loop) que sobe do card. Ideal para destacar um CTA ou um item em destaque numa grid.",
+    tags: [
+      "3d",
+      "pin",
+      "hover",
+      "card",
+      "perspective",
+      "aceternity",
+      "layout",
+    ],
+    usage:
+      "Envolva o conteúdo do card em <PinContainer title=\"acme.com\" href=\"https://acme.com\"> dentro de um wrapper com altura explícita (h-[40rem]) e largura w-full; o PinPerspective aparece automaticamente no hover.",
+  },
+  {
+    slug: "background-gradient-animation",
+    name: "Background Gradient Animation",
+    category: "Feedback",
+    description:
+      "Fundo da Aceternity UI com blobs de gradiente radial que se movem continuamente (CSS keyframes) e se misturam via mix-blend-mode + filtro goo (feGaussianBlur/feColorMatrix). Um blob extra segue o cursor quando interactive. Cores, tamanho e blend configuráveis.",
+    tags: ["background", "gradient", "blobs", "animation", "interactive", "aceternity"],
+  },
+  {
+    slug: "draggable-card",
+    name: "Draggable Card",
+    category: "Layout",
+    description:
+      "Card arrastável da Aceternity UI com física de mola (spring) e rotação 3D seguindo o cursor. Ao soltar, o gesto de arrastar é animado com spring e bounce proporcional à velocidade.",
+    tags: [
+      "drag",
+      "draggable",
+      "physics",
+      "spring",
+      "3d",
+      "rotate",
+      "card",
+      "aceternity",
+      "layout",
+    ],
+    usage:
+      "Use para destacar CTAs ou cards especiais onde você quer dar uma camada de interação tátil. O card precisa de um wrapper com altura definida (ex.: h-[400px]) para a área de arrastar ficar visível.",
+  },
+  {
+    slug: "colourful-text",
+    name: "Colourful Text",
+    category: "Feedback",
+    description:
+      "Componente Aceternity UI: cada caractere do texto anima com cor (10 tons do espectro RGB reembaralhados a cada 5s), y, scale, filter blur e opacity em loop, dando efeito de 'onda' colorida. Cores são fixas (brand do efeito, alinhado com glitch/cyber). Ideal para hero headlines e CTAs que precisam de destaque animado sem competir com o restante do copy.",
+    tags: [
+      "colourful",
+      "text",
+      "cores",
+      "espectro",
+      "animado",
+      "hero",
+      "shuffle",
+      "aceternity",
+    ],
+  },
+  {
+    slug: "direction-aware-hover",
+    name: "Direction Aware Hover",
+    category: "Layout",
+    description:
+      "Card da Aceternity UI que detecta a borda de entrada do mouse via atan2 e desloca imagem + texto pela direção oposta: entrar por baixo → imagem sobe; entrar por cima → imagem desce. O overlay escuro e o texto surgem suavemente no hover. Ideal para grids de perfis, testemunhos ou vitrines visuais que precisam de microinteração direcional.",
+    tags: [
+      "image",
+      "hover",
+      "direction",
+      "card",
+      "aceternity",
+      "layout",
+    ],
+    usage:
+      "Use <DirectionAwareHover imageUrl=\"...\"> com qualquer conteúdo React como children (ex.: nome + handle) — o card reage à direção da qual o mouse entrou.",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
