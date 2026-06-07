@@ -367,6 +367,11 @@ export { LogoSlider } from "./logo-slider"
 export type { LogoSliderProps } from "./logo-slider-types"
 
 // Lote Aceternity
+export { InfiniteMovingCards } from "./infinite-moving-cards"
+export type {
+  InfiniteMovingCardsProps,
+  InfiniteMovingCardItem,
+} from "./infinite-moving-cards"
 export {
   FeaturesSectionWithSkeletons,
   SkeletonBars,
