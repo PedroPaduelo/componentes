@@ -116,6 +116,48 @@ export const compositions: Composition[] = [
     tags: ["agentes", "ia", "app"],
     category: "Aplicação",
   },
+  {
+    slug: "product-showcase",
+    name: "Product Showcase",
+    description: "Tela de showcase de produto com MacBook scroll, galeria bento e equipe animada.",
+    tags: ["showcase", "produto", "macbook", "bento", "equipe"],
+    category: "Showcase",
+  },
+  {
+    slug: "world-map-explorer",
+    name: "World Map Explorer",
+    description: "Explorador mundial com mapa interativo, parallax, timeline e globo 3D.",
+    tags: ["mapa", "parallax", "timeline", "globe", "mundo"],
+    category: "Showcase",
+  },
+  {
+    slug: "saas-landing-2",
+    name: "SaaS Landing 2.0",
+    description: "Landing page SaaS com navbar dropdown, banner sticky, botões magnéticos e bordas animadas.",
+    tags: ["saas", "landing", "magnetic", "navbar", "banner"],
+    category: "Marketing",
+  },
+  {
+    slug: "interactive-dashboard",
+    name: "Interactive Dashboard",
+    description: "Dashboard interativo com sticky scroll, loading states animados e teclado visual.",
+    tags: ["dashboard", "sticky", "loader", "interativo"],
+    category: "Aplicação",
+  },
+  {
+    slug: "creative-portfolio",
+    name: "Creative Portfolio",
+    description: "Portfólio criativo com ASCII art, texto ondulado e cards com spotlight.",
+    tags: ["portfolio", "ascii", "spotlight", "criativo"],
+    category: "Showcase",
+  },
+  {
+    slug: "component-playground-2",
+    name: "Component Playground 2.0",
+    description: "Playground interativo com hover direcional, cards arrastáveis, comparação e upload.",
+    tags: ["playground", "hover", "drag", "compare", "upload"],
+    category: "Showcase",
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {

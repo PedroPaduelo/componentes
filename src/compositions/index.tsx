@@ -12,6 +12,12 @@ import { ChatApp } from "./chat-app"
 import { ChatInboxPro } from "./chat-inbox-pro"
 import { ComponentPlayground } from "./component-playground"
 import { AiAgentsPlatform } from "./ai-agents-platform"
+import { ProductShowcase } from "./product-showcase"
+import { InteractiveDashboard } from "./interactive-dashboard"
+import { CreativePortfolio } from "./creative-portfolio"
+import { SaasLanding2 } from "./saas-landing-2"
+import { WorldMapExplorer } from "./world-map-explorer"
+import { ComponentPlayground2 } from "./component-playground-2"
 
 /**
  * Mapa slug → componente de tela. Compartilhado entre a página de
@@ -31,4 +37,9 @@ export const compositionScreens: Record<string, ComponentType> = {
   "chat-inbox-pro": ChatInboxPro,
   "component-playground": ComponentPlayground,
   "ai-agents-platform": AiAgentsPlatform,
+  "product-showcase": ProductShowcase,
+  "creative-portfolio": CreativePortfolio,
+  "saas-landing-2": SaasLanding2,
+  "interactive-dashboard": InteractiveDashboard,
+  "world-map-explorer": WorldMapExplorer,
 }
