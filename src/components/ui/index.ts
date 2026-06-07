@@ -719,6 +719,12 @@ export { BentoGrid, BentoGridItem } from "./bento-grid"
 export type { BentoGridProps, BentoGridItemProps } from "./bento-grid"
 export { Lens } from "./lens"
 export type { LensProps, LensPosition } from "./lens-types"
+export { TeamSectionWithScales } from "./team-section-with-scales"
+export type {
+  TeamSectionWithScalesProps,
+  TeamMember,
+  TeamMemberSocial,
+} from "./team-section-with-scales-types"
 
 
 

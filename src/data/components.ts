@@ -904,6 +904,23 @@ export const components: ComponentMeta[] = [
     ],
   },
   {
+    slug: "team-section-with-scales",
+    name: "Team Section with Scales",
+    category: "Layout",
+    description:
+      "Seção de equipe com cabeçalho (eyebrow + título + descrição) e grade responsiva de cards de membros sobre o pattern decorativo Scales (linhas via CSS, reativo ao tema). Cada card traz avatar, nome, cargo, bio e links sociais opcionais, com realce no hover (motion/react).",
+    tags: [
+      "team",
+      "equipe",
+      "section",
+      "scales",
+      "grid",
+      "cards",
+      "aceternity",
+      "layout",
+    ],
+  },
+  {
     slug: "stateful-button",
     name: "Stateful Button",
     category: "Actions",
