@@ -177,6 +177,7 @@ import { examplesLinkPreview } from "./examples-link-preview"
 import { examplesLayoutGrid } from "./examples-layout-grid"
 import { examplesMacbookScroll } from "./examples-macbook-scroll"
 import { examplesBentoGrid } from "./examples-bento-grid"
+import { examplesLens } from "./examples-lens"
 import { examplesTextarea } from "./examples-textarea"
 import { examplesInputOtp } from "./examples-input-otp"
 import { examplesDataTable } from "./examples-data-table"
@@ -1448,6 +1449,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesLinkPreview,
   ...examplesMacbookScroll,
   ...examplesBentoGrid,
+  ...examplesLens,
   ...examplesTextarea,
   ...examplesDataTable,
   ...examplesSeparator,

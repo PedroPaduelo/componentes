@@ -2038,6 +2038,22 @@ export const components: ComponentMeta[] = [
       "aceternity",
     ],
   },
+  {
+    slug: "lens",
+    name: "Lens",
+    category: "Feedback",
+    description:
+      "Lente de aumento que segue o cursor sobre uma imagem ou card, ampliando a região sob ela com máscara radial. Suporta posição fixa (estática) e estado de hover controlado externamente.",
+    tags: [
+      "lens",
+      "zoom",
+      "magnifier",
+      "hover",
+      "image",
+      "feedback",
+      "aceternity",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
