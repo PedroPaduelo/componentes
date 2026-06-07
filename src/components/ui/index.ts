@@ -380,6 +380,8 @@ export type {
   FeatureItem,
 } from "./features-section-with-skeletons"
 export { EncryptedText } from "./encrypted-text"
+export { FloatingDock } from "./floating-dock"
+export type { FloatingDockProps, FloatingDockItem } from "./floating-dock"
 export type { EncryptedTextProps } from "./encrypted-text"
 export { ContainerCover } from "./container-cover"
 export type {
