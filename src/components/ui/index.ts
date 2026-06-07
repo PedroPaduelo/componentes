@@ -367,6 +367,16 @@ export { LogoSlider } from "./logo-slider"
 export type { LogoSliderProps } from "./logo-slider-types"
 
 // Lote Aceternity
+export {
+  FeaturesSectionWithSkeletons,
+  SkeletonBars,
+  SkeletonImageGrid,
+  SkeletonRipple,
+} from "./features-section-with-skeletons"
+export type {
+  FeaturesSectionWithSkeletonsProps,
+  FeatureItem,
+} from "./features-section-with-skeletons"
 export { ThreeDGlobe } from "./3d-globe"
 export type { ThreeDGlobeProps, ThreeDGlobeMarker } from "./3d-globe"
 export { FocusCards } from "./focus-cards"

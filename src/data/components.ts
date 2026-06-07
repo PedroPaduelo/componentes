@@ -887,6 +887,23 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "features-section-with-skeletons",
+    name: "Features Section with Skeletons",
+    category: "Layout",
+    description:
+      "Seção de features em grade bento responsiva (lg:grid-cols-6) com cards que exibem skeletons animados (motion/react) como preview — grade de imagens com hover, barras de analytics e anel pulsante. Cabeçalho e features configuráveis via props.",
+    tags: [
+      "features",
+      "bento",
+      "grid",
+      "skeleton",
+      "seção",
+      "landing",
+      "aceternity",
+      "layout",
+    ],
+  },
+  {
     slug: "navbar-menu",
     name: "Navbar Menu",
     category: "Layout",
