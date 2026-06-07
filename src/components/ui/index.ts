@@ -73,6 +73,18 @@ export {
   ContextMenuTrigger,
 } from "./context-menu"
 export {
+  Drawer,
+  DrawerPortal,
+  DrawerOverlay,
+  DrawerTrigger,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerFooter,
+  DrawerTitle,
+  DrawerDescription,
+} from "./drawer"
+export {
   Toast,
   ToastProvider,
   ToastViewport,
@@ -110,6 +122,17 @@ export { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTr
 export { Textarea } from "./textarea"
 export { Toggle } from "./toggle"
 export {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "./command"
+export {
   Form,
   FormField,
   FormItem,
@@ -126,7 +149,6 @@ export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "./inpu
 
 export { Calendar } from "./calendar"
 export { DatePicker } from "./date-picker"
-export { Popover, PopoverContent, PopoverTrigger } from "./popover"
 
 export {
   Menubar,
@@ -603,7 +625,7 @@ export { AnimatedTooltip } from "./animated-tooltip"
 export type { AnimatedTooltipProps, AnimatedTooltipItem } from "./animated-tooltip-types"
 export { CanvasText } from "./canvas-text"
 export type { CanvasTextProps } from "./canvas-text-types"
-export type { CarouselItem, CarouselProps } from "./apple-cards-carousel"
+export type { CarouselProps } from "./apple-cards-carousel"
 export { BlurImage } from "./apple-cards-carousel"
 export { CanvasRevealEffect } from "./canvas-reveal-effect"
 export type { CanvasRevealEffectProps } from "./canvas-reveal-effect"
