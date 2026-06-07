@@ -162,6 +162,7 @@ import { examplesFocusCards } from "./examples-focus-cards"
 import { examplesStickyScrollReveal } from "./examples-sticky-scroll-reveal"
 import { examplesAnimatedTooltip } from "./examples-animated-tooltip"
 import { examplesNavbarMenu } from "./examples-navbar-menu"
+import { examplesContainerCover } from "./examples-container-cover"
 import { examplesAsciiArt } from "./examples-ascii-art"
 import { examplesCanvasText } from "./examples-canvas-text"
 import { examplesCanvasRevealEffect } from "./examples-canvas-reveal-effect"
@@ -1345,6 +1346,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesLogoSlider,
   ...examplesSlider,
   // Lote Aceternity
+  ...examplesContainerCover,
   ...examplesNavbarMenu,
   ...examplesCompare,
   ...examples3dGlobe,
