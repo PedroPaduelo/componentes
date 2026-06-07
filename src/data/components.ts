@@ -232,6 +232,14 @@ export const components: ComponentMeta[] = [
     tags: ["breadcrumb", "navegação", "trilha", "hierarquia", "caminho", "shadcn"],
   },
   {
+    slug: "sonner",
+    name: "Sonner",
+    category: "Feedback",
+    description:
+      "Toast/notificação elegante e minimalista com suporte a ações, promises e posicionamento configurável. Baseada em sonner.",
+    tags: ["toast", "notificação", "feedback", "sonner", "mensagem", "shadcn"],
+  },
+  {
     slug: "calendar",
     name: "Calendar",
     category: "Forms",
@@ -270,14 +278,6 @@ export const components: ComponentMeta[] = [
     description:
       "Formulário com integração react-hook-form e zod, composável com FormField, FormItem, FormLabel, FormControl, FormDescription e FormMessage. Baseado em @radix-ui/react-slot e @radix-ui/react-label.",
     tags: ["form", "formulário", "validação", "zod", "react-hook-form", "shadcn"],
-  },
-  {
-    slug: "sonner",
-    name: "Sonner",
-    category: "Feedback",
-    description:
-      "Toast/notificação elegante e minimalista com suporte a ações, promises e posicionamento configurável. Baseada em sonner.",
-    tags: ["toast", "notificação", "feedback", "sonner", "mensagem", "shadcn"],
   },
   {
     slug: "navigation-menu",
@@ -328,14 +328,6 @@ export const components: ComponentMeta[] = [
     tags: ["scroll", "area", "rolagem", "scrollbar", "shadcn"],
   },
   {
-    slug: "separator",
-    name: "Separator",
-    category: "Layout",
-    description:
-      "Divisor visual horizontal ou vertical para separar conteúdo. Baseado em @radix-ui/react-separator.",
-    tags: ["separator", "divisor", "linha", "separador", "shadcn"],
-  },
-  {
     slug: "collapsible",
     name: "Collapsible",
     category: "Layout",
@@ -350,6 +342,14 @@ export const components: ComponentMeta[] = [
     description:
       "Botão de alternância com estados ligado/desligado, variantes de estilo e tamanho. Baseado em @radix-ui/react-toggle.",
     tags: ["toggle", "alternar", "switch", "botão", "estado", "shadcn"],
+  },
+  {
+    slug: "command",
+    name: "Command",
+    category: "Actions",
+    description:
+      "Palette de comandos estilo Spotlight/Alfred com busca, agrupamento, atalhos de teclado e suporte a dialog. Baseado em cmdk.",
+    tags: ["command", "palette", "busca", "spotlight", "atalho", "shadcn"],
   },
   {
     slug: "menubar",

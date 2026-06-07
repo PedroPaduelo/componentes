@@ -174,7 +174,9 @@ import { examplesLayoutGrid } from "./examples-layout-grid"
 import { examplesMacbookScroll } from "./examples-macbook-scroll"
 import { examplesTextarea } from "./examples-textarea"
 import { examplesDataTable } from "./examples-data-table"
+import { examplesCommand } from "./examples-command"
 import { examplesSeparator } from "./examples-separator"
+import { examplesPagination } from "./examples-pagination"
 import { examplesCollapsible } from "./examples-collapsible"
 import { examplesSelect } from "./examples-select"
 
@@ -184,13 +186,16 @@ import { examplesAlert } from "./examples-alert"
 import { examplesAlertDialog } from "./examples-alert-dialog"
 import { examplesAspectRatio } from "./examples-aspect-ratio"
 import { examplesAvatar } from "./examples-avatar"
+import { examplesToast } from "./examples-toast"
 import { examplesBreadcrumb } from "./examples-breadcrumb"
+import { examplesSeparator } from "./examples-separator"
 import { examplesCarousel } from "./examples-carousel"
 import { examplesSkeleton } from "./examples-skeleton"
 import { examplesSonner } from "./examples-sonner"
 import { examplesContextMenu } from "./examples-context-menu"
 import { examplesDrawer } from "./examples-drawer"
 import { examplesHoverCard } from "./examples-hover-card"
+import { examplesPopover } from "./examples-popover"
 
 export type Example = {
   title: string
@@ -1430,6 +1435,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesTextarea,
   ...examplesDataTable,
   ...examplesSeparator,
+  ...examplesPagination,
   ...examplesSelect,
   ...examplesCollapsible,
   // Lote shadcn
@@ -1440,13 +1446,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesAvatar,
   ...examplesToast,
   ...examplesBreadcrumb,
-  ...examplesResizable,
-  ...examplesSelect,
-  ...examplesSkeleton,
   ...examplesSonner,
-  ...examplesContextMenu,
-  ...examplesDrawer,
-  ...examplesHoverCard,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

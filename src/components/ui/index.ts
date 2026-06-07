@@ -19,6 +19,7 @@ export { Tree } from "./tree"
 export { WorkExperienceComponent } from "./work-experience-component"
 
 // Lote shadcn
+export { DataTable } from "./data-table"
 export { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./accordion"
 export { Alert, AlertDescription, AlertTitle } from "./alert"
 export {
@@ -72,7 +73,6 @@ export {
   ContextMenuTrigger,
 } from "./context-menu"
 export {
-export {
   Toast,
   ToastProvider,
   ToastViewport,
@@ -119,26 +119,13 @@ export {
   FormMessage,
   useFormField,
 } from "./form"
-  PaginationPrevious,
-} from "./pagination"
-export {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuViewport,
-  navigationMenuTriggerStyle,
-} from "./navigation-menu"
-export { RadioGroup, RadioGroupItem } from "./radio-group"
-export { Toaster } from "./sonner"
-export { ScrollArea, ScrollAreaViewport, ScrollAreaScrollbar, ScrollAreaThumb, ScrollAreaCorner } from "./scroll-area"
-export { Separator } from "./separator"
-export { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./sheet"
-export { Textarea } from "./textarea"
-export { Toggle } from "./toggle"
+export { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "./carousel"
+export type { CarouselApi } from "./carousel"
+
+export { Calendar } from "./calendar"
+export { DatePicker } from "./date-picker"
+export { Popover, PopoverContent, PopoverTrigger } from "./popover"
+
 export {
   Menubar,
   MenubarMenu,
@@ -157,14 +144,6 @@ export {
   MenubarSub,
   MenubarShortcut,
 } from "./menubar"
-
-export { HoverCard, HoverCardTrigger, HoverCardContent } from "./hover-card"
-export { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "./carousel"
-export type { CarouselApi } from "./carousel"
-
-export { Calendar } from "./calendar"
-export { DatePicker } from "./date-picker"
-export { Popover, PopoverContent, PopoverTrigger } from "./popover"
 
 // Lote chanhdai
 export { ChevronsUpDownIcon } from "./chevrons-up-down-icon"
@@ -639,6 +618,5 @@ export type { LayoutGridProps, LayoutGridCard } from "./layout-grid"
 export { MacbookScroll } from "./macbook-scroll"
 export type { MacbookScrollProps } from "./macbook-scroll-types"
 
-export { InputOTP } from "./input-otp"
-export type { InputOTPProps } from "./input-otp"
+export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "./input-otp"
 
