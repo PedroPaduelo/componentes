@@ -1,98 +1,154 @@
 import type { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from "@/components/ui/data-table"
+import { Badge } from "@/components/ui/badge"
 import type { Example } from "@/data/examples"
 
-type UserRow = {
+type Payment = {
   id: string
-  name: string
+  amount: number
+  status: "pending" | "processing" | "success" | "failed"
   email: string
-  role: string
-  status: string
+  date: string
 }
 
-const usersData: UserRow[] = [
-  { id: "1", name: "Ana Silva", email: "ana@example.com", role: "Admin", status: "Ativo" },
-  { id: "2", name: "Bruno Costa", email: "bruno@example.com", role: "Editor", status: "Ativo" },
-  { id: "3", name: "Carla Dias", email: "carla@example.com", role: "Viewer", status: "Inativo" },
-  { id: "4", name: "Daniel Lima", email: "daniel@example.com", role: "Editor", status: "Ativo" },
-  { id: "5", name: "Eva Souza", email: "eva@example.com", role: "Viewer", status: "Pendente" },
-]
+const statusVariant: Record<Payment["status"], string> = {
+  pending: "secondary",
+  processing: "default",
+  success: "outline",
+  failed: "destructive",
+} as const
 
-const usersColumns: ColumnDef<UserRow>[] = [
-  { accessorKey: "name", header: "Nome" },
-  { accessorKey: "email", header: "E-mail" },
-  { accessorKey: "role", header: "Função" },
+const columns: ColumnDef<Payment>[] = [
+  {
+    accessorKey: "id",
+    header: "ID",
+    cell: ({ row }) => (
+      <span className="font-mono text-xs text-muted-foreground">
+        {row.getValue("id")}
+      </span>
+    ),
+  },
   {
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      const status = row.getValue("status") as string
-      const color =
-        status === "Ativo"
-          ? "text-green-600 dark:text-green-400"
-          : status === "Inativo"
-            ? "text-red-500"
-            : "text-yellow-600 dark:text-yellow-400"
-      return <span className={color}>{status}</span>
+      const status = row.getValue("status") as Payment["status"]
+      return (
+        <Badge variant={statusVariant[status] as "secondary" | "default" | "outline" | "destructive"}>
+          {status === "pending"
+            ? "Pendente"
+            : status === "processing"
+              ? "Processando"
+              : status === "success"
+                ? "Concluído"
+                : "Falhou"}
+        </Badge>
+      )
     },
   },
-]
-
-const usersExample: Example = {
-  title: "Tabela de usuários",
-  description: "Tabela com colunas de dados, status colorido e estado vazio integrado.",
-  code: `<DataTable
-  columns={[
-    { accessorKey: "name", header: "Nome" },
-    { accessorKey: "email", header: "E-mail" },
-    { accessorKey: "role", header: "Função" },
-    { accessorKey: "status", header: "Status" },
-  ]}
-  data={users}
-/>`,
-  render: (
-    <DataTable<UserRow> columns={usersColumns} data={usersData} />
-  ),
-}
-
-type InvoiceRow = {
-  invoice: string
-  amount: string
-  method: string
-  date: string
-}
-
-const invoicesData: InvoiceRow[] = [
-  { invoice: "INV-001", amount: "R$ 1.200,00", method: "Pix", date: "01/06/2025" },
-  { invoice: "INV-002", amount: "R$ 850,00", method: "Cartão", date: "03/06/2025" },
-  { invoice: "INV-003", amount: "R$ 2.100,00", method: "Boleto", date: "05/06/2025" },
-  { invoice: "INV-004", amount: "R$ 430,00", method: "Pix", date: "07/06/2025" },
-]
-
-const invoicesColumns: ColumnDef<InvoiceRow>[] = [
-  { accessorKey: "invoice", header: "Fatura" },
-  { accessorKey: "amount", header: "Valor" },
-  { accessorKey: "method", header: "Pagamento" },
+  { accessorKey: "email", header: "Email" },
+  {
+    accessorKey: "amount",
+    header: "Valor",
+    cell: ({ row }) => {
+      const amount = parseFloat(row.getValue("amount"))
+      const formatted = new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }).format(amount)
+      return <span className="font-medium tabular-nums">{formatted}</span>
+    },
+  },
   { accessorKey: "date", header: "Data" },
 ]
 
-const invoicesExample: Example = {
-  title: "Tabela de faturas",
-  description: "Exemplo com dados financeiros e colunas simples via accessorKey.",
+const data: Payment[] = [
+  { id: "PAY-001", amount: 250.0, status: "success", email: "ana@exemplo.com", date: "2025-01-15" },
+  { id: "PAY-002", amount: 150.0, status: "pending", email: "carlos@exemplo.com", date: "2025-01-16" },
+  { id: "PAY-003", amount: 350.0, status: "processing", email: "maria@exemplo.com", date: "2025-01-16" },
+  { id: "PAY-004", amount: 450.0, status: "success", email: "joao@exemplo.com", date: "2025-01-17" },
+  { id: "PAY-005", amount: 550.0, status: "failed", email: "lucia@exemplo.com", date: "2025-01-17" },
+  { id: "PAY-006", amount: 200.0, status: "success", email: "pedro@exemplo.com", date: "2025-01-18" },
+  { id: "PAY-007", amount: 750.0, status: "pending", email: "fernanda@exemplo.com", date: "2025-01-18" },
+  { id: "PAY-008", amount: 320.0, status: "processing", email: "rafael@exemplo.com", date: "2025-01-19" },
+  { id: "PAY-009", amount: 180.0, status: "success", email: "camila@exemplo.com", date: "2025-01-19" },
+  { id: "PAY-010", amount: 420.0, status: "failed", email: "bruno@exemplo.com", date: "2025-01-20" },
+  { id: "PAY-011", amount: 620.0, status: "success", email: "patricia@exemplo.com", date: "2025-01-20" },
+  { id: "PAY-012", amount: 290.0, status: "pending", email: "diego@exemplo.com", date: "2025-01-21" },
+]
+
+const dataTablePaymentsExample: Example = {
+  title: "Pagamentos",
+  description: "Tabela de pagamentos com ordenação, paginação e busca.",
   code: `<DataTable
-  columns={[
-    { accessorKey: "invoice", header: "Fatura" },
-    { accessorKey: "amount", header: "Valor" },
-    { accessorKey: "method", header: "Pagamento" },
-    { accessorKey: "date", header: "Data" },
-  ]}
-  data={invoices}
+  columns={columns}
+  data={payments}
+  filterPlaceholder="Filtrar pagamentos..."
+  pageSize={5}
 />`,
   render: (
-    <DataTable<InvoiceRow> columns={invoicesColumns} data={invoicesData} />
+    <div className="w-full">
+      <DataTable
+        columns={columns}
+        data={data}
+        filterPlaceholder="Filtrar pagamentos..."
+        pageSize={5}
+      />
+    </div>
+  ),
+}
+
+const usersColumns: ColumnDef<{
+  name: string
+  role: string
+  active: boolean
+  joined: string
+}>[] = [
+  { accessorKey: "name", header: "Nome" },
+  { accessorKey: "role", header: "Cargo" },
+  {
+    accessorKey: "active",
+    header: "Ativo",
+    cell: ({ row }) => (
+      row.getValue("active") ? (
+        <Badge variant="outline">Sim</Badge>
+      ) : (
+        <Badge variant="destructive">Não</Badge>
+      )
+    ),
+  },
+  { accessorKey: "joined", header: "Desde" },
+]
+
+const usersData = [
+  { name: "Ana Silva", role: "Admin", active: true, joined: "2024-03-10" },
+  { name: "Carlos Souza", role: "Editor", active: true, joined: "2024-05-22" },
+  { name: "Maria Costa", role: "Viewer", active: false, joined: "2024-07-15" },
+  { name: "João Lima", role: "Editor", active: true, joined: "2024-09-01" },
+  { name: "Lucia Ferreira", role: "Admin", active: true, joined: "2024-11-18" },
+]
+
+const dataTableUsersExample: Example = {
+  title: "Usuários",
+  description: "Tabela de usuários com badges de status e paginação compacta.",
+  code: `<DataTable
+  columns={usersColumns}
+  data={usersData}
+  filterPlaceholder="Buscar usuário..."
+  pageSize={3}
+/>`,
+  render: (
+    <div className="w-full">
+      <DataTable
+        columns={usersColumns}
+        data={usersData}
+        filterPlaceholder="Buscar usuário..."
+        pageSize={3}
+      />
+    </div>
   ),
 }
 
 export const examplesDataTable: Record<string, Example[]> = {
-  "data-table": [usersExample, invoicesExample],
+  "data-table": [dataTablePaymentsExample, dataTableUsersExample],
 }
