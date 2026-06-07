@@ -887,6 +887,23 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "images-slider",
+    name: "Images Slider",
+    category: "Layout",
+    description:
+      "Slider de imagens em tela cheia com autoplay (5s), navegação por teclado (← →) e transição 3D (escala + rotateX + saída deslizante para cima/baixo). Suporta overlay escuro e conteúdo sobreposto centralizado via children.",
+    tags: [
+      "slider",
+      "carousel",
+      "imagens",
+      "hero",
+      "autoplay",
+      "motion",
+      "aceternity",
+      "layout",
+    ],
+  },
+  {
     slug: "features-section-with-skeletons",
     name: "Features Section with Skeletons",
     category: "Layout",
