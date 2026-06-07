@@ -170,6 +170,7 @@ import { examplesStickyBanner } from "./examples-sticky-banner"
 import { examplesMultiStepLoader } from "./examples-multi-step-loader"
 import { examplesLinkPreview } from "./examples-link-preview"
 import { examplesLayoutGrid } from "./examples-layout-grid"
+import { examplesMacbookScroll } from "./examples-macbook-scroll"
 
 export type Example = {
   title: string
