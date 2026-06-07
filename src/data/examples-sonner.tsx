@@ -7,6 +7,7 @@ const toastSimpleExample: Example = {
   title: "Toast simples",
   description: "Notificação básica com título e descrição.",
   code: `import { toast } from "@/components/ui/sonner"
+
 toast("Evento criado", {
   description: "Seu evento foi salvo com sucesso.",
 })`,
@@ -28,6 +29,7 @@ const toastWithActionExample: Example = {
   title: "Toast com ação",
   description: "Notificação com botão de desfazer (action).",
   code: `import { toast } from "@/components/ui/sonner"
+
 toast("Mensagem enviada", {
   description: "Sua mensagem foi entregue.",
   action: {
@@ -57,8 +59,9 @@ toast("Mensagem enviada", {
 
 const toastPromiseExample: Example = {
   title: "Toast com Promise",
-  description: "Exibe loading durante promise depois sucesso ou erro.",
+  description: "Exibe loading durante a promise e depois sucesso ou erro.",
   code: `import { toast } from "@/components/ui/sonner"
+
 toast.promise(
   fetch("/api/save").then((res) => {
     if (!res.ok) throw new Error("Erro")

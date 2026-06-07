@@ -230,6 +230,16 @@ export const components: ComponentMeta[] = [
     tags: ["breadcrumb", "navegação", "trilha", "hierarquia", "caminho", "shadcn"],
   },
   {
+    slug: "sonner",
+    name: "Sonner",
+    category: "Feedback",
+    description:
+      "Toast/notificação elegante e minimalista com suporte a ações, promises e posicionamento configurável. Baseada em sonner.",
+    tags: ["toast", "notificação", "feedback", "sonner", "mensagem", "shadcn"],
+  },
+
+  // Lote chanhdai
+  {
     slug: "resizable",
     name: "Resizable",
     category: "Layout",
