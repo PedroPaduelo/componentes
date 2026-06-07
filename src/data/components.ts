@@ -904,6 +904,14 @@ export const components: ComponentMeta[] = [
     ],
   },
   {
+    slug: "encrypted-text",
+    name: "Encrypted Text",
+    category: "Feedback",
+    description:
+      "Texto que entra como ruído aleatório e é descriptografado caractere a caractere quando aparece no viewport. Charset, velocidade de revelação e de flip configuráveis, com classes separadas para os estados embaralhado e revelado.",
+    tags: ["encrypted", "decrypt", "scramble", "text", "reveal", "terminal", "hacker", "motion"],
+  },
+  {
     slug: "navbar-menu",
     name: "Navbar Menu",
     category: "Layout",
