@@ -151,6 +151,7 @@ import { examplesTerminal } from "./examples-terminal"
 import { animatedModalExamples } from "./examples-animated-modal"
 import { examplesGooeyInput } from "./examples-gooey-input"
 import { examplesParallaxScroll } from "./examples-parallax-scroll"
+import { examplesSidebar } from "./examples-sidebar"
 import { examplesFeaturesSectionWithSkeletons } from "./examples-features-section-with-skeletons"
 import { examplesWorldMap } from "./examples-world-map"
 import { examples3dGlobe } from "./examples-3d-globe"
@@ -1352,6 +1353,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesLogoSlider,
   ...examplesSlider,
   // Lote Aceternity
+  ...examplesSidebar,
   ...examplesImagesSlider,
   ...examplesContainerCover,
   ...examplesFeaturesSectionWithSkeletons,

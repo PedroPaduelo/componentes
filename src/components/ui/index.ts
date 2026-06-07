@@ -370,6 +370,23 @@ export type { LogoSliderProps } from "./logo-slider-types"
 export { ImagesSlider } from "./images-slider"
 export type { ImagesSliderProps } from "./images-slider"
 export {
+  Sidebar,
+  SidebarProvider,
+  SidebarBody,
+  DesktopSidebar,
+  MobileSidebar,
+  SidebarLink,
+} from "./sidebar"
+export type {
+  SidebarProps,
+  SidebarProviderProps,
+  SidebarBodyProps,
+  SidebarLinkProps,
+  SidebarLinkItem,
+} from "./sidebar"
+export { useSidebar } from "./sidebar-context"
+export type { SidebarContextValue } from "./sidebar-context"
+export {
   FeaturesSectionWithSkeletons,
   SkeletonBars,
   SkeletonImageGrid,
