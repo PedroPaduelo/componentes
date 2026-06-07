@@ -904,6 +904,23 @@ export const components: ComponentMeta[] = [
     ],
   },
   {
+    slug: "following-pointer",
+    name: "Following Pointer",
+    category: "Feedback",
+    description:
+      "Substitui o cursor nativo por um ponteiro animado (motion/react) que segue o mouse dentro da área, com um badge configurável (título/avatar) ao lado. Ótimo para destacar cards de blog ou conteúdo interativo.",
+    tags: [
+      "pointer",
+      "cursor",
+      "follow",
+      "mouse",
+      "hover",
+      "motion",
+      "aceternity",
+      "feedback",
+    ],
+  },
+  {
     slug: "features-section-with-skeletons",
     name: "Features Section with Skeletons",
     category: "Layout",
