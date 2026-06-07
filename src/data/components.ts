@@ -416,6 +416,14 @@ export const components: ComponentMeta[] = [
     tags: ["skeleton", "loading", "placeholder", "pulse", "shadcn"],
   },
   {
+    slug: "input-otp",
+    name: "Input OTP",
+    category: "Forms",
+    description:
+      "Campo de entrada de código OTP (One-Time Password) com slots visuais, separador e suporte a teclado. Baseado em input-otp.",
+    tags: ["otp", "código", "verificação", "2fa", "formulário", "shadcn"],
+  },
+  {
     slug: "chevrons-up-down-icon",
     name: "Chevrons Up Down Icon",
     category: "Actions",

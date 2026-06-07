@@ -173,6 +173,7 @@ import { examplesLinkPreview } from "./examples-link-preview"
 import { examplesLayoutGrid } from "./examples-layout-grid"
 import { examplesMacbookScroll } from "./examples-macbook-scroll"
 import { examplesTextarea } from "./examples-textarea"
+import { examplesInputOtp } from "./examples-input-otp"
 import { examplesDataTable } from "./examples-data-table"
 import { examplesCommand } from "./examples-command"
 import { examplesSeparator } from "./examples-separator"
@@ -197,6 +198,7 @@ import { examplesSonner } from "./examples-sonner"
 import { examplesContextMenu } from "./examples-context-menu"
 import { examplesDrawer } from "./examples-drawer"
 import { examplesHoverCard } from "./examples-hover-card"
+import { examplesForm } from "./examples-form"
 import { examplesPopover } from "./examples-popover"
 
 export type Example = {
@@ -1437,6 +1439,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesTextarea,
   ...examplesDataTable,
   ...examplesSeparator,
+  ...examplesResizable,
   ...examplesPagination,
   ...examplesSelect,
   ...examplesCollapsible,
@@ -1448,8 +1451,10 @@ export const examples: Record<string, Example[]> = {
   ...examplesAvatar,
   ...examplesToast,
   ...examplesBreadcrumb,
+  ...examplesInputOtp,
   ...examplesSonner,
   ...examplesDrawer,
+  ...examplesForm,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

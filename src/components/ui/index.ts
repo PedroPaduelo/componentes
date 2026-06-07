@@ -45,7 +45,7 @@ export {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "./breadcrumb"
-export { ResizablePanelGroup, ResizableHandle } from "./resizable"
+export { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "./resizable"
 export { Skeleton } from "./skeleton"
 export { Calendar } from "./calendar"
 export { DatePicker } from "./date-picker"
@@ -651,6 +651,5 @@ export type { LayoutGridProps, LayoutGridCard } from "./layout-grid"
 export { MacbookScroll } from "./macbook-scroll"
 export type { MacbookScrollProps } from "./macbook-scroll-types"
 
-export { InputOTP } from "./input-otp"
-export type { InputOTPProps } from "./input-otp"
+export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "./input-otp"
 
