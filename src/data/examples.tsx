@@ -73,6 +73,7 @@ import { examplesFluid } from "@/data/examples-fluid"
 import { examplesCyber } from "@/data/examples-cyber"
 import { animatedButtonExamples } from "@/data/examples-animated"
 import { examplesFlipText } from "@/data/examples-flip-text"
+import { examplesFloatingDock } from "@/data/examples-floating-dock"
 import { examplesFlipFadeText } from "@/data/examples-flip-fade-text"
 import { examplesLightLines } from "@/data/examples-light-lines"
 import { perspectiveGridExamples } from "@/data/examples-perspective-grid"
@@ -80,6 +81,7 @@ import { examplesGlassDock } from "@/data/examples-glass-dock"
 import { creepyButtonExamples } from "@/data/examples-creepy"
 import { examplesAnimatedNumber } from "@/data/examples-animated-number"
 import { examplesLogoSlider } from "@/data/examples-logo-slider"
+import { examplesSlider } from "@/data/examples-slider"
 import { examplesParallaxHeroImages } from "@/data/examples-parallax-hero-images"
 import { examplesParallaxHeroImages2 } from "@/data/examples-parallax-hero-images-2"
 import { examplesImagesBadge } from "@/data/examples-images-badge"
@@ -129,6 +131,8 @@ import { examplesContainerTextFlip } from "@/data/examples-container-text-flip"
 import { examplesLayoutTextFlip } from "@/data/examples-layout-text-flip"
 import { examplesWobbleCard } from "@/data/examples-wobble-card"
 import { examplesColourfulText } from "@/data/examples-colourful-text"
+import { examplesEncryptedText } from "@/data/examples-encrypted-text"
+import { examplesFollowingPointer } from "@/data/examples-following-pointer"
 import { examplesPixelatedCanvas } from "@/data/examples-pixelated-canvas"
 import { examplesCometCard } from "@/data/examples-comet-card"
 import { examplesDraggableCard } from "@/data/examples-draggable-card"
@@ -149,6 +153,9 @@ import { examplesTerminal } from "./examples-terminal"
 import { animatedModalExamples } from "./examples-animated-modal"
 import { examplesGooeyInput } from "./examples-gooey-input"
 import { examplesParallaxScroll } from "./examples-parallax-scroll"
+import { examplesInfiniteMovingCards } from "./examples-infinite-moving-cards"
+import { examplesSidebar } from "./examples-sidebar"
+import { examplesFeaturesSectionWithSkeletons } from "./examples-features-section-with-skeletons"
 import { examplesWorldMap } from "./examples-world-map"
 import { examples3dGlobe } from "./examples-3d-globe"
 import { examplesCompare } from "./examples-compare"
@@ -161,6 +168,10 @@ import { examplesFocusCards } from "./examples-focus-cards"
 import { examplesStickyScrollReveal } from "./examples-sticky-scroll-reveal"
 import { examplesAnimatedTooltip } from "./examples-animated-tooltip"
 import { examplesNavbarMenu } from "./examples-navbar-menu"
+import { examplesFloatingNavbar } from "./examples-floating-navbar"
+import { examplesContainerCover } from "./examples-container-cover"
+import { examplesStatefulButton } from "./examples-stateful-button"
+import { examplesImagesSlider } from "./examples-images-slider"
 import { examplesAsciiArt } from "./examples-ascii-art"
 import { examplesCanvasText } from "./examples-canvas-text"
 import { examplesCanvasRevealEffect } from "./examples-canvas-reveal-effect"
@@ -171,6 +182,18 @@ import { examplesMultiStepLoader } from "./examples-multi-step-loader"
 import { examplesLinkPreview } from "./examples-link-preview"
 import { examplesLayoutGrid } from "./examples-layout-grid"
 import { examplesMacbookScroll } from "./examples-macbook-scroll"
+import { examplesBentoGrid } from "./examples-bento-grid"
+import { examplesLens } from "./examples-lens"
+import { examplesTextarea } from "./examples-textarea"
+import { examplesInputOtp } from "./examples-input-otp"
+import { examplesDataTable } from "./examples-data-table"
+import { examplesCommand } from "./examples-command"
+import { examplesSeparator } from "./examples-separator"
+import { examplesPagination } from "./examples-pagination"
+import { examplesCollapsible } from "./examples-collapsible"
+import { examplesSelect } from "./examples-select"
+import { examplesToggle } from "./examples-toggle"
+import { examplesTable } from "./examples-table"
 
 // Lote shadcn
 import { examplesAccordion } from "./examples-accordion"
@@ -178,8 +201,21 @@ import { examplesAlert } from "./examples-alert"
 import { examplesAlertDialog } from "./examples-alert-dialog"
 import { examplesAspectRatio } from "./examples-aspect-ratio"
 import { examplesAvatar } from "./examples-avatar"
+import { examplesToast } from "./examples-toast"
 import { examplesBreadcrumb } from "./examples-breadcrumb"
-import { examplesSeparator } from "./examples-separator"
+import { examplesResizable } from "./examples-resizable"
+import { examplesSwitch } from "./examples-switch"
+import { examplesCarousel } from "./examples-carousel"
+import { examplesSkeleton } from "./examples-skeleton"
+import { examplesSonner } from "./examples-sonner"
+import { examplesContextMenu } from "./examples-context-menu"
+import { examplesDrawer } from "./examples-drawer"
+import { examplesHoverCard } from "./examples-hover-card"
+import { examplesForm } from "./examples-form"
+import { examplesMenubar } from "./examples-menubar"
+import { examplesPopover } from "./examples-popover"
+import { examplesResizableNavbar } from "./examples-resizable-navbar"
+import { examplesTeamSectionWithScales } from "./examples-team-section-with-scales"
 import { examplesCalendar } from "./examples-calendar"
 import { examplesDatePicker } from "./examples-date-picker"
 
@@ -1325,7 +1361,16 @@ export const examples: Record<string, Example[]> = {
   ...examplesLightLines,
   ...examplesAnimatedNumber,
   ...examplesLogoSlider,
+  ...examplesSlider,
   // Lote Aceternity
+  ...examplesSidebar,
+  ...examplesStatefulButton,
+  ...examplesImagesSlider,
+  ...examplesFloatingDock,
+  ...examplesTeamSectionWithScales,
+  ...examplesContainerCover,
+  ...examplesFeaturesSectionWithSkeletons,
+  ...examplesFloatingNavbar,
   ...examplesNavbarMenu,
   ...examplesCompare,
   ...examples3dGlobe,
@@ -1377,6 +1422,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesTextRevealCard,
   ...examplesLayoutTextFlip,
   ...examplesColourfulText,
+  ...examplesEncryptedText,
+  ...examplesFollowingPointer,
   ...examplesCometCard,
   ...examplesEvervaultCard,
   ...examplesGlareCard,
@@ -1400,6 +1447,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesFileUpload,
   ...examplesHoverBorderGradient,
   ...examplesParallaxScroll,
+  ...examplesInfiniteMovingCards,
   ...examplesKeyboard,
   ...examplesPlaceholdersAndVanishInput,
   ...examplesWebcamPixelGrid,
@@ -1417,14 +1465,39 @@ export const examples: Record<string, Example[]> = {
   ...examplesLayoutGrid,
   ...examplesLinkPreview,
   ...examplesMacbookScroll,
+  ...examplesBentoGrid,
+  ...examplesLens,
+  ...examplesTextarea,
+  ...examplesDataTable,
+  ...examplesSeparator,
+  ...examplesResizable,
+  ...examplesPagination,
+  ...examplesSelect,
+  ...examplesTable,
+  ...examplesCollapsible,
   // Lote shadcn
   ...examplesAccordion,
   ...examplesAlert,
   ...examplesAlertDialog,
   ...examplesAspectRatio,
   ...examplesAvatar,
+  ...examplesToast,
   ...examplesBreadcrumb,
+  ...examplesInputOtp,
   ...examplesSeparator,
+  ...examplesSonner,
+  ...examplesDrawer,
+  ...examplesForm,
+  ...examplesMenubar,
+  ...examplesCommand,
+  ...examplesToggle,
+  ...examplesSwitch,
+  ...examplesCarousel,
+  ...examplesSkeleton,
+  ...examplesContextMenu,
+  ...examplesHoverCard,
+  ...examplesPopover,
+  ...examplesResizableNavbar,
   ...examplesCalendar,
   ...examplesDatePicker,
 }

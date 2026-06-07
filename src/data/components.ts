@@ -60,6 +60,16 @@ export const components: ComponentMeta[] = [
       "Ideal para agrupar ações secundárias atrás de um único gatilho (ex.: menu \"…\" de uma linha de tabela). Agrupe itens relacionados com separadores e evite listas muito longas — acima de ~7 itens, considere um comando/busca. Não use para navegação primária do app.",
   },
   {
+    slug: "context-menu",
+    name: "Context Menu",
+    category: "Actions",
+    description:
+      "Menu de contexto acionado pelo clique direito do mouse, com itens, separadores, checkboxes, radio groups e submenus.",
+    tags: ["menu", "contexto", "clique direito", "ações", "popup"],
+    usage:
+      "Use para ações contextuais que dependem do elemento clicado (ex.: menu de arquivo/pasta, opções de texto selecionado). O trigger define a área de ativação — o menu abre na posição do cursor. Evite usar como navegação primária.",
+  },
+  {
     slug: "card",
     name: "Card",
     category: "Layout",
@@ -88,6 +98,14 @@ export const components: ComponentMeta[] = [
     tags: ["drawer", "painel", "lateral", "deslizante", "overlay"],
     usage:
       "Bom para navegação em telas estreitas e para formulários/filtros que precisam de mais espaço vertical que um diálogo. Escolha o `side` conforme o contexto (esquerda para navegação, direita para detalhes/edição). Garanta um `SheetTitle` para acessibilidade.",
+  },
+  {
+    slug: "drawer",
+    name: "Drawer",
+    category: "Layout",
+    description:
+      "Drawer que abre a partir da base da tela com handle visual, baseado em vaul. Ideal para ações contextuais em mobile.",
+    tags: ["drawer", "vaul", "modal", "bottom-sheet", "mobile", "shadcn"],
   },
   {
     slug: "tabs",
@@ -212,12 +230,30 @@ export const components: ComponentMeta[] = [
     tags: ["breadcrumb", "navegação", "trilha", "hierarquia", "caminho", "shadcn"],
   },
   {
+    slug: "sonner",
+    name: "Sonner",
+    category: "Feedback",
+    description:
+      "Toast/notificação elegante e minimalista com suporte a ações, promises e posicionamento configurável. Baseada em sonner.",
+    tags: ["toast", "notificação", "feedback", "sonner", "mensagem", "shadcn"],
+  },
+  {
     slug: "separator",
     name: "Separator",
     category: "Layout",
     description:
       "Divisor visual horizontal ou vertical para separar conteúdo. Baseado em @radix-ui/react-separator.",
     tags: ["separator", "divisor", "linha", "separador", "shadcn"],
+  },
+
+  // Lote chanhdai
+  {
+    slug: "resizable",
+    name: "Resizable",
+    category: "Layout",
+    description:
+      "Painéis redimensionáveis via arraste, com suporte a direção horizontal e vertical, múltiplos painéis e handle visual. Baseado em react-resizable-panels.",
+    tags: ["resizable", "painéis", "redimensionar", "drag", "layout", "shadcn"],
   },
   {
     slug: "calendar",
@@ -234,6 +270,166 @@ export const components: ComponentMeta[] = [
     description:
       "Seletor de data com popover e calendário integrado. Exibe a data formatada e abre o calendário ao clicar.",
     tags: ["date-picker", "data", "calendário", "seleção", "popover", "shadcn"],
+  },
+  {
+    slug: "switch",
+    name: "Switch",
+    category: "Forms",
+    description:
+      "Controle de alternância ligar/desligar para configurações e preferências. Baseado em @radix-ui/react-switch.",
+    tags: ["switch", "toggle", "alternar", "formulário", "controle", "shadcn"],
+  },
+  {
+    slug: "form",
+    name: "Form",
+    category: "Forms",
+    description:
+      "Formulário com integração react-hook-form e zod, composável com FormField, FormItem, FormLabel, FormControl, FormDescription e FormMessage. Baseado em @radix-ui/react-slot e @radix-ui/react-label.",
+    tags: ["form", "formulário", "validação", "zod", "react-hook-form", "shadcn"],
+  },
+  {
+    slug: "navigation-menu",
+    name: "Navigation Menu",
+    category: "Actions",
+    description:
+      "Menu de navegação horizontal com dropdowns de conteúdo rico, viewport animado e indicador de posição. Baseado em @radix-ui/react-navigation-menu.",
+    tags: ["navigation", "menu", "navbar", "dropdown", "radix", "shadcn"],
+  },
+  {
+    slug: "popover",
+    name: "Popover",
+    category: "Actions",
+    description:
+      "Painel flutuante ancorado a um gatilho, com alinhamento configurável. Baseado em @radix-ui/react-popover.",
+    tags: ["popover", "tooltip", "overlay", "radix", "shadcn"],
+  },
+  {
+    slug: "toast",
+    name: "Toast",
+    category: "Feedback",
+    description:
+      "Notificação temporária e não-bloqueante para confirmar ações, exibir alertas ou comunicar estados do sistema. Baseado em @radix-ui/react-toast.",
+    tags: ["toast", "notificação", "feedback", "alerta", "mensagem", "shadcn"],
+  },
+  {
+    slug: "slider",
+    name: "Slider",
+    category: "Forms",
+    description:
+      "Controle deslizante para selecionar um valor ou intervalo. Suporta um ou múltiplos thumbs, steps e estado desabilitado. Baseado em @radix-ui/react-slider.",
+    tags: ["slider", "range", "intervalo", "controle", "formulário", "shadcn"],
+  },
+  {
+    slug: "radio-group",
+    name: "Radio Group",
+    category: "Forms",
+    description:
+      "Grupo de opções mutuamente exclusivas com navegação por teclado. Baseado em @radix-ui/react-radio-group.",
+    tags: ["radio", "seleção", "formulário", "radix", "shadcn"],
+  },
+  {
+    slug: "scroll-area",
+    name: "Scroll Area",
+    category: "Layout",
+    description:
+      "Área de rolagem customizada com scrollbar estilizado. Baseado em @radix-ui/react-scroll-area.",
+    tags: ["scroll", "area", "rolagem", "scrollbar", "shadcn"],
+  },
+  {
+    slug: "collapsible",
+    name: "Collapsible",
+    category: "Layout",
+    description:
+      "Contêiner expansível/recolhível com animação de abertura/fechamento. Baseado em @radix-ui/react-collapsible.",
+    tags: ["collapsible", "expansível", "collapse", "toggle", "shadcn"],
+  },
+  {
+    slug: "toggle",
+    name: "Toggle",
+    category: "Actions",
+    description:
+      "Botão de alternância com estados ligado/desligado, variantes de estilo e tamanho. Baseado em @radix-ui/react-toggle.",
+    tags: ["toggle", "alternar", "switch", "botão", "estado", "shadcn"],
+  },
+  {
+    slug: "command",
+    name: "Command",
+    category: "Actions",
+    description:
+      "Palette de comandos estilo Spotlight/Alfred com busca, agrupamento, atalhos de teclado e suporte a dialog. Baseado em cmdk.",
+    tags: ["command", "palette", "busca", "spotlight", "atalho", "shadcn"],
+  },
+  {
+    slug: "menubar",
+    name: "Menubar",
+    category: "Actions",
+    description:
+      "Barra de menu horizontal com menus dropdown, submenus, checkboxes, radio groups e atalhos de teclado. Baseado em @radix-ui/react-menubar.",
+    tags: ["menubar", "menu", "barra", "dropdown", "submenu", "atalho", "shadcn"],
+  },
+  {
+    slug: "data-table",
+    name: "Data Table",
+    category: "Layout",
+    description:
+      "Tabela de dados avançada com ordenação, paginação e busca global. Baseada em @tanstack/react-table.",
+    tags: ["table", "tabela", "dados", "paginação", "ordenação", "filtro", "shadcn"],
+  },
+  {
+    slug: "textarea",
+    name: "Textarea",
+    category: "Forms",
+    description:
+      "Campo de texto multiline para entrada de conteúdo longo como descrições, mensagens e comentários.",
+    tags: ["textarea", "campo", "texto", "formulário", "multiline", "shadcn"],
+  },
+  {
+    slug: "select",
+    name: "Select",
+    category: "Forms",
+    description:
+      "Seletor de opções com trigger, conteúdo em portal, grupos, separadores e suporte a scroll. Baseado em @radix-ui/react-select.",
+    tags: ["select", "seletor", "dropdown", "opções", "formulário", "shadcn"],
+  },
+  {
+    slug: "progress",
+    name: "Progress",
+    category: "Feedback",
+    description:
+      "Barra de progresso para indicar conclusão de uma tarefa ou etapa. Baseado em @radix-ui/react-progress.",
+    tags: ["progress", "barra", "progresso", "indicador", "loading", "shadcn"],
+  },
+  {
+    slug: "table",
+    name: "Table",
+    category: "Layout",
+    description:
+      "Semantic HTML table with header, body, footer, rows, cells, and caption — styled with Tailwind and adaptive to light/dark.",
+    tags: ["table", "tabela", "dados", "linhas", "colunas", "shadcn"],
+  },
+  {
+    slug: "pagination",
+    name: "Pagination",
+    category: "Layout",
+    description:
+      "Controles de paginação com links de página, navegação anterior/próxima e ellipsis para intervalos ocultos.",
+    tags: ["pagination", "paginação", "páginas", "navegação", "shadcn"],
+  },
+  {
+    slug: "skeleton",
+    name: "Skeleton",
+    category: "Feedback",
+    description:
+      "Placeholder animado com pulse para indicar carregamento de conteúdo. Classes utilitárias customizáveis.",
+    tags: ["skeleton", "loading", "placeholder", "pulse", "shadcn"],
+  },
+  {
+    slug: "input-otp",
+    name: "Input OTP",
+    category: "Forms",
+    description:
+      "Campo de entrada de código OTP (One-Time Password) com slots visuais, separador e suporte a teclado. Baseado em input-otp.",
+    tags: ["otp", "código", "verificação", "2fa", "formulário", "shadcn"],
   },
   {
     slug: "chevrons-up-down-icon",
@@ -395,6 +591,14 @@ export const components: ComponentMeta[] = [
       "Sumário/minimap de navegação com seção ativa via IntersectionObserver e barra de progresso.",
     tags: ["toc", "sumário", "navegação", "minimap", "scroll", "âncora"],
   },
+  {
+    slug: "carousel",
+    name: "Carousel",
+    category: "Layout",
+    description:
+      "Carrossel de conteúdo com scroll horizontal, controles anterior/próximo e suporte a teclado. Baseado em embla-carousel-react.",
+    tags: ["carousel", "slider", "carrossel", "swipe", "shadcn"],
+  },
 
   // Lote VengenceUI
   {
@@ -526,6 +730,14 @@ export const components: ComponentMeta[] = [
     description:
       "Tooltip da Fluid Functionalism com animação de entrada/saída via motion e posicionamento em quatro lados.",
     tags: ["fluid", "tooltip", "dica", "popover", "hover", "feedback"],
+  },
+  {
+    slug: "hover-card",
+    name: "Hover Card",
+    category: "Feedback",
+    description:
+      "Card flutuante com conteúdo rico que aparece ao passar o mouse sobre um gatilho. Baseado em @radix-ui/react-hover-card.",
+    tags: ["hover", "card", "preview", "popover", "tooltip", "shadcn"],
   },
   {
     slug: "table-fluid",
@@ -682,6 +894,184 @@ export const components: ComponentMeta[] = [
     tags: ["marquee", "logos", "slider", "infinite", "blur", "vengenceui"],
   },
   // Lote Aceternity
+  {
+    slug: "sidebar",
+    name: "Sidebar",
+    category: "Layout",
+    description:
+      "Barra lateral que recolhe para 60px e expande para 300px ao passar o mouse (motion/react), com rótulos que aparecem/desaparecem suavemente. No mobile vira um drawer em tela cheia. Suporta estado controlado e modo sempre-expandido (animate=false).",
+    tags: [
+      "sidebar",
+      "navegação",
+      "menu",
+      "drawer",
+      "collapse",
+      "responsivo",
+      "aceternity",
+      "layout",
+    ],
+  },
+  {
+    slug: "team-section-with-scales",
+    name: "Team Section with Scales",
+    category: "Layout",
+    description:
+      "Seção de equipe com cabeçalho (eyebrow + título + descrição) e grade responsiva de cards de membros sobre o pattern decorativo Scales (linhas via CSS, reativo ao tema). Cada card traz avatar, nome, cargo, bio e links sociais opcionais, com realce no hover (motion/react).",
+    tags: [
+      "team",
+      "equipe",
+      "section",
+      "scales",
+      "grid",
+      "cards",
+      "aceternity",
+      "layout",
+    ],
+  },
+  {
+    slug: "stateful-button",
+    name: "Stateful Button",
+    category: "Actions",
+    description:
+      "Botão com feedback de estado: ao clicar dispara um spinner de loading (motion/react) enquanto o handler assíncrono resolve e exibe um check de sucesso ao concluir. Animações de layout suaves e cor/tamanho customizáveis via className.",
+    tags: [
+      "button",
+      "stateful",
+      "loading",
+      "success",
+      "spinner",
+      "async",
+      "aceternity",
+      "actions",
+    ],
+  },
+  {
+    slug: "images-slider",
+    name: "Images Slider",
+    category: "Layout",
+    description:
+      "Slider de imagens em tela cheia com autoplay (5s), navegação por teclado (← →) e transição 3D (escala + rotateX + saída deslizante para cima/baixo). Suporta overlay escuro e conteúdo sobreposto centralizado via children.",
+    tags: [
+      "slider",
+      "carousel",
+      "imagens",
+      "hero",
+      "autoplay",
+      "motion",
+      "aceternity",
+      "layout",
+    ],
+  },
+  {
+    slug: "floating-dock",
+    name: "Floating Dock",
+    category: "Actions",
+    description:
+      "Dock de navegação estilo macOS com magnificação dos ícones conforme a proximidade do cursor (motion useTransform + useSpring). Responsivo: barra horizontal no desktop (md+) e botão flutuante expansível no mobile, com tooltip por item.",
+    tags: [
+      "dock",
+      "navbar",
+      "macos",
+      "magnify",
+      "hover",
+      "navigation",
+      "aceternity",
+      "actions",
+    ],
+  },
+  {
+    slug: "floating-navbar",
+    name: "Floating Navbar",
+    category: "Actions",
+    description:
+      "Navbar pill flutuante (rounded-full) que aparece ao rolar para cima e some ao rolar para baixo. Animação de entrada/saída via motion (translateY + opacity) controlada por useScroll/useMotionValueEvent. Itens com ícone (mobile) ou rótulo (desktop) + botão de CTA opcional. Aceita scrollContainer próprio.",
+    tags: [
+      "navbar",
+      "floating",
+      "scroll",
+      "pill",
+      "sticky",
+      "motion",
+      "aceternity",
+      "actions",
+    ],
+  },
+  {
+    slug: "following-pointer",
+    name: "Following Pointer",
+    category: "Feedback",
+    description:
+      "Substitui o cursor nativo por um ponteiro animado (motion/react) que segue o mouse dentro da área, com um badge configurável (título/avatar) ao lado. Ótimo para destacar cards de blog ou conteúdo interativo.",
+    tags: [
+      "pointer",
+      "cursor",
+      "follow",
+      "mouse",
+      "hover",
+      "motion",
+      "aceternity",
+      "feedback",
+    ],
+  },
+  {
+    slug: "resizable-navbar",
+    name: "Resizable Navbar",
+    category: "Actions",
+    description:
+      "Barra de navegação que encolhe ao rolar a página (motion/react + useScroll): ganha blur, sombra e reduz a largura. Inclui variante desktop e menu mobile colapsável com toggle animado.",
+    tags: [
+      "navbar",
+      "navigation",
+      "resizable",
+      "scroll",
+      "sticky",
+      "mobile",
+      "menu",
+      "aceternity",
+    ],
+  },
+  {
+    slug: "features-section-with-skeletons",
+    name: "Features Section with Skeletons",
+    category: "Layout",
+    description:
+      "Seção de features em grade bento responsiva (lg:grid-cols-6) com cards que exibem skeletons animados (motion/react) como preview — grade de imagens com hover, barras de analytics e anel pulsante. Cabeçalho e features configuráveis via props.",
+    tags: [
+      "features",
+      "bento",
+      "grid",
+      "skeleton",
+      "seção",
+      "landing",
+      "aceternity",
+      "layout",
+    ],
+  },
+  {
+    slug: "encrypted-text",
+    name: "Encrypted Text",
+    category: "Feedback",
+    description:
+      "Texto que entra como ruído aleatório e é descriptografado caractere a caractere quando aparece no viewport. Charset, velocidade de revelação e de flip configuráveis, com classes separadas para os estados embaralhado e revelado.",
+    tags: ["encrypted", "decrypt", "scramble", "text", "reveal", "terminal", "hacker", "motion"],
+  },
+  {
+    slug: "container-cover",
+    name: "Container Cover",
+    category: "Feedback",
+    description:
+      "Destaque animado para texto inline: ao passar o mouse, o fundo escurece, partículas (sparkles) percorrem a área, beams horizontais varrem o bloco e o texto treme e encolhe levemente. Ideal para realçar palavras em headlines.",
+    tags: [
+      "cover",
+      "highlight",
+      "text",
+      "sparkles",
+      "beam",
+      "hover",
+      "aceternity",
+      "feedback",
+    ],
+  },
   {
     slug: "navbar-menu",
     name: "Navbar Menu",
@@ -1756,6 +2146,55 @@ export const components: ComponentMeta[] = [
       "laptop",
       "animation",
       "motion",
+      "aceternity",
+    ],
+  },
+  {
+    slug: "bento-grid",
+    name: "Bento Grid",
+    category: "Layout",
+    description:
+      "Grid bento responsivo (1 coluna no mobile, 3 colunas no desktop) com cards de tamanhos variados. Cada item aceita header, título, descrição e ícone, com micro-interação de deslize no hover.",
+    tags: [
+      "bento",
+      "grid",
+      "layout",
+      "cards",
+      "responsive",
+      "showcase",
+      "aceternity",
+    ],
+  },
+  {
+    slug: "infinite-moving-cards",
+    name: "Infinite Moving Cards",
+    category: "Layout",
+    description:
+      "Carrossel de cards em loop infinito. Os itens são duplicados em runtime e uma animação CSS faz a esteira correr sem emendas, com direção (left/right), velocidade (fast/normal/slow) e pausa no hover. Máscara lateral suaviza as bordas.",
+    tags: [
+      "infinite",
+      "carousel",
+      "carrossel",
+      "scroll",
+      "marquee",
+      "testimonials",
+      "loop",
+      "aceternity",
+    ],
+  },
+  {
+    slug: "lens",
+    name: "Lens",
+    category: "Feedback",
+    description:
+      "Lente de aumento que segue o cursor sobre uma imagem ou card, ampliando a região sob ela com máscara radial. Suporta posição fixa (estática) e estado de hover controlado externamente.",
+    tags: [
+      "lens",
+      "zoom",
+      "magnifier",
+      "hover",
+      "image",
+      "feedback",
       "aceternity",
     ],
   },

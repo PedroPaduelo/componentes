@@ -203,6 +203,11 @@
 
   /* ─── Aceternity — Meteors ─────────────────────────────────────── */
   --animate-meteor-effect: meteor-effect 5s linear infinite;
+
+  /* ─── Aceternity — Infinite Moving Cards ───────────────────────── */
+  --animate-infinite-scroll: infinite-scroll
+    var(--animation-duration, 40s) var(--animation-direction, forwards) linear
+    infinite;
 }
 
 @layer base {
@@ -692,6 +697,13 @@
   100% {
     transform: rotate(215deg) translateX(-500px);
     opacity: 0;
+  }
+}
+
+/* ─── Aceternity — Infinite Moving Cards ──────────────────────────────────── */
+@keyframes infinite-scroll {
+  to {
+    transform: translate(calc(-50% - 0.5rem));
   }
 }
 

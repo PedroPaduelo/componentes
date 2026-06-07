@@ -1,53 +1,53 @@
-import { Separator } from "@/components/ui/separator"
 import type { Example } from "@/data/examples"
+import { Separator } from "@/components/ui/separator"
 
 export const examplesSeparator: Record<string, Example[]> = {
   separator: [
     {
       title: "Horizontal",
-      description: "Linha divisória horizontal padrão para separar seções.",
+      description: "Separator horizontal entre seções de conteúdo.",
       code: `<div className="space-y-4">
   <div>
-    <h3 className="text-lg font-medium">Seção 1</h3>
-    <p className="text-sm text-muted-foreground">Conteúdo da primeira seção.</p>
+    <h4 className="text-sm font-medium">Acima</h4>
+    <p className="text-sm text-muted-foreground">Conteúdo antes do separador.</p>
   </div>
   <Separator />
   <div>
-    <h3 className="text-lg font-medium">Seção 2</h3>
-    <p className="text-sm text-muted-foreground">Conteúdo da segunda seção.</p>
+    <h4 className="text-sm font-medium">Abaixo</h4>
+    <p className="text-sm text-muted-foreground">Conteúdo depois do separador.</p>
   </div>
 </div>`,
       render: (
-        <div className="w-full max-w-md space-y-4">
+        <div className="space-y-4">
           <div>
-            <h3 className="text-lg font-medium">Seção 1</h3>
-            <p className="text-sm text-muted-foreground">
-              Conteúdo da primeira seção.
-            </p>
+            <h4 className="text-sm font-medium">Acima</h4>
+            <p className="text-sm text-muted-foreground">Conteúdo antes do separador.</p>
           </div>
           <Separator />
           <div>
-            <h3 className="text-lg font-medium">Seção 2</h3>
-            <p className="text-sm text-muted-foreground">
-              Conteúdo da segunda seção.
-            </p>
+            <h4 className="text-sm font-medium">Abaixo</h4>
+            <p className="text-sm text-muted-foreground">Conteúdo depois do separador.</p>
           </div>
         </div>
       ),
     },
     {
       title: "Vertical",
-      description: "Divisor vertical para separar conteúdo em layout horizontal.",
-      code: `<div className="flex items-center gap-4">
-  <span className="text-sm">Esquerda</span>
-  <Separator orientation="vertical" className="h-6" />
-  <span className="text-sm">Direita</span>
+      description: "Separator vertical entre elementos lado a lado.",
+      code: `<div className="flex h-5 items-center space-x-4 text-sm">
+  <div>Item 1</div>
+  <Separator orientation="vertical" />
+  <div>Item 2</div>
+  <Separator orientation="vertical" />
+  <div>Item 3</div>
 </div>`,
       render: (
-        <div className="flex items-center gap-4">
-          <span className="text-sm">Esquerda</span>
-          <Separator orientation="vertical" className="h-6" />
-          <span className="text-sm">Direita</span>
+        <div className="flex h-5 items-center space-x-4 text-sm">
+          <div>Item 1</div>
+          <Separator orientation="vertical" />
+          <div>Item 2</div>
+          <Separator orientation="vertical" />
+          <div>Item 3</div>
         </div>
       ),
     },
