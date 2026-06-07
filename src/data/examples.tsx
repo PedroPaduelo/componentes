@@ -164,6 +164,7 @@ import { examplesFocusCards } from "./examples-focus-cards"
 import { examplesStickyScrollReveal } from "./examples-sticky-scroll-reveal"
 import { examplesAnimatedTooltip } from "./examples-animated-tooltip"
 import { examplesNavbarMenu } from "./examples-navbar-menu"
+import { examplesFloatingNavbar } from "./examples-floating-navbar"
 import { examplesContainerCover } from "./examples-container-cover"
 import { examplesAsciiArt } from "./examples-ascii-art"
 import { examplesCanvasText } from "./examples-canvas-text"
@@ -1353,6 +1354,7 @@ export const examples: Record<string, Example[]> = {
   // Lote Aceternity
   ...examplesContainerCover,
   ...examplesFeaturesSectionWithSkeletons,
+  ...examplesFloatingNavbar,
   ...examplesNavbarMenu,
   ...examplesCompare,
   ...examples3dGlobe,

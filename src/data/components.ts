@@ -887,6 +887,23 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "floating-navbar",
+    name: "Floating Navbar",
+    category: "Actions",
+    description:
+      "Navbar pill flutuante (rounded-full) que aparece ao rolar para cima e some ao rolar para baixo. Animação de entrada/saída via motion (translateY + opacity) controlada por useScroll/useMotionValueEvent. Itens com ícone (mobile) ou rótulo (desktop) + botão de CTA opcional. Aceita scrollContainer próprio.",
+    tags: [
+      "navbar",
+      "floating",
+      "scroll",
+      "pill",
+      "sticky",
+      "motion",
+      "aceternity",
+      "actions",
+    ],
+  },
+  {
     slug: "features-section-with-skeletons",
     name: "Features Section with Skeletons",
     category: "Layout",
