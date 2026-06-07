@@ -895,6 +895,23 @@ export const components: ComponentMeta[] = [
     tags: ["encrypted", "decrypt", "scramble", "text", "reveal", "terminal", "hacker", "motion"],
   },
   {
+    slug: "container-cover",
+    name: "Container Cover",
+    category: "Feedback",
+    description:
+      "Destaque animado para texto inline: ao passar o mouse, o fundo escurece, partículas (sparkles) percorrem a área, beams horizontais varrem o bloco e o texto treme e encolhe levemente. Ideal para realçar palavras em headlines.",
+    tags: [
+      "cover",
+      "highlight",
+      "text",
+      "sparkles",
+      "beam",
+      "hover",
+      "aceternity",
+      "feedback",
+    ],
+  },
+  {
     slug: "navbar-menu",
     name: "Navbar Menu",
     category: "Layout",

@@ -369,6 +369,12 @@ export type { LogoSliderProps } from "./logo-slider-types"
 // Lote Aceternity
 export { EncryptedText } from "./encrypted-text"
 export type { EncryptedTextProps } from "./encrypted-text"
+export { ContainerCover } from "./container-cover"
+export type {
+  ContainerCoverProps,
+  ContainerCoverBeamProps,
+  ContainerCoverCircleProps,
+} from "./container-cover-types"
 export { ThreeDGlobe } from "./3d-globe"
 export type { ThreeDGlobeProps, ThreeDGlobeMarker } from "./3d-globe"
 export { FocusCards } from "./focus-cards"
