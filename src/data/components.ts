@@ -104,10 +104,8 @@ export const components: ComponentMeta[] = [
     name: "Drawer",
     category: "Layout",
     description:
-      "Painel que desliza a partir da parte inferior da tela, ideal para ações rápidas e conteúdo focado em mobile.",
-    tags: ["drawer", "painel", "bottom-sheet", "mobile", "overlay", "vaul"],
-    usage:
-      "Use para ações rápidas, seleção de opções ou conteúdo complementar em mobile-first. Para navegação lateral ou painéis que vêm da borda esquerda/direita, prefira `Sheet`. O Drawer sempre abre pela base da tela.",
+      "Drawer que abre a partir da base da tela com handle visual, baseado em vaul. Ideal para ações contextuais em mobile.",
+    tags: ["drawer", "vaul", "modal", "bottom-sheet", "mobile", "shadcn"],
   },
   {
     slug: "tabs",
