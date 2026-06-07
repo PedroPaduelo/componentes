@@ -171,6 +171,8 @@ import { examplesMultiStepLoader } from "./examples-multi-step-loader"
 import { examplesLinkPreview } from "./examples-link-preview"
 import { examplesLayoutGrid } from "./examples-layout-grid"
 import { examplesMacbookScroll } from "./examples-macbook-scroll"
+import { examplesTextarea } from "./examples-textarea"
+import { examplesDataTable } from "./examples-data-table"
 
 // Lote shadcn
 import { examplesAccordion } from "./examples-accordion"
@@ -180,6 +182,8 @@ import { examplesAspectRatio } from "./examples-aspect-ratio"
 import { examplesAvatar } from "./examples-avatar"
 import { examplesToast } from "./examples-toast"
 import { examplesBreadcrumb } from "./examples-breadcrumb"
+import { examplesCalendar } from "./examples-calendar"
+import { examplesDatePicker } from "./examples-date-picker"
 import { examplesResizable } from "./examples-resizable"
 import { examplesSkeleton } from "./examples-skeleton"
 import { examplesRadioGroup } from "./examples-radio-group"
@@ -199,6 +203,7 @@ import { examplesNavigationMenu } from "./examples-navigation-menu"
 import { examplesSonner } from "./examples-sonner"
 import { examplesCollapsible } from "./examples-collapsible"
 import { examplesHoverCard } from "./examples-hover-card"
+import { examplesDataTable } from "./examples-data-table"
 
 export type Example = {
   title: string
@@ -1443,9 +1448,12 @@ export const examples: Record<string, Example[]> = {
   ...examplesAvatar,
   ...examplesToast,
   ...examplesBreadcrumb,
+  ...examplesProgress,
   ...examplesSeparator,
-  ...examplesSwitch,
+  ...examplesSelect,
+  ...examplesCollapsible,
   ...examplesHoverCard,
+  ...examplesDrawer,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

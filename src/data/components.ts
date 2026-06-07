@@ -90,6 +90,16 @@ export const components: ComponentMeta[] = [
       "Bom para navegação em telas estreitas e para formulários/filtros que precisam de mais espaço vertical que um diálogo. Escolha o `side` conforme o contexto (esquerda para navegação, direita para detalhes/edição). Garanta um `SheetTitle` para acessibilidade.",
   },
   {
+    slug: "drawer",
+    name: "Drawer",
+    category: "Layout",
+    description:
+      "Painel que desliza a partir da parte inferior da tela, ideal para ações rápidas e conteúdo focado em mobile.",
+    tags: ["drawer", "painel", "bottom-sheet", "mobile", "overlay", "vaul"],
+    usage:
+      "Use para ações rápidas, seleção de opções ou conteúdo complementar em mobile-first. Para navegação lateral ou painéis que vêm da borda esquerda/direita, prefira `Sheet`. O Drawer sempre abre pela base da tela.",
+  },
+  {
     slug: "tabs",
     name: "Tabs",
     category: "Layout",
@@ -212,6 +222,22 @@ export const components: ComponentMeta[] = [
     tags: ["breadcrumb", "navegação", "trilha", "hierarquia", "caminho", "shadcn"],
   },
   {
+    slug: "calendar",
+    name: "Calendar",
+    category: "Forms",
+    description:
+      "Componente de calendário com seleção de data única, múltipla ou intervalo. Baseado em react-day-picker.",
+    tags: ["calendar", "calendário", "data", "date", "seleção", "shadcn"],
+  },
+  {
+    slug: "date-picker",
+    name: "Date Picker",
+    category: "Forms",
+    description:
+      "Seletor de data com popover e calendário integrado. Exibe a data formatada e abre o calendário ao clicar.",
+    tags: ["date-picker", "data", "calendário", "seleção", "popover", "shadcn"],
+  },
+  {
     slug: "resizable",
     name: "Resizable",
     category: "Layout",
@@ -260,6 +286,14 @@ export const components: ComponentMeta[] = [
     tags: ["toast", "notificação", "feedback", "alerta", "mensagem", "shadcn"],
   },
   {
+    slug: "slider",
+    name: "Slider",
+    category: "Forms",
+    description:
+      "Controle deslizante para selecionar um valor ou intervalo. Suporta um ou múltiplos thumbs, steps e estado desabilitado. Baseado em @radix-ui/react-slider.",
+    tags: ["slider", "range", "intervalo", "controle", "formulário", "shadcn"],
+  },
+  {
     slug: "radio-group",
     name: "Radio Group",
     category: "Forms",
@@ -292,20 +326,28 @@ export const components: ComponentMeta[] = [
     tags: ["collapsible", "expansível", "collapse", "toggle", "shadcn"],
   },
   {
-    slug: "drawer",
-    name: "Drawer",
-    category: "Layout",
-    description:
-      "Drawer que abre a partir da base da tela com handle visual, baseado em vaul. Ideal para ações contextuais em mobile.",
-    tags: ["drawer", "vaul", "modal", "bottom-sheet", "mobile", "shadcn"],
-  },
-  {
     slug: "toggle",
     name: "Toggle",
     category: "Actions",
     description:
       "Botão de alternância com estados ligado/desligado, variantes de estilo e tamanho. Baseado em @radix-ui/react-toggle.",
     tags: ["toggle", "alternar", "switch", "botão", "estado", "shadcn"],
+  },
+  {
+    slug: "menubar",
+    name: "Menubar",
+    category: "Actions",
+    description:
+      "Barra de menu horizontal com menus dropdown, submenus, checkboxes, radio groups e atalhos de teclado. Baseado em @radix-ui/react-menubar.",
+    tags: ["menubar", "menu", "barra", "dropdown", "submenu", "atalho", "shadcn"],
+  },
+  {
+    slug: "data-table",
+    name: "Data Table",
+    category: "Layout",
+    description:
+      "Tabela de dados avançada com ordenação, paginação e busca global. Baseada em @tanstack/react-table.",
+    tags: ["table", "tabela", "dados", "paginação", "ordenação", "filtro", "shadcn"],
   },
   {
     slug: "textarea",
