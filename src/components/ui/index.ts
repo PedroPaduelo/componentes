@@ -601,8 +601,8 @@ export { AnimatedTooltip } from "./animated-tooltip"
 export type { AnimatedTooltipProps, AnimatedTooltipItem } from "./animated-tooltip-types"
 export { CanvasText } from "./canvas-text"
 export type { CanvasTextProps } from "./canvas-text-types"
-export { Carousel, BlurImage } from "./apple-cards-carousel"
 export type { CarouselItem, CarouselProps } from "./apple-cards-carousel"
+export { BlurImage } from "./apple-cards-carousel"
 export { CanvasRevealEffect } from "./canvas-reveal-effect"
 export type { CanvasRevealEffectProps } from "./canvas-reveal-effect"
 export { CardSpotlight } from "./card-spotlight"
@@ -618,5 +618,5 @@ export type { LayoutGridProps, LayoutGridCard } from "./layout-grid"
 export { MacbookScroll } from "./macbook-scroll"
 export type { MacbookScrollProps } from "./macbook-scroll-types"
 
-export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "./input-otp"
+
 

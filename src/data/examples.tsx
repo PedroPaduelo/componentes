@@ -196,6 +196,7 @@ import { examplesSonner } from "./examples-sonner"
 import { examplesContextMenu } from "./examples-context-menu"
 import { examplesDrawer } from "./examples-drawer"
 import { examplesHoverCard } from "./examples-hover-card"
+import { examplesMenubar } from "./examples-menubar"
 import { examplesPopover } from "./examples-popover"
 
 export type Example = {
