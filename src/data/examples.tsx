@@ -1449,6 +1449,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesAvatar,
   ...examplesToast,
   ...examplesBreadcrumb,
+  ...examplesSeparator,
   ...examplesSonner,
 }
 

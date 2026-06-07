@@ -122,6 +122,8 @@ export {
 export { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "./carousel"
 export type { CarouselApi } from "./carousel"
 
+export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "./input-otp"
+
 export { Calendar } from "./calendar"
 export { DatePicker } from "./date-picker"
 export { Popover, PopoverContent, PopoverTrigger } from "./popover"
