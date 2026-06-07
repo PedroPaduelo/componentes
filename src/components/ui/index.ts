@@ -374,6 +374,11 @@ export type {
 } from "./infinite-moving-cards"
 export { ImagesSlider } from "./images-slider"
 export type { ImagesSliderProps } from "./images-slider"
+export { FollowerPointerCard, FollowPointer } from "./following-pointer"
+export type {
+  FollowerPointerCardProps,
+  FollowPointerProps,
+} from "./following-pointer"
 export {
   FeaturesSectionWithSkeletons,
   SkeletonBars,

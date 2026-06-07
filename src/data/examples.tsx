@@ -132,6 +132,7 @@ import { examplesLayoutTextFlip } from "@/data/examples-layout-text-flip"
 import { examplesWobbleCard } from "@/data/examples-wobble-card"
 import { examplesColourfulText } from "@/data/examples-colourful-text"
 import { examplesEncryptedText } from "@/data/examples-encrypted-text"
+import { examplesFollowingPointer } from "@/data/examples-following-pointer"
 import { examplesPixelatedCanvas } from "@/data/examples-pixelated-canvas"
 import { examplesCometCard } from "@/data/examples-comet-card"
 import { examplesDraggableCard } from "@/data/examples-draggable-card"
@@ -1410,6 +1411,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesLayoutTextFlip,
   ...examplesColourfulText,
   ...examplesEncryptedText,
+  ...examplesFollowingPointer,
   ...examplesCometCard,
   ...examplesEvervaultCard,
   ...examplesGlareCard,
