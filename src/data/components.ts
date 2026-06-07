@@ -887,6 +887,23 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "sidebar",
+    name: "Sidebar",
+    category: "Layout",
+    description:
+      "Barra lateral que recolhe para 60px e expande para 300px ao passar o mouse (motion/react), com rótulos que aparecem/desaparecem suavemente. No mobile vira um drawer em tela cheia. Suporta estado controlado e modo sempre-expandido (animate=false).",
+    tags: [
+      "sidebar",
+      "navegação",
+      "menu",
+      "drawer",
+      "collapse",
+      "responsivo",
+      "aceternity",
+      "layout",
+    ],
+  },
+  {
     slug: "images-slider",
     name: "Images Slider",
     category: "Layout",
