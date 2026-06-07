@@ -887,6 +887,23 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "stateful-button",
+    name: "Stateful Button",
+    category: "Actions",
+    description:
+      "Botão com feedback de estado: ao clicar dispara um spinner de loading (motion/react) enquanto o handler assíncrono resolve e exibe um check de sucesso ao concluir. Animações de layout suaves e cor/tamanho customizáveis via className.",
+    tags: [
+      "button",
+      "stateful",
+      "loading",
+      "success",
+      "spinner",
+      "async",
+      "aceternity",
+      "actions",
+    ],
+  },
+  {
     slug: "features-section-with-skeletons",
     name: "Features Section with Skeletons",
     category: "Layout",

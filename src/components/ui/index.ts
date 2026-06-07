@@ -367,6 +367,8 @@ export { LogoSlider } from "./logo-slider"
 export type { LogoSliderProps } from "./logo-slider-types"
 
 // Lote Aceternity
+export { StatefulButton } from "./stateful-button"
+export type { StatefulButtonProps } from "./stateful-button"
 export {
   FeaturesSectionWithSkeletons,
   SkeletonBars,
