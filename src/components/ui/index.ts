@@ -367,6 +367,8 @@ export { LogoSlider } from "./logo-slider"
 export type { LogoSliderProps } from "./logo-slider-types"
 
 // Lote Aceternity
+export { ImagesSlider } from "./images-slider"
+export type { ImagesSliderProps } from "./images-slider"
 export {
   FeaturesSectionWithSkeletons,
   SkeletonBars,
