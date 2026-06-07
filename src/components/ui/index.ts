@@ -372,6 +372,8 @@ export type {
   InfiniteMovingCardsProps,
   InfiniteMovingCardItem,
 } from "./infinite-moving-cards"
+export { ImagesSlider } from "./images-slider"
+export type { ImagesSliderProps } from "./images-slider"
 export {
   FeaturesSectionWithSkeletons,
   SkeletonBars,
