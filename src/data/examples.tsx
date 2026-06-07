@@ -1449,6 +1449,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesToast,
   ...examplesBreadcrumb,
   ...examplesSonner,
+  ...examplesDrawer,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
