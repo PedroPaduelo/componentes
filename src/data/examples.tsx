@@ -1440,6 +1440,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesLayoutGrid,
   ...examplesLinkPreview,
   ...examplesMacbookScroll,
+  ...examplesTextarea,
+  ...examplesDataTable,
   // Lote shadcn
   ...examplesAccordion,
   ...examplesAlert,

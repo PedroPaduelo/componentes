@@ -254,6 +254,14 @@ export const components: ComponentMeta[] = [
     tags: ["switch", "toggle", "alternar", "formulário", "controle", "shadcn"],
   },
   {
+    slug: "form",
+    name: "Form",
+    category: "Forms",
+    description:
+      "Formulário com integração react-hook-form e zod, composável com FormField, FormItem, FormLabel, FormControl, FormDescription e FormMessage. Baseado em @radix-ui/react-slot e @radix-ui/react-label.",
+    tags: ["form", "formulário", "validação", "zod", "react-hook-form", "shadcn"],
+  },
+  {
     slug: "sonner",
     name: "Sonner",
     category: "Feedback",
