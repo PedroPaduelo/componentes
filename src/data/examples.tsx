@@ -1455,6 +1455,14 @@ export const examples: Record<string, Example[]> = {
   ...examplesSonner,
   ...examplesDrawer,
   ...examplesForm,
+  ...examplesCommand,
+  ...examplesToggle,
+  ...examplesSwitch,
+  ...examplesCarousel,
+  ...examplesSkeleton,
+  ...examplesContextMenu,
+  ...examplesHoverCard,
+  ...examplesPopover,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

@@ -1,4 +1,4 @@
-import * as React from "react"
+import type { Example } from "@/data/examples"
 import { Separator } from "@/components/ui/separator"
 
 export const examplesSeparator: Record<string, Example[]> = {

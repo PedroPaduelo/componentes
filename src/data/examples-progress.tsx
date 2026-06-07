@@ -1,4 +1,4 @@
-import * as React from "react"
+import type { Example } from "@/data/examples"
 import { Progress } from "@/components/ui/progress"
 
 export const examplesProgress: Record<string, Example[]> = {

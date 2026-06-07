@@ -1,4 +1,4 @@
-import * as React from "react"
+import type { Example } from "@/data/examples"
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable"
 
 export const examplesResizable: Record<string, Example[]> = {

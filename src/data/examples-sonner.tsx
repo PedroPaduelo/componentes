@@ -1,6 +1,5 @@
-import * as React from "react"
 import { Button } from "@/components/ui/button"
-import { toast } from "@/components/ui/sonner"
+import { toast } from "sonner"
 import type { Example } from "@/data/examples"
 
 const toastSimpleExample: Example = {
