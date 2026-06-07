@@ -369,6 +369,11 @@ export type { LogoSliderProps } from "./logo-slider-types"
 // Lote Aceternity
 export { ImagesSlider } from "./images-slider"
 export type { ImagesSliderProps } from "./images-slider"
+export { FollowerPointerCard, FollowPointer } from "./following-pointer"
+export type {
+  FollowerPointerCardProps,
+  FollowPointerProps,
+} from "./following-pointer"
 export {
   FeaturesSectionWithSkeletons,
   SkeletonBars,
