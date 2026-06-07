@@ -172,6 +172,7 @@ import { examplesMultiStepLoader } from "./examples-multi-step-loader"
 import { examplesLinkPreview } from "./examples-link-preview"
 import { examplesLayoutGrid } from "./examples-layout-grid"
 import { examplesMacbookScroll } from "./examples-macbook-scroll"
+import { examplesBentoGrid } from "./examples-bento-grid"
 import { examplesTextarea } from "./examples-textarea"
 import { examplesDataTable } from "./examples-data-table"
 import { examplesCommand } from "./examples-command"
@@ -1434,6 +1435,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesLayoutGrid,
   ...examplesLinkPreview,
   ...examplesMacbookScroll,
+  ...examplesBentoGrid,
   ...examplesTextarea,
   ...examplesDataTable,
   ...examplesSeparator,

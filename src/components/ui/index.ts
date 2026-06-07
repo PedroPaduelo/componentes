@@ -641,6 +641,8 @@ export { LayoutGrid } from "./layout-grid"
 export type { LayoutGridProps, LayoutGridCard } from "./layout-grid"
 export { MacbookScroll } from "./macbook-scroll"
 export type { MacbookScrollProps } from "./macbook-scroll-types"
+export { BentoGrid, BentoGridItem } from "./bento-grid"
+export type { BentoGridProps, BentoGridItemProps } from "./bento-grid"
 
 
 
