@@ -367,6 +367,8 @@ export { LogoSlider } from "./logo-slider"
 export type { LogoSliderProps } from "./logo-slider-types"
 
 // Lote Aceternity
+export { EncryptedText } from "./encrypted-text"
+export type { EncryptedTextProps } from "./encrypted-text"
 export { ThreeDGlobe } from "./3d-globe"
 export type { ThreeDGlobeProps, ThreeDGlobeMarker } from "./3d-globe"
 export { FocusCards } from "./focus-cards"
