@@ -188,7 +188,8 @@ import { examplesAspectRatio } from "./examples-aspect-ratio"
 import { examplesAvatar } from "./examples-avatar"
 import { examplesToast } from "./examples-toast"
 import { examplesBreadcrumb } from "./examples-breadcrumb"
-import { examplesSeparator } from "./examples-separator"
+import { examplesResizable } from "./examples-resizable"
+import { examplesSwitch } from "./examples-switch"
 import { examplesCarousel } from "./examples-carousel"
 import { examplesSkeleton } from "./examples-skeleton"
 import { examplesSonner } from "./examples-sonner"
@@ -1447,6 +1448,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesToast,
   ...examplesBreadcrumb,
   ...examplesSonner,
+  ...examplesDrawer,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

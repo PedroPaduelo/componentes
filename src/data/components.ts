@@ -232,12 +232,12 @@ export const components: ComponentMeta[] = [
     tags: ["breadcrumb", "navegação", "trilha", "hierarquia", "caminho", "shadcn"],
   },
   {
-    slug: "sonner",
-    name: "Sonner",
-    category: "Feedback",
+    slug: "resizable",
+    name: "Resizable",
+    category: "Layout",
     description:
-      "Toast/notificação elegante e minimalista com suporte a ações, promises e posicionamento configurável. Baseada em sonner.",
-    tags: ["toast", "notificação", "feedback", "sonner", "mensagem", "shadcn"],
+      "Painéis redimensionáveis via arraste, com suporte a direção horizontal e vertical, múltiplos painéis e handle visual. Baseado em react-resizable-panels.",
+    tags: ["resizable", "painéis", "redimensionar", "drag", "layout", "shadcn"],
   },
   {
     slug: "calendar",
@@ -254,14 +254,6 @@ export const components: ComponentMeta[] = [
     description:
       "Seletor de data com popover e calendário integrado. Exibe a data formatada e abre o calendário ao clicar.",
     tags: ["date-picker", "data", "calendário", "seleção", "popover", "shadcn"],
-  },
-  {
-    slug: "resizable",
-    name: "Resizable",
-    category: "Layout",
-    description:
-      "Painéis redimensionáveis via arraste, com suporte a direção horizontal e vertical, múltiplos painéis e handle visual. Baseado em react-resizable-panels.",
-    tags: ["resizable", "painéis", "redimensionar", "drag", "layout", "shadcn"],
   },
   {
     slug: "switch",
@@ -574,6 +566,14 @@ export const components: ComponentMeta[] = [
     description:
       "Sumário/minimap de navegação com seção ativa via IntersectionObserver e barra de progresso.",
     tags: ["toc", "sumário", "navegação", "minimap", "scroll", "âncora"],
+  },
+  {
+    slug: "carousel",
+    name: "Carousel",
+    category: "Layout",
+    description:
+      "Carrossel de conteúdo com scroll horizontal, controles anterior/próximo e suporte a teclado. Baseado em embla-carousel-react.",
+    tags: ["carousel", "slider", "carrossel", "swipe", "shadcn"],
   },
 
   // Lote VengenceUI
