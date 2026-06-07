@@ -2106,6 +2106,23 @@ export const components: ComponentMeta[] = [
       "aceternity",
     ],
   },
+  {
+    slug: "infinite-moving-cards",
+    name: "Infinite Moving Cards",
+    category: "Layout",
+    description:
+      "Carrossel de cards em loop infinito. Os itens são duplicados em runtime e uma animação CSS faz a esteira correr sem emendas, com direção (left/right), velocidade (fast/normal/slow) e pausa no hover. Máscara lateral suaviza as bordas.",
+    tags: [
+      "infinite",
+      "carousel",
+      "carrossel",
+      "scroll",
+      "marquee",
+      "testimonials",
+      "loop",
+      "aceternity",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
