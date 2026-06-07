@@ -45,6 +45,10 @@ export {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "./breadcrumb"
+export { Calendar } from "./calendar"
+export { DatePicker } from "./date-picker"
+export { Popover, PopoverContent, PopoverTrigger } from "./popover"
+
 
 // Lote chanhdai
 export { ChevronsUpDownIcon } from "./chevrons-up-down-icon"

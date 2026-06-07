@@ -212,6 +212,22 @@ export const components: ComponentMeta[] = [
     tags: ["breadcrumb", "navegação", "trilha", "hierarquia", "caminho", "shadcn"],
   },
   {
+    slug: "calendar",
+    name: "Calendar",
+    category: "Forms",
+    description:
+      "Componente de calendário com seleção de data única, múltipla ou intervalo. Baseado em react-day-picker.",
+    tags: ["calendar", "calendário", "data", "date", "seleção", "shadcn"],
+  },
+  {
+    slug: "date-picker",
+    name: "Date Picker",
+    category: "Forms",
+    description:
+      "Seletor de data com popover e calendário integrado. Exibe a data formatada e abre o calendário ao clicar.",
+    tags: ["date-picker", "data", "calendário", "seleção", "popover", "shadcn"],
+  },
+  {
     slug: "chevrons-up-down-icon",
     name: "Chevrons Up Down Icon",
     category: "Actions",

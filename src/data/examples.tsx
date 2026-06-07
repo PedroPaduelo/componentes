@@ -179,6 +179,8 @@ import { examplesAlertDialog } from "./examples-alert-dialog"
 import { examplesAspectRatio } from "./examples-aspect-ratio"
 import { examplesAvatar } from "./examples-avatar"
 import { examplesBreadcrumb } from "./examples-breadcrumb"
+import { examplesCalendar } from "./examples-calendar"
+import { examplesDatePicker } from "./examples-date-picker"
 
 export type Example = {
   title: string
@@ -1421,6 +1423,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesAspectRatio,
   ...examplesAvatar,
   ...examplesBreadcrumb,
+  ...examplesCalendar,
+  ...examplesDatePicker,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
