@@ -212,6 +212,134 @@ export const components: ComponentMeta[] = [
     tags: ["breadcrumb", "navegação", "trilha", "hierarquia", "caminho", "shadcn"],
   },
   {
+    slug: "resizable",
+    name: "Resizable",
+    category: "Layout",
+    description:
+      "Painéis redimensionáveis via arraste, com suporte a direção horizontal e vertical, múltiplos painéis e handle visual. Baseado em react-resizable-panels.",
+    tags: ["resizable", "painéis", "redimensionar", "drag", "layout", "shadcn"],
+  },
+  {
+    slug: "switch",
+    name: "Switch",
+    category: "Forms",
+    description:
+      "Controle de alternância ligar/desligar para configurações e preferências. Baseado em @radix-ui/react-switch.",
+    tags: ["switch", "toggle", "alternar", "formulário", "controle", "shadcn"],
+  },
+  {
+    slug: "sonner",
+    name: "Sonner",
+    category: "Feedback",
+    description:
+      "Toast/notificação elegante e minimalista com suporte a ações, promises e posicionamento configurável. Baseada em sonner.",
+    tags: ["toast", "notificação", "feedback", "sonner", "mensagem", "shadcn"],
+  },
+  {
+    slug: "navigation-menu",
+    name: "Navigation Menu",
+    category: "Actions",
+    description:
+      "Menu de navegação horizontal com dropdowns de conteúdo rico, viewport animado e indicador de posição. Baseado em @radix-ui/react-navigation-menu.",
+    tags: ["navigation", "menu", "navbar", "dropdown", "radix", "shadcn"],
+  },
+  {
+    slug: "popover",
+    name: "Popover",
+    category: "Actions",
+    description:
+      "Painel flutuante ancorado a um gatilho, com alinhamento configurável. Baseado em @radix-ui/react-popover.",
+    tags: ["popover", "tooltip", "overlay", "radix", "shadcn"],
+  },
+  {
+    slug: "radio-group",
+    name: "Radio Group",
+    category: "Forms",
+    description:
+      "Grupo de opções mutuamente exclusivas com navegação por teclado. Baseado em @radix-ui/react-radio-group.",
+    tags: ["radio", "seleção", "formulário", "radix", "shadcn"],
+  },
+  {
+    slug: "scroll-area",
+    name: "Scroll Area",
+    category: "Layout",
+    description:
+      "Área de rolagem customizada com scrollbar estilizado. Baseado em @radix-ui/react-scroll-area.",
+    tags: ["scroll", "area", "rolagem", "scrollbar", "shadcn"],
+  },
+  {
+    slug: "separator",
+    name: "Separator",
+    category: "Layout",
+    description:
+      "Divisor visual horizontal ou vertical para separar conteúdo. Baseado em @radix-ui/react-separator.",
+    tags: ["separator", "divisor", "linha", "separador", "shadcn"],
+  },
+  {
+    slug: "collapsible",
+    name: "Collapsible",
+    category: "Layout",
+    description:
+      "Contêiner expansível/recolhível com animação de abertura/fechamento. Baseado em @radix-ui/react-collapsible.",
+    tags: ["collapsible", "expansível", "collapse", "toggle", "shadcn"],
+  },
+  {
+    slug: "toggle",
+    name: "Toggle",
+    category: "Actions",
+    description:
+      "Botão de alternância com estados ligado/desligado, variantes de estilo e tamanho. Baseado em @radix-ui/react-toggle.",
+    tags: ["toggle", "alternar", "switch", "botão", "estado", "shadcn"],
+  },
+  {
+    slug: "textarea",
+    name: "Textarea",
+    category: "Forms",
+    description:
+      "Campo de texto multiline para entrada de conteúdo longo como descrições, mensagens e comentários.",
+    tags: ["textarea", "campo", "texto", "formulário", "multiline", "shadcn"],
+  },
+  {
+    slug: "select",
+    name: "Select",
+    category: "Forms",
+    description:
+      "Seletor de opções com trigger, conteúdo em portal, grupos, separadores e suporte a scroll. Baseado em @radix-ui/react-select.",
+    tags: ["select", "seletor", "dropdown", "opções", "formulário", "shadcn"],
+  },
+  {
+    slug: "progress",
+    name: "Progress",
+    category: "Feedback",
+    description:
+      "Barra de progresso para indicar conclusão de uma tarefa ou etapa. Baseado em @radix-ui/react-progress.",
+    tags: ["progress", "barra", "progresso", "indicador", "loading", "shadcn"],
+  },
+  {
+    slug: "table",
+    name: "Table",
+    category: "Layout",
+    description:
+      "Semantic HTML table with header, body, footer, rows, cells, and caption — styled with Tailwind and adaptive to light/dark.",
+    tags: ["table", "tabela", "dados", "linhas", "colunas", "shadcn"],
+  },
+  {
+    slug: "pagination",
+    name: "Pagination",
+    category: "Layout",
+    description:
+      "Controles de paginação com links de página, navegação anterior/próxima e ellipsis para intervalos ocultos.",
+    tags: ["pagination", "paginação", "páginas", "navegação", "shadcn"],
+  },
+  {
+    slug: "skeleton",
+    name: "Skeleton",
+    category: "Feedback",
+    description:
+      "Placeholder animado com pulse para indicar carregamento de conteúdo. Classes utilitárias customizáveis.",
+    tags: ["skeleton", "loading", "placeholder", "pulse", "shadcn"],
+  },
+  {
     slug: "chevrons-up-down-icon",
     name: "Chevrons Up Down Icon",
     category: "Actions",

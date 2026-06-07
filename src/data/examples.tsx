@@ -179,6 +179,20 @@ import { examplesAlertDialog } from "./examples-alert-dialog"
 import { examplesAspectRatio } from "./examples-aspect-ratio"
 import { examplesAvatar } from "./examples-avatar"
 import { examplesBreadcrumb } from "./examples-breadcrumb"
+import { examplesSkeleton } from "./examples-skeleton"
+import { examplesRadioGroup } from "./examples-radio-group"
+import { examplesProgress } from "./examples-progress"
+import { examplesPopover } from "./examples-popover"
+import { examplesScrollArea } from "./examples-scroll-area"
+import { examplesSeparator } from "./examples-separator"
+import { examplesPagination } from "./examples-pagination"
+import { examplesSelect } from "./examples-select"
+import { examplesTable } from "./examples-table"
+import { examplesToggle } from "./examples-toggle"
+import { examplesTextarea } from "./examples-textarea"
+import { examplesNavigationMenu } from "./examples-navigation-menu"
+import { examplesSonner } from "./examples-sonner"
+import { examplesCollapsible } from "./examples-collapsible"
 
 export type Example = {
   title: string
@@ -1322,6 +1336,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesLightLines,
   ...examplesAnimatedNumber,
   ...examplesLogoSlider,
+  ...examplesSlider,
   // Lote Aceternity
   ...examplesNavbarMenu,
   ...examplesCompare,
@@ -1421,6 +1436,14 @@ export const examples: Record<string, Example[]> = {
   ...examplesAspectRatio,
   ...examplesAvatar,
   ...examplesBreadcrumb,
+  ...examplesSonner,
+  ...examplesScrollArea,
+  ...examplesSeparator,
+  ...examplesPagination,
+  ...examplesSelect,
+  ...examplesTable,
+  ...examplesToggle,
+  ...examplesNavigationMenu,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
