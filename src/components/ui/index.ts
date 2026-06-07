@@ -421,6 +421,8 @@ export type {
   ContainerCoverBeamProps,
   ContainerCoverCircleProps,
 } from "./container-cover-types"
+export { FloatingNav } from "./floating-navbar"
+export type { FloatingNavProps, FloatingNavItem } from "./floating-navbar"
 export { ThreeDGlobe } from "./3d-globe"
 export type { ThreeDGlobeProps, ThreeDGlobeMarker } from "./3d-globe"
 export { FocusCards } from "./focus-cards"
