@@ -49,7 +49,6 @@ export {
 export { Skeleton } from "./skeleton"
 export { Calendar } from "./calendar"
 export { DatePicker } from "./date-picker"
-export { Popover, PopoverContent, PopoverTrigger } from "./popover"
 export { Progress } from "./progress"
 export {
   Select,
@@ -178,6 +177,8 @@ export {
 } from "./menubar"
 
 export { HoverCard, HoverCardTrigger, HoverCardContent } from "./hover-card"
+export { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "./carousel"
+export type { CarouselApi } from "./carousel"
 
 // Lote chanhdai
 export { ChevronsUpDownIcon } from "./chevrons-up-down-icon"

@@ -60,6 +60,16 @@ export const components: ComponentMeta[] = [
       "Ideal para agrupar ações secundárias atrás de um único gatilho (ex.: menu \"…\" de uma linha de tabela). Agrupe itens relacionados com separadores e evite listas muito longas — acima de ~7 itens, considere um comando/busca. Não use para navegação primária do app.",
   },
   {
+    slug: "context-menu",
+    name: "Context Menu",
+    category: "Actions",
+    description:
+      "Menu de contexto acionado pelo clique direito do mouse, com itens, separadores, checkboxes, radio groups e submenus.",
+    tags: ["menu", "contexto", "clique direito", "ações", "popup"],
+    usage:
+      "Use para ações contextuais que dependem do elemento clicado (ex.: menu de arquivo/pasta, opções de texto selecionado). O trigger define a área de ativação — o menu abre na posição do cursor. Evite usar como navegação primária.",
+  },
+  {
     slug: "card",
     name: "Card",
     category: "Layout",

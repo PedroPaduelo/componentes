@@ -80,6 +80,7 @@ import { examplesGlassDock } from "@/data/examples-glass-dock"
 import { creepyButtonExamples } from "@/data/examples-creepy"
 import { examplesAnimatedNumber } from "@/data/examples-animated-number"
 import { examplesLogoSlider } from "@/data/examples-logo-slider"
+import { examplesSlider } from "@/data/examples-slider"
 import { examplesParallaxHeroImages } from "@/data/examples-parallax-hero-images"
 import { examplesParallaxHeroImages2 } from "@/data/examples-parallax-hero-images-2"
 import { examplesImagesBadge } from "@/data/examples-images-badge"
@@ -202,6 +203,7 @@ import { examplesTextarea } from "./examples-textarea"
 import { examplesNavigationMenu } from "./examples-navigation-menu"
 import { examplesSonner } from "./examples-sonner"
 import { examplesCollapsible } from "./examples-collapsible"
+import { examplesForm } from "./examples-form"
 import { examplesHoverCard } from "./examples-hover-card"
 import { examplesDataTable } from "./examples-data-table"
 
@@ -1450,12 +1452,13 @@ export const examples: Record<string, Example[]> = {
   ...examplesAvatar,
   ...examplesToast,
   ...examplesBreadcrumb,
-  ...examplesProgress,
-  ...examplesSeparator,
-  ...examplesSelect,
-  ...examplesCollapsible,
-  ...examplesHoverCard,
-  ...examplesDrawer,
+  ...examplesCalendar,
+  ...examplesDatePicker,
+  ...examplesToggle,
+  ...examplesNavigationMenu,
+  ...examplesTextarea,
+  ...examplesForm,
+  ...examplesMenubar,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
