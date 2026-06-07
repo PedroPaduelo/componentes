@@ -178,6 +178,7 @@ import { examplesAlert } from "./examples-alert"
 import { examplesAlertDialog } from "./examples-alert-dialog"
 import { examplesAspectRatio } from "./examples-aspect-ratio"
 import { examplesAvatar } from "./examples-avatar"
+import { examplesToast } from "./examples-toast"
 import { examplesBreadcrumb } from "./examples-breadcrumb"
 import { examplesResizable } from "./examples-resizable"
 import { examplesSkeleton } from "./examples-skeleton"
@@ -191,10 +192,13 @@ import { examplesPagination } from "./examples-pagination"
 import { examplesSelect } from "./examples-select"
 import { examplesTable } from "./examples-table"
 import { examplesToggle } from "./examples-toggle"
+import { examplesMenubar } from "./examples-menubar"
+import { examplesDrawer } from "./examples-drawer"
 import { examplesTextarea } from "./examples-textarea"
 import { examplesNavigationMenu } from "./examples-navigation-menu"
 import { examplesSonner } from "./examples-sonner"
 import { examplesCollapsible } from "./examples-collapsible"
+import { examplesHoverCard } from "./examples-hover-card"
 
 export type Example = {
   title: string
@@ -1437,17 +1441,11 @@ export const examples: Record<string, Example[]> = {
   ...examplesAlertDialog,
   ...examplesAspectRatio,
   ...examplesAvatar,
+  ...examplesToast,
   ...examplesBreadcrumb,
-  ...examplesSkeleton,
-  ...examplesSonner,
-  ...examplesScrollArea,
   ...examplesSeparator,
-  ...examplesPagination,
-  ...examplesSelect,
-  ...examplesTable,
-  ...examplesToggle,
-  ...examplesNavigationMenu,
-  ...examplesTextarea,
+  ...examplesSwitch,
+  ...examplesHoverCard,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

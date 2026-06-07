@@ -252,6 +252,14 @@ export const components: ComponentMeta[] = [
     tags: ["popover", "tooltip", "overlay", "radix", "shadcn"],
   },
   {
+    slug: "toast",
+    name: "Toast",
+    category: "Feedback",
+    description:
+      "Notificação temporária e não-bloqueante para confirmar ações, exibir alertas ou comunicar estados do sistema. Baseado em @radix-ui/react-toast.",
+    tags: ["toast", "notificação", "feedback", "alerta", "mensagem", "shadcn"],
+  },
+  {
     slug: "radio-group",
     name: "Radio Group",
     category: "Forms",
@@ -282,6 +290,14 @@ export const components: ComponentMeta[] = [
     description:
       "Contêiner expansível/recolhível com animação de abertura/fechamento. Baseado em @radix-ui/react-collapsible.",
     tags: ["collapsible", "expansível", "collapse", "toggle", "shadcn"],
+  },
+  {
+    slug: "drawer",
+    name: "Drawer",
+    category: "Layout",
+    description:
+      "Drawer que abre a partir da base da tela com handle visual, baseado em vaul. Ideal para ações contextuais em mobile.",
+    tags: ["drawer", "vaul", "modal", "bottom-sheet", "mobile", "shadcn"],
   },
   {
     slug: "toggle",
@@ -630,6 +646,14 @@ export const components: ComponentMeta[] = [
     description:
       "Tooltip da Fluid Functionalism com animação de entrada/saída via motion e posicionamento em quatro lados.",
     tags: ["fluid", "tooltip", "dica", "popover", "hover", "feedback"],
+  },
+  {
+    slug: "hover-card",
+    name: "Hover Card",
+    category: "Feedback",
+    description:
+      "Card flutuante com conteúdo rico que aparece ao passar o mouse sobre um gatilho. Baseado em @radix-ui/react-hover-card.",
+    tags: ["hover", "card", "preview", "popover", "tooltip", "shadcn"],
   },
   {
     slug: "table-fluid",
