@@ -212,6 +212,14 @@ export const components: ComponentMeta[] = [
     tags: ["breadcrumb", "navegação", "trilha", "hierarquia", "caminho", "shadcn"],
   },
   {
+    slug: "separator",
+    name: "Separator",
+    category: "Layout",
+    description:
+      "Divisor visual horizontal ou vertical para separar conteúdo. Baseado em @radix-ui/react-separator.",
+    tags: ["separator", "divisor", "linha", "separador", "shadcn"],
+  },
+  {
     slug: "calendar",
     name: "Calendar",
     category: "Forms",
@@ -219,7 +227,14 @@ export const components: ComponentMeta[] = [
       "Componente de calendário com seleção de data única, múltipla ou intervalo. Baseado em react-day-picker.",
     tags: ["calendar", "calendário", "data", "date", "seleção", "shadcn"],
   },
-  {
+    {
+    slug: "resizable",
+    name: "Resizable",
+    category: "Layout",
+    description: "Painéis redimensionáveis via arraste, com suporte a direção horizontal e vertical, múltiplos painéis e handle visual. Baseado em react-resizable-panels.",
+    tags: ["resizable", "painéis", "redimensionar", "drag", "layout", "shadcn"],
+  },
+{
     slug: "date-picker",
     name: "Date Picker",
     category: "Forms",

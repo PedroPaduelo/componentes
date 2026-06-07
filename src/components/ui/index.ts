@@ -46,6 +46,7 @@ export {
   BreadcrumbSeparator,
 } from "./breadcrumb"
 export { Calendar } from "./calendar"
+export { ResizablePanelGroup, ResizableHandle } from "./resizable"
 export { DatePicker } from "./date-picker"
 export { Popover, PopoverContent, PopoverTrigger } from "./popover"
 

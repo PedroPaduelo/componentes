@@ -1423,6 +1423,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesAspectRatio,
   ...examplesAvatar,
   ...examplesBreadcrumb,
+  ...examplesResizable,
+  ...examplesSeparator,
   ...examplesCalendar,
   ...examplesDatePicker,
 }
