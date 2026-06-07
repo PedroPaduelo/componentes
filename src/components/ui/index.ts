@@ -12,7 +12,6 @@ export {
   DropdownMenuTrigger,
 } from "./dropdown-menu"
 export { Input } from "./input"
-export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "./input-otp"
 export { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./sheet"
 export { Tabs, TabsContent, TabsList, TabsTrigger } from "./tabs"
 export { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip"
@@ -46,6 +45,7 @@ export {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "./breadcrumb"
+export { ResizablePanelGroup, ResizableHandle } from "./resizable"
 export { Skeleton } from "./skeleton"
 export { Calendar } from "./calendar"
 export { DatePicker } from "./date-picker"
@@ -72,17 +72,6 @@ export {
   ContextMenuTrigger,
 } from "./context-menu"
 export {
-  Drawer,
-  DrawerPortal,
-  DrawerOverlay,
-  DrawerTrigger,
-  DrawerClose,
-  DrawerContent,
-  DrawerHeader,
-  DrawerFooter,
-  DrawerTitle,
-  DrawerDescription,
-} from "./Drawer"
 export {
   Toast,
   ToastProvider,
@@ -130,13 +119,6 @@ export {
   FormMessage,
   useFormField,
 } from "./form"
-export {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
   PaginationPrevious,
 } from "./pagination"
 export {
@@ -179,6 +161,10 @@ export {
 export { HoverCard, HoverCardTrigger, HoverCardContent } from "./hover-card"
 export { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "./carousel"
 export type { CarouselApi } from "./carousel"
+
+export { Calendar } from "./calendar"
+export { DatePicker } from "./date-picker"
+export { Popover, PopoverContent, PopoverTrigger } from "./popover"
 
 // Lote chanhdai
 export { ChevronsUpDownIcon } from "./chevrons-up-down-icon"
@@ -652,4 +638,7 @@ export { LayoutGrid } from "./layout-grid"
 export type { LayoutGridProps, LayoutGridCard } from "./layout-grid"
 export { MacbookScroll } from "./macbook-scroll"
 export type { MacbookScrollProps } from "./macbook-scroll-types"
+
+export { InputOTP } from "./input-otp"
+export type { InputOTPProps } from "./input-otp"
 
