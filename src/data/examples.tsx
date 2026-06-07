@@ -179,6 +179,7 @@ import { examplesAlertDialog } from "./examples-alert-dialog"
 import { examplesAspectRatio } from "./examples-aspect-ratio"
 import { examplesAvatar } from "./examples-avatar"
 import { examplesBreadcrumb } from "./examples-breadcrumb"
+import { examplesSeparator } from "./examples-separator"
 import { examplesCalendar } from "./examples-calendar"
 import { examplesDatePicker } from "./examples-date-picker"
 
@@ -1423,7 +1424,6 @@ export const examples: Record<string, Example[]> = {
   ...examplesAspectRatio,
   ...examplesAvatar,
   ...examplesBreadcrumb,
-  ...examplesResizable,
   ...examplesSeparator,
   ...examplesCalendar,
   ...examplesDatePicker,
