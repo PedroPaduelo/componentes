@@ -64,6 +64,17 @@ export { Switch } from "./switch"
 export { Popover, PopoverTrigger, PopoverContent } from "./popover"
 export { Collapsible, CollapsibleTrigger, CollapsibleContent } from "./collapsible"
 export {
+  Command,
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+  CommandShortcut,
+} from "./command"
+export {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
@@ -83,6 +94,7 @@ export {
   DrawerTitle,
   DrawerDescription,
 } from "./drawer"
+export { DataTable } from "./data-table"
 export {
   Toast,
   ToastProvider,
@@ -115,6 +127,7 @@ export {
 } from "./navigation-menu"
 export { RadioGroup, RadioGroupItem } from "./radio-group"
 export { Toaster } from "./sonner"
+export { Table, TableHeader, TableBody, TableFooter, TableRow, TableHead, TableCell, TableCaption } from "./table"
 export { ScrollArea, ScrollAreaViewport, ScrollAreaScrollbar, ScrollAreaThumb, ScrollAreaCorner } from "./scroll-area"
 export { Separator } from "./separator"
 export { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./sheet"
@@ -130,27 +143,7 @@ export {
   FormMessage,
 } from "./form"
 export { useFormField } from "./form-internal"
-export {
-  PaginationPrevious,
-} from "./pagination"
-export {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
-  NavigationMenuViewport,
-  navigationMenuTriggerStyle,
-} from "./navigation-menu"
-export { RadioGroup, RadioGroupItem } from "./radio-group"
-export { Toaster } from "./sonner"
-export { ScrollArea, ScrollAreaViewport, ScrollAreaScrollbar, ScrollAreaThumb, ScrollAreaCorner } from "./scroll-area"
-export { Separator } from "./separator"
-export { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "./sheet"
-export { Textarea } from "./textarea"
-export { Toggle } from "./toggle"
+export { InputOTP, InputOTPGroup, InputOTPSlot, InputOTPSeparator } from "./input-otp"
 export {
   Menubar,
   MenubarMenu,
@@ -173,10 +166,6 @@ export {
 export { HoverCard, HoverCardTrigger, HoverCardContent } from "./hover-card"
 export { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "./carousel"
 export type { CarouselApi } from "./carousel"
-
-export { Calendar } from "./calendar"
-export { DatePicker } from "./date-picker"
-export { Popover, PopoverContent, PopoverTrigger } from "./popover"
 
 // Lote chanhdai
 export { ChevronsUpDownIcon } from "./chevrons-up-down-icon"
