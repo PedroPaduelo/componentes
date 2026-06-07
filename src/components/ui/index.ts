@@ -370,6 +370,28 @@ export type { LogoSliderProps } from "./logo-slider-types"
 export { ImagesSlider } from "./images-slider"
 export type { ImagesSliderProps } from "./images-slider"
 export {
+  ResizableNavbar,
+  NavBody,
+  NavItems,
+  MobileNav,
+  MobileNavHeader,
+  MobileNavMenu,
+  MobileNavToggle,
+  NavbarLogo,
+  NavbarButton,
+} from "./resizable-navbar"
+export type {
+  ResizableNavbarProps,
+  NavBodyProps,
+  NavItemsProps,
+  NavItem,
+  MobileNavProps,
+  MobileNavHeaderProps,
+  MobileNavMenuProps,
+  MobileNavToggleProps,
+  NavbarButtonProps,
+} from "./resizable-navbar"
+export {
   FeaturesSectionWithSkeletons,
   SkeletonBars,
   SkeletonImageGrid,

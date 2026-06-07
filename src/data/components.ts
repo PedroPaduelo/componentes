@@ -921,6 +921,23 @@ export const components: ComponentMeta[] = [
     ],
   },
   {
+    slug: "resizable-navbar",
+    name: "Resizable Navbar",
+    category: "Actions",
+    description:
+      "Barra de navegação que encolhe ao rolar a página (motion/react + useScroll): ganha blur, sombra e reduz a largura. Inclui variante desktop e menu mobile colapsável com toggle animado.",
+    tags: [
+      "navbar",
+      "navigation",
+      "resizable",
+      "scroll",
+      "sticky",
+      "mobile",
+      "menu",
+      "aceternity",
+    ],
+  },
+  {
     slug: "features-section-with-skeletons",
     name: "Features Section with Skeletons",
     category: "Layout",
