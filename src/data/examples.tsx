@@ -183,6 +183,7 @@ import { examplesAspectRatio } from "./examples-aspect-ratio"
 import { examplesAvatar } from "./examples-avatar"
 import { examplesBreadcrumb } from "./examples-breadcrumb"
 import { examplesSonner } from "./examples-sonner"
+import { examplesContextMenu } from "./examples-context-menu"
 
 export type Example = {
   title: string
