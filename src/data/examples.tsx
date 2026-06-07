@@ -179,6 +179,7 @@ import { examplesSeparator } from "./examples-separator"
 import { examplesPagination } from "./examples-pagination"
 import { examplesCollapsible } from "./examples-collapsible"
 import { examplesSelect } from "./examples-select"
+import { examplesTable } from "./examples-table"
 
 // Lote shadcn
 import { examplesAccordion } from "./examples-accordion"
@@ -1437,6 +1438,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesSeparator,
   ...examplesPagination,
   ...examplesSelect,
+  ...examplesTable,
   ...examplesCollapsible,
   // Lote shadcn
   ...examplesAccordion,
