@@ -372,6 +372,8 @@ export type {
   InfiniteMovingCardsProps,
   InfiniteMovingCardItem,
 } from "./infinite-moving-cards"
+export { StatefulButton } from "./stateful-button"
+export type { StatefulButtonProps } from "./stateful-button"
 export { ImagesSlider } from "./images-slider"
 export type { ImagesSliderProps } from "./images-slider"
 export { FollowerPointerCard, FollowPointer } from "./following-pointer"

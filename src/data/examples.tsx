@@ -170,6 +170,7 @@ import { examplesAnimatedTooltip } from "./examples-animated-tooltip"
 import { examplesNavbarMenu } from "./examples-navbar-menu"
 import { examplesFloatingNavbar } from "./examples-floating-navbar"
 import { examplesContainerCover } from "./examples-container-cover"
+import { examplesStatefulButton } from "./examples-stateful-button"
 import { examplesImagesSlider } from "./examples-images-slider"
 import { examplesAsciiArt } from "./examples-ascii-art"
 import { examplesCanvasText } from "./examples-canvas-text"
@@ -1360,6 +1361,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesSlider,
   // Lote Aceternity
   ...examplesSidebar,
+  ...examplesStatefulButton,
   ...examplesImagesSlider,
   ...examplesFloatingDock,
   ...examplesContainerCover,
