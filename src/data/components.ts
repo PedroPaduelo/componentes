@@ -237,6 +237,14 @@ export const components: ComponentMeta[] = [
       "Toast/notificação elegante e minimalista com suporte a ações, promises e posicionamento configurável. Baseada em sonner.",
     tags: ["toast", "notificação", "feedback", "sonner", "mensagem", "shadcn"],
   },
+  {
+    slug: "separator",
+    name: "Separator",
+    category: "Layout",
+    description:
+      "Divisor visual horizontal ou vertical para separar conteúdo. Baseado em @radix-ui/react-separator.",
+    tags: ["separator", "divisor", "linha", "separador", "shadcn"],
+  },
 
   // Lote chanhdai
   {

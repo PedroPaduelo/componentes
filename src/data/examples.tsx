@@ -216,6 +216,8 @@ import { examplesMenubar } from "./examples-menubar"
 import { examplesPopover } from "./examples-popover"
 import { examplesResizableNavbar } from "./examples-resizable-navbar"
 import { examplesTeamSectionWithScales } from "./examples-team-section-with-scales"
+import { examplesCalendar } from "./examples-calendar"
+import { examplesDatePicker } from "./examples-date-picker"
 
 export type Example = {
   title: string
@@ -1496,6 +1498,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesHoverCard,
   ...examplesPopover,
   ...examplesResizableNavbar,
+  ...examplesCalendar,
+  ...examplesDatePicker,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
