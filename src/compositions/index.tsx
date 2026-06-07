@@ -42,4 +42,5 @@ export const compositionScreens: Record<string, ComponentType> = {
   "saas-landing-2": SaasLanding2,
   "interactive-dashboard": InteractiveDashboard,
   "world-map-explorer": WorldMapExplorer,
+  "component-playground-2": ComponentPlayground2,
 }
