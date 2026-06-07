@@ -18,6 +18,34 @@ export { Tooltip, TooltipContent, TooltipTrigger } from "./tooltip"
 export { Tree } from "./tree"
 export { WorkExperienceComponent } from "./work-experience-component"
 
+// Lote shadcn
+export { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "./accordion"
+export { Alert, AlertDescription, AlertTitle } from "./alert"
+export {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogOverlay,
+  AlertDialogPortal,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./alert-dialog"
+export { AspectRatio } from "./aspect-ratio"
+export { Avatar, AvatarFallback, AvatarImage } from "./avatar"
+export {
+  Breadcrumb,
+  BreadcrumbEllipsis,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "./breadcrumb"
+
 // Lote chanhdai
 export { ChevronsUpDownIcon } from "./chevrons-up-down-icon"
 export { CodeBlockCommand } from "./code-block-command"

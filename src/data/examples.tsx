@@ -172,6 +172,14 @@ import { examplesLinkPreview } from "./examples-link-preview"
 import { examplesLayoutGrid } from "./examples-layout-grid"
 import { examplesMacbookScroll } from "./examples-macbook-scroll"
 
+// Lote shadcn
+import { examplesAccordion } from "./examples-accordion"
+import { examplesAlert } from "./examples-alert"
+import { examplesAlertDialog } from "./examples-alert-dialog"
+import { examplesAspectRatio } from "./examples-aspect-ratio"
+import { examplesAvatar } from "./examples-avatar"
+import { examplesBreadcrumb } from "./examples-breadcrumb"
+
 export type Example = {
   title: string
   description?: string

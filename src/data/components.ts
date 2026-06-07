@@ -161,6 +161,56 @@ export const components: ComponentMeta[] = [
       "work",
     ],
   },
+
+  // Lote shadcn
+  {
+    slug: "accordion",
+    name: "Accordion",
+    category: "Layout",
+    description:
+      "Grupo de itens expansíveis com animação de abertura/fechamento. Baseado em @radix-ui/react-accordion.",
+    tags: ["accordion", "acordeão", "expansível", "collapse", "shadcn"],
+  },
+  {
+    slug: "alert",
+    name: "Alert",
+    category: "Feedback",
+    description:
+      "Mensagem de destaque para informar, avisar ou comunicar erros. Variantes default e destrutiva.",
+    tags: ["alert", "aviso", "mensagem", "erro", "destaque", "shadcn"],
+  },
+  {
+    slug: "alert-dialog",
+    name: "Alert Dialog",
+    category: "Feedback",
+    description:
+      "Diálogo modal de confirmação para ações destrutivas. Baseado em @radix-ui/react-alert-dialog.",
+    tags: ["alert", "dialog", "modal", "confirmação", "destrutivo", "shadcn"],
+  },
+  {
+    slug: "aspect-ratio",
+    name: "Aspect Ratio",
+    category: "Layout",
+    description:
+      "Container que mantém proporção fixa (16:9, 4:3, 1:1, etc.) para imagens e mídia. Baseado em @radix-ui/react-aspect-ratio.",
+    tags: ["aspect", "ratio", "proporção", "imagem", "container", "shadcn"],
+  },
+  {
+    slug: "avatar",
+    name: "Avatar",
+    category: "Feedback",
+    description:
+      "Imagem de perfil com fallback automático (iniciais). Baseado em @radix-ui/react-avatar.",
+    tags: ["avatar", "perfil", "imagem", "fallback", "usuário", "shadcn"],
+  },
+  {
+    slug: "breadcrumb",
+    name: "Breadcrumb",
+    category: "Layout",
+    description:
+      "Trilha de navegação hierárquica com links, separadores e suporte a ellipsis com dropdown.",
+    tags: ["breadcrumb", "navegação", "trilha", "hierarquia", "caminho", "shadcn"],
+  },
   {
     slug: "chevrons-up-down-icon",
     name: "Chevrons Up Down Icon",
