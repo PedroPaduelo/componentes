@@ -660,6 +660,12 @@ export { MacbookScroll } from "./macbook-scroll"
 export type { MacbookScrollProps } from "./macbook-scroll-types"
 export { BentoGrid, BentoGridItem } from "./bento-grid"
 export type { BentoGridProps, BentoGridItemProps } from "./bento-grid"
+export { TeamSectionWithScales } from "./team-section-with-scales"
+export type {
+  TeamSectionWithScalesProps,
+  TeamMember,
+  TeamMemberSocial,
+} from "./team-section-with-scales-types"
 
 
 

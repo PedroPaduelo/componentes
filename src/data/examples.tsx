@@ -206,6 +206,7 @@ import { examplesHoverCard } from "./examples-hover-card"
 import { examplesForm } from "./examples-form"
 import { examplesMenubar } from "./examples-menubar"
 import { examplesPopover } from "./examples-popover"
+import { examplesTeamSectionWithScales } from "./examples-team-section-with-scales"
 
 export type Example = {
   title: string
@@ -1351,6 +1352,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesLogoSlider,
   ...examplesSlider,
   // Lote Aceternity
+  ...examplesTeamSectionWithScales,
   ...examplesContainerCover,
   ...examplesFeaturesSectionWithSkeletons,
   ...examplesNavbarMenu,
