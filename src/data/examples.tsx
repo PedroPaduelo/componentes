@@ -174,6 +174,7 @@ import { examplesMultiStepLoader } from "./examples-multi-step-loader"
 import { examplesLinkPreview } from "./examples-link-preview"
 import { examplesLayoutGrid } from "./examples-layout-grid"
 import { examplesMacbookScroll } from "./examples-macbook-scroll"
+import { examplesBentoGrid } from "./examples-bento-grid"
 import { examplesTextarea } from "./examples-textarea"
 import { examplesInputOtp } from "./examples-input-otp"
 import { examplesDataTable } from "./examples-data-table"
@@ -183,6 +184,7 @@ import { examplesPagination } from "./examples-pagination"
 import { examplesCollapsible } from "./examples-collapsible"
 import { examplesSelect } from "./examples-select"
 import { examplesToggle } from "./examples-toggle"
+import { examplesTable } from "./examples-table"
 
 // Lote shadcn
 import { examplesAccordion } from "./examples-accordion"
@@ -201,6 +203,7 @@ import { examplesContextMenu } from "./examples-context-menu"
 import { examplesDrawer } from "./examples-drawer"
 import { examplesHoverCard } from "./examples-hover-card"
 import { examplesForm } from "./examples-form"
+import { examplesMenubar } from "./examples-menubar"
 import { examplesPopover } from "./examples-popover"
 
 export type Example = {
@@ -1440,12 +1443,14 @@ export const examples: Record<string, Example[]> = {
   ...examplesLayoutGrid,
   ...examplesLinkPreview,
   ...examplesMacbookScroll,
+  ...examplesBentoGrid,
   ...examplesTextarea,
   ...examplesDataTable,
   ...examplesSeparator,
   ...examplesResizable,
   ...examplesPagination,
   ...examplesSelect,
+  ...examplesTable,
   ...examplesCollapsible,
   // Lote shadcn
   ...examplesAccordion,
@@ -1456,9 +1461,11 @@ export const examples: Record<string, Example[]> = {
   ...examplesToast,
   ...examplesBreadcrumb,
   ...examplesInputOtp,
+  ...examplesSeparator,
   ...examplesSonner,
   ...examplesDrawer,
   ...examplesForm,
+  ...examplesMenubar,
   ...examplesCommand,
   ...examplesToggle,
   ...examplesSwitch,

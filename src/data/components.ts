@@ -1988,6 +1988,22 @@ export const components: ComponentMeta[] = [
       "aceternity",
     ],
   },
+  {
+    slug: "bento-grid",
+    name: "Bento Grid",
+    category: "Layout",
+    description:
+      "Grid bento responsivo (1 coluna no mobile, 3 colunas no desktop) com cards de tamanhos variados. Cada item aceita header, título, descrição e ícone, com micro-interação de deslize no hover.",
+    tags: [
+      "bento",
+      "grid",
+      "layout",
+      "cards",
+      "responsive",
+      "showcase",
+      "aceternity",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
