@@ -179,12 +179,14 @@ import { examplesAlertDialog } from "./examples-alert-dialog"
 import { examplesAspectRatio } from "./examples-aspect-ratio"
 import { examplesAvatar } from "./examples-avatar"
 import { examplesBreadcrumb } from "./examples-breadcrumb"
+import { examplesResizable } from "./examples-resizable"
 import { examplesSkeleton } from "./examples-skeleton"
 import { examplesRadioGroup } from "./examples-radio-group"
 import { examplesProgress } from "./examples-progress"
 import { examplesPopover } from "./examples-popover"
 import { examplesScrollArea } from "./examples-scroll-area"
 import { examplesSeparator } from "./examples-separator"
+import { examplesSwitch } from "./examples-switch"
 import { examplesPagination } from "./examples-pagination"
 import { examplesSelect } from "./examples-select"
 import { examplesTable } from "./examples-table"
@@ -1436,6 +1438,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesAspectRatio,
   ...examplesAvatar,
   ...examplesBreadcrumb,
+  ...examplesSkeleton,
   ...examplesSonner,
   ...examplesScrollArea,
   ...examplesSeparator,
@@ -1444,6 +1447,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesTable,
   ...examplesToggle,
   ...examplesNavigationMenu,
+  ...examplesTextarea,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

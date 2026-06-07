@@ -58,6 +58,18 @@ export {
 export { Switch } from "./switch"
 export { Popover, PopoverTrigger, PopoverContent } from "./popover"
 export {
+  Drawer,
+  DrawerPortal,
+  DrawerOverlay,
+  DrawerTrigger,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerFooter,
+  DrawerTitle,
+  DrawerDescription,
+} from "./Drawer"
+export {
   Toast,
   ToastProvider,
   ToastViewport,
@@ -112,6 +124,7 @@ export {
   MenubarSub,
   MenubarShortcut,
 } from "./menubar"
+export { HoverCard, HoverCardTrigger, HoverCardContent } from "./hover-card"
 
 // Lote chanhdai
 export { ChevronsUpDownIcon } from "./chevrons-up-down-icon"
