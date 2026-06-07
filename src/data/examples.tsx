@@ -73,6 +73,7 @@ import { examplesFluid } from "@/data/examples-fluid"
 import { examplesCyber } from "@/data/examples-cyber"
 import { animatedButtonExamples } from "@/data/examples-animated"
 import { examplesFlipText } from "@/data/examples-flip-text"
+import { examplesFloatingDock } from "@/data/examples-floating-dock"
 import { examplesFlipFadeText } from "@/data/examples-flip-fade-text"
 import { examplesLightLines } from "@/data/examples-light-lines"
 import { perspectiveGridExamples } from "@/data/examples-perspective-grid"
@@ -1351,6 +1352,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesLogoSlider,
   ...examplesSlider,
   // Lote Aceternity
+  ...examplesFloatingDock,
   ...examplesContainerCover,
   ...examplesFeaturesSectionWithSkeletons,
   ...examplesNavbarMenu,

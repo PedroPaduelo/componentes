@@ -887,6 +887,23 @@ export const components: ComponentMeta[] = [
   },
   // Lote Aceternity
   {
+    slug: "floating-dock",
+    name: "Floating Dock",
+    category: "Actions",
+    description:
+      "Dock de navegação estilo macOS com magnificação dos ícones conforme a proximidade do cursor (motion useTransform + useSpring). Responsivo: barra horizontal no desktop (md+) e botão flutuante expansível no mobile, com tooltip por item.",
+    tags: [
+      "dock",
+      "navbar",
+      "macos",
+      "magnify",
+      "hover",
+      "navigation",
+      "aceternity",
+      "actions",
+    ],
+  },
+  {
     slug: "features-section-with-skeletons",
     name: "Features Section with Skeletons",
     category: "Layout",
