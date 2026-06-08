@@ -1,0 +1,57 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry.json",
+  "name": "vitrine-ui",
+  "homepage": "https://componentes-fe-cmq0d9kr.cloud.serendiped.com",
+  "items": [
+    {
+      "name": "button",
+      "type": "registry:ui",
+      "title": "Button",
+      "description": "Botão acessível com variantes (default, destructive, outline, secondary, ghost, link) e tamanhos, baseado em class-variance-authority e Radix Slot.",
+      "dependencies": ["class-variance-authority", "@radix-ui/react-slot"],
+      "files": [
+        {
+          "path": "src/components/ui/button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/button-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "meteors",
+      "type": "registry:ui",
+      "title": "Meteors",
+      "description": "Efeito de chuva de meteoros animada (Aceternity) renderizado sobre um container relativo. Usa motion para o fade-in e um keyframe próprio para o movimento dos meteoros.",
+      "dependencies": ["motion"],
+      "files": [
+        {
+          "path": "src/components/ui/meteors.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "cssVars": {
+        "theme": {
+          "--animate-meteor-effect": "meteor-effect 5s linear infinite"
+        }
+      },
+      "css": {
+        "@keyframes meteor-effect": {
+          "0%": {
+            "transform": "rotate(215deg) translateX(0)",
+            "opacity": "1"
+          },
+          "70%": {
+            "opacity": "1"
+          },
+          "100%": {
+            "transform": "rotate(215deg) translateX(-500px)",
+            "opacity": "0"
+          }
+        }
+      }
+    }
+  ]
+}

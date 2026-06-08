@@ -1,0 +1,37 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "meteors",
+  "title": "Meteors",
+  "description": "Efeito de chuva de meteoros animada (Aceternity) renderizado sobre um container relativo. Usa motion para o fade-in e um keyframe próprio para o movimento dos meteoros.",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/meteors.tsx",
+      "content": "import { motion } from \"motion/react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport type MeteorsProps = {\n  /** Quantidade de meteoros renderizados. Padrão: 20. */\n  number?: number\n  /** Classes extras aplicadas ao wrapper raiz (motion.div). */\n  className?: string\n}\n\nfunction Meteors({ number = 20, className }: MeteorsProps) {\n  const meteors = new Array(number).fill(true)\n  return (\n    <motion.div\n      data-slot=\"meteors\"\n      initial={{ opacity: 0 }}\n      animate={{ opacity: 1 }}\n      transition={{ duration: 0.5 }}\n      className={cn(\n        \"pointer-events-none absolute inset-0 overflow-hidden\",\n        className\n      )}\n    >\n      {meteors.map((_, idx) => {\n        const position = idx * (800 / number) - 400\n        return (\n          <span\n            key={\"meteor\" + idx}\n            className={cn(\n              \"animate-meteor-effect absolute h-0.5 w-0.5 rotate-[45deg] rounded-[9999px] bg-slate-500 shadow-[0_0_0_1px_#ffffff10]\",\n              \"before:absolute before:top-1/2 before:h-px before:w-[50px] before:-translate-y-1/2 before:bg-gradient-to-r before:from-[#64748b] before:to-transparent before:content-['']\"\n            )}\n            style={{\n              top: \"-40px\",\n              left: position + \"px\",\n              animationDelay: Math.random() * 5 + \"s\",\n              animationDuration:\n                Math.floor(Math.random() * (10 - 5) + 5) + \"s\",\n            }}\n          />\n        )\n      })}\n    </motion.div>\n  )\n}\n\nexport { Meteors }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "cssVars": {
+    "theme": {
+      "--animate-meteor-effect": "meteor-effect 5s linear infinite"
+    }
+  },
+  "css": {
+    "@keyframes meteor-effect": {
+      "0%": {
+        "transform": "rotate(215deg) translateX(0)",
+        "opacity": "1"
+      },
+      "70%": {
+        "opacity": "1"
+      },
+      "100%": {
+        "transform": "rotate(215deg) translateX(-500px)",
+        "opacity": "0"
+      }
+    }
+  },
+  "type": "registry:ui"
+}
