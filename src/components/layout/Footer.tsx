@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom"
 import { Boxes } from "lucide-react"
 
 export function Footer() {
@@ -22,9 +23,25 @@ export function Footer() {
             .
           </p>
         </div>
-        <p className="text-xs">
-          Construído com Vite, React &amp; Tailwind CSS · {new Date().getFullYear()}
-        </p>
+        <div className="flex flex-col items-center gap-2 sm:items-end">
+          <nav className="flex items-center gap-4">
+            <Link
+              to="/components"
+              className="transition-colors hover:text-foreground"
+            >
+              Componentes
+            </Link>
+            <Link
+              to="/instalacao"
+              className="transition-colors hover:text-foreground"
+            >
+              Instalação
+            </Link>
+          </nav>
+          <p className="text-xs">
+            Construído com Vite, React &amp; Tailwind CSS · {new Date().getFullYear()}
+          </p>
+        </div>
       </div>
     </footer>
   )

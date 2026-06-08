@@ -19,6 +19,7 @@ const navItems = [
   { to: "/", label: "Início" },
   { to: "/components", label: "Componentes" },
   { to: "/compositions", label: "Composições" },
+  { to: "/instalacao", label: "Instalação" },
 ]
 
 export function Header({ searchSlot }: HeaderProps) {
