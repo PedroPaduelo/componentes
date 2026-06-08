@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "focus-cards",
+  "title": "Focus Cards",
+  "description": "Grid de cards de imagem com efeito de foco reverso: ao passar o mouse sobre um card, os demais ganham blur leve e scale reduzido, destacando o item hovered. Cada card exibe uma imagem com overlay escuro e título em gradiente claro. Sem dependências externas — transições CSS puras com transition-all.",
+  "files": [
+    {
+      "path": "src/components/ui/focus-cards.tsx",
+      "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nexport type FocusCardItem = {\n  title: string\n  src: string\n}\n\nexport type FocusCardsProps = Omit<\n  React.HTMLAttributes<HTMLDivElement>,\n  \"children\"\n> & {\n  cards: readonly FocusCardItem[]\n}\n\nconst Card = React.memo(\n  ({\n    card,\n    index,\n    hovered,\n    setHovered,\n  }: {\n    card: FocusCardItem\n    index: number\n    hovered: number | null\n    setHovered: React.Dispatch<React.SetStateAction<number | null>>\n  }) => (\n    <div\n      onMouseEnter={() => setHovered(index)}\n      onMouseLeave={() => setHovered(null)}\n      className={cn(\n        \"rounded-lg relative bg-muted overflow-hidden h-60 md:h-96 w-full transition-all duration-300 ease-out\",\n        hovered !== null && hovered !== index && \"blur-sm scale-[0.98]\"\n      )}\n    >\n      <img\n        src={card.src}\n        alt={card.title}\n        className=\"object-cover absolute inset-0\"\n      />\n      <div\n        className={cn(\n          \"absolute inset-0 bg-black/50 flex items-end py-8 px-4 transition-opacity duration-300\",\n          hovered === index ? \"opacity-100\" : \"opacity-0\"\n        )}\n      >\n        <div className=\"text-xl md:text-2xl font-medium bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-200\">\n          {card.title}\n        </div>\n      </div>\n    </div>\n  )\n)\n\nCard.displayName = \"Card\"\n\nfunction FocusCards({ cards, className, ...props }: FocusCardsProps) {\n  const [hovered, setHovered] = React.useState<number | null>(null)\n\n  return (\n    <div\n      data-slot=\"focus-cards\"\n      className={cn(\n        \"grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto md:px-8 w-full\",\n        className\n      )}\n      {...props}\n    >\n      {cards.map((card, index) => (\n        <Card\n          key={card.title}\n          card={card}\n          index={index}\n          hovered={hovered}\n          setHovered={setHovered}\n        />\n      ))}\n    </div>\n  )\n}\n\nexport { FocusCards }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

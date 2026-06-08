@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "mobius-loop-icon",
+  "title": "Mobius Loop Icon",
+  "description": "Ícono animado de loop infinito (mobius strip) com morphing SVG entre círculos e infinito.",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/mobius-loop-icon.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport type { SVGMotionProps } from \"motion/react\"\nimport { motion } from \"motion/react\"\nimport { cn } from \"@/lib/utils\"\n\nexport type MobiusLoopIconSpeed = \"slow\" | \"normal\" | \"fast\"\n\nexport interface MobiusLoopIconProps extends SVGMotionProps<SVGSVGElement> {\n  /** Tamanho do ícone em pixels (default: 24). */\n  size?: number\n  /** Velocidade da animação (default: \"normal\"). */\n  speed?: MobiusLoopIconSpeed\n  /** Cores customizadas para o gradiente (opcional). */\n  colors?: string[]\n}\n\nconst speedDurations: Record<MobiusLoopIconSpeed, number> = {\n  slow: 5,\n  normal: 3,\n  fast: 1.5,\n}\n\nconst circle1 =\n  \"M12 4C16.42 4 20 7.58 20 12C20 16.42 16.42 20 12 20C7.58 20 4 16.42 4 12C4 7.58 7.58 4 12 4Z\"\nconst infinity =\n  \"M 6 16 C 11 16 13 8 18 8 C 23.333 8 23.333 16 18 16 C 13 16 11 8 6 8 C 0.667 8 0.667 16 6 16 Z\"\nconst circle2 =\n  \"M12 20C16.42 20 20 16.42 20 12C20 7.58 16.42 4 12 4C7.58 4 4 7.58 4 12C4 16.42 7.58 20 12 20Z\"\n\nfunction MobiusLoopIcon({\n  size = 24,\n  speed = \"normal\",\n  colors,\n  className,\n  ...props\n}: MobiusLoopIconProps) {\n  const duration = speedDurations[speed]\n  const gradientId = React.useId()\n\n  return (\n    <motion.svg\n      data-slot=\"mobius-loop-icon\"\n      viewBox=\"0 0 24 24\"\n      width={size}\n      height={size}\n      fill=\"none\"\n      stroke=\"currentColor\"\n      strokeWidth={2}\n      strokeLinecap=\"round\"\n      strokeLinejoin=\"round\"\n      aria-hidden\n      className={cn(\"text-foreground\", className)}\n      {...props}\n    >\n      {colors && colors.length >= 2 && (\n        <defs>\n          <linearGradient id={gradientId} x1=\"0%\" y1=\"0%\" x2=\"100%\" y2=\"100%\">\n            <stop offset=\"0%\" stopColor={colors[0]} />\n            <stop offset=\"50%\" stopColor={colors[1]} />\n            {colors[2] && <stop offset=\"100%\" stopColor={colors[2]} />}\n          </linearGradient>\n        </defs>\n      )}\n      <motion.path\n        animate={{\n          d: [circle1, infinity, circle2],\n        }}\n        transition={{\n          d: {\n            duration,\n            ease: \"easeInOut\",\n            repeat: Infinity,\n          },\n        }}\n        stroke={colors && colors.length >= 2 ? `url(#${gradientId})` : \"currentColor\"}\n      />\n    </motion.svg>\n  )\n}\n\nexport { MobiusLoopIcon }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

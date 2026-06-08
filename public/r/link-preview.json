@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "link-preview",
+  "title": "Link Preview",
+  "description": "Hover-card que mostra um screenshot da URL apontada por um link, com leve parallax no eixo X seguindo o cursor. Usa @radix-ui/react-hover-card + qss.",
+  "dependencies": [
+    "@radix-ui/react-hover-card",
+    "motion",
+    "qss"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/link-preview.tsx",
+      "content": "import * as React from \"react\"\nimport * as HoverCardPrimitive from \"@radix-ui/react-hover-card\"\nimport { encode } from \"qss\"\nimport { AnimatePresence, motion, useMotionValue, useSpring } from \"motion/react\"\nimport { cn } from \"@/lib/utils\"\nimport { type LinkPreviewProps } from \"./link-preview-types\"\n\nexport const LinkPreview = ({\n  children,\n  url,\n  className,\n  width = 200,\n  height = 125,\n  isStatic = false,\n  imageSrc = \"\",\n}: LinkPreviewProps) => {\n  let src: string\n  if (!isStatic) {\n    const params = encode({\n      url,\n      screenshot: true,\n      meta: false,\n      embed: \"screenshot.url\",\n      colorScheme: \"dark\",\n      \"viewport.isMobile\": true,\n      \"viewport.deviceScaleFactor\": 1,\n      \"viewport.width\": width * 3,\n      \"viewport.height\": height * 3,\n    })\n    src = `https://api.microlink.io/?${params}`\n  } else {\n    src = imageSrc\n  }\n\n  const [isOpen, setOpen] = React.useState(false)\n  const [isMounted, setIsMounted] = React.useState(false)\n\n  React.useEffect(() => {\n    setIsMounted(true)\n  }, [])\n\n  const springConfig = { stiffness: 100, damping: 15 }\n  const x = useMotionValue(0)\n\n  const translateX = useSpring(x, springConfig)\n\n  const handleMouseMove = (event: React.MouseEvent<HTMLAnchorElement>) => {\n    const targetRect = event.currentTarget.getBoundingClientRect()\n    const eventOffsetX = event.clientX - targetRect.left\n    const offsetFromCenter = (eventOffsetX - targetRect.width / 2) / 2\n    x.set(offsetFromCenter)\n  }\n\n  return (\n    <span data-slot=\"link-preview\" className=\"inline-block\">\n      {isMounted ? (\n        <div className=\"hidden\">\n          <img\n            src={src}\n            width={width}\n            height={height}\n            alt=\"hidden image\"\n          />\n        </div>\n      ) : null}\n\n      <HoverCardPrimitive.Root\n        openDelay={50}\n        closeDelay={100}\n        onOpenChange={(open) => {\n          setOpen(open)\n        }}\n      >\n        <HoverCardPrimitive.Trigger\n          onMouseMove={handleMouseMove}\n          className={cn(\"text-black dark:text-white\", className)}\n          href={url}\n        >\n          {children}\n        </HoverCardPrimitive.Trigger>\n\n        <HoverCardPrimitive.Content\n          className=\"[transform-origin:var(--radix-hover-card-content-transform-origin)]\"\n          side=\"top\"\n          align=\"center\"\n          sideOffset={10}\n        >\n          <AnimatePresence>\n            {isOpen && (\n              <motion.div\n                initial={{ opacity: 0, y: 20, scale: 0.6 }}\n                animate={{\n                  opacity: 1,\n                  y: 0,\n                  scale: 1,\n                  transition: {\n                    type: \"spring\",\n                    stiffness: 260,\n                    damping: 20,\n                  },\n                }}\n                exit={{ opacity: 0, y: 20, scale: 0.6 }}\n                className=\"shadow-xl rounded-xl\"\n                style={{\n                  x: translateX,\n                }}\n              >\n                <a\n                  href={url}\n                  className=\"block p-1 bg-white border-2 border-transparent shadow rounded-xl hover:border-neutral-200 dark:hover:border-neutral-800\"\n                  style={{ fontSize: 0 }}\n                >\n                  <img\n                    src={isStatic ? imageSrc : src}\n                    width={width}\n                    height={height}\n                    className=\"rounded-lg\"\n                    alt=\"preview image\"\n                  />\n                </a>\n              </motion.div>\n            )}\n          </AnimatePresence>\n        </HoverCardPrimitive.Content>\n      </HoverCardPrimitive.Root>\n    </span>\n  )\n}\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/link-preview-types.ts",
+      "content": "import * as React from \"react\"\n\nexport type LinkPreviewProps = Omit<\n  React.HTMLAttributes<HTMLAnchorElement>,\n  \"children\"\n> & {\n  children: React.ReactNode\n  url: string\n  className?: string\n  width?: number\n  height?: number\n} & (\n  | { isStatic: true; imageSrc: string }\n  | { isStatic?: false; imageSrc?: never }\n)\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

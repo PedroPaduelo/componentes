@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "fluid-gradient-text",
+  "title": "Fluid Gradient Text",
+  "description": "Texto com gradiente animado (mesh gradient) que flui continuamente.",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/fluid-gradient-text.tsx",
+      "content": "import * as React from \"react\"\nimport { motion, useMotionValue, useSpring } from \"motion/react\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface FluidGradientTextProps\n  extends React.HTMLAttributes<HTMLDivElement> {\n  /** Text content rendered inside the SVG. */\n  text: string\n  /**\n   * SVG viewBox width used to scale the gradient and text layout.\n   * @default 1200\n   */\n  svgViewBoxWidth?: number\n  /**\n   * SVG viewBox height used as the base text size.\n   * @default 300\n   */\n  svgViewBoxHeight?: number\n}\n\nfunction FluidGradientText({\n  text,\n  svgViewBoxWidth = 1200,\n  svgViewBoxHeight = 300,\n  className,\n  ...hostProps\n}: FluidGradientTextProps) {\n  const gradientX1Raw = useMotionValue(svgViewBoxWidth / 2)\n  const gradientX1 = useSpring(gradientX1Raw, {\n    stiffness: 200,\n    damping: 30,\n    mass: 0.5,\n  })\n\n  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {\n    const container = event.currentTarget\n    const containerRect = container.getBoundingClientRect()\n    const mouseX = event.clientX - containerRect.left\n    const containerWidth = containerRect.width\n    const normalizedX = (mouseX / containerWidth) * svgViewBoxWidth\n    const clampedX = Math.max(0, Math.min(svgViewBoxWidth, normalizedX))\n    gradientX1Raw.set(clampedX)\n  }\n\n  const handleMouseLeave = () => {\n    gradientX1Raw.set(svgViewBoxWidth / 2)\n  }\n\n  return (\n    <div\n      data-slot=\"fluid-gradient-text\"\n      className={cn(\n        \"relative size-full overflow-hidden after:absolute after:bottom-0 after:h-px after:w-full after:bg-current/15\",\n        className\n      )}\n      onMouseMove={handleMouseMove}\n      onMouseLeave={handleMouseLeave}\n      {...hostProps}\n    >\n      <svg\n        viewBox={`0 0 ${svgViewBoxWidth} ${svgViewBoxHeight}`}\n        className=\"h-full w-full select-none\"\n      >\n        <text\n          x=\"50%\"\n          y=\"50%\"\n          dominantBaseline=\"middle\"\n          textAnchor=\"middle\"\n          fill=\"url(#fluid_gradient_text_linear)\"\n          style={{\n            fontFamily: \"Helvetica\",\n            fontSize: svgViewBoxHeight,\n            fontWeight: \"bold\",\n          }}\n        >\n          {text}\n        </text>\n        <defs>\n          <motion.linearGradient\n            id=\"fluid_gradient_text_linear\"\n            x1={gradientX1}\n            y1=\"0\"\n            x2={svgViewBoxWidth / 2}\n            y2={svgViewBoxHeight}\n            gradientUnits=\"userSpaceOnUse\"\n          >\n            <stop offset=\"0.625\" stopColor=\"currentColor\" stopOpacity=\"0\" />\n            <stop offset=\"1\" stopColor=\"currentColor\" stopOpacity=\"1\" />\n          </motion.linearGradient>\n        </defs>\n      </svg>\n    </div>\n  )\n}\n\nexport { FluidGradientText }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

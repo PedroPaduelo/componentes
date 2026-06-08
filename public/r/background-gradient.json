@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "background-gradient",
+  "title": "Background Gradient",
+  "description": "Borda em gradiente radial multicolor (verde/violeta/amarelo/azul) animada em loop suave que intensifica o brilho no hover, ideal para destacar cards e botões. Reimplementado padronizado shadcn com motion/react.",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/background-gradient.tsx",
+      "content": "import { motion } from \"motion/react\"\n\nimport { cn } from \"@/lib/utils\"\nimport type { BackgroundGradientProps } from \"@/components/ui/background-gradient-types\"\n\nconst gradientVariants = {\n  initial: { backgroundPosition: \"0% 50%\" },\n  animate: { backgroundPosition: [\"0% 50%\", \"100% 50%\", \"0% 50%\"] },\n}\n\nconst gradientTransition = {\n  duration: 5,\n  repeat: Infinity,\n  repeatType: \"reverse\",\n} as const\n\nfunction BackgroundGradient({\n  children,\n  className,\n  containerClassName,\n  animate = true,\n  ...rest\n}: BackgroundGradientProps) {\n  return (\n    <div\n      data-slot=\"background-gradient\"\n      className={cn(\"group relative p-[4px]\", containerClassName)}\n      {...rest}\n    >\n      <motion.div\n        variants={animate ? gradientVariants : undefined}\n        initial={animate ? \"initial\" : undefined}\n        animate={animate ? \"animate\" : undefined}\n        transition={animate ? gradientTransition : undefined}\n        style={{ backgroundSize: animate ? \"400% 400%\" : undefined }}\n        className={cn(\n          \"absolute inset-0 z-[1] rounded-3xl opacity-60 blur-xl transition duration-500 will-change-transform group-hover:opacity-100\",\n          \"bg-[radial-gradient(circle_farthest-side_at_0_100%,#00ccb1,transparent),radial-gradient(circle_farthest-side_at_100%_0,#7b61ff,transparent),radial-gradient(circle_farthest-side_at_100%_100%,#ffc414,transparent),radial-gradient(circle_farthest-side_at_0_0,#1ca0fb,#141316)]\"\n        )}\n      />\n      <motion.div\n        variants={animate ? gradientVariants : undefined}\n        initial={animate ? \"initial\" : undefined}\n        animate={animate ? \"animate\" : undefined}\n        transition={animate ? gradientTransition : undefined}\n        style={{ backgroundSize: animate ? \"400% 400%\" : undefined }}\n        className={cn(\n          \"absolute inset-0 z-[1] rounded-3xl will-change-transform\",\n          \"bg-[radial-gradient(circle_farthest-side_at_0_100%,#00ccb1,transparent),radial-gradient(circle_farthest-side_at_100%_0,#7b61ff,transparent),radial-gradient(circle_farthest-side_at_100%_100%,#ffc414,transparent),radial-gradient(circle_farthest-side_at_0_0,#1ca0fb,#141316)]\"\n        )}\n      />\n      <div className={cn(\"relative z-10\", className)}>{children}</div>\n    </div>\n  )\n}\n\nexport { BackgroundGradient }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/background-gradient-types.ts",
+      "content": "import * as React from \"react\"\n\n/**\n * Tipos do Background Gradient (Aceternity UI), reimplementado padronizado shadcn.\n *\n * Mantido em arquivo separado (.ts puro, sem JSX) para satisfazer o\n * react-refresh/only-export-components (o .tsx só exporta componentes).\n */\nexport interface BackgroundGradientProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"children\"> {\n  children?: React.ReactNode\n  /** Classe do wrapper de conteúdo interno (relative z-10). */\n  className?: string\n  /** Classe do container raiz que recebe os gradientes. */\n  containerClassName?: string\n  /** Anima a posição dos gradientes em loop. Default: true. */\n  animate?: boolean\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

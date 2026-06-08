@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "colourful-text",
+  "title": "Colourful Text",
+  "description": "Componente Aceternity UI: cada caractere do texto anima com cor (10 tons do espectro RGB reembaralhados a cada 5s), y, scale, filter blur e opacity em loop, dando efeito de 'onda' colorida. Cores são fixas (brand do efeito, alinhado com glitch/cyber). Ideal para hero headlines e CTAs que precisam de destaque animado sem competir com o restante do copy.",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/colourful-text.tsx",
+      "content": "import * as React from \"react\"\nimport { motion } from \"motion/react\"\n\nimport { cn } from \"@/lib/utils\"\n\nimport type { ColourfulTextProps } from \"./colourful-text-types\"\n\n/**\n * Espectro RGB (10 tons) — cores fixas do efeito (brand visual).\n * Reembaralhadas a cada 5s pra dar sensação de \"onda\" de cor.\n */\nconst PALETTE: readonly string[] = [\n  \"rgb(131, 179, 32)\",\n  \"rgb(47, 195, 106)\",\n  \"rgb(42, 169, 210)\",\n  \"rgb(4, 112, 202)\",\n  \"rgb(107, 10, 255)\",\n  \"rgb(183, 0, 218)\",\n  \"rgb(218, 0, 171)\",\n  \"rgb(230, 64, 92)\",\n  \"rgb(232, 98, 63)\",\n  \"rgb(249, 129, 47)\",\n]\n\nconst SHUFFLE_INTERVAL_MS = 5000\nconst CHAR_ANIMATION_DURATION_S = 0.5\nconst CHAR_STAGGER_S = 0.05\nconst CHAR_Y_RANGE_PX = 3\nconst CHAR_BLUR_PEAK_PX = 5\n\n/**\n * ColourfulText — texto com efeito de letras coloridas animadas.\n *\n * Inspirado no `colourful-text` da Aceternity UI, reescrito com\n * `motion/react` (motion v12), sem `\"use client\"`, named export,\n * paleta de cores RGB hardcoded (brand do efeito) e `data-slot`\n * no wrapper inline.\n *\n * @example\n *   <h1 className=\"text-3xl font-bold md:text-5xl\">\n *     Faça seu app <ColourfulText text=\"crescer rápido\" />\n *   </h1>\n */\nfunction ColourfulText({ text, className, ...props }: ColourfulTextProps) {\n  const [colors, setColors] = React.useState<readonly string[]>(PALETTE)\n  const [tick, setTick] = React.useState<number>(0)\n\n  React.useEffect(() => {\n    const id = window.setInterval(() => {\n      const shuffled = [...PALETTE].sort(() => Math.random() - 0.5)\n      setColors(shuffled)\n      setTick((prev) => prev + 1)\n    }, SHUFFLE_INTERVAL_MS)\n    return () => window.clearInterval(id)\n  }, [])\n\n  return (\n    <span\n      data-slot=\"colourful-text\"\n      className={cn(\"inline font-sans tracking-tight\", className)}\n      {...props}\n    >\n      {text.split(\"\").map((char, index) => (\n        <motion.span\n          key={`${char}-${tick}-${index}`}\n          initial={{ y: 0 }}\n          animate={{\n            color: colors[index % colors.length],\n            y: [0, -CHAR_Y_RANGE_PX, 0],\n            scale: [1, 1.01, 1],\n            filter: [\n              \"blur(0px)\",\n              `blur(${CHAR_BLUR_PEAK_PX}px)`,\n              \"blur(0px)\",\n            ],\n            opacity: [1, 0.8, 1],\n          }}\n          transition={{\n            duration: CHAR_ANIMATION_DURATION_S,\n            delay: index * CHAR_STAGGER_S,\n          }}\n          className=\"inline-block whitespace-pre\"\n        >\n          {char}\n        </motion.span>\n      ))}\n    </span>\n  )\n}\n\nexport { ColourfulText }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/colourful-text-types.ts",
+      "content": "/**\n * ColourfulText — tipagem pública.\n *\n * Componente Aceternity UI: cada caractere do texto anima com cor\n * (reembaralhada a cada 5s entre 10 tons do espectro RGB), y, scale,\n * filter blur e opacity em loop. Cores são fixas (assinatura visual\n * do efeito) e NÃO seguem tokens semânticos do tema shadcn.\n */\n\nimport type { HTMLAttributes } from \"react\"\n\nexport type ColourfulTextProps = Omit<\n  HTMLAttributes<HTMLSpanElement>,\n  \"children\"\n> & {\n  /** Texto a ser renderizado caractere a caractere com efeito colorido animado. */\n  text: string\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

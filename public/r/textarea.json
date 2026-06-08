@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "textarea",
+  "title": "Textarea",
+  "description": "Campo de texto multiline para entrada de conteúdo longo como descrições, mensagens e comentários.",
+  "files": [
+    {
+      "path": "src/components/ui/textarea.tsx",
+      "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nconst Textarea = React.forwardRef<\n  HTMLTextAreaElement,\n  React.ComponentProps<\"textarea\">\n>(({ className, ...props }, ref) => {\n  return (\n    <textarea\n      className={cn(\n        \"flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50\",\n        className\n      )}\n      data-slot=\"textarea\"\n      ref={ref}\n      {...props}\n    />\n  )\n})\nTextarea.displayName = \"Textarea\"\n\nexport { Textarea }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

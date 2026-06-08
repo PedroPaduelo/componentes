@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scroll-area",
+  "title": "Scroll Area",
+  "description": "Área de rolagem customizada com scrollbar estilizado. Baseado em @radix-ui/react-scroll-area.",
+  "dependencies": [
+    "@radix-ui/react-scroll-area"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/scroll-area.tsx",
+      "content": "import * as React from \"react\"\nimport * as ScrollAreaPrimitive from \"@radix-ui/react-scroll-area\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction ScrollArea({\n  className,\n  children,\n  ...props\n}: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {\n  return (\n    <ScrollAreaPrimitive.Root\n      data-slot=\"scroll-area\"\n      className={cn(\"relative overflow-hidden\", className)}\n      {...props}\n    >\n      <ScrollAreaPrimitive.Viewport\n        data-slot=\"scroll-area-viewport\"\n        className=\"ring-ring/50 dark:ring-ring/40 size-full rounded-[inherit] outline-ring/50 transition-[color,box-shadow] focus-visible:outline-1 focus-visible:ring-4\"\n      >\n        {children}\n      </ScrollAreaPrimitive.Viewport>\n      <ScrollBar />\n      <ScrollAreaPrimitive.Corner />\n    </ScrollAreaPrimitive.Root>\n  )\n}\n\nfunction ScrollAreaViewport({\n  className,\n  children,\n  ...props\n}: React.ComponentProps<typeof ScrollAreaPrimitive.Viewport>) {\n  return (\n    <ScrollAreaPrimitive.Viewport\n      data-slot=\"scroll-area-viewport\"\n      className={cn(\"size-full rounded-[inherit]\", className)}\n      {...props}\n    >\n      {children}\n    </ScrollAreaPrimitive.Viewport>\n  )\n}\n\nfunction ScrollBar({\n  className,\n  orientation = \"vertical\",\n  ...props\n}: React.ComponentProps<typeof ScrollAreaPrimitive.Scrollbar>) {\n  return (\n    <ScrollAreaPrimitive.Scrollbar\n      data-slot=\"scroll-area-scrollbar\"\n      orientation={orientation}\n      className={cn(\n        \"flex touch-none select-none transition-colors\",\n        orientation === \"vertical\" &&\n          \"h-full w-2.5 border-l border-l-transparent p-[1px]\",\n        orientation === \"horizontal\" &&\n          \"h-2.5 flex-col border-t border-t-transparent p-[1px]\",\n        className\n      )}\n      {...props}\n    >\n      <ScrollAreaPrimitive.Thumb\n        data-slot=\"scroll-area-thumb\"\n        className=\"bg-border relative flex-1 rounded-full\"\n      />\n    </ScrollAreaPrimitive.Scrollbar>\n  )\n}\n\nfunction ScrollAreaThumb({\n  className,\n  ...props\n}: React.ComponentProps<typeof ScrollAreaPrimitive.Thumb>) {\n  return (\n    <ScrollAreaPrimitive.Thumb\n      data-slot=\"scroll-area-thumb\"\n      className={cn(\"bg-border relative flex-1 rounded-full\", className)}\n      {...props}\n    />\n  )\n}\n\nfunction ScrollAreaCorner({\n  ...props\n}: React.ComponentProps<typeof ScrollAreaPrimitive.Corner>) {\n  return (\n    <ScrollAreaPrimitive.Corner\n      data-slot=\"scroll-area-corner\"\n      {...props}\n    />\n  )\n}\n\nexport {\n  ScrollArea,\n  ScrollAreaViewport,\n  ScrollBar as ScrollAreaScrollbar,\n  ScrollAreaThumb,\n  ScrollAreaCorner,\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

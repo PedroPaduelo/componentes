@@ -2,10 +2,10 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "button",
   "title": "Button",
-  "description": "Botão acessível com variantes (default, destructive, outline, secondary, ghost, link) e tamanhos, baseado em class-variance-authority e Radix Slot.",
+  "description": "Botão acionável com variantes de estilo e tamanho para disparar ações.",
   "dependencies": [
-    "class-variance-authority",
-    "@radix-ui/react-slot"
+    "@radix-ui/react-slot",
+    "class-variance-authority"
   ],
   "files": [
     {

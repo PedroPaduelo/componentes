@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "parallax-scroll",
+  "title": "Parallax Scroll",
+  "description": "Galeria de imagens da Aceternity UI em 3 colunas que se movem em velocidades e direções diferentes conforme o scroll da própria área (altura fixa, overflow-y-auto): as laterais sobem e a do meio desce, criando profundidade. Usa useScroll/useTransform da motion.",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/parallax-scroll.tsx",
+      "content": "import * as React from \"react\"\nimport { motion, useScroll, useTransform } from \"motion/react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport type ParallaxScrollProps = Omit<\n  React.HTMLAttributes<HTMLDivElement>,\n  \"children\"\n> & {\n  /** Lista de URLs das imagens distribuídas nas 3 colunas. */\n  images: readonly string[]\n}\n\n/**\n * Grade de imagens em 3 colunas que se movem em velocidades/direções\n * diferentes conforme o scroll do próprio container (área scrollável de\n * altura fixa). A coluna do meio sobe enquanto as laterais descem, criando\n * o efeito parallax. Usa `useScroll`/`useTransform` da motion.\n */\nfunction ParallaxScroll({ images, className, ...props }: ParallaxScrollProps) {\n  const gridRef = React.useRef<HTMLDivElement>(null)\n  const { scrollYProgress } = useScroll({\n    container: gridRef,\n    offset: [\"start start\", \"end start\"],\n  })\n\n  const translateFirst = useTransform(scrollYProgress, [0, 1], [0, -200])\n  const translateSecond = useTransform(scrollYProgress, [0, 1], [0, 200])\n  const translateThird = useTransform(scrollYProgress, [0, 1], [0, -200])\n\n  const third = Math.ceil(images.length / 3)\n  const firstPart = images.slice(0, third)\n  const secondPart = images.slice(third, 2 * third)\n  const thirdPart = images.slice(2 * third)\n\n  const columns = [\n    { items: firstPart, y: translateFirst, key: \"grid-1\" },\n    { items: secondPart, y: translateSecond, key: \"grid-2\" },\n    { items: thirdPart, y: translateThird, key: \"grid-3\" },\n  ]\n\n  return (\n    <div\n      data-slot=\"parallax-scroll\"\n      className={cn(\n        \"h-[40rem] w-full items-start overflow-y-auto rounded-lg\",\n        className,\n      )}\n      ref={gridRef}\n      {...props}\n    >\n      <div className=\"mx-auto grid max-w-5xl grid-cols-1 items-start gap-10 px-10 py-40 md:grid-cols-2 lg:grid-cols-3\">\n        {columns.map((column) => (\n          <div className=\"grid gap-10\" key={column.key}>\n            {column.items.map((src, idx) => (\n              <motion.div style={{ y: column.y }} key={column.key + idx}>\n                <img\n                  src={src}\n                  className=\"h-80 w-full rounded-lg object-cover object-left-top\"\n                  height={400}\n                  width={400}\n                  alt=\"thumbnail\"\n                  loading=\"lazy\"\n                />\n              </motion.div>\n            ))}\n          </div>\n        ))}\n      </div>\n    </div>\n  )\n}\n\nexport { ParallaxScroll }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

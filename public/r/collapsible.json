@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "collapsible",
+  "title": "Collapsible",
+  "description": "Contêiner expansível/recolhível com animação de abertura/fechamento. Baseado em @radix-ui/react-collapsible.",
+  "dependencies": [
+    "@radix-ui/react-collapsible@^1.1.12"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/collapsible.tsx",
+      "content": "import * as CollapsiblePrimitive from \"@radix-ui/react-collapsible\"\n\nfunction Collapsible({\n  ...props\n}: React.ComponentProps<typeof CollapsiblePrimitive.Root>) {\n  return <CollapsiblePrimitive.Root data-slot=\"collapsible\" {...props} />\n}\n\nfunction CollapsibleTrigger({\n  ...props\n}: React.ComponentProps<typeof CollapsiblePrimitive.Trigger>) {\n  return <CollapsiblePrimitive.Trigger data-slot=\"collapsible-trigger\" {...props} />\n}\n\nfunction CollapsibleContent({\n  ...props\n}: React.ComponentProps<typeof CollapsiblePrimitive.Content>) {\n  return (\n    <CollapsiblePrimitive.Content\n      data-slot=\"collapsible-content\"\n      {...props}\n    />\n  )\n}\n\nexport { Collapsible, CollapsibleTrigger, CollapsibleContent }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

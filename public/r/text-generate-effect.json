@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "text-generate-effect",
+  "title": "Text Generate Effect",
+  "description": "Texto da Aceternity UI em que cada palavra entra com fade + blur desfocado (10px) com stagger de 0.2s. Tema via token semântico text-foreground; aceita frase, flag de blur e duração customizada. Animado na montagem via useAnimate (motion/react).",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/text-generate-effect.tsx",
+      "content": "import * as React from \"react\"\nimport { motion, stagger, useAnimate } from \"motion/react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport type TextGenerateEffectProps = Omit<\n  React.HTMLAttributes<HTMLDivElement>,\n  \"children\"\n> & {\n  /** Frase completa a ser animada, palavra a palavra. */\n  words: string\n  /**\n   * Quando `true` (padrão), as palavras entram com `blur(10px) → blur(0)`.\n   * Quando `false`, apenas a opacidade anima (sem blur).\n   */\n  filter?: boolean\n  /** Duração da animação de cada palavra, em segundos. */\n  duration?: number\n}\n\nfunction TextGenerateEffect({\n  words,\n  className,\n  filter = true,\n  duration = 0.5,\n  ...props\n}: TextGenerateEffectProps) {\n  const [scope, animate] = useAnimate()\n  const wordsArray = React.useMemo(() => words.split(\" \"), [words])\n\n  React.useEffect(() => {\n    animate(\n      \"span\",\n      {\n        opacity: 1,\n        filter: filter ? \"blur(0px)\" : \"none\",\n      },\n      {\n        duration: duration ?? 1,\n        delay: stagger(0.2),\n      },\n    )\n  }, [scope, animate, filter, duration])\n\n  const renderWords = () => (\n    <motion.div ref={scope} className=\"inline\">\n      {wordsArray.map((word, idx) => (\n        <motion.span\n          key={`${word}-${idx}`}\n          className={cn(\n            \"text-foreground opacity-0\",\n            idx > 0 && \"ml-[0.25em]\",\n          )}\n          style={{\n            filter: filter ? \"blur(10px)\" : \"none\",\n          }}\n        >\n          {word}\n        </motion.span>\n      ))}\n    </motion.div>\n  )\n\n  return (\n    <div\n      data-slot=\"text-generate-effect\"\n      className={cn(\"font-bold\", className)}\n      {...props}\n    >\n      <div className=\"mt-4\">\n        <div className=\"text-2xl leading-snug tracking-wide\">\n          {renderWords()}\n        </div>\n      </div>\n    </div>\n  )\n}\n\nexport { TextGenerateEffect }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,64 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "background-gradient-animation",
+  "title": "Background Gradient Animation",
+  "description": "Fundo da Aceternity UI com blobs de gradiente radial que se movem continuamente (CSS keyframes) e se misturam via mix-blend-mode + filtro goo (feGaussianBlur/feColorMatrix). Um blob extra segue o cursor quando interactive. Cores, tamanho e blend configuráveis.",
+  "files": [
+    {
+      "path": "src/components/ui/background-gradient-animation.tsx",
+      "content": "import { useEffect, useRef, useState } from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface BackgroundGradientAnimationProps {\n  gradientBackgroundStart?: string\n  gradientBackgroundEnd?: string\n  firstColor?: string\n  secondColor?: string\n  thirdColor?: string\n  fourthColor?: string\n  fifthColor?: string\n  pointerColor?: string\n  size?: string\n  blendingValue?: string\n  children?: React.ReactNode\n  className?: string\n  interactive?: boolean\n  containerClassName?: string\n}\n\nexport function BackgroundGradientAnimation({\n  gradientBackgroundStart = \"rgb(108, 0, 162)\",\n  gradientBackgroundEnd = \"rgb(0, 17, 82)\",\n  firstColor = \"18, 113, 255\",\n  secondColor = \"221, 74, 255\",\n  thirdColor = \"100, 220, 255\",\n  fourthColor = \"200, 50, 50\",\n  fifthColor = \"180, 180, 50\",\n  pointerColor = \"140, 100, 255\",\n  size = \"80%\",\n  blendingValue = \"hard-light\",\n  children,\n  className,\n  interactive = true,\n  containerClassName,\n}: BackgroundGradientAnimationProps) {\n  const interactiveRef = useRef<HTMLDivElement>(null)\n\n  const [curX, setCurX] = useState(0)\n  const [curY, setCurY] = useState(0)\n  const [tgX, setTgX] = useState(0)\n  const [tgY, setTgY] = useState(0)\n\n  const [isSafari, setIsSafari] = useState(false)\n  useEffect(() => {\n    setIsSafari(/^((?!chrome|android).)*safari/i.test(navigator.userAgent))\n  }, [])\n\n  useEffect(() => {\n    function move() {\n      if (!interactiveRef.current) {\n        return\n      }\n      setCurX((prev) => prev + (tgX - prev) / 20)\n      setCurY((prev) => prev + (tgY - prev) / 20)\n      interactiveRef.current.style.transform = `translate(${Math.round(\n        curX,\n      )}px, ${Math.round(curY)}px)`\n    }\n\n    move()\n  }, [tgX, tgY, curX, curY])\n\n  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {\n    if (!interactiveRef.current) {\n      return\n    }\n    const rect = interactiveRef.current.getBoundingClientRect()\n    setTgX(event.clientX - rect.left)\n    setTgY(event.clientY - rect.top)\n  }\n\n  const cssVars = {\n    \"--gradient-background-start\": gradientBackgroundStart,\n    \"--gradient-background-end\": gradientBackgroundEnd,\n    \"--first-color\": firstColor,\n    \"--second-color\": secondColor,\n    \"--third-color\": thirdColor,\n    \"--fourth-color\": fourthColor,\n    \"--fifth-color\": fifthColor,\n    \"--pointer-color\": pointerColor,\n    \"--size\": size,\n    \"--blending-value\": blendingValue,\n  } as React.CSSProperties\n\n  return (\n    <div\n      data-slot=\"background-gradient-animation\"\n      style={cssVars}\n      className={cn(\n        \"relative overflow-hidden bg-[linear-gradient(40deg,var(--gradient-background-start),var(--gradient-background-end))]\",\n        containerClassName,\n      )}\n    >\n      <svg className=\"hidden\">\n        <defs>\n          <filter id=\"blurMe\">\n            <feGaussianBlur\n              in=\"SourceGraphic\"\n              stdDeviation=\"10\"\n              result=\"blur\"\n            />\n            <feColorMatrix\n              in=\"blur\"\n              mode=\"matrix\"\n              values=\"1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8\"\n              result=\"goo\"\n            />\n            <feBlend in=\"SourceGraphic\" in2=\"goo\" />\n          </filter>\n        </defs>\n      </svg>\n      <div className={cn(\"\", className)}>{children}</div>\n      <div\n        className={cn(\n          \"gradients-container h-full w-full blur-lg\",\n          isSafari ? \"blur-2xl\" : \"[filter:url(#blurMe)_blur(40px)]\",\n        )}\n      >\n        <div\n          className={cn(\n            \"absolute [background:radial-gradient(circle_at_center,_rgba(var(--first-color),_0.8)_0,_rgba(var(--first-color),_0)_50%)_no-repeat]\",\n            \"[mix-blend-mode:var(--blending-value)] w-[var(--size)] h-[var(--size)] top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)]\",\n            \"[transform-origin:center_center]\",\n            \"animate-first\",\n            \"opacity-100\",\n          )}\n        />\n        <div\n          className={cn(\n            \"absolute [background:radial-gradient(circle_at_center,_rgba(var(--second-color),_0.8)_0,_rgba(var(--second-color),_0)_50%)_no-repeat]\",\n            \"[mix-blend-mode:var(--blending-value)] w-[var(--size)] h-[var(--size)] top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)]\",\n            \"[transform-origin:calc(50%-400px)]\",\n            \"animate-second\",\n            \"opacity-100\",\n          )}\n        />\n        <div\n          className={cn(\n            \"absolute [background:radial-gradient(circle_at_center,_rgba(var(--third-color),_0.8)_0,_rgba(var(--third-color),_0)_50%)_no-repeat]\",\n            \"[mix-blend-mode:var(--blending-value)] w-[var(--size)] h-[var(--size)] top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)]\",\n            \"[transform-origin:calc(50%+400px)]\",\n            \"animate-third\",\n            \"opacity-100\",\n          )}\n        />\n        <div\n          className={cn(\n            \"absolute [background:radial-gradient(circle_at_center,_rgba(var(--fourth-color),_0.8)_0,_rgba(var(--fourth-color),_0)_50%)_no-repeat]\",\n            \"[mix-blend-mode:var(--blending-value)] w-[var(--size)] h-[var(--size)] top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)]\",\n            \"[transform-origin:calc(50%-200px)]\",\n            \"animate-fourth\",\n            \"opacity-70\",\n          )}\n        />\n        <div\n          className={cn(\n            \"absolute [background:radial-gradient(circle_at_center,_rgba(var(--fifth-color),_0.8)_0,_rgba(var(--fifth-color),_0)_50%)_no-repeat]\",\n            \"[mix-blend-mode:var(--blending-value)] w-[var(--size)] h-[var(--size)] top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)]\",\n            \"[transform-origin:calc(50%-800px)_calc(50%+800px)]\",\n            \"animate-fifth\",\n            \"opacity-100\",\n          )}\n        />\n\n        {interactive && (\n          <div\n            ref={interactiveRef}\n            onMouseMove={handleMouseMove}\n            className={cn(\n              \"absolute [background:radial-gradient(circle_at_center,_rgba(var(--pointer-color),_0.8)_0,_rgba(var(--pointer-color),_0)_50%)_no-repeat]\",\n              \"[mix-blend-mode:var(--blending-value)] w-full h-full -top-1/2 -left-1/2\",\n              \"opacity-70\",\n            )}\n          />\n        )}\n      </div>\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    "@keyframes bga-moveInCircle": {
+      "0%": {
+        "transform": "rotate(0deg)"
+      },
+      "50%": {
+        "transform": "rotate(180deg)"
+      },
+      "100%": {
+        "transform": "rotate(360deg)"
+      }
+    },
+    "@keyframes bga-moveVertical": {
+      "0%": {
+        "transform": "translateY(-50%)"
+      },
+      "50%": {
+        "transform": "translateY(50%)"
+      },
+      "100%": {
+        "transform": "translateY(-50%)"
+      }
+    },
+    "@keyframes bga-moveHorizontal": {
+      "0%": {
+        "transform": "translateX(-50%) translateY(-10%)"
+      },
+      "50%": {
+        "transform": "translateX(50%) translateY(10%)"
+      },
+      "100%": {
+        "transform": "translateX(-50%) translateY(-10%)"
+      }
+    },
+    "@utility animate-first": {
+      "animation": "bga-moveVertical 30s ease infinite"
+    },
+    "@utility animate-second": {
+      "animation": "bga-moveInCircle 20s reverse infinite"
+    },
+    "@utility animate-third": {
+      "animation": "bga-moveInCircle 40s linear infinite"
+    },
+    "@utility animate-fourth": {
+      "animation": "bga-moveHorizontal 40s ease infinite"
+    },
+    "@utility animate-fifth": {
+      "animation": "bga-moveInCircle 20s ease infinite"
+    }
+  },
+  "type": "registry:ui"
+}

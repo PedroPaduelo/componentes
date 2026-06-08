@@ -1,0 +1,18 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-theme",
+  "title": "Use Theme",
+  "files": [
+    {
+      "path": "src/components/theme/theme-context.ts",
+      "content": "import { createContext } from \"react\"\n\nexport type Theme = \"dark\" | \"light\" | \"system\"\n\nexport type ThemeProviderState = {\n  theme: Theme\n  setTheme: (theme: Theme) => void\n  resolvedTheme: \"dark\" | \"light\"\n}\n\nexport const initialState: ThemeProviderState = {\n  theme: \"system\",\n  setTheme: () => null,\n  resolvedTheme: \"light\",\n}\n\nexport const ThemeProviderContext = createContext<ThemeProviderState>(initialState)\n",
+      "type": "registry:lib"
+    },
+    {
+      "path": "src/components/theme/use-theme.ts",
+      "content": "import { useContext } from \"react\"\nimport { ThemeProviderContext } from \"@/components/theme/theme-context\"\n\n/**\n * Hook que expõe o tema atual do ThemeProvider.\n * Retorna `{ theme, setTheme, resolvedTheme }`.\n * Deve ser usado dentro de `<ThemeProvider>`.\n */\nexport function useTheme() {\n  const context = useContext(ThemeProviderContext)\n  if (context === undefined)\n    throw new Error(\"useTheme must be used within a ThemeProvider\")\n  return context\n}\n",
+      "type": "registry:lib"
+    }
+  ],
+  "type": "registry:lib"
+}

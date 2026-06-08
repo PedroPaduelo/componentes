@@ -1,0 +1,13 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "use-outside-click",
+  "title": "Use Outside Click",
+  "files": [
+    {
+      "path": "src/hooks/use-outside-click.ts",
+      "content": "import * as React from \"react\"\n\n/**\n * Dispara `callback` quando um `mousedown`/`touchstart` ocorre fora do elemento\n * referenciado por `ref`. Compatível com React 19 (`RefObject<T | null>`).\n */\nexport function useOutsideClick(\n  ref: React.RefObject<HTMLElement | null>,\n  callback: (event: MouseEvent | TouchEvent) => void\n): void {\n  React.useEffect(() => {\n    const listener = (event: MouseEvent | TouchEvent) => {\n      const el = ref.current\n      if (!el || el.contains(event.target as Node)) {\n        return\n      }\n      callback(event)\n    }\n\n    document.addEventListener(\"mousedown\", listener)\n    document.addEventListener(\"touchstart\", listener)\n\n    return () => {\n      document.removeEventListener(\"mousedown\", listener)\n      document.removeEventListener(\"touchstart\", listener)\n    }\n  }, [ref, callback])\n}\n",
+      "type": "registry:hook"
+    }
+  ],
+  "type": "registry:hook"
+}

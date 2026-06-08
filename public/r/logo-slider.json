@@ -1,0 +1,90 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "logo-slider",
+  "title": "Logo Slider",
+  "description": "Marquee infinito de logos (CSS puro) com loop sem emenda e blur progressivo nas bordas; configurável por direção, velocidade e pause-on-hover.",
+  "files": [
+    {
+      "path": "src/components/ui/logo-slider.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\nimport type { LogoSliderProps } from \"@/components/ui/logo-slider-types\"\n\n/**\n * LogoSlider — marquee infinito de logos (VengenceUI).\n *\n * Implementação 100% CSS (sem motion): a track de logos é renderizada duas\n * vezes lado a lado e animada com `translateX` em loop, criando o efeito de\n * rolagem contínua e sem emenda. As bordas recebem um fade via mask gradient\n * e, opcionalmente, painéis de blur progressivo (`showBlur`).\n *\n * Respeita `prefers-reduced-motion`: a animação só roda dentro do bloco\n * `@media (prefers-reduced-motion: no-preference)` definido em `index.css`.\n */\nfunction LogoSlider({\n  logos,\n  direction = \"left\",\n  speed = 40,\n  pauseOnHover = false,\n  showBlur = true,\n  gap = 64,\n  className,\n}: LogoSliderProps) {\n  const style = {\n    \"--logo-slider-duration\": `${speed}s`,\n    \"--logo-slider-gap\": `${gap}px`,\n  } as React.CSSProperties\n\n  return (\n    <div\n      data-slot=\"logo-slider\"\n      data-direction={direction}\n      data-pause-on-hover={pauseOnHover}\n      className={cn(\"logo-slider\", className)}\n      style={style}\n    >\n      <div className=\"logo-slider__container\">\n        <div className=\"logo-slider__item\" aria-hidden={false}>\n          {logos.map((logo, index) => (\n            <span\n              key={`logo-a-${index}`}\n              className=\"inline-flex items-center justify-center fill-current text-foreground grayscale brightness-100\"\n            >\n              {logo}\n            </span>\n          ))}\n        </div>\n        <div className=\"logo-slider__item\" aria-hidden>\n          {logos.map((logo, index) => (\n            <span\n              key={`logo-b-${index}`}\n              className=\"inline-flex items-center justify-center fill-current text-foreground grayscale brightness-100\"\n            >\n              {logo}\n            </span>\n          ))}\n        </div>\n      </div>\n\n      {showBlur ? (\n        <>\n          <div className=\"logo-slider__blur logo-slider__blur--left\" aria-hidden>\n            <div />\n          </div>\n          <div className=\"logo-slider__blur logo-slider__blur--right\" aria-hidden>\n            <div />\n          </div>\n        </>\n      ) : null}\n    </div>\n  )\n}\n\nLogoSlider.displayName = \"LogoSlider\"\n\nexport { LogoSlider }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/logo-slider-types.ts",
+      "content": "/**\n * Tipos públicos do componente `LogoSlider`.\n *\n * Este arquivo existe separado de `logo-slider.tsx` por causa do lint\n * `react-refresh/only-export-components`: um arquivo `.tsx` que mistura a\n * declaração do componente com tipos/interfaces dispara o lint. Mantemos\n * o `logo-slider.tsx` puro (apenas o componente) e os types aqui.\n *\n * Consumidores devem importar o componente de `@/components/ui/logo-slider`\n * e os types do mesmo caminho (o barrel `index.ts` re-exporta ambos).\n */\n\nimport type { ReactNode } from \"react\"\n\n/**\n * Props do componente `LogoSlider`.\n *\n * Marquee infinito de logos (CSS puro, sem motion) com blur progressivo nas\n * bordas. Os logos são duplicados internamente para garantir loop sem emenda.\n */\nexport interface LogoSliderProps {\n  /** Lista de logos (ReactNode) a exibir no marquee. */\n  logos: ReactNode[]\n  /**\n   * Direção do scroll do marquee.\n   * @default \"left\"\n   */\n  direction?: \"left\" | \"right\"\n  /**\n   * Duração (em segundos) de um ciclo completo da animação.\n   * Quanto menor, mais rápido o marquee.\n   * @default 40\n   */\n  speed?: number\n  /**\n   * Pausa a animação enquanto o cursor está sobre o slider.\n   * @default false\n   */\n  pauseOnHover?: boolean\n  /**\n   * Exibe os painéis de blur progressivo nas bordas esquerda/direita.\n   * @default true\n   */\n  showBlur?: boolean\n  /**\n   * Espaçamento (em pixels) entre os logos.\n   * @default 64\n   */\n  gap?: number\n  /** Classes CSS adicionais para o container raiz. */\n  className?: string\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    ".logo-slider": {
+      "position": "relative",
+      "display": "flex",
+      "width": "100%",
+      "align-items": "center",
+      "overflow": "hidden"
+    },
+    ".logo-slider__container": {
+      "display": "flex",
+      "width": "fit-content",
+      "align-items": "center",
+      "overflow": "visible",
+      "-webkit-mask-image": "linear-gradient(to right, transparent, black 12.5%, black 87.5%, transparent)",
+      "mask-image": "linear-gradient(to right, transparent, black 12.5%, black 87.5%, transparent)"
+    },
+    ".logo-slider__item": {
+      "display": "flex",
+      "flex-shrink": "0",
+      "align-items": "center",
+      "gap": "var(--logo-slider-gap, 64px)",
+      "padding-inline": "calc(var(--logo-slider-gap, 64px) / 2)"
+    },
+    ".logo-slider__blur": {
+      "position": "absolute",
+      "top": "0",
+      "bottom": "0",
+      "z-index": "1",
+      "width": "12.5%",
+      "pointer-events": "none"
+    },
+    ".logo-slider__blur--left": {
+      "left": "0"
+    },
+    ".logo-slider__blur--right": {
+      "right": "0"
+    },
+    ".logo-slider__blur > div": {
+      "width": "100%",
+      "height": "100%",
+      "backdrop-filter": "blur(4px)",
+      "-webkit-backdrop-filter": "blur(4px)"
+    },
+    ".logo-slider__blur--left > div": {
+      "-webkit-mask-image": "linear-gradient(to right, black, transparent)",
+      "mask-image": "linear-gradient(to right, black, transparent)"
+    },
+    ".logo-slider__blur--right > div": {
+      "-webkit-mask-image": "linear-gradient(to left, black, transparent)",
+      "mask-image": "linear-gradient(to left, black, transparent)"
+    },
+    "@media (prefers-reduced-motion: no-preference)": {
+      ".logo-slider__item": {
+        "animation": "logo-slider-slide var(--logo-slider-duration, 40s) linear infinite"
+      },
+      ".logo-slider[data-direction=\"right\"] .logo-slider__item": {
+        "animation-direction": "reverse"
+      },
+      ".logo-slider[data-pause-on-hover=\"true\"]:hover .logo-slider__item": {
+        "animation-play-state": "paused"
+      }
+    },
+    "@keyframes logo-slider-slide": {
+      "from": {
+        "transform": "translateX(0)"
+      },
+      "to": {
+        "transform": "translateX(calc(-100% - var(--logo-slider-gap, 64px)))"
+      }
+    }
+  },
+  "type": "registry:ui"
+}

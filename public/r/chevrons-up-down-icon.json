@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chevrons-up-down-icon",
+  "title": "Chevrons Up Down Icon",
+  "description": "Ícone animado de dois chevrons que rotacionam suavemente — indicador visual de dropdown/select.",
+  "dependencies": [
+    "class-variance-authority",
+    "lucide-react"
+  ],
+  "registryDependencies": [
+    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/chevrons-up-down-icon.tsx",
+      "content": "import * as React from \"react\"\nimport { ChevronsUpDown } from \"lucide-react\"\nimport { type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\nimport { useTheme } from \"@/components/theme/use-theme\"\nimport { chevronsUpDownIconVariants } from \"@/components/ui/chevrons-up-down-icon-variants\"\n\nexport type ChevronsUpDownIconHandle = {\n  startAnimation: () => void\n  stopAnimation: () => void\n}\n\nexport type ChevronsUpDownIconProps = Omit<\n  React.HTMLAttributes<HTMLSpanElement>,\n  \"children\"\n> &\n  VariantProps<typeof chevronsUpDownIconVariants> & {\n    /** Duração da animação de rotação em segundos. */\n    duration?: number\n  }\n\nconst ChevronsUpDownIcon = React.forwardRef<\n  ChevronsUpDownIconHandle,\n  ChevronsUpDownIconProps\n>(\n  (\n    { className, size, duration = 0.2, onClick: userOnClick, ...props },\n    ref\n  ) => {\n    const { resolvedTheme } = useTheme()\n    const [isOpen, setIsOpen] = React.useState(false)\n    const innerRef = React.useRef<HTMLSpanElement>(null)\n\n    React.useImperativeHandle(ref, () => ({\n      startAnimation: () => setIsOpen(true),\n      stopAnimation: () => setIsOpen(false),\n    }))\n\n    const handleClick: React.MouseEventHandler<HTMLSpanElement> = (e) => {\n      // Idiomático shadcn: clicar no ícone = toggle do data-state\n      setIsOpen((v) => !v)\n      // Encadeia para o onClick do consumidor, se houver\n      userOnClick?.(e)\n    }\n\n    return (\n      <span\n        ref={innerRef}\n        data-slot=\"chevrons-up-down-icon\"\n        data-theme={resolvedTheme}\n        data-state={isOpen ? \"open\" : \"closed\"}\n        onClick={handleClick}\n        className={cn(\n          chevronsUpDownIconVariants({ size }),\n          \"cursor-pointer hover:text-muted-foreground\",\n          `transition-transform duration-[${duration * 1000}ms]`,\n          isOpen && \"rotate-180\",\n          className\n        )}\n        style={{\n          transitionDuration: `${duration}s`,\n        }}\n        {...props}\n      >\n        <ChevronsUpDown className={cn(chevronsUpDownIconVariants({ size }))} />\n      </span>\n    )\n  }\n)\nChevronsUpDownIcon.displayName = \"ChevronsUpDownIcon\"\n\nexport { ChevronsUpDownIcon }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/chevrons-up-down-icon-variants.ts",
+      "content": "import { cva } from \"class-variance-authority\"\n\nexport const chevronsUpDownIconVariants = cva(\n  \"inline-flex items-center justify-center transition-transform\",\n  {\n    variants: {\n      size: {\n        sm: \"size-3.5\",\n        default: \"size-4\",\n        lg: \"size-5\",\n      },\n    },\n    defaultVariants: {\n      size: \"default\",\n    },\n  }\n)\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

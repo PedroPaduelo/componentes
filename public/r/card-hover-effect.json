@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "card-hover-effect",
+  "title": "Card Hover Effect",
+  "description": "Grid de cards da Aceternity UI onde, ao passar o mouse, um fundo destacado desliza suavemente entre os cards via motion (AnimatePresence + layoutId compartilhado). Funciona em light e dark.",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/card-hover-effect.tsx",
+      "content": "import { useState } from \"react\"\nimport { AnimatePresence, motion } from \"motion/react\"\n\nimport { cn } from \"@/lib/utils\"\n\ntype HoverEffectItem = {\n  title: string\n  description: string\n  link: string\n}\n\ntype HoverEffectProps = {\n  items: HoverEffectItem[]\n  className?: string\n}\n\nfunction HoverEffect({ items, className }: HoverEffectProps) {\n  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)\n\n  return (\n    <div\n      data-slot=\"card-hover-effect\"\n      className={cn(\n        \"grid grid-cols-1 py-10 md:grid-cols-2 lg:grid-cols-3\",\n        className,\n      )}\n    >\n      {items.map((item, idx) => (\n        <a\n          href={item.link}\n          key={item.link}\n          className=\"group relative block h-full w-full p-2\"\n          onMouseEnter={() => setHoveredIndex(idx)}\n          onMouseLeave={() => setHoveredIndex(null)}\n        >\n          <AnimatePresence>\n            {hoveredIndex === idx && (\n              <motion.span\n                className=\"absolute inset-0 block h-full w-full rounded-3xl bg-accent\"\n                layoutId=\"hoverBackground\"\n                initial={{ opacity: 0 }}\n                animate={{ opacity: 1, transition: { duration: 0.15 } }}\n                exit={{\n                  opacity: 0,\n                  transition: { duration: 0.15, delay: 0.2 },\n                }}\n              />\n            )}\n          </AnimatePresence>\n          <Card>\n            <CardTitle>{item.title}</CardTitle>\n            <CardDescription>{item.description}</CardDescription>\n          </Card>\n        </a>\n      ))}\n    </div>\n  )\n}\n\nfunction Card({\n  className,\n  children,\n}: {\n  className?: string\n  children: React.ReactNode\n}) {\n  return (\n    <div\n      className={cn(\n        \"relative z-20 h-full w-full overflow-hidden rounded-2xl border border-border bg-card p-4 transition-colors group-hover:border-foreground/30 dark:group-hover:border-foreground/40\",\n        className,\n      )}\n    >\n      <div className=\"relative z-50\">\n        <div className=\"p-4\">{children}</div>\n      </div>\n    </div>\n  )\n}\n\nfunction CardTitle({\n  className,\n  children,\n}: {\n  className?: string\n  children: React.ReactNode\n}) {\n  return (\n    <h4\n      className={cn(\"mt-4 font-bold tracking-wide text-card-foreground\", className)}\n    >\n      {children}\n    </h4>\n  )\n}\n\nfunction CardDescription({\n  className,\n  children,\n}: {\n  className?: string\n  children: React.ReactNode\n}) {\n  return (\n    <p\n      className={cn(\n        \"mt-8 text-sm leading-relaxed tracking-wide text-muted-foreground\",\n        className,\n      )}\n    >\n      {children}\n    </p>\n  )\n}\n\nexport { HoverEffect }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

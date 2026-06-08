@@ -1,0 +1,31 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "react-wheel-picker",
+  "title": "React Wheel Picker",
+  "description": "Picker estilo iOS com 3 colunas (data picker) que rola como uma roda. Wrapper sobre react-wheel-picker.",
+  "dependencies": [
+    "@ncdai/react-wheel-picker",
+    "class-variance-authority"
+  ],
+  "registryDependencies": [
+    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/react-wheel-picker.tsx",
+      "content": "import * as React from \"react\"\nimport {\n  WheelPicker,\n  WheelPickerWrapper,\n  type WheelPickerOption,\n  type WheelPickerValue,\n} from \"@ncdai/react-wheel-picker\"\nimport \"@ncdai/react-wheel-picker/dist/style.css\"\nimport { type VariantProps } from \"class-variance-authority\"\nimport { useTheme } from \"@/components/theme/use-theme\"\nimport { cn } from \"@/lib/utils\"\nimport { reactWheelPickerVariants } from \"@/components/ui/react-wheel-picker-variants\"\n\n// ─── Tipos públicos ────────────────────────────────────────────────\n\nexport type ReactWheelPickerDensity = \"compact\" | \"default\" | \"relaxed\"\n\nexport type ReactWheelPickerProps<T extends WheelPickerValue = string> = Omit<\n  React.HTMLAttributes<HTMLDivElement>,\n  \"children\"\n> &\n  VariantProps<typeof reactWheelPickerVariants> & {\n    /**\n     * Array de opções para o picker.\n     * Cada opção tem `value`, `label`, opcional `textValue` e `disabled`.\n     */\n    options: WheelPickerOption<T>[]\n\n    /** Valor selecionado (controlled). */\n    value?: T\n\n    /** Valor inicial quando uncontrolled. */\n    defaultValue?: T\n\n    /** Callback disparado quando o valor muda. */\n    onValueChange?: (value: T) => void\n\n    /** Habilita scroll infinito. @default false */\n    infinite?: boolean\n\n    /** Número de opções visíveis no anel (múltiplo de 4). @default 8 */\n    visibleCount?: number\n\n    /** Sensibilidade do drag (maior = mais sensível). @default 1 */\n    dragSensitivity?: number\n\n    /** Sensibilidade do scroll (maior = mais sensível). @default 1 */\n    scrollSensitivity?: number\n\n    /** Altura de cada item em pixels. @default 32 */\n    optionItemHeight?: number\n  }\n\n// ─── Componente ────────────────────────────────────────────────────\n\nfunction ReactWheelPicker<T extends WheelPickerValue = string>({\n  options,\n  value,\n  defaultValue,\n  onValueChange,\n  infinite,\n  visibleCount,\n  dragSensitivity,\n  scrollSensitivity,\n  optionItemHeight,\n  density,\n  variant,\n  className,\n  ...hostProps\n}: ReactWheelPickerProps<T>) {\n  const { resolvedTheme } = useTheme()\n\n  return (\n    <div\n      data-slot=\"react-wheel-picker\"\n      data-density={density ?? \"default\"}\n      data-theme={resolvedTheme}\n      style={{ colorScheme: resolvedTheme }}\n      className={cn(\n        reactWheelPickerVariants({ density, variant, className })\n      )}\n      {...hostProps}\n    >\n      <WheelPickerWrapper>\n        <WheelPicker\n          options={options}\n          value={value}\n          defaultValue={defaultValue}\n          onValueChange={onValueChange}\n          infinite={infinite}\n          visibleCount={visibleCount}\n          dragSensitivity={dragSensitivity}\n          scrollSensitivity={scrollSensitivity}\n          optionItemHeight={optionItemHeight}\n        />\n      </WheelPickerWrapper>\n    </div>\n  )\n}\n\nexport { ReactWheelPicker }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/react-wheel-picker-variants.ts",
+      "content": "import { cva } from \"class-variance-authority\"\n\n/**\n * Variantes de WheelPicker no padrão shadcn/ui.\n *\n * - `density`: controla o `--rwp-item-height` (altura de cada item)\n * - `variant`: estilo do container externo (default, ghost)\n *\n * A altura do wrapper é controlada por `--rwp-height` (default 320px)\n * e pode ser sobrescrita via CSS inline ou className/style.\n */\nexport const reactWheelPickerVariants = cva(\n  \"relative w-full overflow-hidden rounded-lg border border-border bg-background text-foreground\",\n  {\n    variants: {\n      density: {\n        compact: \"[--rwp-item-height:24px]\",\n        default: \"[--rwp-item-height:32px]\",\n        relaxed: \"[--rwp-item-height:40px]\",\n      },\n      variant: {\n        default: \"\",\n        ghost: \"border-transparent bg-transparent\",\n      },\n    },\n    defaultVariants: {\n      density: \"default\",\n      variant: \"default\",\n    },\n  }\n)\n",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    "[data-slot=\"react-wheel-picker\"] [data-slot=\"option-item\"]": {
+      "color": "color-mix(in oklab, var(--foreground) 65%, transparent)"
+    }
+  },
+  "type": "registry:ui"
+}

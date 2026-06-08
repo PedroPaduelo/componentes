@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "icon-swap",
+  "title": "Icon Swap",
+  "description": "Componente que troca entre dois ícones com crossfade (Sun↔Moon, Eye↔EyeOff, etc.).",
+  "dependencies": [
+    "lucide-react"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/icon-swap.tsx",
+      "content": "import * as React from \"react\"\nimport type { LucideIcon } from \"lucide-react\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface IconSwapProps {\n  iconOn: LucideIcon\n  iconOff: LucideIcon\n  active: boolean\n  className?: string\n  duration?: number\n  iconClassName?: string\n  onClick?: React.MouseEventHandler<HTMLButtonElement>\n  type?: \"button\" | \"submit\" | \"reset\"\n  \"aria-label\"?: string\n  \"aria-hidden\"?: boolean\n}\n\nexport function IconSwap({\n  iconOn: IconOn,\n  iconOff: IconOff,\n  active,\n  className,\n  duration = 300,\n  iconClassName = \"size-4\",\n  onClick,\n  type = \"button\",\n  \"aria-label\": ariaLabel = \"Toggle icon\",\n  \"aria-hidden\": ariaHidden,\n}: IconSwapProps) {\n  const transitionStyle: React.CSSProperties = {\n    transitionProperty: \"opacity, transform\",\n    transitionDuration: `${duration}ms`,\n    transitionTimingFunction: \"cubic-bezier(0.4, 0, 0.2, 1)\",\n  }\n\n  return (\n    <button\n      data-slot=\"icon-swap\"\n      type={type}\n      onClick={onClick}\n      aria-label={ariaHidden ? undefined : ariaLabel}\n      aria-hidden={ariaHidden}\n      className={cn(\"relative inline-flex items-center justify-center\", className)}\n      style={{ transition: `all ${duration}ms cubic-bezier(0.4, 0, 0.2, 1)` }}\n    >\n      <IconOn\n        className={cn(\n          \"absolute inset-0 m-auto transition-all\",\n          iconClassName,\n          active\n            ? \"opacity-100 scale-100 rotate-0\"\n            : \"opacity-0 scale-50 rotate-90\",\n        )}\n        style={transitionStyle}\n        aria-hidden={!active}\n      />\n      <IconOff\n        className={cn(\n          \"absolute inset-0 m-auto transition-all\",\n          iconClassName,\n          !active\n            ? \"opacity-100 scale-100 rotate-0\"\n            : \"opacity-0 scale-50 -rotate-90\",\n        )}\n        style={transitionStyle}\n        aria-hidden={active}\n      />\n      <span className={cn(\"invisible\", iconClassName)} aria-hidden=\"true\">\n        <IconOn className={iconClassName} />\n      </span>\n    </button>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

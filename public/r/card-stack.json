@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "card-stack",
+  "title": "Card Stack",
+  "description": "Pilha de cards de testimonials da Aceternity UI que rotaciona automaticamente: a cada ~5s o card do topo vai pro fundo. Empilhamento com offset vertical e escala decrescente por profundidade, animado com motion. Inclui o helper Highlight pra destacar trechos em emerald.",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/card-stack.tsx",
+      "content": "import * as React from \"react\"\nimport { motion } from \"motion/react\"\n\nimport { cn } from \"@/lib/utils\"\nimport type {\n  CardStackItem,\n  CardStackProps,\n  HighlightProps,\n} from \"@/components/ui/card-stack-types\"\n\n/**\n * Pilha de cards de testimonials (Aceternity UI) que rotaciona automaticamente:\n * a cada ~5s o card do topo vai pro fundo. Cada card é um motion.div com `top`\n * e `scale` derivados do índice, animados. Adaptado ao padrão da vitrine\n * (data-slot, named export, cn) e ao tema (light/dark via classes `dark:`).\n */\nfunction CardStack({\n  items,\n  offset = 10,\n  scaleFactor = 0.06,\n  className,\n}: CardStackProps) {\n  const [cards, setCards] = React.useState<CardStackItem[]>(items)\n\n  React.useEffect(() => {\n    setCards(items)\n  }, [items])\n\n  React.useEffect(() => {\n    const interval: ReturnType<typeof setInterval> = setInterval(() => {\n      setCards((prev) => {\n        const next = [...prev]\n        const last = next.pop()\n        if (last) next.unshift(last)\n        return next\n      })\n    }, 5000)\n\n    return () => clearInterval(interval)\n  }, [])\n\n  return (\n    <div\n      data-slot=\"card-stack\"\n      className={cn(\"relative h-60 w-60 md:h-60 md:w-96\", className)}\n    >\n      {cards.map((card, index) => (\n        <motion.div\n          key={card.id}\n          className=\"absolute flex h-60 w-60 flex-col justify-between rounded-3xl border border-border bg-card p-4 text-card-foreground shadow-xl shadow-black/[0.1] md:h-60 md:w-96 dark:shadow-white/[0.05]\"\n          style={{ transformOrigin: \"top center\" }}\n          animate={{\n            top: index * -offset,\n            scale: 1 - index * scaleFactor,\n            zIndex: cards.length - index,\n          }}\n        >\n          <div className=\"font-normal text-foreground\">{card.content}</div>\n          <div>\n            <p className=\"font-medium text-foreground\">{card.name}</p>\n            <p className=\"font-normal text-muted-foreground\">\n              {card.designation}\n            </p>\n          </div>\n        </motion.div>\n      ))}\n    </div>\n  )\n}\n\n/** Destaca um trecho do conteúdo com fundo emerald (brand do efeito). */\nfunction Highlight({ children, className }: HighlightProps) {\n  return (\n    <span\n      className={cn(\n        \"rounded-sm bg-emerald-100 px-1 py-0.5 font-bold text-emerald-700 dark:bg-emerald-700/[0.2] dark:text-emerald-500\",\n        className\n      )}\n    >\n      {children}\n    </span>\n  )\n}\n\nexport { CardStack, Highlight }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/card-stack-types.ts",
+      "content": "import type * as React from \"react\"\n\n/** Um card de testimonial da pilha. */\nexport type CardStackItem = {\n  id: number\n  name: string\n  designation: string\n  content: React.ReactNode\n}\n\nexport type CardStackProps = {\n  /** Itens exibidos na pilha. A ordem inicial define a profundidade. */\n  items: CardStackItem[]\n  /** Deslocamento vertical (px) entre cards empilhados. Default: 10. */\n  offset?: number\n  /** Fator de redução de escala por profundidade. Default: 0.06. */\n  scaleFactor?: number\n  /** Classe extra aplicada ao wrapper. */\n  className?: string\n}\n\nexport type HighlightProps = {\n  children: React.ReactNode\n  className?: string\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

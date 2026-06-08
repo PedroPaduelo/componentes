@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "squiggly-text",
+  "title": "Squiggly Text",
+  "description": "Texto da Aceternity UI que 'treme' ciclicamente entre filtros SVG (feTurbulence + feDisplacementMap) com seeds diferentes, criando efeito de vibração/ondulação configurável (steps, stepDuration, scale, baseFrequency, numOctaves). Animação por useTime + useTransform de motion/react; o filtro aplica em qualquer texto inline ou em bloco (as='span'|'div').",
+  "dependencies": [
+    "motion"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/squiggly-text.tsx",
+      "content": "import React, { useId } from \"react\"\nimport { motion, useTime, useTransform } from \"motion/react\"\nimport { cn } from \"@/lib/utils\"\n\nexport interface SquigglyTextProps {\n  /** Texto (ou qualquer node) a envolver com o efeito squiggly. */\n  children: React.ReactNode\n  className?: string\n  style?: React.CSSProperties\n  /** Quantidade de filtros SVG gerados (cada um com seed diferente).\n   *  O efeito cicla entre eles a cada `stepDuration` ms. @default 5 */\n  steps?: number\n  /** Duração em ms de cada passo do ciclo. @default 80 */\n  stepDuration?: number\n  /** Intensidade do displacement. Número único ou tupla alternada por step.\n   *  @default [6, 8] */\n  scale?: number | [number, number]\n  /** Frequência base do ruído (turbulência). @default 0.02 */\n  baseFrequency?: number\n  /** Octaves do `feTurbulence`. @default 3 */\n  numOctaves?: number\n  /** Elemento raiz. \"span\" é inline; \"div\" quebra pra bloco.\n   *  @default \"span\" */\n  as?: \"span\" | \"div\"\n}\n\nexport function SquigglyText({\n  children,\n  steps = 5,\n  stepDuration = 80,\n  scale = [6, 8],\n  baseFrequency = 0.02,\n  numOctaves = 3,\n  as = \"span\",\n  className,\n  style,\n}: SquigglyTextProps) {\n  const reactId = useId()\n  // useId pode gerar \":\" / \"_\" inválidos em url(#…)\n  const safeId = reactId.replace(/[:_]/g, \"\")\n  const filterId = React.useCallback(\n    (i: number) => `squiggly-${safeId}-${i}`,\n    [safeId],\n  )\n\n  const filters = React.useMemo(\n    () => Array.from({ length: steps }, (_, i) => `url(#${filterId(i)})`),\n    [steps, filterId],\n  )\n\n  const time = useTime()\n  const filter = useTransform(\n    time,\n    (t) => filters[Math.floor(t / stepDuration) % filters.length],\n  )\n\n  const scaleAt = (i: number) =>\n    Array.isArray(scale) ? scale[i % scale.length] : scale\n\n  const Wrapper = as === \"div\" ? motion.div : motion.span\n\n  return (\n    <Wrapper\n      style={{ filter, ...style }}\n      className={cn(\"inline-block\", className)}\n      data-slot=\"squiggly-text\"\n    >\n      <svg\n        aria-hidden\n        className=\"pointer-events-none absolute h-0 w-0 overflow-hidden\"\n        xmlns=\"http://www.w3.org/2000/svg\"\n      >\n        <defs>\n          {Array.from({ length: steps }).map((_, i) => (\n            <filter id={filterId(i)} key={i}>\n              <feTurbulence\n                baseFrequency={baseFrequency}\n                numOctaves={numOctaves}\n                result=\"noise\"\n                seed={i}\n              />\n              <feDisplacementMap\n                in=\"SourceGraphic\"\n                in2=\"noise\"\n                scale={scaleAt(i)}\n              />\n            </filter>\n          ))}\n        </defs>\n      </svg>\n      {children}\n    </Wrapper>\n  )\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

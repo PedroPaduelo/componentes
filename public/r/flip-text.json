@@ -1,0 +1,68 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "flip-text",
+  "title": "Flip Text",
+  "description": "Texto com animação 3D flip caractere-por-caractere, usando rotateX + CSS variables e delays staggered (sine wave) para efeito de onda.",
+  "files": [
+    {
+      "path": "src/components/ui/flip-text.tsx",
+      "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\nimport { type FlipTextProps } from \"./flip-text-types\"\n\n/**\n * FlipText — cada caractere do `children` rotaciona no eixo X com timing\n * staggered (sine wave), criando um efeito de onda 3D contínuo.\n *\n * Implementação puramente CSS: `perspective` no wrapper,\n * `transform-style: preserve-3d` em words e chars, e `::before`/`::after`\n * com `backface-visibility: hidden` para o flip. Veja o bloco\n * `Flip Text` no topo de `src/index.css` (keyframe + classes `.flip-char`).\n *\n * A cor do texto é herdada via `color: inherit` e `-webkit-text-fill-color:\n * currentColor` nas faces, então o componente se adapta automaticamente a\n * `text-foreground`, `text-blue-500`, etc.\n */\nfunction FlipText({\n  className,\n  children,\n  duration = 2.2,\n  delay = 0,\n  loop = true,\n  separator = \" \",\n}: FlipTextProps) {\n  const words = React.useMemo(\n    () => children.split(separator),\n    [children, separator],\n  )\n  const totalChars = children.length\n\n  const getCharIndex = (wordIndex: number, charIndex: number) => {\n    let index = 0\n    for (let i = 0; i < wordIndex; i++) {\n      index += words[i].length + (separator === \" \" ? 1 : separator.length)\n    }\n    return index + charIndex\n  }\n\n  return (\n    <span\n      data-slot=\"flip-text\"\n      className={cn(\"flip-text-wrapper inline-block leading-none\", className)}\n      style={{ perspective: \"1000px\" }}\n    >\n      {words.map((word, wordIndex) => {\n        const chars = word.split(\"\")\n        return (\n          <span\n            key={wordIndex}\n            className=\"word inline-block whitespace-nowrap\"\n            style={{ transformStyle: \"preserve-3d\" }}\n          >\n            {chars.map((char, charIndex) => {\n              const currentGlobalIndex = getCharIndex(wordIndex, charIndex)\n              const normalizedIndex = currentGlobalIndex / totalChars\n              const sineValue = Math.sin(normalizedIndex * (Math.PI / 2))\n              const calculatedDelay = sineValue * (duration * 0.25) + delay\n              return (\n                <span\n                  key={charIndex}\n                  className=\"flip-char inline-block relative\"\n                  data-char={char}\n                  style={\n                    {\n                      \"--flip-duration\": `${duration}s`,\n                      \"--flip-delay\": `${calculatedDelay}s`,\n                      \"--flip-iteration\": loop ? \"infinite\" : \"1\",\n                      transformStyle: \"preserve-3d\",\n                    } as React.CSSProperties & Record<`--${string}`, string>\n                  }\n                >\n                  {char}\n                </span>\n              )\n            })}\n            {separator === \" \" && wordIndex < words.length - 1 && (\n              <span className=\"inline-block\">&nbsp;</span>\n            )}\n            {separator !== \" \" && wordIndex < words.length - 1 && (\n              <span className=\"inline-block\">{separator}</span>\n            )}\n          </span>\n        )\n      })}\n    </span>\n  )\n}\n\nexport { FlipText }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/flip-text-types.ts",
+      "content": "/**\n * Tipos públicos do componente `FlipText`.\n *\n * Este arquivo existe separado de `flip-text.tsx` por causa do lint\n * `react-refresh/only-export-components`: um arquivo `.tsx` que mistura a\n * declaração do componente com tipos/interfaces dispara o lint. Mantemos\n * o `flip-text.tsx` puro (apenas o componente) e os types aqui.\n *\n * Consumidores devem importar o componente de `@/components/ui/flip-text`\n * e os types do mesmo caminho (o barrel `index.ts` re-exporta ambos).\n */\n\nimport type * as React from \"react\"\n\n/**\n * Props do componente `FlipText`.\n *\n * Cada caractere do `children` rotaciona no eixo X com timing staggered\n * (sine wave), criando um efeito de onda 3D contínuo. O componente é\n * puramente CSS — sem deps externas, sem JS de animação.\n */\nexport type FlipTextProps = React.HTMLAttributes<HTMLSpanElement> & {\n  /** Texto a ser renderizado com efeito flip. Caracteres são tratados individualmente. */\n  children: string\n  /**\n   * Duração da animação por ciclo, em segundos. Default: 2.2.\n   * Valores menores = animação mais rápida, valores maiores = mais lenta.\n   */\n  duration?: number\n  /**\n   * Delay inicial em segundos antes do primeiro ciclo. Default: 0.\n   * Útil pra sincronizar o início do efeito com outros elementos.\n   */\n  delay?: number\n  /**\n   * Se true (default), a animação repete infinitamente. Se false, roda\n   * apenas uma vez e para na posição final.\n   */\n  loop?: boolean\n  /**\n   * String usada como separador visual entre palavras. Default: \" \".\n   * Espaços são preservados visualmente como `&nbsp;`; outros separadores\n   * são renderizados como um span inline.\n   */\n  separator?: string\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    ".flip-char": {
+      "color": "inherit",
+      "-webkit-text-fill-color": "transparent",
+      "height": "1.2em",
+      "line-height": "1.2em",
+      "vertical-align": "middle",
+      "animation": "flip var(--flip-duration, 2.2s) var(--flip-delay, 0s) var(--flip-iteration, infinite) ease"
+    },
+    ".flip-char::before, .flip-char::after": {
+      "color": "inherit",
+      "-webkit-text-fill-color": "currentColor",
+      "content": "attr(data-char)",
+      "position": "absolute",
+      "top": "50%",
+      "left": "50%",
+      "height": "100%",
+      "width": "100%",
+      "display": "flex",
+      "align-items": "center",
+      "justify-content": "center",
+      "backface-visibility": "hidden",
+      "animation": "fade var(--flip-duration, 2.2s) var(--flip-delay, 0s) var(--flip-iteration, infinite) ease"
+    },
+    ".flip-char::after": {
+      "transform": "translate(-50%, -50%) translateZ(0.6em)"
+    },
+    ".flip-char::before": {
+      "transform": "translate(-50%, -50%) rotateX(-90deg) translateZ(0.6em)",
+      "opacity": "0",
+      "--opacity": "1"
+    },
+    "@keyframes flip": {
+      "0%, 60%": {
+        "transform": "rotateX(0)"
+      },
+      "60%, 100%": {
+        "transform": "rotateX(-90deg)"
+      }
+    },
+    "@keyframes fade": {
+      "0%, 60%": {
+        "opacity": "1"
+      },
+      "60%, 100%": {
+        "opacity": "0"
+      }
+    }
+  },
+  "type": "registry:ui"
+}

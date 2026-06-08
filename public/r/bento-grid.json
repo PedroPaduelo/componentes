@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "bento-grid",
+  "title": "Bento Grid",
+  "description": "Grid bento responsivo (1 coluna no mobile, 3 colunas no desktop) com cards de tamanhos variados. Cada item aceita header, título, descrição e ícone, com micro-interação de deslize no hover.",
+  "files": [
+    {
+      "path": "src/components/ui/bento-grid.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport type BentoGridProps = Omit<\n  React.HTMLAttributes<HTMLDivElement>,\n  \"children\"\n> & {\n  children?: React.ReactNode\n}\n\nexport type BentoGridItemProps = Omit<\n  React.HTMLAttributes<HTMLDivElement>,\n  \"title\"\n> & {\n  title?: React.ReactNode\n  description?: React.ReactNode\n  header?: React.ReactNode\n  icon?: React.ReactNode\n}\n\nfunction BentoGrid({ className, children, ...props }: BentoGridProps) {\n  return (\n    <div\n      data-slot=\"bento-grid\"\n      className={cn(\n        \"mx-auto grid max-w-7xl grid-cols-1 gap-4 md:auto-rows-[18rem] md:grid-cols-3\",\n        className,\n      )}\n      {...props}\n    >\n      {children}\n    </div>\n  )\n}\n\nfunction BentoGridItem({\n  className,\n  title,\n  description,\n  header,\n  icon,\n  ...props\n}: BentoGridItemProps) {\n  return (\n    <div\n      data-slot=\"bento-grid-item\"\n      className={cn(\n        \"group/bento row-span-1 flex flex-col justify-between space-y-4 rounded-xl border border-border bg-card p-4 shadow-sm transition duration-200 hover:shadow-xl\",\n        className,\n      )}\n      {...props}\n    >\n      {header}\n      <div className=\"transition duration-200 group-hover/bento:translate-x-2\">\n        {icon}\n        <div className=\"mt-2 mb-2 font-sans font-bold text-foreground\">\n          {title}\n        </div>\n        <div className=\"font-sans text-xs font-normal text-muted-foreground\">\n          {description}\n        </div>\n      </div>\n    </div>\n  )\n}\n\nexport { BentoGrid, BentoGridItem }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

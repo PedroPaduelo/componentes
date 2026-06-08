@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "surface-context",
+  "title": "Surface Context",
+  "files": [
+    {
+      "path": "src/lib/surface-context-internal.ts",
+      "content": "\"use client\";\n\nimport { createContext, useContext } from \"react\";\n\nexport const SurfaceContext = createContext<number>(1);\n\nexport function useSurface(): number {\n  return useContext(SurfaceContext);\n}\n",
+      "type": "registry:lib"
+    },
+    {
+      "path": "src/lib/surface-context-provider.tsx",
+      "content": "\"use client\";\n\nimport { type ReactNode } from \"react\";\nimport { SurfaceContext } from \"@/lib/surface-context-internal\";\n\nexport function SurfaceProvider({\n  value,\n  children,\n}: {\n  value: number;\n  children: ReactNode;\n}) {\n  return (\n    <SurfaceContext.Provider value={Math.max(1, Math.min(8, value))}>\n      {children}\n    </SurfaceContext.Provider>\n  );\n}\n",
+      "type": "registry:lib"
+    },
+    {
+      "path": "src/lib/surface-context.ts",
+      "content": "// Barrel: keeps the upstream @fluid import path `@/lib/surface-context` stable\n// while splitting the hook (surface-context-internal.ts) and the provider\n// component (surface-context-provider.tsx) into separate files so each obeys\n// the react-refresh/only-export-components rule.\nexport { useSurface, SurfaceContext } from \"@/lib/surface-context-internal\";\nexport { SurfaceProvider } from \"@/lib/surface-context-provider\";\n",
+      "type": "registry:lib"
+    }
+  ],
+  "type": "registry:lib"
+}

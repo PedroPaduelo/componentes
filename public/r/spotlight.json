@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "spotlight",
+  "title": "Spotlight",
+  "description": "Efeito de holofote da Aceternity UI: um SVG com elipse desfocada que simula um facho de luz vindo de um canto, com fade-in suave (animate-spotlight). Posicionado de forma absoluta dentro de um container relative de fundo escuro, atrás do conteúdo. Cor configurável via prop fill.",
+  "files": [
+    {
+      "path": "src/components/ui/spotlight.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport type SpotlightProps = Omit<\n  React.SVGProps<SVGSVGElement>,\n  \"viewBox\" | \"fill\"\n> & {\n  /** Cor do brilho do holofote. Default: branco. */\n  fill?: string\n}\n\n/**\n * Spotlight (Aceternity UI) — SVG de uma elipse desfocada que simula um facho\n * de luz vindo de um canto, com fade-in suave (`animate-spotlight`). Pensado\n * para ser posicionado de forma absoluta dentro de um container `relative` de\n * fundo escuro, atrás do conteúdo.\n */\nfunction Spotlight({ className, fill, ...props }: SpotlightProps) {\n  return (\n    <svg\n      data-slot=\"spotlight\"\n      className={cn(\n        \"animate-spotlight pointer-events-none absolute z-[1] h-[169%] w-[138%] opacity-0 lg:w-[84%]\",\n        className\n      )}\n      xmlns=\"http://www.w3.org/2000/svg\"\n      viewBox=\"0 0 3787 2842\"\n      fill=\"none\"\n      {...props}\n    >\n      <g filter=\"url(#spotlight-filter)\">\n        <ellipse\n          cx=\"1924.71\"\n          cy=\"273.501\"\n          rx=\"1924.71\"\n          ry=\"273.501\"\n          transform=\"matrix(-0.822377 -0.568943 -0.568943 0.822377 3631.88 2291.09)\"\n          fill={fill || \"white\"}\n          fillOpacity=\"0.21\"\n        />\n      </g>\n      <defs>\n        <filter\n          id=\"spotlight-filter\"\n          x=\"0.860352\"\n          y=\"0.838989\"\n          width=\"3785.16\"\n          height=\"2840.26\"\n          filterUnits=\"userSpaceOnUse\"\n          colorInterpolationFilters=\"sRGB\"\n        >\n          <feFlood floodOpacity=\"0\" result=\"BackgroundImageFix\" />\n          <feBlend\n            mode=\"normal\"\n            in=\"SourceGraphic\"\n            in2=\"BackgroundImageFix\"\n            result=\"shape\"\n          />\n          <feGaussianBlur\n            stdDeviation=\"151\"\n            result=\"effect1_foregroundBlur_1065_8\"\n          />\n        </filter>\n      </defs>\n    </svg>\n  )\n}\n\nexport { Spotlight }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

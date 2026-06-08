@@ -2,7 +2,7 @@
   "$schema": "https://ui.shadcn.com/schema/registry-item.json",
   "name": "meteors",
   "title": "Meteors",
-  "description": "Efeito de chuva de meteoros animada (Aceternity) renderizado sobre um container relativo. Usa motion para o fade-in e um keyframe próprio para o movimento dos meteoros.",
+  "description": "Efeito de fundo da Aceternity UI: uma chuva de meteoros diagonais que cruzam a tela em loop, cada um com atraso e duração aleatórios. Fica atrás do conteúdo (card/hero) para dar movimento sutil. Quantidade configurável via prop number.",
   "dependencies": [
     "motion"
   ],

@@ -4,11 +4,626 @@
   "homepage": "https://componentes-fe-cmq0d9kr.cloud.serendiped.com",
   "items": [
     {
+      "name": "3d-card-effect",
+      "type": "registry:ui",
+      "title": "3D Card Effect",
+      "description": "Card que inclina seguindo o cursor com elementos internos flutuando em profundidades distintas (perspectiva 3D real).",
+      "files": [
+        {
+          "path": "src/components/ui/3d-card.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/3d-card-context.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/3d-card-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "3d-globe",
+      "type": "registry:ui",
+      "title": "3D Globe",
+      "description": "Globo terrestre 3D que rotaciona automaticamente, reimplementado com a lib leve cobe (~5kb) sobre WebGL — sem texturas ou imagens remotas. Os pontos do mapa e os markers são desenhados por shader. Cores dark fixas (globo escuro + markers ciano) são a assinatura visual do efeito (estilo Aceternity), então não seguem o tema shadcn. Faz cleanup do contexto WebGL (globe.destroy() + cancelAnimationFrame) ao desmontar.",
+      "dependencies": [
+        "cobe"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/3d-globe.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "3d-marquee",
+      "type": "registry:ui",
+      "title": "3D Marquee",
+      "description": "Grid 4 colunas em perspectiva 3D (rotateX 55°, rotateZ -45°) onde cada coluna rola verticalmente em loop infinito reverso, com durações alternadas (10s nas pares, 15s nas ímpares). Cada imagem ganha um leve translateY no hover. Inclui overlays decorativos de linhas horizontais/verticais com mask gradient nas bordas. Imagens mínimas: 16 (4 por coluna) — ideal 24 (6 por coluna).",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/3d-marquee.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/3d-marquee-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "3d-pin",
+      "type": "registry:ui",
+      "title": "3D Pin",
+      "description": "Card da Aceternity UI que inclina em 3D (rotateX + scale) no hover, acompanhado de um PinPerspective (linhas cyan e bolhas concêntricas em loop) que sobe do card. Ideal para destacar um CTA ou um item em destaque numa grid.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/3d-pin.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "accordion",
+      "type": "registry:ui",
+      "title": "Accordion",
+      "description": "Grupo de itens expansíveis com animação de abertura/fechamento. Baseado em @radix-ui/react-accordion.",
+      "dependencies": [
+        "@radix-ui/react-accordion",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/accordion.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "accordion-fluid",
+      "type": "registry:ui",
+      "title": "Accordion (Fluid)",
+      "description": "Accordion da Fluid Functionalism com expansão animada por mola, destaque por proximidade do cursor, anel de foco e modos single/multiple.",
+      "dependencies": [
+        "@radix-ui/react-accordion",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/accordion-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "alert",
+      "type": "registry:ui",
+      "title": "Alert",
+      "description": "Mensagem de destaque para informar, avisar ou comunicar erros. Variantes default e destrutiva.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/alert.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/alert-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "alert-dialog",
+      "type": "registry:ui",
+      "title": "Alert Dialog",
+      "description": "Diálogo modal de confirmação para ações destrutivas. Baseado em @radix-ui/react-alert-dialog.",
+      "dependencies": [
+        "@radix-ui/react-alert-dialog",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/alert-dialog.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/button-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "animated-button",
+      "type": "registry:ui",
+      "title": "Animated Button",
+      "description": "Botão com borda brilhante animada e text reveal (mask gradient deslizante) — ideal para chamadas de ação (CTA).",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/animated-button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "animated-modal",
+      "type": "registry:ui",
+      "title": "Animated Modal",
+      "description": "Modal da Aceternity UI com animação de entrada cinematográfica (scale + rotateX + translateY), overlay com backdrop-blur, click-outside e body scroll-lock enquanto aberto. Composto por 5 peças (Provider, Trigger, Body, Content, Footer) que se combinam via Context.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/animated-modal.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/animated-modal-hooks.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "animated-number",
+      "type": "registry:ui",
+      "title": "Animated Number",
+      "description": "Número slot-machine (dígitos rolando 0–9) + placar com feedback de cor (verde sobe, vermelho desce) e bounce.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/animated-number.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "animated-testimonials",
+      "type": "registry:ui",
+      "title": "Animated Testimonials",
+      "description": "Carrossel de depoimentos da Aceternity UI com AnimatePresence (motion v12): imagem rotaciona 3D aleatoriamente e entra com scale + z-index, nome/cargo/citação trocam com stagger de blur por palavra. Suporta autoplay (5s) e lista arbitrária de testemunhos via prop `testimonials`.",
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/animated-testimonials.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/animated-testimonials-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "animated-tooltip",
+      "type": "registry:ui",
+      "title": "Animated Tooltip",
+      "description": "Fileira de avatares com tooltip animado que segue o cursor — useSpring + useTransform + AnimatePresence. O tooltip inclina e translada conforme a posição do mouse sobre o avatar. Cores dark hardcoded (fundo preto + gradientes emerald/sky) são a assinatura visual do efeito, não seguem tema shadcn.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/animated-tooltip.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/animated-tooltip-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "apple-cards-carousel",
+      "type": "registry:ui",
+      "title": "Apple Cards Carousel",
+      "description": "Carrossel horizontal estilo Apple com cards que expandem em modal via layoutId (motion/react). Navegação por setas, scroll e botão X. Fecha com Escape ou clique fora.",
+      "dependencies": [
+        "@tabler/icons-react",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-outside-click.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/apple-cards-carousel.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "ascii-art",
+      "type": "registry:ui",
+      "title": "ASCII Art",
+      "description": "Renderizador de imagem como ASCII art em canvas com animação (fade/typewriter/matrix). Suporta múltiplos charsets (standard, blocks, braille, dense, etc.), cores customizadas, ASCII colorido e efeito matrix com caracteres katakana.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/ascii-art.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/ascii-art-charsets.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/ascii-art-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "ask-user-questions-fluid",
+      "type": "registry:ui",
+      "title": "Ask User Questions (Fluid)",
+      "description": "Fluxo de perguntas da Fluid Functionalism: seleção única ou múltipla, campo 'Outro', mesclagem animada de seleções contíguas, navegação por teclado e Back/Skip/Continue.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button-fluid.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-merge-split.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/ask-user-questions-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "aspect-ratio",
+      "type": "registry:ui",
+      "title": "Aspect Ratio",
+      "description": "Container que mantém proporção fixa (16:9, 4:3, 1:1, etc.) para imagens e mídia. Baseado em @radix-ui/react-aspect-ratio.",
+      "dependencies": [
+        "@radix-ui/react-aspect-ratio"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/aspect-ratio.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "aurora-background",
+      "type": "registry:ui",
+      "title": "Aurora Background",
+      "description": "Fundo animado da Aceternity UI com gradiente aurora (repeating-linear-gradient em tons azul/índigo/violeta) que desliza horizontalmente em loop infinito (keyframe aurora 60s). Inclui mask radial opcional, variação automática para dark mode e blend difference para contraste orgânico do conteúdo. Cores do efeito são fixas (assinatura visual).",
+      "files": [
+        {
+          "path": "src/components/ui/aurora-background.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "cssVars": {
+        "theme": {
+          "--animate-aurora": "aurora 60s linear infinite"
+        }
+      },
+      "css": {
+        "@keyframes aurora": {
+          "from": {
+            "background-position": "50% 50%, 50% 50%"
+          },
+          "to": {
+            "background-position": "350% 50%, 350% 50%"
+          }
+        }
+      }
+    },
+    {
+      "name": "avatar",
+      "type": "registry:ui",
+      "title": "Avatar",
+      "description": "Imagem de perfil com fallback automático (iniciais). Baseado em @radix-ui/react-avatar.",
+      "dependencies": [
+        "@radix-ui/react-avatar"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/avatar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "background-beams",
+      "type": "registry:ui",
+      "title": "Background Beams",
+      "description": "Feixes de luz (\"beams\") da Aceternity UI que seguem dezenas de paths SVG curvos animados via linearGradients em movimento (x1/y1/x2/y2 percorrendo o caminho), sobre fundo escuro. Ideal como background de hero.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/background-beams.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/background-beams-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "background-beams-with-collision",
+      "type": "registry:ui",
+      "title": "Background Beams With Collision",
+      "description": "Efeito de fundo da Aceternity UI: feixes verticais coloridos caem do topo e explodem em partículas ao colidir com a base. Detecção de colisão via getBoundingClientRect; fundo adapta ao tema.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/background-beams-with-collision.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "background-boxes",
+      "type": "registry:ui",
+      "title": "Background Boxes",
+      "description": "Grid de células da Aceternity UI sobre fundo escuro; ao passar o mouse, cada célula acende com uma cor de highlight aleatória. Container com perspectiva isométrica (skew/translate/scale) e ícones \"+\" esparsos, via motion.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/background-boxes.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "background-gradient",
+      "type": "registry:ui",
+      "title": "Background Gradient",
+      "description": "Borda em gradiente radial multicolor (verde/violeta/amarelo/azul) animada em loop suave que intensifica o brilho no hover, ideal para destacar cards e botões. Reimplementado padronizado shadcn com motion/react.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/background-gradient.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/background-gradient-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "background-gradient-animation",
+      "type": "registry:ui",
+      "title": "Background Gradient Animation",
+      "description": "Fundo da Aceternity UI com blobs de gradiente radial que se movem continuamente (CSS keyframes) e se misturam via mix-blend-mode + filtro goo (feGaussianBlur/feColorMatrix). Um blob extra segue o cursor quando interactive. Cores, tamanho e blend configuráveis.",
+      "files": [
+        {
+          "path": "src/components/ui/background-gradient-animation.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        "@keyframes bga-moveInCircle": {
+          "0%": {
+            "transform": "rotate(0deg)"
+          },
+          "50%": {
+            "transform": "rotate(180deg)"
+          },
+          "100%": {
+            "transform": "rotate(360deg)"
+          }
+        },
+        "@keyframes bga-moveVertical": {
+          "0%": {
+            "transform": "translateY(-50%)"
+          },
+          "50%": {
+            "transform": "translateY(50%)"
+          },
+          "100%": {
+            "transform": "translateY(-50%)"
+          }
+        },
+        "@keyframes bga-moveHorizontal": {
+          "0%": {
+            "transform": "translateX(-50%) translateY(-10%)"
+          },
+          "50%": {
+            "transform": "translateX(50%) translateY(10%)"
+          },
+          "100%": {
+            "transform": "translateX(-50%) translateY(-10%)"
+          }
+        },
+        "@utility animate-first": {
+          "animation": "bga-moveVertical 30s ease infinite"
+        },
+        "@utility animate-second": {
+          "animation": "bga-moveInCircle 20s reverse infinite"
+        },
+        "@utility animate-third": {
+          "animation": "bga-moveInCircle 40s linear infinite"
+        },
+        "@utility animate-fourth": {
+          "animation": "bga-moveHorizontal 40s ease infinite"
+        },
+        "@utility animate-fifth": {
+          "animation": "bga-moveInCircle 20s ease infinite"
+        }
+      }
+    },
+    {
+      "name": "background-lines",
+      "type": "registry:ui",
+      "title": "Background Lines",
+      "description": "Efeito de fundo da Aceternity UI: SVG com múltiplos paths curvos coloridos que animam em padrão de onda (wave) em loop, atrás do conteúdo. Inspirado no height.app; fundo transparente que adapta ao tema.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/background-lines.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "background-ripple-effect",
+      "type": "registry:ui",
+      "title": "Background Ripple Effect",
+      "description": "Grade de células quadradas da Aceternity UI: ao clicar numa célula, um ripple (onda de opacidade) se propaga pelas vizinhas com delay proporcional à distância. Cores reativas ao tema.",
+      "files": [
+        {
+          "path": "src/components/ui/background-ripple-effect.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/background-ripple-effect-types.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "cssVars": {
+        "theme": {
+          "--animate-cell-ripple": "cell-ripple var(--duration, 200ms) ease-out none 1 var(--delay, 0ms)"
+        }
+      },
+      "css": {
+        "@keyframes cell-ripple": {
+          "0%": {
+            "opacity": "0.4"
+          },
+          "50%": {
+            "opacity": "0.8"
+          },
+          "100%": {
+            "opacity": "0.4"
+          }
+        }
+      }
+    },
+    {
+      "name": "badge",
+      "type": "registry:ui",
+      "title": "Badge",
+      "description": "Etiqueta compacta para destacar status, contagens ou rótulos contextuais.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/badge.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/badge-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "badge-fluid",
+      "type": "registry:ui",
+      "title": "Badge (Fluid)",
+      "description": "Selo/etiqueta da Fluid Functionalism com variantes solid e dot, paleta de cores e três tamanhos.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/badge-fluid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/badge-fluid-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "bento-grid",
+      "type": "registry:ui",
+      "title": "Bento Grid",
+      "description": "Grid bento responsivo (1 coluna no mobile, 3 colunas no desktop) com cards de tamanhos variados. Cada item aceita header, título, descrição e ícone, com micro-interação de deslize no hover.",
+      "files": [
+        {
+          "path": "src/components/ui/bento-grid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "breadcrumb",
+      "type": "registry:ui",
+      "title": "Breadcrumb",
+      "description": "Trilha de navegação hierárquica com links, separadores e suporte a ellipsis com dropdown.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/breadcrumb.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "button",
       "type": "registry:ui",
       "title": "Button",
-      "description": "Botão acessível com variantes (default, destructive, outline, secondary, ghost, link) e tamanhos, baseado em class-variance-authority e Radix Slot.",
-      "dependencies": ["class-variance-authority", "@radix-ui/react-slot"],
+      "description": "Botão acionável com variantes de estilo e tamanho para disparar ações.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
       "files": [
         {
           "path": "src/components/ui/button.tsx",
@@ -21,11 +636,1964 @@
       ]
     },
     {
+      "name": "button-fluid",
+      "type": "registry:ui",
+      "title": "Button (Fluid)",
+      "description": "Botão animado da Fluid Functionalism com variantes, ícones, spinner de loading e transições fluidas no hover.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/button-fluid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/button-fluid-variants.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        "@keyframes spinner-move": {
+          "to": {
+            "stroke-dashoffset": "-100"
+          }
+        },
+        "@keyframes spinner-dash": {
+          "0%, 100%": {
+            "stroke-dasharray": "15 85"
+          },
+          "50%": {
+            "stroke-dasharray": "40 60"
+          }
+        }
+      }
+    },
+    {
+      "name": "calendar",
+      "type": "registry:ui",
+      "title": "Calendar",
+      "description": "Componente de calendário com seleção de data única, múltipla ou intervalo. Baseado em react-day-picker.",
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react",
+        "react-day-picker"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/calendar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/button-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "canvas-reveal-effect",
+      "type": "registry:ui",
+      "title": "Canvas Reveal Effect",
+      "description": "Efeito de revelação com dot matrix WebGL usando shader customizada via @react-three/fiber + three. Animação surge do centro para as bordas com opacidade progressiva.",
+      "dependencies": [
+        "@react-three/fiber",
+        "three"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/canvas-reveal-effect.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "canvas-text",
+      "type": "registry:ui",
+      "title": "Canvas Text",
+      "description": "Texto renderizado em canvas com animação e efeitos visuais.",
+      "files": [
+        {
+          "path": "src/components/ui/canvas-text.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/canvas-text-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card",
+      "type": "registry:ui",
+      "title": "Card",
+      "description": "Contêiner com cabeçalho, conteúdo e rodapé para agrupar informação relacionada.",
+      "files": [
+        {
+          "path": "src/components/ui/card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card-hover-effect",
+      "type": "registry:ui",
+      "title": "Card Hover Effect",
+      "description": "Grid de cards da Aceternity UI onde, ao passar o mouse, um fundo destacado desliza suavemente entre os cards via motion (AnimatePresence + layoutId compartilhado). Funciona em light e dark.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/card-hover-effect.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card-spotlight",
+      "type": "registry:ui",
+      "title": "Card Spotlight",
+      "description": "Card com spotlight radial que segue o cursor (CSS custom props --mouse-x/--mouse-y) e grid de dots animado via CanvasRevealEffect no hover. Cores dark fixas (brand do efeito).",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/canvas-reveal-effect.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/card-spotlight.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "card-stack",
+      "type": "registry:ui",
+      "title": "Card Stack",
+      "description": "Pilha de cards de testimonials da Aceternity UI que rotaciona automaticamente: a cada ~5s o card do topo vai pro fundo. Empilhamento com offset vertical e escala decrescente por profundidade, animado com motion. Inclui o helper Highlight pra destacar trechos em emerald.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/card-stack.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/card-stack-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "carousel",
+      "type": "registry:ui",
+      "title": "Carousel",
+      "description": "Carrossel de conteúdo com scroll horizontal, controles anterior/próximo e suporte a teclado. Baseado em embla-carousel-react.",
+      "dependencies": [
+        "embla-carousel-react",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/carousel.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "chat-message-fluid",
+      "type": "registry:ui",
+      "title": "Chat Message (Fluid)",
+      "description": "Bolha de mensagem de chat da Fluid Functionalism com entrada animada, alinhamento por remetente (usuário/assistente), anexos em miniatura e meta-linha revelada no hover.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/file-thumbnail-fluid.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/chat-message-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "checkbox",
+      "type": "registry:ui",
+      "title": "Checkbox",
+      "description": "Caixa de seleção para opções booleanas, com estados marcado e indeterminado.",
+      "dependencies": [
+        "@radix-ui/react-checkbox",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/checkbox.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "checkbox-group-fluid",
+      "type": "registry:ui",
+      "title": "Checkbox Group (Fluid)",
+      "description": "Grupo de caixas de seleção da Fluid Functionalism com fundos contíguos que se fundem/separam (merge/split), check animado e destaque por proximidade.",
+      "dependencies": [
+        "@radix-ui/react-checkbox",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-merge-split.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/checkbox-group-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "chevrons-up-down-icon",
+      "type": "registry:ui",
+      "title": "Chevrons Up Down Icon",
+      "description": "Ícone animado de dois chevrons que rotacionam suavemente — indicador visual de dropdown/select.",
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/chevrons-up-down-icon.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/chevrons-up-down-icon-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "code-block",
+      "type": "registry:ui",
+      "title": "Code Block",
+      "description": "Bloco de código da Aceternity UI com syntax highlight manual leve (regex para keywords, strings, números, comentários e identificadores), números de linha, linhas destacáveis, abas com indicator animado (motion v12) e botão de copiar inline com feedback visual (ícone Check + cor emerald por 2s). Suporta múltiplas linguagens (ts/tsx, js/jsx, py, bash, json, css) via prop `language` ou por aba. Fundo slate-900 com borda slate-800 (brand dark, alinhado com glare-card/text-reveal-card).",
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/code-block.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "code-block-command",
+      "type": "registry:ui",
+      "title": "Code Block Command",
+      "description": "Comando shell com tokens coloridos (comando, args, flags) e botão de copiar.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/code-block-command.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/code-block-command-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "collapsible",
+      "type": "registry:ui",
+      "title": "Collapsible",
+      "description": "Contêiner expansível/recolhível com animação de abertura/fechamento. Baseado em @radix-ui/react-collapsible.",
+      "dependencies": [
+        "@radix-ui/react-collapsible@^1.1.12"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/collapsible.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "color-picker-fluid",
+      "type": "registry:ui",
+      "title": "Color Picker (Fluid)",
+      "description": "Seletor de cor da Fluid Functionalism com quadrado de saturação, sliders de matiz e alpha, conta-gotas, swatches e formatos hex/rgb/hsl/oklch — em painel inline ou popover.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/dropdown-fluid.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/slider-fluid.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-classes.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/tooltip-fluid.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/color-picker-fluid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/color-picker-fluid-utils.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/dropdown-fluid-context.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "colourful-text",
+      "type": "registry:ui",
+      "title": "Colourful Text",
+      "description": "Componente Aceternity UI: cada caractere do texto anima com cor (10 tons do espectro RGB reembaralhados a cada 5s), y, scale, filter blur e opacity em loop, dando efeito de 'onda' colorida. Cores são fixas (brand do efeito, alinhado com glitch/cyber). Ideal para hero headlines e CTAs que precisam de destaque animado sem competir com o restante do copy.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/colourful-text.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/colourful-text-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "comet-card",
+      "type": "registry:ui",
+      "title": "Comet Card",
+      "description": "Card 3D da Aceternity UI que segue o cursor com tilt (rotateX/Y), parallax (translateX/Y) e um glare radial que se move com o mouse. Profundidade de rotação e translação configuráveis via props; aceita qualquer conteúdo como children dentro de um card visual com overflow-hidden.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/comet-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "command",
+      "type": "registry:ui",
+      "title": "Command",
+      "description": "Palette de comandos estilo Spotlight/Alfred com busca, agrupamento, atalhos de teclado e suporte a dialog. Baseado em cmdk.",
+      "dependencies": [
+        "cmdk",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/dialog.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/command.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "compare",
+      "type": "registry:ui",
+      "title": "Compare",
+      "description": "Slider de comparação de 2 imagens com handle arrastável. Suporta modo hover (segue o mouse) e drag (arrastar explícito), com animação de autoplay opcional. Usa clip-path para recorte e requestAnimationFrame para movimento suave.",
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/compare.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/compare-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "consent-manager",
+      "type": "registry:ui",
+      "title": "Consent Manager",
+      "description": "Gerenciador de consentimento de cookies com categorias, switches e persistência local.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/dialog.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/consent-manager.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/consent-manager-context.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/consent-manager-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "container-cover",
+      "type": "registry:ui",
+      "title": "Container Cover",
+      "description": "Destaque animado para texto inline: ao passar o mouse, o fundo escurece, partículas (sparkles) percorrem a área, beams horizontais varrem o bloco e o texto treme e encolhe levemente. Ideal para realçar palavras em headlines.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/sparkles.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/container-cover.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/container-cover-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "container-scroll-animation",
+      "type": "registry:ui",
+      "title": "Container Scroll Animation",
+      "description": "Efeito de scroll 3D da Aceternity UI: conforme o usuário rola, um card/mockup rotaciona (rotateX), escala e o título translada para cima. Dirigido por useScroll/useTransform (motion/react); detecção de mobile ajusta a escala. Funciona em light e dark.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/container-scroll-animation.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "container-text-flip",
+      "type": "registry:ui",
+      "title": "Container Text Flip",
+      "description": "Container animado da Aceternity UI que muda de largura suavemente para acomodar a palavra atual e cicla por uma lista de palavras com stagger de blur por letra (10px → nítido). Tema segue tokens semânticos shadcn (text-foreground, bg-muted, border). Aceita lista de palavras, intervalo entre trocas e duração da animação.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/container-text-flip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "context-menu",
+      "type": "registry:ui",
+      "title": "Context Menu",
+      "description": "Menu de contexto acionado pelo clique direito do mouse, com itens, separadores, checkboxes, radio groups e submenus.",
+      "dependencies": [
+        "@radix-ui/react-context-menu"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/context-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "copy-button",
+      "type": "registry:ui",
+      "title": "Copy Button",
+      "description": "Botão de copiar para a área de transferência com feedback visual e fallback execCommand.",
+      "dependencies": [
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/copy-button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/button-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "creepy-button",
+      "type": "registry:ui",
+      "title": "Creepy Button",
+      "description": "Botão interativo com olhos que seguem o cursor (pupil tracking), animação de piscar periódica e cover que rotaciona em hover.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/creepy-button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "cyber-glitch-text",
+      "type": "registry:ui",
+      "title": "Cyber Glitch Text",
+      "description": "Bloco de texto estilizado com scramble (decodificação hacker) e chromatic aberration RGB no hover.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/cyber-glitch-text.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "data-table",
+      "type": "registry:ui",
+      "title": "Data Table",
+      "description": "Tabela de dados avançada com ordenação, paginação e busca global. Baseada em @tanstack/react-table.",
+      "dependencies": [
+        "@tanstack/react-table",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/input.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/data-table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "date-picker",
+      "type": "registry:ui",
+      "title": "Date Picker",
+      "description": "Seletor de data com popover e calendário integrado. Exibe a data formatada e abre o calendário ao clicar.",
+      "dependencies": [
+        "date-fns",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/calendar.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/popover.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/date-picker.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dialog",
+      "type": "registry:ui",
+      "title": "Dialog",
+      "description": "Janela modal sobreposta ao conteúdo para fluxos focados e confirmações.",
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dialog.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dialog-fluid",
+      "type": "registry:ui",
+      "title": "Dialog (Fluid)",
+      "description": "Modal da Fluid Functionalism com overlay e conteúdo animados por mola, elevação de superfície empilhável, formas configuráveis e botão de fechar integrado.",
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button-fluid.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-classes.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-context.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dialog-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "direction-aware-hover",
+      "type": "registry:ui",
+      "title": "Direction Aware Hover",
+      "description": "Card da Aceternity UI que detecta a borda de entrada do mouse via atan2 e desloca imagem + texto pela direção oposta: entrar por baixo → imagem sobe; entrar por cima → imagem desce. O overlay escuro e o texto surgem suavemente no hover. Ideal para grids de perfis, testemunhos ou vitrines visuais que precisam de microinteração direcional.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/direction-aware-hover.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dither-shader",
+      "type": "registry:ui",
+      "title": "Dither Shader",
+      "description": "Aplica dithering (Bayer / halftone / noise / crosshatch) sobre uma imagem renderizada num <canvas>, com modos de cor original / grayscale / duotone / custom. Usa Canvas 2D puro (sem WebGL/three.js) e suporta animação contínua no modo noise. Imagem via prop `src` (CORS-friendly, ex.: picsum.photos).",
+      "files": [
+        {
+          "path": "src/components/ui/dither-shader.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dot-grid-spotlight",
+      "type": "registry:ui",
+      "title": "Dot Grid Spotlight",
+      "description": "Background de grade de pontos com spotlight que segue o cursor do mouse.",
+      "files": [
+        {
+          "path": "src/components/ui/dot-grid-spotlight.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dotted-glow-background",
+      "type": "registry:ui",
+      "title": "Dotted Glow Background",
+      "description": "Fundo em canvas da Aceternity UI: grade de pontos que pulsam (alpha animado) com efeito glow, via requestAnimationFrame. Cores reativas ao tema (light/dark) por CSS variables, alta densidade (devicePixelRatio) e ResizeObserver.",
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dotted-glow-background.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/dotted-glow-background-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "draggable-card",
+      "type": "registry:ui",
+      "title": "Draggable Card",
+      "description": "Card arrastável da Aceternity UI com física de mola (spring) e rotação 3D seguindo o cursor. Ao soltar, o gesto de arrastar é animado com spring e bounce proporcional à velocidade.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/draggable-card.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/draggable-card-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "drawer",
+      "type": "registry:ui",
+      "title": "Drawer",
+      "description": "Drawer que abre a partir da base da tela com handle visual, baseado em vaul. Ideal para ações contextuais em mobile.",
+      "dependencies": [
+        "vaul"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/drawer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-fluid",
+      "type": "registry:ui",
+      "title": "Dropdown (Fluid)",
+      "description": "Menu dropdown da Fluid Functionalism com itens (MenuItem) selecionáveis, destaque por proximidade, check animado e elevação de superfície.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/elevated.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dropdown-fluid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/dropdown-fluid-context.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dropdown-menu",
+      "type": "registry:ui",
+      "title": "Dropdown Menu",
+      "description": "Menu suspenso acionado por um gatilho, com itens, separadores e submenus.",
+      "dependencies": [
+        "@radix-ui/react-dropdown-menu",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "elastic-slider",
+      "type": "registry:ui",
+      "title": "Elastic Slider",
+      "description": "Slider com efeito elástico (rubber-band) ao arrastar além dos limites, estilo iOS.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/elastic-slider.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/elastic-slider-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "elevated",
+      "type": "registry:lib",
+      "title": "Elevated",
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-classes.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-context.json"
+      ],
+      "files": [
+        {
+          "path": "src/lib/elevated.tsx",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "encrypted-text",
+      "type": "registry:ui",
+      "title": "Encrypted Text",
+      "description": "Texto que entra como ruído aleatório e é descriptografado caractere a caractere quando aparece no viewport. Charset, velocidade de revelação e de flip configuráveis, com classes separadas para os estados embaralhado e revelado.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/encrypted-text.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "evervault-card",
+      "type": "registry:ui",
+      "title": "Evervault Card",
+      "description": "Card da Aceternity UI que revela uma chuva de caracteres aleatórios sob um mask radial que segue o cursor: ao passar o mouse, um gradient verde→azul com efeito de mix-blend-overlay exibe uma string alfanumérica gerada dinamicamente, mantendo no centro um badge circular desfocado com o texto da prop `text`. Ideal para hero, CTAs criptografados e destaque visual. Reimplementado padronizado shadcn com motion/react.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/evervault-card.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/evervault-card-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "expandable-cards",
+      "type": "registry:ui",
+      "title": "Expandable Cards",
+      "description": "Lista de cards da Aceternity UI que expandem para um modal centralizado fullscreen via shared layout (layoutId/motion). Overlay com blur, fecha com Escape ou clique fora, e trava o scroll do body enquanto aberto.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-outside-click.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/expandable-cards.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/expandable-cards-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "features-section-with-skeletons",
+      "type": "registry:ui",
+      "title": "Features Section with Skeletons",
+      "description": "Seção de features em grade bento responsiva (lg:grid-cols-6) com cards que exibem skeletons animados (motion/react) como preview — grade de imagens com hover, barras de analytics e anel pulsante. Cabeçalho e features configuráveis via props.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/features-section-with-skeletons.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "file-thumbnail-fluid",
+      "type": "registry:ui",
+      "title": "File Thumbnail (Fluid)",
+      "description": "Miniatura quadrada de arquivo da Fluid Functionalism: pré-visualiza imagens e a primeira página de PDFs (via pdfjs) com spinner enquanto carrega.",
+      "dependencies": [
+        "pdfjs-dist"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/file-thumbnail-fluid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/file-thumbnail-fluid-pdf.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "file-upload",
+      "type": "registry:ui",
+      "title": "File Upload",
+      "description": "File Upload",
+      "dependencies": [
+        "@tabler/icons-react",
+        "motion",
+        "react-dropzone"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/file-upload.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/file-upload-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "flip-fade-text",
+      "type": "registry:ui",
+      "title": "Flip Fade Text",
+      "description": "Texto 3D flip animado por letra, ciclando por palavras com stagger configurável. Ideal para loading states e hero sections.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/flip-fade-text.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/flip-fade-text-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "flip-text",
+      "type": "registry:ui",
+      "title": "Flip Text",
+      "description": "Texto com animação 3D flip caractere-por-caractere, usando rotateX + CSS variables e delays staggered (sine wave) para efeito de onda.",
+      "files": [
+        {
+          "path": "src/components/ui/flip-text.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/flip-text-types.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".flip-char": {
+          "color": "inherit",
+          "-webkit-text-fill-color": "transparent",
+          "height": "1.2em",
+          "line-height": "1.2em",
+          "vertical-align": "middle",
+          "animation": "flip var(--flip-duration, 2.2s) var(--flip-delay, 0s) var(--flip-iteration, infinite) ease"
+        },
+        ".flip-char::before, .flip-char::after": {
+          "color": "inherit",
+          "-webkit-text-fill-color": "currentColor",
+          "content": "attr(data-char)",
+          "position": "absolute",
+          "top": "50%",
+          "left": "50%",
+          "height": "100%",
+          "width": "100%",
+          "display": "flex",
+          "align-items": "center",
+          "justify-content": "center",
+          "backface-visibility": "hidden",
+          "animation": "fade var(--flip-duration, 2.2s) var(--flip-delay, 0s) var(--flip-iteration, infinite) ease"
+        },
+        ".flip-char::after": {
+          "transform": "translate(-50%, -50%) translateZ(0.6em)"
+        },
+        ".flip-char::before": {
+          "transform": "translate(-50%, -50%) rotateX(-90deg) translateZ(0.6em)",
+          "opacity": "0",
+          "--opacity": "1"
+        },
+        "@keyframes flip": {
+          "0%, 60%": {
+            "transform": "rotateX(0)"
+          },
+          "60%, 100%": {
+            "transform": "rotateX(-90deg)"
+          }
+        },
+        "@keyframes fade": {
+          "0%, 60%": {
+            "opacity": "1"
+          },
+          "60%, 100%": {
+            "opacity": "0"
+          }
+        }
+      }
+    },
+    {
+      "name": "flip-words",
+      "type": "registry:ui",
+      "title": "Flip Words",
+      "description": "Ciclador de palavras da Aceternity UI: AnimatePresence com troca animada por letra (entrada com stagger blur→nítido, saída dramática com scale, blur e deslocamento). Tema segue token semântico text-foreground; aceita lista de palavras e duração customizável.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/flip-words.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "floating-dock",
+      "type": "registry:ui",
+      "title": "Floating Dock",
+      "description": "Dock de navegação estilo macOS com magnificação dos ícones conforme a proximidade do cursor (motion useTransform + useSpring). Responsivo: barra horizontal no desktop (md+) e botão flutuante expansível no mobile, com tooltip por item.",
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/floating-dock.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "floating-navbar",
+      "type": "registry:ui",
+      "title": "Floating Navbar",
+      "description": "Navbar pill flutuante (rounded-full) que aparece ao rolar para cima e some ao rolar para baixo. Animação de entrada/saída via motion (translateY + opacity) controlada por useScroll/useMotionValueEvent. Itens com ícone (mobile) ou rótulo (desktop) + botão de CTA opcional. Aceita scrollContainer próprio.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/floating-navbar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "fluid-gradient-text",
+      "type": "registry:ui",
+      "title": "Fluid Gradient Text",
+      "description": "Texto com gradiente animado (mesh gradient) que flui continuamente.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/fluid-gradient-text.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "fluid-tokens",
+      "type": "registry:lib",
+      "title": "Fluid Tokens",
+      "description": "Tokens compartilhados da Fluid Functionalism: superfícies elevadas (surface-1..8), sombras temáticas e tokens de interação (hover/active/destructive-light/checker). Pré-requisito de cor para os componentes (Fluid).",
+      "cssVars": {
+        "theme": {
+          "--color-surface-1": "var(--surface-1)",
+          "--shadow-surface-1": "var(--shadow-1)",
+          "--color-surface-2": "var(--surface-2)",
+          "--shadow-surface-2": "var(--shadow-2)",
+          "--color-surface-3": "var(--surface-3)",
+          "--shadow-surface-3": "var(--shadow-3)",
+          "--color-surface-4": "var(--surface-4)",
+          "--shadow-surface-4": "var(--shadow-4)",
+          "--color-surface-5": "var(--surface-5)",
+          "--shadow-surface-5": "var(--shadow-5)",
+          "--color-surface-6": "var(--surface-6)",
+          "--shadow-surface-6": "var(--shadow-6)",
+          "--color-surface-7": "var(--surface-7)",
+          "--shadow-surface-7": "var(--shadow-7)",
+          "--color-surface-8": "var(--surface-8)",
+          "--shadow-surface-8": "var(--shadow-8)",
+          "--color-hover": "var(--hover)",
+          "--color-active": "var(--active)",
+          "--color-destructive-light": "var(--destructive-light)"
+        },
+        "light": {
+          "surface-1": "#FAFAFA",
+          "surface-2": "#FCFCFC",
+          "surface-3": "#FFFFFF",
+          "surface-4": "#FFFFFF",
+          "surface-5": "#FFFFFF",
+          "surface-6": "#FFFFFF",
+          "surface-7": "#FFFFFF",
+          "surface-8": "#FFFFFF",
+          "shadow-color": "rgb(0 0 0 / 0.06)",
+          "shadow-1": "0 0 0 1px var(--shadow-color)",
+          "shadow-2": "0 0 0 1px var(--shadow-color), 0 1px 1px -0.5px var(--shadow-color)",
+          "shadow-3": "0 0 0 1px var(--shadow-color), 0 1px 1px -0.5px var(--shadow-color), 0 3px 3px -1.5px var(--shadow-color)",
+          "shadow-4": "0 0 0 1px var(--shadow-color), 0 1px 1px -0.5px var(--shadow-color), 0 3px 3px -1.5px var(--shadow-color), 0 6px 6px -3px var(--shadow-color)",
+          "shadow-5": "0 0 0 1px var(--shadow-color), 0 1px 1px -0.5px var(--shadow-color), 0 3px 3px -1.5px var(--shadow-color), 0 6px 6px -3px var(--shadow-color), 0 12px 12px -6px var(--shadow-color)",
+          "shadow-6": "0 0 0 1px var(--shadow-color), 0 1px 1px -0.5px var(--shadow-color), 0 3px 3px -1.5px var(--shadow-color), 0 6px 6px -3px var(--shadow-color), 0 12px 12px -6px var(--shadow-color), 0 24px 24px -12px var(--shadow-color)",
+          "shadow-7": "0 0 0 1px var(--shadow-color), 0 1px 1px -0.5px var(--shadow-color), 0 3px 3px -1.5px var(--shadow-color), 0 6px 6px -3px var(--shadow-color), 0 12px 12px -6px var(--shadow-color), 0 24px 24px -12px var(--shadow-color), 0 48px 48px -24px var(--shadow-color)",
+          "shadow-8": "0 0 0 1px var(--shadow-color), 0 1px 1px -0.5px var(--shadow-color), 0 3px 3px -1.5px var(--shadow-color), 0 6px 6px -3px var(--shadow-color), 0 12px 12px -6px var(--shadow-color), 0 24px 24px -12px var(--shadow-color), 0 48px 48px -24px var(--shadow-color), 0 96px 96px -48px var(--shadow-color)",
+          "hover": "oklch(0 0 0 / 0.04)",
+          "active": "oklch(0 0 0 / 0.08)",
+          "destructive-light": "oklch(0.936 0.032 17.717)",
+          "checker-a": "oklch(0.92 0 0)",
+          "checker-b": "oklch(1 0 0)"
+        },
+        "dark": {
+          "surface-1": "#171717",
+          "surface-2": "#1E1E1E",
+          "surface-3": "#252525",
+          "surface-4": "#2C2C2C",
+          "surface-5": "#333333",
+          "surface-6": "#3A3A3A",
+          "surface-7": "#414141",
+          "surface-8": "#484848",
+          "dm-hi-base": "rgba(255,255,255,0.01)",
+          "dm-hi-mid": "rgba(255,255,255,0.02)",
+          "dm-hi-high": "rgba(255,255,255,0.04)",
+          "dm-hi-peak": "rgba(255,255,255,0.06)",
+          "dm-ring-base": "rgba(255,255,255,0.02)",
+          "dm-ring-mid": "rgba(255,255,255,0.04)",
+          "dm-ring-high": "rgba(255,255,255,0.06)",
+          "dm-drop": "rgba(0,0,0,0.18)",
+          "shadow-1": "inset 0 0 0 1px var(--dm-ring-base)",
+          "shadow-2": "inset 0 1px 0 0 var(--dm-hi-base), inset 0 0 0 1px var(--dm-ring-base), 0 1px 1px -0.5px var(--dm-drop)",
+          "shadow-3": "inset 0 1px 0 0 var(--dm-hi-mid), inset 0 0 0 1px var(--dm-ring-base), 0 0 0 1px rgba(0,0,0,0.12), 0 1px 1px -0.5px var(--dm-drop), 0 3px 3px -1.5px var(--dm-drop)",
+          "shadow-4": "inset 0 1px 0 0 var(--dm-hi-mid), inset 0 0 0 1px var(--dm-ring-mid), 0 0 0 1px rgba(0,0,0,0.14), 0 1px 1px -0.5px var(--dm-drop), 0 3px 3px -1.5px var(--dm-drop), 0 6px 6px -3px var(--dm-drop)",
+          "shadow-5": "inset 0 1px 0 0 var(--dm-hi-high), inset 0 0 0 1px var(--dm-ring-mid), 0 0 0 1px rgba(0,0,0,0.16), 0 1px 1px -0.5px var(--dm-drop), 0 3px 3px -1.5px var(--dm-drop), 0 6px 6px -3px var(--dm-drop), 0 12px 12px -6px var(--dm-drop)",
+          "shadow-6": "inset 0 1px 0 0 var(--dm-hi-high), inset 0 0 0 1px var(--dm-ring-high), 0 0 0 1px rgba(0,0,0,0.18), 0 1px 1px -0.5px var(--dm-drop), 0 3px 3px -1.5px var(--dm-drop), 0 6px 6px -3px var(--dm-drop), 0 12px 12px -6px var(--dm-drop), 0 24px 24px -12px var(--dm-drop)",
+          "shadow-7": "inset 0 1px 0 0 var(--dm-hi-peak), inset 0 0 0 1px var(--dm-ring-high), 0 0 0 1px rgba(0,0,0,0.20), 0 1px 1px -0.5px var(--dm-drop), 0 3px 3px -1.5px var(--dm-drop), 0 6px 6px -3px var(--dm-drop), 0 12px 12px -6px var(--dm-drop), 0 24px 24px -12px var(--dm-drop), 0 48px 48px -24px var(--dm-drop)",
+          "shadow-8": "inset 0 1px 0 0 var(--dm-hi-peak), inset 0 0 0 1px var(--dm-ring-high), 0 0 0 1px rgba(0,0,0,0.22), 0 1px 1px -0.5px var(--dm-drop), 0 3px 3px -1.5px var(--dm-drop), 0 6px 6px -3px var(--dm-drop), 0 12px 12px -6px var(--dm-drop), 0 24px 24px -12px var(--dm-drop), 0 48px 48px -24px var(--dm-drop), 0 96px 96px -48px var(--dm-drop)",
+          "hover": "oklch(1 0 0 / 0.06)",
+          "active": "oklch(1 0 0 / 0.10)",
+          "destructive-light": "oklch(0.396 0.133 25.723)",
+          "checker-a": "oklch(0.30 0 0)",
+          "checker-b": "oklch(0.22 0 0)"
+        }
+      },
+      "files": []
+    },
+    {
+      "name": "focus-cards",
+      "type": "registry:ui",
+      "title": "Focus Cards",
+      "description": "Grid de cards de imagem com efeito de foco reverso: ao passar o mouse sobre um card, os demais ganham blur leve e scale reduzido, destacando o item hovered. Cada card exibe uma imagem com overlay escuro e título em gradiente claro. Sem dependências externas — transições CSS puras com transition-all.",
+      "files": [
+        {
+          "path": "src/components/ui/focus-cards.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "following-pointer",
+      "type": "registry:ui",
+      "title": "Following Pointer",
+      "description": "Substitui o cursor nativo por um ponteiro animado (motion/react) que segue o mouse dentro da área, com um badge configurável (título/avatar) ao lado. Ótimo para destacar cards de blog ou conteúdo interativo.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/following-pointer.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "font-weight",
+      "type": "registry:lib",
+      "title": "Font Weight",
+      "files": [
+        {
+          "path": "src/lib/font-weight.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "form",
+      "type": "registry:ui",
+      "title": "Form",
+      "description": "Formulário com integração react-hook-form e zod, composável com FormField, FormItem, FormLabel, FormControl, FormDescription e FormMessage. Baseado em @radix-ui/react-slot e @radix-ui/react-label.",
+      "dependencies": [
+        "@radix-ui/react-slot",
+        "react-hook-form"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/form.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/form-internal.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "github-contributions",
+      "type": "registry:ui",
+      "title": "GitHub Contributions",
+      "description": "Heatmap de contribuições estilo GitHub, com células por dia, tooltips e escalas de cor.",
+      "dependencies": [
+        "@radix-ui/react-tooltip"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/github-contributions.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "github-globe",
+      "type": "registry:ui",
+      "title": "GitHub Globe",
+      "description": "Globo 3D interativo estilo GitHub (Aceternity UI) renderizado com three + three-globe sobre WebGL: continentes em hex-polígonos, arcos animados (com dash + gap) entre pares de coordenadas, anéis pulsantes nos pontos de origem e rotação automática via OrbitControls. Cores dark hardcoded (fundo preto, globo azul-marinho, atmosfera) — brand do efeito, não segue tema shadcn. Faz cleanup completo do contexto WebGL (dispose de geometrias/materiais/renderer, cancelAnimationFrame) ao desmontar.",
+      "dependencies": [
+        "three",
+        "three-globe"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/github-globe.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/github-globe-data.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/github-globe-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "glare-card",
+      "type": "registry:ui",
+      "title": "Glare Card",
+      "description": "Card Aceternity com brilho/glare 3D seguindo o mouse: rotaciona (rotateX/rotateY) conforme o cursor e revela um gradiente rainbow/foil/diagonal sobre fundo escuro. Efeito brand fixo (precedente: text-reveal-card, vortex).",
+      "files": [
+        {
+          "path": "src/components/ui/glare-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "glass-dock",
+      "type": "registry:ui",
+      "title": "Glass Dock",
+      "description": "MacOS-inspired glassmorphic dock com scale magnification on hover.",
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/glass-dock.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".glass-border": {
+          "border": "1px solid rgba(0, 0, 0, 0.15)"
+        },
+        ".dark .glass-border": {
+          "border": "1px solid rgba(255, 255, 255, 0.2)"
+        }
+      }
+    },
+    {
+      "name": "glow-card-grid",
+      "type": "registry:ui",
+      "title": "Glow Card Grid",
+      "description": "Grid de cards com efeito glow — icon/background borrado que segue o cursor e borda com backdrop-blur.",
+      "files": [
+        {
+          "path": "src/components/ui/glow-card-grid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "glowing-effect",
+      "type": "registry:ui",
+      "title": "Glowing Effect",
+      "description": "Borda luminosa que segue o cursor: gradiente cônico rotacionado em torno do card via máscara, atualizado por pointermove e interpolado com easing do motion.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/glowing-effect.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "glowing-stars-effect",
+      "type": "registry:ui",
+      "title": "Glowing Stars Effect",
+      "description": "Card da Aceternity UI com uma malha de estrelinhas (108 pontos em 18 colunas) que brilham aleatoriamente a cada 3s e acendem todas no hover, com glows azuis (motion/react). Inclui subcomponentes GlowingStarsTitle e GlowingStarsDescription para o conteúdo do card.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/glowing-stars-effect.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "gooey-input",
+      "type": "registry:ui",
+      "title": "Gooey Input",
+      "description": "Search input com efeito gooey da Aceternity UI: filtro SVG (feGaussianBlur + feColorMatrix com alpha boost 20 -10) que faz o ícone circular 'derreter' e se fundir com a barra de search expandida. O ícone da lupa compartilha um layoutId entre o botão e o bubble destacado, criando uma transição orgânica via motion/react. Ao desfocar com campo vazio, o controle volta ao estado colapsado.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/gooey-input.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/gooey-input-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "google-gemini-effect",
+      "type": "registry:ui",
+      "title": "Google Gemini Effect",
+      "description": "Cinco curvas SVG onduladas e coloridas (rosa, laranja, azul-claro, azul e azul-forte) que se desenham progressivamente via pathLength conforme o scroll, com cópias borradas (Gaussian blur) por baixo formando um glow. Os MotionValue do pathLength vêm de useScroll + useTransform na área scrollável, inspirado na animação de aterrissagem do Google Gemini.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/google-gemini-effect.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "grid-and-dot-backgrounds",
+      "type": "registry:ui",
+      "title": "Grid and Dot Backgrounds",
+      "description": "Fundos decorativos da Aceternity UI em CSS puro: malha de linhas (grid / grid-small) ou pontos (dot) desenhados via background-image (linear/radial-gradient) com máscara radial que esmaece nas bordas. Wrapper relative com altura própria e conteúdo sobreposto; cores derivam dos tokens shadcn, adaptando a light/dark.",
+      "files": [
+        {
+          "path": "src/components/ui/grid-and-dot-backgrounds.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/grid-and-dot-backgrounds-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "hero-highlight",
+      "type": "registry:ui",
+      "title": "Hero Highlight",
+      "description": "Seção hero com fundo de pontos que revela um realce indigo seguindo o cursor (radial mask) e texto destacado com fundo gradiente animado.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/hero-highlight.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/hero-highlight-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "hero-parallax",
+      "type": "registry:ui",
+      "title": "Hero Parallax",
+      "description": "Hero da Aceternity UI: header (título + descrição) sobre 3 fileiras de 5 thumbnails de produtos que transladam horizontalmente em direções opostas conforme o scroll, com o conjunto rotacionando (rotateX/rotateZ), transladando e esmaecendo — suavizado por springs (useScroll/useTransform/useSpring de motion/react).",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/hero-parallax.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/hero-parallax-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "hero-section-with-mousemove",
+      "type": "registry:ui",
+      "title": "Hero Section with Mousemove",
+      "description": "Hero imersivo da Aceternity UI com elementos flutuantes que reagem ao movimento do mouse: cada cartão se desloca em parallax proporcional à sua profundidade (depth), sobre um fundo escuro com grade e brilho radial. Título, descrição e itens são configuráveis.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/hero-section-with-mousemove.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/hero-section-with-mousemove-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "hover-border-gradient",
+      "type": "registry:ui",
+      "title": "Hover Border Gradient",
+      "description": "Botão (ou wrapper polimórfico via `as`) com borda que ganha gradiente radial animado ao passar o mouse. Em repouso a direção do gradiente rotaciona ciclicamente (TOP→LEFT→BOTTOM→RIGHT) a cada `duration`s; no hover a borda preenche com o highlight azul (#3275F8). Cores são fixas (brand do efeito) — não segue tema shadcn.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/hover-border-gradient.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "hover-card",
+      "type": "registry:ui",
+      "title": "Hover Card",
+      "description": "Card flutuante com conteúdo rico que aparece ao passar o mouse sobre um gatilho. Baseado em @radix-ui/react-hover-card.",
+      "dependencies": [
+        "@radix-ui/react-hover-card"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/hover-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "icon-context",
+      "type": "registry:lib",
+      "title": "Icon Context",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/lib/icon-context-internal.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/icon-context-provider.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/icon-context.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/icon-map.tsx",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "icon-swap",
+      "type": "registry:ui",
+      "title": "Icon Swap",
+      "description": "Componente que troca entre dois ícones com crossfade (Sun↔Moon, Eye↔EyeOff, etc.).",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/icon-swap.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "images-badge",
+      "type": "registry:ui",
+      "title": "Images Badge",
+      "description": "Badge da Aceternity UI com ícone de pasta + texto; no hover, até 3 imagens saem da pasta num leque animado (fan-out via translate/spread/rotation) usando motion.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/images-badge.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "images-slider",
+      "type": "registry:ui",
+      "title": "Images Slider",
+      "description": "Slider de imagens em tela cheia com autoplay (5s), navegação por teclado (← →) e transição 3D (escala + rotateX + saída deslizante para cima/baixo). Suporta overlay escuro e conteúdo sobreposto centralizado via children.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/images-slider.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "infinite-moving-cards",
+      "type": "registry:ui",
+      "title": "Infinite Moving Cards",
+      "description": "Carrossel de cards em loop infinito. Os itens são duplicados em runtime e uma animação CSS faz a esteira correr sem emendas, com direção (left/right), velocidade (fast/normal/slow) e pausa no hover. Máscara lateral suaviza as bordas.",
+      "files": [
+        {
+          "path": "src/components/ui/infinite-moving-cards.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "cssVars": {
+        "theme": {
+          "--animate-infinite-scroll": "infinite-scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite"
+        }
+      },
+      "css": {
+        "@keyframes infinite-scroll": {
+          "to": {
+            "transform": "translate(calc(-50% - 0.5rem))"
+          }
+        }
+      }
+    },
+    {
+      "name": "input",
+      "type": "registry:ui",
+      "title": "Input",
+      "description": "Campo de texto para entrada de dados em formulários, com estados de foco e erro.",
+      "files": [
+        {
+          "path": "src/components/ui/input.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input-copy-fluid",
+      "type": "registry:ui",
+      "title": "Input Copy (Fluid)",
+      "description": "Campo somente leitura da Fluid Functionalism para exibir e copiar um valor, com variantes ícone (tooltip) e botão e animação de check.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/tooltip-fluid.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/input-copy-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input-group-fluid",
+      "type": "registry:ui",
+      "title": "Input Group (Fluid)",
+      "description": "Grupo de campos de texto da Fluid Functionalism com destaque por proximidade do cursor, ícones, foco animado e mensagens de erro.",
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/input-group-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input-message-fluid",
+      "type": "registry:ui",
+      "title": "Input Message (Fluid)",
+      "description": "Composer de mensagem da Fluid Functionalism: textarea auto-expansível, anexos via drag-and-drop e picker, preview de imagens/PDF, slots customizáveis e botão de envio.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button-fluid.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/file-thumbnail-fluid.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-classes.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/tooltip-fluid.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/input-message-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "input-otp",
+      "type": "registry:ui",
+      "title": "Input OTP",
+      "description": "Campo de entrada de código OTP (One-Time Password) com slots visuais, separador e suporte a teclado. Baseado em input-otp.",
+      "dependencies": [
+        "input-otp",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/input-otp.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "keyboard",
+      "type": "registry:ui",
+      "title": "Keyboard",
+      "description": "Teclado virtual estilo Apple com teclas que afundam ao clicar ou ao pressionar a tecla física correspondente. Suporte a layout QWERTZ/ANSI e preview animado da última tecla pressionada.",
+      "dependencies": [
+        "@tabler/icons-react",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/keyboard.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/keyboard-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "lamp-effect",
+      "type": "registry:ui",
+      "title": "Lamp Effect",
+      "description": "Efeito \"lâmpada\" da Aceternity UI: dois cones de luz cônicos (conic-gradient) com blur que crescem ao entrar na viewport, acompanhados de uma linha brilhante horizontal, projetando luz ciano sobre um fundo escuro (slate-950) para revelar um título abaixo. Animado por whileInView de motion/react.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/lamp-effect.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "layout-grid",
+      "type": "registry:ui",
+      "title": "Layout Grid",
+      "description": "Grid bento responsivo (1 col mobile, 3 col desktop) com cards clicáveis que expandem em overlay centralizado usando layoutId compartilhado do motion. Cards com thumbnail e conteúdo JSX customizável.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/layout-grid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "layout-text-flip",
+      "type": "registry:ui",
+      "title": "Layout Text Flip",
+      "description": "Título fixo + palavra que rotaciona com flip vertical (y -40 → 0 → +50) e blur de entrada/saída (Aceternity UI). O layoutId do título permite transição suave entre seções; a palavra rotativa usa popLayout para preservar posição. A pill rotativa usa tokens semânticos shadcn (bg-card + ring-border), aceitando duration customizável e children opcional (ex.: separador).",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/layout-text-flip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "lens",
+      "type": "registry:ui",
+      "title": "Lens",
+      "description": "Lente de aumento que segue o cursor sobre uma imagem ou card, ampliando a região sob ela com máscara radial. Suporta posição fixa (estática) e estado de hover controlado externamente.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/lens.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/lens-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "light-lines",
+      "type": "registry:ui",
+      "title": "Light Lines",
+      "description": "Background animado de \"light trails\" em linhas verticais: SVG com 17 luzes que sobem/descem em loop infinito via requestAnimationFrame, sobre linhas estáticas e gradiente configurável.",
+      "files": [
+        {
+          "path": "src/components/ui/light-lines.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/light-lines-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "link-preview",
+      "type": "registry:ui",
+      "title": "Link Preview",
+      "description": "Hover-card que mostra um screenshot da URL apontada por um link, com leve parallax no eixo X seguindo o cursor. Usa @radix-ui/react-hover-card + qss.",
+      "dependencies": [
+        "@radix-ui/react-hover-card",
+        "motion",
+        "qss"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/link-preview.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/link-preview-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "loader",
+      "type": "registry:ui",
+      "title": "Loader",
+      "description": "Coleção de cinco loaders animados da Aceternity UI: três pontos saltitantes em onda, três pontos deslizando horizontalmente, raio SVG com pathLength 0→1 e fill animado, texto com skew/scale glitch e camadas RGB (verde+violeta) atrás, e caracteres pulsando com text-shadow. Cores são fixas (assinatura visual do efeito) e não seguem o tema shadcn.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/loader.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "logo-slider",
+      "type": "registry:ui",
+      "title": "Logo Slider",
+      "description": "Marquee infinito de logos (CSS puro) com loop sem emenda e blur progressivo nas bordas; configurável por direção, velocidade e pause-on-hover.",
+      "files": [
+        {
+          "path": "src/components/ui/logo-slider.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/logo-slider-types.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".logo-slider": {
+          "position": "relative",
+          "display": "flex",
+          "width": "100%",
+          "align-items": "center",
+          "overflow": "hidden"
+        },
+        ".logo-slider__container": {
+          "display": "flex",
+          "width": "fit-content",
+          "align-items": "center",
+          "overflow": "visible",
+          "-webkit-mask-image": "linear-gradient(to right, transparent, black 12.5%, black 87.5%, transparent)",
+          "mask-image": "linear-gradient(to right, transparent, black 12.5%, black 87.5%, transparent)"
+        },
+        ".logo-slider__item": {
+          "display": "flex",
+          "flex-shrink": "0",
+          "align-items": "center",
+          "gap": "var(--logo-slider-gap, 64px)",
+          "padding-inline": "calc(var(--logo-slider-gap, 64px) / 2)"
+        },
+        ".logo-slider__blur": {
+          "position": "absolute",
+          "top": "0",
+          "bottom": "0",
+          "z-index": "1",
+          "width": "12.5%",
+          "pointer-events": "none"
+        },
+        ".logo-slider__blur--left": {
+          "left": "0"
+        },
+        ".logo-slider__blur--right": {
+          "right": "0"
+        },
+        ".logo-slider__blur > div": {
+          "width": "100%",
+          "height": "100%",
+          "backdrop-filter": "blur(4px)",
+          "-webkit-backdrop-filter": "blur(4px)"
+        },
+        ".logo-slider__blur--left > div": {
+          "-webkit-mask-image": "linear-gradient(to right, black, transparent)",
+          "mask-image": "linear-gradient(to right, black, transparent)"
+        },
+        ".logo-slider__blur--right > div": {
+          "-webkit-mask-image": "linear-gradient(to left, black, transparent)",
+          "mask-image": "linear-gradient(to left, black, transparent)"
+        },
+        "@media (prefers-reduced-motion: no-preference)": {
+          ".logo-slider__item": {
+            "animation": "logo-slider-slide var(--logo-slider-duration, 40s) linear infinite"
+          },
+          ".logo-slider[data-direction=\"right\"] .logo-slider__item": {
+            "animation-direction": "reverse"
+          },
+          ".logo-slider[data-pause-on-hover=\"true\"]:hover .logo-slider__item": {
+            "animation-play-state": "paused"
+          }
+        },
+        "@keyframes logo-slider-slide": {
+          "from": {
+            "transform": "translateX(0)"
+          },
+          "to": {
+            "transform": "translateX(calc(-100% - var(--logo-slider-gap, 64px)))"
+          }
+        }
+      }
+    },
+    {
+      "name": "macbook-scroll",
+      "type": "registry:ui",
+      "title": "Macbook Scroll",
+      "description": "Mock de MacBook Pro com tampa que abre ao rolar a página. useScroll mede o progresso e useTransform aplica scaleX/scaleY/translate/rotate no lid + parallax no título. Imagem reveal dentro da tela.",
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/macbook-scroll.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/macbook-scroll-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "magnetic-button",
+      "type": "registry:ui",
+      "title": "Magnetic Button",
+      "description": "Wrapper que atrai o conteúdo em direção ao cursor com spring (useMotionValue + useSpring). Quando o mouse se aproxima, o filho é deslocado proporcionalmente em direção ao ponteiro; ao sair, retorna ao centro com física de mola. A borda azul aparece no hover como feedback visual. Útil para CTAs e botões interativos.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/magnetic-button.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/magnetic-button-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "menubar",
+      "type": "registry:ui",
+      "title": "Menubar",
+      "description": "Barra de menu horizontal com menus dropdown, submenus, checkboxes, radio groups e atalhos de teclado. Baseado em @radix-ui/react-menubar.",
+      "dependencies": [
+        "@radix-ui/react-menubar",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/menubar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "meteors",
       "type": "registry:ui",
       "title": "Meteors",
-      "description": "Efeito de chuva de meteoros animada (Aceternity) renderizado sobre um container relativo. Usa motion para o fade-in e um keyframe próprio para o movimento dos meteoros.",
-      "dependencies": ["motion"],
+      "description": "Efeito de fundo da Aceternity UI: uma chuva de meteoros diagonais que cruzam a tela em loop, cada um com atraso e duração aleatórios. Fica atrás do conteúdo (card/hero) para dar movimento sutil. Quantidade configurável via prop number.",
+      "dependencies": [
+        "motion"
+      ],
       "files": [
         {
           "path": "src/components/ui/meteors.tsx",
@@ -52,6 +2620,1698 @@
           }
         }
       }
+    },
+    {
+      "name": "middle-truncation",
+      "type": "registry:ui",
+      "title": "Middle Truncation",
+      "description": "Trunca texto no meio preservando início e fim — ideal para hashes, paths e e-mails.",
+      "dependencies": [
+        "@radix-ui/react-tooltip"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/middle-truncation.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "mobius-loop-icon",
+      "type": "registry:ui",
+      "title": "Mobius Loop Icon",
+      "description": "Ícono animado de loop infinito (mobius strip) com morphing SVG entre círculos e infinito.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/mobius-loop-icon.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "moving-border",
+      "type": "registry:ui",
+      "title": "Moving Border",
+      "description": "Botão (ou wrapper polimórfico via `as`) com borda que se move continuamente ao longo do perímetro, implementada com um `<rect>` SVG invisível percorrido por um gradiente radial via `getPointAtLength` + `useAnimationFrame` (motion v12). Duração configurável em ms, raio da borda customizável e gradiente da 'bola' substituível. Cores são fixas (slate-900 + cyan, brand do efeito) — não segue tema shadcn.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/moving-border.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "multi-step-loader",
+      "type": "registry:ui",
+      "title": "Multi Step Loader",
+      "description": "Loader fullscreen com overlay blur, lista de etapas com índice ativo controlado por state, ícone Check progressivo (vazio → preenchido → lime), e AnimatePresence para entrada/saída. Cada etapa avança automaticamente com duração configurável e loop opcional.",
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/multi-step-loader.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "navbar-menu",
+      "type": "registry:ui",
+      "title": "Navbar Menu",
+      "description": "Navbar pill (rounded-full) com menu hover-dropdown fullscreen-blur. Hover num item (MenuItem) abre card dropdown com backdrop-blur-sm rounded-2xl border shadow-xl. Itens internos: ProductItem (img + título + descrição) e HoveredLink (link simples).",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/navbar-menu.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/navbar-menu-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "navigation-menu",
+      "type": "registry:ui",
+      "title": "Navigation Menu",
+      "description": "Menu de navegação horizontal com dropdowns de conteúdo rico, viewport animado e indicador de posição. Baseado em @radix-ui/react-navigation-menu.",
+      "dependencies": [
+        "@radix-ui/react-navigation-menu",
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/navigation-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "noise-background",
+      "type": "registry:ui",
+      "title": "Noise Background",
+      "description": "Fundo da Aceternity UI com camadas de gradiente radial que flutuam aleatoriamente em loop, sobrepostas por uma textura de ruído sutil (mix-blend overlay) e uma faixa de luz no topo. Cores, intensidade do ruído e velocidade configuráveis; envolve qualquer conteúdo.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/noise-background.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/noise-background-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "notch",
+      "type": "registry:ui",
+      "title": "Notch",
+      "description": "Barra/notch fixa no topo ou base do viewport (estilo iOS Dynamic Island) com grupos de triggers que abrem um popover de opções animado via motion/react. Cores dark hardcoded (bg-neutral-950/95, text-neutral-100/300/400) — brand do efeito, não segue tema shadcn.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/notch.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/notch-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "pagination",
+      "type": "registry:ui",
+      "title": "Pagination",
+      "description": "Controles de paginação com links de página, navegação anterior/próxima e ellipsis para intervalos ocultos.",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/pagination.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "parallax-hero-images",
+      "type": "registry:ui",
+      "title": "Parallax Hero Images",
+      "description": "Hero com imagens em profundidades distintas que transladam em parallax ao mover o mouse; entrada com fade-in + blur. Variante default vs edge-focus muda o mapa de profundidade.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/parallax-hero-images.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/parallax-hero-images-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "parallax-hero-images-2",
+      "type": "registry:ui",
+      "title": "Parallax Hero Images 2",
+      "description": "Variante 2 (scroll-driven) do parallax hero da Aceternity UI: imagens distribuídas em 3 colunas que deslizam verticalmente conforme a rolagem avança (laterais sobem, meio desce, com leve zoom-out), criando profundidade. Aceita uma área scrollável própria via scrollRef para hero sections com conteúdo sobreposto.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/parallax-hero-images-2.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/parallax-hero-images-2-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "parallax-scroll",
+      "type": "registry:ui",
+      "title": "Parallax Scroll",
+      "description": "Galeria de imagens da Aceternity UI em 3 colunas que se movem em velocidades e direções diferentes conforme o scroll da própria área (altura fixa, overflow-y-auto): as laterais sobem e a do meio desce, criando profundidade. Usa useScroll/useTransform da motion.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/parallax-scroll.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "perspective-grid",
+      "type": "registry:ui",
+      "title": "Perspective Grid",
+      "description": "Grid 3D em perspectiva com tiles coloridos no hover — efeito de profundidade para hero/backgrounds.",
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/perspective-grid.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".tile": {
+          "min-width": "1px",
+          "min-height": "1px",
+          "border-width": "1px",
+          "border-style": "solid",
+          "border-color": "rgba(0, 0, 0, 0.2)",
+          "background-color": "transparent",
+          "box-sizing": "border-box"
+        },
+        ".dark .tile": {
+          "border-color": "rgba(255, 255, 255, 0.15)"
+        },
+        ".tile:nth-child(4n):hover": {
+          "background-color": "rgb(248 113 113)"
+        },
+        ".tile:nth-child(4n + 1):hover": {
+          "background-color": "rgb(56 189 248)"
+        },
+        ".tile:nth-child(4n + 2):hover": {
+          "background-color": "rgb(74 222 128)"
+        },
+        ".tile:nth-child(4n + 3):hover": {
+          "background-color": "rgb(253 224 71)"
+        },
+        ".tile:nth-child(7n):hover": {
+          "background-color": "rgb(56 189 248)"
+        },
+        ".tile:nth-child(7n + 3):hover": {
+          "background-color": "rgb(74 222 128)"
+        },
+        ".tile:nth-child(7n + 5):hover": {
+          "background-color": "rgb(253 224 71)"
+        },
+        ".tile:nth-child(7n + 6):hover": {
+          "background-color": "rgb(248 113 113)"
+        },
+        ".tile:nth-child(11n + 1):hover": {
+          "background-color": "rgb(248 113 113)"
+        },
+        ".tile:nth-child(11n + 4):hover": {
+          "background-color": "rgb(56 189 248)"
+        },
+        ".tile:nth-child(11n + 7):hover": {
+          "background-color": "rgb(74 222 128)"
+        },
+        ".tile:nth-child(11n + 10):hover": {
+          "background-color": "rgb(253 224 71)"
+        }
+      }
+    },
+    {
+      "name": "pixelated-canvas",
+      "type": "registry:ui",
+      "title": "Pixelated Canvas",
+      "description": "Renderiza uma imagem como uma malha de pixels (quadrados ou círculos) sobre canvas 2D, com amostragem por célula, dropout em regiões de baixo contraste, tint, grayscale e object-fit. No modo interativo, os pixels se distorcem ao redor do cursor (repel/attract/swirl) com jitter e fade suave ao sair, tudo via requestAnimationFrame com limpeza de listeners e rAF.",
+      "files": [
+        {
+          "path": "src/components/ui/pixelated-canvas.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/pixelated-canvas-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "placeholders-and-vanish-input",
+      "type": "registry:ui",
+      "title": "Placeholders and Vanish Input",
+      "description": "Campo de texto com placeholders animados que desaparecem ao focar, e botão de submit com loading animado. Efeito de 'vanish' no texto ao enviar.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/placeholders-and-vanish-input.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/placeholders-and-vanish-input-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "popover",
+      "type": "registry:ui",
+      "title": "Popover",
+      "description": "Painel flutuante ancorado a um gatilho, com alinhamento configurável. Baseado em @radix-ui/react-popover.",
+      "dependencies": [
+        "@radix-ui/react-popover"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/popover.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "progress",
+      "type": "registry:ui",
+      "title": "Progress",
+      "description": "Barra de progresso para indicar conclusão de uma tarefa ou etapa. Baseado em @radix-ui/react-progress.",
+      "dependencies": [
+        "@radix-ui/react-progress"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/progress.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "radio-group",
+      "type": "registry:ui",
+      "title": "Radio Group",
+      "description": "Grupo de opções mutuamente exclusivas com navegação por teclado. Baseado em @radix-ui/react-radio-group.",
+      "dependencies": [
+        "@radix-ui/react-radio-group",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/radio-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "radio-group-fluid",
+      "type": "registry:ui",
+      "title": "Radio Group (Fluid)",
+      "description": "Grupo de opções exclusivas da Fluid Functionalism com fundo selecionado animado, destaque por proximidade, navegação por teclado e ponto animado.",
+      "dependencies": [
+        "@radix-ui/react-radio-group",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/radio-group-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "react-wheel-picker",
+      "type": "registry:ui",
+      "title": "React Wheel Picker",
+      "description": "Picker estilo iOS com 3 colunas (data picker) que rola como uma roda. Wrapper sobre react-wheel-picker.",
+      "dependencies": [
+        "@ncdai/react-wheel-picker",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/react-wheel-picker.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/react-wheel-picker-variants.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        "[data-slot=\"react-wheel-picker\"] [data-slot=\"option-item\"]": {
+          "color": "color-mix(in oklab, var(--foreground) 65%, transparent)"
+        }
+      }
+    },
+    {
+      "name": "resizable",
+      "type": "registry:ui",
+      "title": "Resizable",
+      "description": "Painéis redimensionáveis via arraste, com suporte a direção horizontal e vertical, múltiplos painéis e handle visual. Baseado em react-resizable-panels.",
+      "dependencies": [
+        "react-resizable-panels"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/resizable.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "resizable-navbar",
+      "type": "registry:ui",
+      "title": "Resizable Navbar",
+      "description": "Barra de navegação que encolhe ao rolar a página (motion/react + useScroll): ganha blur, sombra e reduz a largura. Inclui variante desktop e menu mobile colapsável com toggle animado.",
+      "dependencies": [
+        "@tabler/icons-react",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/resizable-navbar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "scales",
+      "type": "registry:ui",
+      "title": "Scales",
+      "description": "Background decorativo da Aceternity UI: pattern de linhas repetidas via CSS puro, com orientação (horizontal/vertical/diagonal), densidade e cor configuráveis. ScalesContainer posiciona o pattern atrás do conteúdo.",
+      "files": [
+        {
+          "path": "src/components/ui/scales.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "scroll-area",
+      "type": "registry:ui",
+      "title": "Scroll Area",
+      "description": "Área de rolagem customizada com scrollbar estilizado. Baseado em @radix-ui/react-scroll-area.",
+      "dependencies": [
+        "@radix-ui/react-scroll-area"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/scroll-area.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "scroll-fade-effect",
+      "type": "registry:ui",
+      "title": "Scroll Fade Effect",
+      "description": "Container com fade nas bordas superior/inferior quando há conteúdo scrollável além do viewport (estilo iOS).",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/scroll-fade-effect.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/scroll-fade-effect-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "select",
+      "type": "registry:ui",
+      "title": "Select",
+      "description": "Seletor de opções com trigger, conteúdo em portal, grupos, separadores e suporte a scroll. Baseado em @radix-ui/react-select.",
+      "dependencies": [
+        "@radix-ui/react-select",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/select.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "select-fluid",
+      "type": "registry:ui",
+      "title": "Select (Fluid)",
+      "description": "Select da Fluid Functionalism com popover em portal, destaque por proximidade, check animado, variantes bordered/borderless e suporte a ícones e erro.",
+      "dependencies": [
+        "class-variance-authority",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/elevated.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/select-fluid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/select-fluid-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "separator",
+      "type": "registry:ui",
+      "title": "Separator",
+      "description": "Divisor visual horizontal ou vertical para separar conteúdo. Baseado em @radix-ui/react-separator.",
+      "dependencies": [
+        "@radix-ui/react-separator"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/separator.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "shape-context",
+      "type": "registry:lib",
+      "title": "Shape Context",
+      "files": [
+        {
+          "path": "src/lib/shape-context-internal.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/shape-context-provider.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/shape-context.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "sheet",
+      "type": "registry:ui",
+      "title": "Sheet",
+      "description": "Painel deslizante a partir da borda da tela para navegação ou formulários.",
+      "dependencies": [
+        "@radix-ui/react-dialog",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/sheet.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "shimmering-text",
+      "type": "registry:ui",
+      "title": "Shimmering Text",
+      "description": "Texto com efeito shimmer (brilho da esquerda pra direita, estilo skeleton/loading).",
+      "files": [
+        {
+          "path": "src/components/ui/shimmering-text.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        "@keyframes shimmer": {
+          "to": {
+            "background-position": "200% center"
+          }
+        },
+        ".animate-shimmer": {
+          "animation": "shimmer 2s linear infinite"
+        }
+      }
+    },
+    {
+      "name": "shooting-stars-and-stars-background",
+      "type": "registry:ui",
+      "title": "Shooting Stars and Stars Background",
+      "description": "Céu noturno da Aceternity UI em duas camadas: StarsBackground desenha estrelas estáticas cintilando em <canvas> (densidade e velocidade de twinkle configuráveis) e ShootingStars dispara estrelas cadentes em <svg> que atravessam a tela em ângulos aleatórios, com gradiente de cauda configurável. Animado via requestAnimationFrame com cleanup. Fundo escuro fixo (brand do efeito).",
+      "files": [
+        {
+          "path": "src/components/ui/shooting-stars-and-stars-background.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sidebar",
+      "type": "registry:ui",
+      "title": "Sidebar",
+      "description": "Barra lateral que recolhe para 60px e expande para 300px ao passar o mouse (motion/react), com rótulos que aparecem/desaparecem suavemente. No mobile vira um drawer em tela cheia. Suporta estado controlado e modo sempre-expandido (animate=false).",
+      "dependencies": [
+        "lucide-react",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/sidebar.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/sidebar-context.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "skeleton",
+      "type": "registry:ui",
+      "title": "Skeleton",
+      "description": "Placeholder animado com pulse para indicar carregamento de conteúdo. Classes utilitárias customizáveis.",
+      "files": [
+        {
+          "path": "src/components/ui/skeleton.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "slide-to-unlock",
+      "type": "registry:ui",
+      "title": "Slide to Unlock",
+      "description": "Controle estilo iOS: arrastar thumb da esquerda pra direita pra confirmar ação.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/slide-to-unlock.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/slide-to-unlock-variants.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        "@keyframes slide-to-unlock-letter": {
+          "0%, 100%": {
+            "color": "var(--slide-to-unlock-letter-color, var(--muted-foreground))"
+          },
+          "40%": {
+            "color": "color-mix(in oklab, var(--slide-to-unlock-letter-highlight, var(--foreground)) 60%, transparent)"
+          }
+        },
+        ".slide-to-unlock-letter": {
+          "animation": "slide-to-unlock-letter 2.4s ease-in-out infinite",
+          "animation-delay": "var(--slide-to-unlock-letter-delay, 0s)",
+          "display": "inline-block",
+          "white-space": "pre"
+        }
+      }
+    },
+    {
+      "name": "slider",
+      "type": "registry:ui",
+      "title": "Slider",
+      "description": "Controle deslizante para selecionar um valor ou intervalo. Suporta um ou múltiplos thumbs, steps e estado desabilitado. Baseado em @radix-ui/react-slider.",
+      "dependencies": [
+        "@radix-ui/react-slider"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/slider.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "slider-fluid",
+      "type": "registry:ui",
+      "title": "Slider (Fluid)",
+      "description": "Slider da Fluid Functionalism com thumb animado, faixa (range), step dots, tooltip de valor e edição inline.",
+      "dependencies": [
+        "@radix-ui/react-slider",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/slider-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sonner",
+      "type": "registry:ui",
+      "title": "Sonner",
+      "description": "Toast/notificação elegante e minimalista com suporte a ações, promises e posicionamento configurável. Baseada em sonner.",
+      "dependencies": [
+        "sonner"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/sonner.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sparkles",
+      "type": "registry:ui",
+      "title": "Sparkles",
+      "description": "Campo de partículas brancas cintilantes (twinkle + leve drift) em canvas puro, reimplementado a partir do SparklesCore da Aceternity UI. Ideal como background de hero ou efeito standalone.",
+      "files": [
+        {
+          "path": "src/components/ui/sparkles.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/sparkles-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "spotlight",
+      "type": "registry:ui",
+      "title": "Spotlight",
+      "description": "Efeito de holofote da Aceternity UI: um SVG com elipse desfocada que simula um facho de luz vindo de um canto, com fade-in suave (animate-spotlight). Posicionado de forma absoluta dentro de um container relative de fundo escuro, atrás do conteúdo. Cor configurável via prop fill.",
+      "files": [
+        {
+          "path": "src/components/ui/spotlight.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "spotlight-new",
+      "type": "registry:ui",
+      "title": "Spotlight New",
+      "description": "Versão nova do spotlight da Aceternity UI: dois feixes de luz (radial-gradient) que balançam em loop suave sobre um fundo escuro, ideal para destacar um hero. Cores, amplitude e velocidade configuráveis.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/spotlight-new.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "springs",
+      "type": "registry:lib",
+      "title": "Springs",
+      "files": [
+        {
+          "path": "src/lib/springs.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "squiggly-text",
+      "type": "registry:ui",
+      "title": "Squiggly Text",
+      "description": "Texto da Aceternity UI que 'treme' ciclicamente entre filtros SVG (feTurbulence + feDisplacementMap) com seeds diferentes, criando efeito de vibração/ondulação configurável (steps, stepDuration, scale, baseFrequency, numOctaves). Animação por useTime + useTransform de motion/react; o filtro aplica em qualquer texto inline ou em bloco (as='span'|'div').",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/squiggly-text.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "stateful-button",
+      "type": "registry:ui",
+      "title": "Stateful Button",
+      "description": "Botão com feedback de estado: ao clicar dispara um spinner de loading (motion/react) enquanto o handler assíncrono resolve e exibe um check de sucesso ao concluir. Animações de layout suaves e cor/tamanho customizáveis via className.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/stateful-button.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sticky-banner",
+      "type": "registry:ui",
+      "title": "Sticky Banner",
+      "description": "Banner fixo no topo (sticky) que oculta/mostra conforme a posição de scroll, com botão de fechar interno. Wrapper bg-transparent — cor fica nos children.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/sticky-banner.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/sticky-banner-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "sticky-scroll-reveal",
+      "type": "registry:ui",
+      "title": "Sticky Scroll Reveal",
+      "description": "Container scrollável vertical com seções de texto à esquerda e um card sticky à direita que troca conteúdo e gradiente de fundo conforme a seção ativa muda. O progresso do scroll interno é medido por `useScroll({ container })` (motion v12) e mapeado em breakpoints normalizados (i/N) para decidir qual card está em foco. Cores são hardcoded (slate-900/black + gradientes cyan/pink/orange) — brand do efeito, não segue tema shadcn.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/sticky-scroll-reveal.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "surface-classes",
+      "type": "registry:lib",
+      "title": "Surface Classes",
+      "files": [
+        {
+          "path": "src/lib/surface-classes.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "surface-context",
+      "type": "registry:lib",
+      "title": "Surface Context",
+      "files": [
+        {
+          "path": "src/lib/surface-context-internal.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/surface-context-provider.tsx",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/lib/surface-context.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "svg-mask-effect",
+      "type": "registry:ui",
+      "title": "SVG Mask Effect",
+      "description": "Efeito de revelação da Aceternity UI: o texto base fica escondido por uma camada; ao mover o mouse, uma máscara circular segue o cursor e revela o conteúdo por baixo, crescendo no hover. Funciona em light e dark.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/svg-mask-effect.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/svg-mask-effect-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "switch",
+      "type": "registry:ui",
+      "title": "Switch",
+      "description": "Controle de alternância ligar/desligar para configurações e preferências. Baseado em @radix-ui/react-switch.",
+      "dependencies": [
+        "@radix-ui/react-switch"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/switch.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "switch-fluid",
+      "type": "registry:ui",
+      "title": "Switch (Fluid)",
+      "description": "Switch da Fluid Functionalism com thumb que estica no hover/press e suporte a arraste para alternar.",
+      "dependencies": [
+        "@radix-ui/react-switch",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/switch-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "table",
+      "type": "registry:ui",
+      "title": "Table",
+      "description": "Semantic HTML table with header, body, footer, rows, cells, and caption — styled with Tailwind and adaptive to light/dark.",
+      "files": [
+        {
+          "path": "src/components/ui/table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "table-fluid",
+      "type": "registry:ui",
+      "title": "Table (Fluid)",
+      "description": "Tabela da Fluid Functionalism com destaque de linha por proximidade do cursor e transições suaves.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/table-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tabs",
+      "type": "registry:ui",
+      "title": "Tabs",
+      "description": "Abas para alternar entre seções de conteúdo dentro de um mesmo contexto.",
+      "dependencies": [
+        "@radix-ui/react-tabs"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tabs.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tabs-fluid",
+      "type": "registry:ui",
+      "title": "Tabs (Fluid)",
+      "description": "Abas da Fluid Functionalism com indicador de pílula elevada animado, hover por proximidade no eixo horizontal, anel de foco e painéis controlados.",
+      "dependencies": [
+        "@radix-ui/react-tabs",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-classes.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tabs-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tabs-subtle-fluid",
+      "type": "registry:ui",
+      "title": "Tabs Subtle (Fluid)",
+      "description": "Abas sutis da Fluid Functionalism com pílula selecionada animada, hover por proximidade, anel de foco e modo de rótulo só na ativa.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tabs-subtle-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".scrollbar-hide": {
+          "-ms-overflow-style": "none",
+          "scrollbar-width": "none"
+        },
+        ".scrollbar-hide::-webkit-scrollbar": {
+          "display": "none"
+        }
+      }
+    },
+    {
+      "name": "team-section-with-scales",
+      "type": "registry:ui",
+      "title": "Team Section with Scales",
+      "description": "Seção de equipe com cabeçalho (eyebrow + título + descrição) e grade responsiva de cards de membros sobre o pattern decorativo Scales (linhas via CSS, reativo ao tema). Cada card traz avatar, nome, cargo, bio e links sociais opcionais, com realce no hover (motion/react).",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/scales.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/team-section-with-scales.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/team-section-with-scales-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "terminal",
+      "type": "registry:ui",
+      "title": "Terminal",
+      "description": "Mock de terminal/console da Aceternity UI que datilografa comandos linha a linha com cursor piscante, syntax highlight de bash (comandos, flags, strings, paths) e saídas opcionais por comando. Anima ao entrar na viewport; velocidade, usuário e atrasos configuráveis.",
+      "files": [
+        {
+          "path": "src/components/ui/terminal.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "text-flipping-board",
+      "type": "registry:ui",
+      "title": "Text Flipping Board",
+      "description": "Split-flap board estilo aeroporto: cada caractere gira pra revelar a letra, com delay em cascata por linha e coluna.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/text-flipping-board.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/text-flipping-board-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "text-generate-effect",
+      "type": "registry:ui",
+      "title": "Text Generate Effect",
+      "description": "Texto da Aceternity UI em que cada palavra entra com fade + blur desfocado (10px) com stagger de 0.2s. Tema via token semântico text-foreground; aceita frase, flag de blur e duração customizada. Animado na montagem via useAnimate (motion/react).",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/text-generate-effect.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "text-hover-effect",
+      "type": "registry:ui",
+      "title": "Text Hover Effect",
+      "description": "SVG com texto em stroke que, ao passar o mouse, ganha um realce gradiente multicolor (amarelo/vermelho/azul/ciano/violeta) revelado por uma máscara radial seguindo o cursor, com stroke inicial animado via strokeDasharray. Reimplementado padronizado shadcn com motion/react, palette de gradiente configurável e variantes de densidade.",
+      "dependencies": [
+        "class-variance-authority",
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/text-hover-effect.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/text-hover-effect-types.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/text-hover-effect-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "text-reveal-card",
+      "type": "registry:ui",
+      "title": "Text Reveal Card",
+      "description": "Card Aceternity UI: arraste o mouse sobre o card e um texto escondido é revelado progressivamente da esquerda pra direita via clip-path animado por motion, com estrelinhas piscando ao fundo. Background escuro fixo (brand do efeito).",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/text-reveal-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "textarea",
+      "type": "registry:ui",
+      "title": "Textarea",
+      "description": "Campo de texto multiline para entrada de conteúdo longo como descrições, mensagens e comentários.",
+      "files": [
+        {
+          "path": "src/components/ui/textarea.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "theme-switcher",
+      "type": "registry:ui",
+      "title": "Theme Switcher",
+      "description": "Seletor de tema elaborado com opções light/dark/system (e talvez accent color).",
+      "dependencies": [
+        "@radix-ui/react-tooltip",
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/dropdown-menu.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/theme-switcher.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "theme-toggle-effect",
+      "type": "registry:ui",
+      "title": "Theme Toggle Effect",
+      "description": "Toggle de tema com animação de view transition (círculo expandindo do botão até a tela inteira).",
+      "dependencies": [
+        "lucide-react"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/theme-toggle-effect.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/theme-toggle-effect-variants.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        "::view-transition-old(root)": {
+          "mix-blend-mode": "normal"
+        },
+        "::view-transition-new(root)": {
+          "background": "linear-gradient(45deg, oklch(0.55 0.18 265), oklch(0.7 0.18 200))",
+          "mix-blend-mode": "normal"
+        }
+      }
+    },
+    {
+      "name": "thinking-indicator-fluid",
+      "type": "registry:ui",
+      "title": "Thinking Indicator (Fluid)",
+      "description": "Indicador de processamento da Fluid Functionalism com ícone morfando entre formas e texto com efeito shimmer que alterna palavras.",
+      "dependencies": [
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/thinking-indicator-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        "@keyframes thinking-shimmer": {
+          "0%": {
+            "background-position": "0% 0"
+          },
+          "100%": {
+            "background-position": "100% 0"
+          }
+        },
+        ".thinking-shimmer-text": {
+          "color": "transparent",
+          "background": "linear-gradient(90deg, #a3a3a3 0%, #a3a3a3 35%, #525252 50%, #a3a3a3 65%, #a3a3a3 100%)",
+          "background-size": "300% 100%",
+          "background-clip": "text",
+          "-webkit-background-clip": "text",
+          "animation": "thinking-shimmer 1.5s ease-in-out infinite"
+        }
+      }
+    },
+    {
+      "name": "thinking-steps-fluid",
+      "type": "registry:ui",
+      "title": "Thinking Steps (Fluid)",
+      "description": "Trilha de raciocínio da Fluid Functionalism: accordion com passos animados, status (ativo/concluído), detalhes aninhados, fontes em badges e imagens — para exibir o pensamento de uma IA.",
+      "dependencies": [
+        "class-variance-authority",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/accordion-fluid.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/badge-fluid.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/thinking-steps-fluid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/badge-fluid-variants.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        "@keyframes thinking-shimmer": {
+          "0%": {
+            "background-position": "0% 0"
+          },
+          "100%": {
+            "background-position": "100% 0"
+          }
+        },
+        ".thinking-shimmer-text": {
+          "color": "transparent",
+          "background": "linear-gradient(90deg, #a3a3a3 0%, #a3a3a3 35%, #525252 50%, #a3a3a3 65%, #a3a3a3 100%)",
+          "background-size": "300% 100%",
+          "background-clip": "text",
+          "-webkit-background-clip": "text",
+          "animation": "thinking-shimmer 1.5s ease-in-out infinite"
+        }
+      }
+    },
+    {
+      "name": "timeline",
+      "type": "registry:ui",
+      "title": "Timeline",
+      "description": "Linha do tempo vertical da Aceternity UI com uma barra de progresso que cresce (gradiente roxo→azul) conforme a rolagem, dirigida por motion useScroll. Cada entrada tem um marco com título (data) e conteúdo arbitrário; sticky labels no desktop. Cabeçalho e descrição configuráveis.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/timeline.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/timeline-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toast",
+      "type": "registry:ui",
+      "title": "Toast",
+      "description": "Notificação temporária e não-bloqueante para confirmar ações, exibir alertas ou comunicar estados do sistema. Baseado em @radix-ui/react-toast.",
+      "dependencies": [
+        "@radix-ui/react-toast",
+        "class-variance-authority",
+        "lucide-react"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/toast.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toc-minimap",
+      "type": "registry:ui",
+      "title": "TOC Minimap",
+      "description": "Sumário/minimap de navegação com seção ativa via IntersectionObserver e barra de progresso.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/toc-minimap.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/toc-minimap-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toggle",
+      "type": "registry:ui",
+      "title": "Toggle",
+      "description": "Botão de alternância com estados ligado/desligado, variantes de estilo e tamanho. Baseado em @radix-ui/react-toggle.",
+      "dependencies": [
+        "@radix-ui/react-toggle",
+        "class-variance-authority"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/toggle.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/toggle-types.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/toggle-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tooltip-card",
+      "type": "registry:ui",
+      "title": "Tooltip Card",
+      "description": "Tooltip da Aceternity UI que aparece no hover e SEGUE o cursor (motion/react com AnimatePresence + spring). O conteúdo pode ser texto simples ou um card React rico (avatar, nome, bio); posição calculada a partir do mouse com clamp nas bordas do viewport.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tooltip-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tooltip-fluid",
+      "type": "registry:ui",
+      "title": "Tooltip (Fluid)",
+      "description": "Tooltip da Fluid Functionalism com animação de entrada/saída via motion e posicionamento em quatro lados.",
+      "dependencies": [
+        "@radix-ui/react-tooltip",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tooltip-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tracing-beam",
+      "type": "registry:ui",
+      "title": "Tracing Beam",
+      "description": "Feixe luminoso da Aceternity UI que acompanha a rolagem ao lado do conteúdo: um caminho SVG preenchido por um gradiente (ciano → violeta) cujo progresso evolui com o scroll, dirigido por motion (useScroll + useSpring). Ideal para artigos longos e landing pages narrativas; envolve qualquer conteúdo e mede sua altura automaticamente.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tracing-beam.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/tracing-beam-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "tree",
+      "type": "registry:ui",
+      "title": "Tree",
+      "description": "Árvore de arquivos interativa com busca, drag & drop e navegação por teclado. Baseada em @pierre/trees.",
+      "dependencies": [
+        "@pierre/trees",
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tree.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/tree-types.ts",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/tree-variants.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        "[data-slot=\"tree\"]": {
+          "--trees-height": "420px",
+          "height": "var(--trees-height)",
+          "min-height": "12rem",
+          "display": "flex",
+          "flex-direction": "column"
+        },
+        "[data-slot=\"tree\"] > file-tree-container": {
+          "flex": "1 1 0",
+          "min-height": "0",
+          "display": "flex",
+          "width": "100%"
+        },
+        "[data-slot=\"tree\"][data-theme=\"light\"]": {
+          "--trees-fg-override": "var(--foreground)",
+          "--trees-fg-muted-override": "var(--muted-foreground)",
+          "--trees-bg-override": "var(--background)",
+          "--trees-bg-muted-override": "var(--muted)",
+          "--trees-accent-override": "oklch(0.55 0.18 250)",
+          "--trees-border-color-override": "var(--border)",
+          "--trees-focus-ring-color-override": "var(--ring)",
+          "--trees-search-fg-override": "var(--foreground)",
+          "--trees-search-bg-override": "var(--muted)",
+          "--trees-input-bg-override": "var(--input)",
+          "--trees-selected-fg-override": "var(--accent-foreground)",
+          "--trees-selected-bg-override": "color-mix(in oklab, var(--accent) 35%, transparent)",
+          "--trees-scrollbar-thumb-override": "color-mix(in oklab, var(--muted-foreground) 25%, transparent)"
+        },
+        "[data-slot=\"tree\"][data-theme=\"dark\"]": {
+          "--trees-fg-override": "var(--foreground)",
+          "--trees-fg-muted-override": "var(--muted-foreground)",
+          "--trees-bg-override": "var(--background)",
+          "--trees-bg-muted-override": "var(--muted)",
+          "--trees-accent-override": "oklch(0.72 0.15 230)",
+          "--trees-border-color-override": "var(--border)",
+          "--trees-focus-ring-color-override": "var(--ring)",
+          "--trees-search-fg-override": "var(--foreground)",
+          "--trees-search-bg-override": "var(--muted)",
+          "--trees-input-bg-override": "var(--input)",
+          "--trees-selected-fg-override": "var(--accent-foreground)",
+          "--trees-selected-bg-override": "color-mix(in oklab, var(--accent) 35%, transparent)",
+          "--trees-scrollbar-thumb-override": "color-mix(in oklab, var(--muted-foreground) 25%, transparent)"
+        }
+      }
+    },
+    {
+      "name": "typewriter-effect",
+      "type": "registry:ui",
+      "title": "Typewriter Effect",
+      "description": "Efeito de datilografia da Aceternity UI em duas variantes: TypewriterEffect revela cada caractere com stagger de 0.1s quando entra na viewport; TypewriterEffectSmooth (máquina de escrever) anima a largura do container de 0% até fit-content em 2s. Cursor (token --primary do shadcn) pisca em loop infinito em ambas. Ideal para títulos de hero, slogans e CTAs animados.",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/typewriter-effect.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/typewriter-effect-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "use-merge-split",
+      "type": "registry:hook",
+      "title": "Use Merge Split",
+      "dependencies": [
+        "framer-motion@^12.40.0"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+      ],
+      "files": [
+        {
+          "path": "src/hooks/selection-backgrounds.tsx",
+          "type": "registry:hook"
+        },
+        {
+          "path": "src/hooks/use-merge-split-internal.ts",
+          "type": "registry:hook"
+        },
+        {
+          "path": "src/hooks/use-merge-split.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-outside-click",
+      "type": "registry:hook",
+      "title": "Use Outside Click",
+      "files": [
+        {
+          "path": "src/hooks/use-outside-click.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-proximity-hover",
+      "type": "registry:hook",
+      "title": "Use Proximity Hover",
+      "files": [
+        {
+          "path": "src/hooks/use-proximity-hover.ts",
+          "type": "registry:hook"
+        }
+      ]
+    },
+    {
+      "name": "use-theme",
+      "type": "registry:lib",
+      "title": "Use Theme",
+      "files": [
+        {
+          "path": "src/components/theme/theme-context.ts",
+          "type": "registry:lib"
+        },
+        {
+          "path": "src/components/theme/use-theme.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
+      "name": "vortex",
+      "type": "registry:ui",
+      "title": "Vortex",
+      "description": "Fundo de partículas em redemoinho (swirl) animado em canvas via simplex noise 3D, com glow aditivo e CTA sobreposto. Cor, contagem de partículas, amplitude e velocidade configuráveis; fundo escuro fixo (brand do efeito).",
+      "dependencies": [
+        "motion",
+        "simplex-noise"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/vortex.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/vortex-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "wavy-background",
+      "type": "registry:ui",
+      "title": "Wavy Background",
+      "description": "Ondas coloridas suaves animadas em canvas atrás de um conteúdo (hero escuro), com movimento orgânico gerado por simplex noise 3D reimplementado inline (zero dependência externa).",
+      "files": [
+        {
+          "path": "src/components/ui/wavy-background.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "webcam-pixel-grid",
+      "type": "registry:ui",
+      "title": "Webcam Pixel Grid",
+      "description": "Grid de pixels que captura frames da webcam e renderiza em tempo real como uma matriz de cores. Fallback elegante quando webcam não está disponível.",
+      "files": [
+        {
+          "path": "src/components/ui/webcam-pixel-grid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/webcam-pixel-grid-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "wobble-card",
+      "type": "registry:ui",
+      "title": "Wobble Card",
+      "description": "Card que balança e translada com o mouse via motion (tilt 3D + scale do conteúdo + noise overlay).",
+      "dependencies": [
+        "motion"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/wobble-card.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/wobble-card-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "work-experience-component",
+      "type": "registry:ui",
+      "title": "Work Experience",
+      "description": "Card/timeline de experiência profissional com empresa, cargo, período, descrição e tecnologias.",
+      "dependencies": [
+        "class-variance-authority"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/badge.json",
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/card.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/work-experience-component.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/work-experience-component-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "world-map",
+      "type": "registry:ui",
+      "title": "World Map",
+      "description": "Mapa-múndi pontilhado da Aceternity UI (SVG gerado em runtime pela lib dotted-map) com arcos curvos que se desenham progressivamente (pathLength animado por motion) entre pares de coordenadas, e pontos pulsantes (animate SVG) nas pontas. Útil para ilustrar conexões/rotas globais. Cor das linhas configurável e fundo adaptativo ao tema (branco no claro, preto no escuro).",
+      "dependencies": [
+        "dotted-map",
+        "motion"
+      ],
+      "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/world-map.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/world-map-types.ts",
+          "type": "registry:ui"
+        }
+      ]
     }
   ]
 }

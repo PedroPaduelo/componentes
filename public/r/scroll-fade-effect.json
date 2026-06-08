@@ -1,0 +1,22 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "scroll-fade-effect",
+  "title": "Scroll Fade Effect",
+  "description": "Container com fade nas bordas superior/inferior quando há conteúdo scrollável além do viewport (estilo iOS).",
+  "dependencies": [
+    "class-variance-authority"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/scroll-fade-effect.tsx",
+      "content": "import * as React from \"react\"\nimport { type VariantProps } from \"class-variance-authority\"\nimport { cn } from \"@/lib/utils\"\nimport { scrollFadeEffectVariants } from \"@/components/ui/scroll-fade-effect-variants\"\n\n// ─── Tipos públicos ────────────────────────────────────────────────\n\nexport type ScrollFadeEffectOrientation = \"vertical\" | \"horizontal\"\n\nexport type ScrollFadeEffectProps = Omit<\n  React.HTMLAttributes<HTMLDivElement>,\n  \"children\"\n> &\n  VariantProps<typeof scrollFadeEffectVariants> & {\n    /** Conteúdo renderizado dentro do container scrollável. */\n    children: React.ReactNode\n\n    /**\n     * Direção do scroll.\n     * @default \"vertical\"\n     */\n    orientation?: ScrollFadeEffectOrientation\n\n    /**\n     * Altura do gradiente de fade em pixels.\n     * @default 32\n     */\n    fadeHeight?: number\n\n    /**\n     * Cor de fundo usada no gradiente de fade.\n     * Se não informada, usa `var(--background)` do tema shadcn.\n     */\n    fadeColor?: string\n  }\n\n// ─── Componente ────────────────────────────────────────────────────\n\nfunction ScrollFadeEffect({\n  children,\n  orientation = \"vertical\",\n  fadeHeight = 32,\n  // `fadeColor` é aceito na API pública mas não é mais necessário: a mask\n  // CSS resolve a cor do fade automaticamente a partir do contexto.\n  // eslint-disable-next-line @typescript-eslint/no-unused-vars\n  fadeColor: _fadeColor,\n  variant,\n  className,\n  ...hostProps\n}: ScrollFadeEffectProps) {\n  const scrollRef = React.useRef<HTMLDivElement>(null)\n\n  const isVertical = orientation === \"vertical\"\n\n  // CSS mask: aplica gradiente para criar o fade nas bordas\n  const maskStyle = React.useMemo<React.CSSProperties>(() => {\n    const fh = `${fadeHeight}px`\n    if (isVertical) {\n      return {\n        maskImage: `linear-gradient(to bottom, transparent 0, black ${fh}, black calc(100% - ${fh}), transparent 100%)`,\n        WebkitMaskImage: `linear-gradient(to bottom, transparent 0, black ${fh}, black calc(100% - ${fh}), transparent 100%)`,\n      }\n    }\n    return {\n      maskImage: `linear-gradient(to right, transparent 0, black ${fh}, black calc(100% - ${fh}), transparent 100%)`,\n      WebkitMaskImage: `linear-gradient(to right, transparent 0, black ${fh}, black calc(100% - ${fh}), transparent 100%)`,\n    }\n  }, [fadeHeight, isVertical])\n\n  return (\n    <div\n      data-slot=\"scroll-fade-effect\"\n      data-orientation={orientation}\n      className={cn(\n        scrollFadeEffectVariants({ variant, className })\n      )}\n      {...hostProps}\n    >\n      <div\n        ref={scrollRef}\n        className={cn(\n          \"relative\",\n          isVertical ? \"overflow-y-auto\" : \"overflow-x-auto\",\n          \"h-full w-full\"\n        )}\n        style={maskStyle}\n      >\n        {children}\n      </div>\n    </div>\n  )\n}\n\nexport { ScrollFadeEffect }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/scroll-fade-effect-variants.ts",
+      "content": "import { cva } from \"class-variance-authority\"\n\n/**\n * Variantes de ScrollFadeEffect no padrão shadcn/ui.\n *\n * - `variant`: estilo do container externo (default, ghost)\n */\nexport const scrollFadeEffectVariants = cva(\n  \"relative w-full overflow-hidden rounded-lg border border-border bg-background text-foreground\",\n  {\n    variants: {\n      variant: {\n        default: \"\",\n        ghost: \"border-transparent bg-transparent\",\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n    },\n  }\n)\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "font-weight",
+  "title": "Font Weight",
+  "files": [
+    {
+      "path": "src/lib/font-weight.ts",
+      "content": "// Inter (variable) weight tokens for `fontVariationSettings`.\n//\n// Each weight is paired with an optical-size (`opsz`) value so that animating\n// between weights keeps the text's advance width nearly constant: a heavier\n// `wght` widens the text, and a tighter (higher) `opsz` pulls it back. The\n// opsz values below were measured against the 400/opsz-14 baseline and hold\n// the closed→bold width delta to within ~0.6px (≈±0.5%), centered on zero,\n// down from ~3px with no compensation. A single opsz value can't zero every\n// string (glyph mixes scale differently), so a sub-pixel residual remains.\n//\n// Setting `opsz` explicitly here overrides `font-optical-sizing: auto`, which\n// is intended — we want weight, not font-size, to drive optical size.\nexport const fontWeights = {\n  normal: \"'wght' 400, 'opsz' 14\",\n  medium: \"'wght' 450, 'opsz' 15\",\n  semibold: \"'wght' 550, 'opsz' 20\",\n  bold: \"'wght' 700, 'opsz' 25\",\n} as const;\n",
+      "type": "registry:lib"
+    }
+  ],
+  "type": "registry:lib"
+}

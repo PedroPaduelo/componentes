@@ -1,0 +1,37 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "background-ripple-effect",
+  "title": "Background Ripple Effect",
+  "description": "Grade de células quadradas da Aceternity UI: ao clicar numa célula, um ripple (onda de opacidade) se propaga pelas vizinhas com delay proporcional à distância. Cores reativas ao tema.",
+  "files": [
+    {
+      "path": "src/components/ui/background-ripple-effect.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nimport type {\n  BackgroundRippleEffectProps,\n  CellStyle,\n  DivGridProps,\n  RippleCell,\n} from \"@/components/ui/background-ripple-effect-types\"\n\n/**\n * Background Ripple Effect (Aceternity UI).\n *\n * Grade de células quadradas. Ao clicar numa célula, um ripple (onda de\n * opacidade) se propaga pelas vizinhas com delay proporcional à distância.\n * API padronizada shadcn: named export, `data-slot`, `cn()`, cores via tokens\n * (`var(--border)`) que reagem ao tema light/dark.\n */\nfunction BackgroundRippleEffect({\n  rows = 8,\n  cols = 27,\n  cellSize = 56,\n  className,\n}: BackgroundRippleEffectProps) {\n  const [clickedCell, setClickedCell] = React.useState<RippleCell | null>(null)\n  const [rippleKey, setRippleKey] = React.useState(0)\n\n  return (\n    <div\n      data-slot=\"background-ripple-effect\"\n      className={cn(\"absolute inset-0 h-full w-full\", className)}\n    >\n      <div className=\"relative h-auto w-auto overflow-hidden\">\n        <div className=\"pointer-events-none absolute inset-0 z-[2] h-full w-full overflow-hidden\" />\n        <DivGrid\n          key={`base-${rippleKey}`}\n          className=\"opacity-60\"\n          rows={rows}\n          cols={cols}\n          cellSize={cellSize}\n          borderColor=\"var(--border)\"\n          fillColor=\"transparent\"\n          clickedCell={clickedCell}\n          onCellClick={(row, col) => {\n            setClickedCell({ row, col })\n            setRippleKey((k) => k + 1)\n          }}\n          interactive\n        />\n      </div>\n    </div>\n  )\n}\n\nfunction DivGrid({\n  className,\n  rows = 7,\n  cols = 30,\n  cellSize = 56,\n  borderColor = \"var(--border)\",\n  fillColor = \"transparent\",\n  clickedCell = null,\n  onCellClick,\n  interactive = true,\n}: DivGridProps) {\n  const cells = React.useMemo(\n    () => Array.from({ length: rows * cols }, (_, idx) => idx),\n    [rows, cols]\n  )\n\n  const gridStyle: React.CSSProperties = {\n    display: \"grid\",\n    gridTemplateColumns: `repeat(${cols}, ${cellSize}px)`,\n    gridTemplateRows: `repeat(${rows}, ${cellSize}px)`,\n    width: cols * cellSize,\n    height: rows * cellSize,\n    marginInline: \"auto\",\n  }\n\n  return (\n    <div className={cn(\"relative z-[3]\", className)} style={gridStyle}>\n      {cells.map((idx) => {\n        const rowIdx = Math.floor(idx / cols)\n        const colIdx = idx % cols\n        const distance = clickedCell\n          ? Math.hypot(clickedCell.row - rowIdx, clickedCell.col - colIdx)\n          : 0\n        const delay = clickedCell ? Math.max(0, distance * 55) : 0\n        const duration = 200 + distance * 80\n\n        const rippleVars: CellStyle = clickedCell\n          ? {\n              \"--delay\": `${delay}ms`,\n              \"--duration\": `${duration}ms`,\n            }\n          : {}\n\n        const cellStyle: CellStyle = {\n          backgroundColor: fillColor,\n          borderColor,\n          ...rippleVars,\n        }\n\n        return (\n          <div\n            key={idx}\n            className={cn(\n              \"cell relative border-[0.5px] opacity-40 transition-opacity duration-150 will-change-transform hover:opacity-80\",\n              clickedCell && \"animate-cell-ripple [animation-fill-mode:none]\",\n              !interactive && \"pointer-events-none\"\n            )}\n            style={cellStyle}\n            onClick={\n              interactive ? () => onCellClick?.(rowIdx, colIdx) : undefined\n            }\n          />\n        )\n      })}\n    </div>\n  )\n}\n\nexport { BackgroundRippleEffect, DivGrid }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/background-ripple-effect-types.ts",
+      "content": "import type * as React from \"react\"\n\n/** Coordenada (linha, coluna) da célula clicada no grid do ripple. */\nexport type RippleCell = {\n  row: number\n  col: number\n}\n\nexport type BackgroundRippleEffectProps = {\n  /** Número de linhas da grade. Default: 8. */\n  rows?: number\n  /** Número de colunas da grade. Default: 27. */\n  cols?: number\n  /** Tamanho (px) de cada célula quadrada. Default: 56. */\n  cellSize?: number\n  /** Classe extra no wrapper raiz. */\n  className?: string\n}\n\nexport type DivGridProps = {\n  className?: string\n  rows: number\n  cols: number\n  /** Tamanho (px) de cada célula. */\n  cellSize: number\n  borderColor: string\n  fillColor: string\n  clickedCell: RippleCell | null\n  onCellClick?: (row: number, col: number) => void\n  interactive?: boolean\n}\n\n/** Estilo de célula com as custom properties CSS que dirigem a animação do ripple. */\nexport type CellStyle = React.CSSProperties & {\n  \"--delay\"?: string\n  \"--duration\"?: string\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "cssVars": {
+    "theme": {
+      "--animate-cell-ripple": "cell-ripple var(--duration, 200ms) ease-out none 1 var(--delay, 0ms)"
+    }
+  },
+  "css": {
+    "@keyframes cell-ripple": {
+      "0%": {
+        "opacity": "0.4"
+      },
+      "50%": {
+        "opacity": "0.8"
+      },
+      "100%": {
+        "opacity": "0.4"
+      }
+    }
+  },
+  "type": "registry:ui"
+}

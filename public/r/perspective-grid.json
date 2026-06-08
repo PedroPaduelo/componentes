@@ -1,0 +1,67 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "perspective-grid",
+  "title": "Perspective Grid",
+  "description": "Grid 3D em perspectiva com tiles coloridos no hover — efeito de profundidade para hero/backgrounds.",
+  "registryDependencies": [
+    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/perspective-grid.tsx",
+      "content": "import * as React from \"react\"\nimport { useTheme } from \"@/components/theme/use-theme\"\nimport { cn } from \"@/lib/utils\"\n\n/**\n * PerspectiveGrid\n *\n * Grade 3D em perspectiva com `gridSize × gridSize` tiles. Cada tile ganha\n * uma cor de hover distribuída por padrão aritmético (vermelho / ciano /\n * verde / amarelo) — efeito visual de \"profundidade\" para hero / backgrounds.\n *\n * Customização: a área de fade radial (controlada por `fadeRadius`) cria a\n * sensação de profundidade; desabilite com `showOverlay={false}` para um\n * grid chapado.\n *\n * Implementação: 100% React + CSS (CSS variables e transforms 3D). As cores\n * de hover vivem em `src/index.css` (regras `.tile:nth-child(...)`) porque\n * o seletor de aritmética mod não é expressável em className arbitrário do\n * Tailwind v4 sem interpolação de string (gotcha documentado).\n *\n * Cores brand FIXAS (vermelho / ciano / verde / amarelo) seguem a decisão\n * do Lote VengenceUI: o efeito é a identidade visual, não usa tokens do\n * tema.\n */\nexport type PerspectiveGridProps = React.HTMLAttributes<HTMLDivElement> & {\n  /** Lado da grade em número de tiles. Default: 40 (40×40 = 1600 tiles). */\n  gridSize?: number\n  /** Se true (default), aplica overlay radial de fade sobre o grid. */\n  showOverlay?: boolean\n  /**\n   * Raio (em %) do fade radial overlay — controla a \"suavidade\" das bordas.\n   * Default: 80. Valores menores = fade mais agressivo (grid some perto da\n   * borda); valores maiores = grid aparece mais.\n   */\n  fadeRadius?: number\n}\n\nfunction PerspectiveGrid({\n  className,\n  gridSize = 40,\n  showOverlay = true,\n  fadeRadius = 80,\n  ...hostProps\n}: PerspectiveGridProps) {\n  const { resolvedTheme } = useTheme()\n\n  // Garante render só no client (evita hydration mismatch com o cálculo dos\n  // tiles). A render no SSR é mínima — só o container com perspective.\n  const [mounted, setMounted] = React.useState(false)\n  React.useEffect(() => {\n    setMounted(true)\n  }, [])\n\n  // Array imutável de N tiles — useMemo recria só quando gridSize muda.\n  const tiles = React.useMemo(\n    () => Array.from({ length: gridSize * gridSize }),\n    [gridSize],\n  )\n\n  return (\n    <div\n      data-slot=\"perspective-grid\"\n      data-theme={resolvedTheme}\n      className={cn(\n        \"relative w-full h-full overflow-hidden bg-white dark:bg-black\",\n        \"[--fade-stop:#ffffff] dark:[--fade-stop:#000000]\",\n        className,\n      )}\n      style={{\n        perspective: \"2000px\",\n        transformStyle: \"preserve-3d\",\n      }}\n      {...hostProps}\n    >\n      <div\n        className=\"absolute w-[80rem] aspect-square grid origin-center\"\n        style={{\n          left: \"50%\",\n          top: \"50%\",\n          transform:\n            \"translate(-50%, -50%) rotateX(30deg) rotateY(-5deg) rotateZ(20deg) scale(2)\",\n          transformStyle: \"preserve-3d\",\n          gridTemplateColumns: `repeat(${gridSize}, 1fr)`,\n          gridTemplateRows: `repeat(${gridSize}, 1fr)`,\n        }}\n      >\n        {mounted &&\n          tiles.map((_, i) => (\n            <div\n              key={i}\n              className=\"tile min-h-[1px] min-w-[1px] border border-gray-300 dark:border-gray-700 bg-transparent transition-colors duration-[1500ms] hover:duration-0\"\n            />\n          ))}\n      </div>\n      {showOverlay && (\n        <div\n          className=\"absolute inset-0 pointer-events-none z-10\"\n          style={{\n            background: `radial-gradient(circle, transparent 25%, var(--fade-stop) ${fadeRadius}%)`,\n          }}\n        />\n      )}\n    </div>\n  )\n}\n\nexport { PerspectiveGrid }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    ".tile": {
+      "min-width": "1px",
+      "min-height": "1px",
+      "border-width": "1px",
+      "border-style": "solid",
+      "border-color": "rgba(0, 0, 0, 0.2)",
+      "background-color": "transparent",
+      "box-sizing": "border-box"
+    },
+    ".dark .tile": {
+      "border-color": "rgba(255, 255, 255, 0.15)"
+    },
+    ".tile:nth-child(4n):hover": {
+      "background-color": "rgb(248 113 113)"
+    },
+    ".tile:nth-child(4n + 1):hover": {
+      "background-color": "rgb(56 189 248)"
+    },
+    ".tile:nth-child(4n + 2):hover": {
+      "background-color": "rgb(74 222 128)"
+    },
+    ".tile:nth-child(4n + 3):hover": {
+      "background-color": "rgb(253 224 71)"
+    },
+    ".tile:nth-child(7n):hover": {
+      "background-color": "rgb(56 189 248)"
+    },
+    ".tile:nth-child(7n + 3):hover": {
+      "background-color": "rgb(74 222 128)"
+    },
+    ".tile:nth-child(7n + 5):hover": {
+      "background-color": "rgb(253 224 71)"
+    },
+    ".tile:nth-child(7n + 6):hover": {
+      "background-color": "rgb(248 113 113)"
+    },
+    ".tile:nth-child(11n + 1):hover": {
+      "background-color": "rgb(248 113 113)"
+    },
+    ".tile:nth-child(11n + 4):hover": {
+      "background-color": "rgb(56 189 248)"
+    },
+    ".tile:nth-child(11n + 7):hover": {
+      "background-color": "rgb(74 222 128)"
+    },
+    ".tile:nth-child(11n + 10):hover": {
+      "background-color": "rgb(253 224 71)"
+    }
+  },
+  "type": "registry:ui"
+}

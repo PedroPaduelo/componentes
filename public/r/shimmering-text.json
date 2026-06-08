@@ -1,0 +1,24 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "shimmering-text",
+  "title": "Shimmering Text",
+  "description": "Texto com efeito shimmer (brilho da esquerda pra direita, estilo skeleton/loading).",
+  "files": [
+    {
+      "path": "src/components/ui/shimmering-text.tsx",
+      "content": "import * as React from \"react\"\nimport { cn } from \"@/lib/utils\"\n\nexport type ShimmeringTextProps = React.HTMLAttributes<HTMLSpanElement> & {\n  children: React.ReactNode\n  duration?: number\n  as?: \"h1\" | \"h2\" | \"span\" | \"p\"\n  /** Cor base do texto (geralmente muted-foreground). Default: color-mix(in oklab, var(--muted-foreground) 50%, transparent). */\n  color?: string\n  /** Cor do highlight (geralmente foreground). Default: var(--foreground). */\n  shimmerColor?: string\n}\n\nfunction ShimmeringText({\n  children,\n  duration = 2,\n  as: Tag = \"span\",\n  color,\n  shimmerColor,\n  className,\n  style,\n  ...props\n}: ShimmeringTextProps) {\n  const text = typeof children === \"string\" ? children : String(children)\n\n  return (\n    <Tag\n      data-slot=\"shimmering-text\"\n      className={cn(\n        \"relative inline-block bg-clip-text text-transparent\",\n        \"bg-gradient-to-r from-[var(--shimmering-text-color)] via-[var(--shimmering-text-highlight)] to-[var(--shimmering-text-color)]\",\n        \"bg-[length:200%_auto] animate-shimmer\",\n        className\n      )}\n      style={{\n        ...style,\n        animationDuration: `${duration}s`,\n        \"--shimmering-text-color\":\n          color ??\n          \"color-mix(in oklab, var(--muted-foreground) 50%, transparent)\",\n        \"--shimmering-text-highlight\": shimmerColor ?? \"var(--foreground)\",\n      } as React.CSSProperties & Record<`--${string}`, string>}\n      {...props}\n    >\n      {text}\n    </Tag>\n  )\n}\n\nexport { ShimmeringText }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    "@keyframes shimmer": {
+      "to": {
+        "background-position": "200% center"
+      }
+    },
+    ".animate-shimmer": {
+      "animation": "shimmer 2s linear infinite"
+    }
+  },
+  "type": "registry:ui"
+}
