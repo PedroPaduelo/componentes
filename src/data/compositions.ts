@@ -158,6 +158,14 @@ export const compositions: Composition[] = [
     tags: ["playground", "hover", "drag", "compare", "upload"],
     category: "Showcase",
   },
+  {
+    slug: "ecommerce-storefront",
+    name: "Loja / Storefront E-commerce",
+    description:
+      "Loja online navegável: navbar com carrinho contador, hero de coleção, filtros por categoria e ordenação, grid de produtos com desconto e carrinho lateral em Sheet com subtotal e ajuste de quantidade.",
+    tags: ["e-commerce", "loja", "carrinho", "produtos", "interativo"],
+    category: "Marketing",
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {

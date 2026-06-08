@@ -18,6 +18,7 @@ import { CreativePortfolio } from "./creative-portfolio"
 import { SaasLanding2 } from "./saas-landing-2"
 import { WorldMapExplorer } from "./world-map-explorer"
 import { ComponentPlayground2 } from "./component-playground-2"
+import { EcommerceStorefront } from "./ecommerce-storefront"
 
 /**
  * Mapa slug → componente de tela. Compartilhado entre a página de
@@ -43,4 +44,5 @@ export const compositionScreens: Record<string, ComponentType> = {
   "interactive-dashboard": InteractiveDashboard,
   "world-map-explorer": WorldMapExplorer,
   "component-playground-2": ComponentPlayground2,
+  "ecommerce-storefront": EcommerceStorefront,
 }
