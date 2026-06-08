@@ -158,6 +158,14 @@ export const compositions: Composition[] = [
     tags: ["playground", "hover", "drag", "compare", "upload"],
     category: "Showcase",
   },
+  {
+    slug: "settings-profile",
+    name: "Configurações & Perfil",
+    description:
+      "Tela de configurações de conta navegável: sidebar troca seções (Perfil/Conta/Notificações/Aparência/Segurança), upload de avatar, switches funcionais, tema reativo e botão salvar com loading e toast de confirmação.",
+    tags: ["configurações", "perfil", "conta", "app"],
+    category: "Aplicação",
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
