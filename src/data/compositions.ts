@@ -158,6 +158,14 @@ export const compositions: Composition[] = [
     tags: ["playground", "hover", "drag", "compare", "upload"],
     category: "Showcase",
   },
+  {
+    slug: "product-detail",
+    name: "Página de Produto (PDP)",
+    description:
+      "Página de detalhe de produto de e-commerce: galeria com zoom (Lens) e thumbnails que trocam a imagem, seletores de cor/tamanho/quantidade reativos, comprar agora (StatefulButton), abas de descrição/especificações/avaliações e carrossel de produtos relacionados.",
+    tags: ["e-commerce", "produto", "pdp", "loja", "carrinho"],
+    category: "Aplicação",
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
