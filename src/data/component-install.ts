@@ -1,19 +1,42 @@
 /**
  * Derivação de "instalação" de um componente da vitrine — dados puros (sem UI).
  *
- * A vitrine NÃO publica os componentes no npm: o consumo é por cópia do arquivo
- * fonte. Então "instalação" aqui significa:
- *  1. o caminho de import correto (`@/components/ui/<arquivo>`) e o nome do
- *     export nomeado no barrel, derivados de forma DEFENSIVA do slug;
- *  2. (quando houver) o comando para instalar a(s) dependência(s) externa(s)
- *     que o componente exige por baixo.
+ * A forma CANÔNICA de instalar um componente é via a CLI do shadcn, que aponta
+ * para o registry estático servido por esta vitrine em `/r/<slug>.json`:
  *
- * Princípio: NÃO inventar API. O nome do export é derivado por heurística
- * (PascalCase do slug) com um mapa de OVERRIDES explícito para os casos em que
- * o barrel diverge da heurística. Quando o export é meramente heurístico (não
- * confirmado por override), o campo `exportConfirmed` fica `false` para a UI
- * poder sinalizar isso honestamente.
+ *     npx shadcn@latest add <BASE_URL>/r/<slug>.json
+ *
+ * Esse comando baixa os arquivos do componente + dependências externas + CSS,
+ * então NÃO precisamos mais listar dependências manualmente (a heurística antiga
+ * de `depCommand` cobria a dep real de só 2 dos 200+ componentes — factualmente
+ * errada pro resto, por isso foi removida).
+ *
+ * Secundariamente, ainda derivamos o caminho de import (`@/components/ui/<arquivo>`)
+ * e o nome do export nomeado no barrel — úteis para quem só quer ver como
+ * consumir o componente no código. Princípio: NÃO inventar API. O nome do
+ * export é derivado por heurística (PascalCase do slug) com um mapa de OVERRIDES
+ * explícito para os casos em que o barrel diverge da heurística. Quando o export
+ * é meramente heurístico (não confirmado por override), o campo `exportConfirmed`
+ * fica `false` para a UI poder sinalizar isso honestamente.
  */
+
+/**
+ * Base URL pública do registry shadcn desta vitrine. O comando de instalação
+ * aponta para `${REGISTRY_BASE_URL}/r/<slug>.json`.
+ */
+export const REGISTRY_BASE_URL =
+  "https://componentes-fe-cmq0d9kr.cloud.serendiped.com"
+
+/**
+ * Comando CANÔNICO de instalação de um componente via CLI do shadcn.
+ * Baixa os arquivos + dependências + CSS do registry estático da vitrine.
+ *
+ * Ex.: `getRegistryAddCommand("button")` →
+ *   "npx shadcn@latest add https://.../r/button.json"
+ */
+export function getRegistryAddCommand(slug: string): string {
+  return `npx shadcn@latest add ${REGISTRY_BASE_URL}/r/${slug}.json`
+}
 
 /** Resultado da derivação de instalação de um componente. */
 export interface ComponentInstall {
@@ -26,11 +49,6 @@ export interface ComponentInstall {
    * quando é apenas a heurística PascalCase (a UI pode mostrar uma ressalva).
    */
   exportConfirmed: boolean
-  /**
-   * Comando de instalação da dependência externa, quando o componente exige
-   * uma. `null` quando o componente é self-contained (só copiar o arquivo).
-   */
-  depCommand: string | null
 }
 
 /**
@@ -129,17 +147,6 @@ const EXPORT_OVERRIDES: Record<string, string> = {
   "sparkles": "SparklesCore",
 }
 
-/**
- * Dependências externas necessárias por slug (comando npm). Conservador:
- * só listar quando o componente claramente exige uma lib de runtime instalada.
- * A maioria dos componentes é self-contained (só usa React + Tailwind +
- * helpers locais), então não tem dep externa.
- */
-const DEP_COMMANDS: Record<string, string> = {
-  tree: "npm install @pierre/trees",
-  "react-wheel-picker": "npm install @ncdai/react-wheel-picker",
-}
-
 /** Converte um slug kebab-case em PascalCase (heurística de export). */
 function pascalCase(slug: string): string {
   return slug
@@ -160,6 +167,5 @@ export function getComponentInstall(slug: string): ComponentInstall {
     importPath: `@/components/ui/${file}`,
     exportName,
     exportConfirmed: override !== undefined,
-    depCommand: DEP_COMMANDS[slug] ?? null,
   }
 }

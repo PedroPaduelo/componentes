@@ -19,7 +19,10 @@ import {
   type Family,
 } from "@/data/families"
 import { getExamplesBySlug } from "@/data/examples"
-import { getComponentInstall } from "@/data/component-install"
+import {
+  getComponentInstall,
+  getRegistryAddCommand,
+} from "@/data/component-install"
 import { NotFound } from "@/pages/NotFound"
 
 /** Resolve a família cujo base bate exatamente com o param. */
@@ -220,6 +223,7 @@ function VariantSection({
   const installId = `${variant.slug}-instalacao`
   const tipId = `${variant.slug}-dica`
 
+  const addCommand = getRegistryAddCommand(variant.slug)
   const importSnippet = `import { ${install.exportName} } from "${install.importPath}"`
 
   return (
@@ -276,7 +280,7 @@ function VariantSection({
         )}
       </div>
 
-      {/* Instalação — comando de dep (quando houver) + import path */}
+      {/* Instalação — comando canônico do shadcn (registry) + import path */}
       <div className="space-y-4">
         <SubHeading
           id={installId}
@@ -284,22 +288,24 @@ function VariantSection({
         >
           Instalação
         </SubHeading>
-        {install.depCommand ? (
-          <div className="space-y-2">
-            <p className="text-sm text-muted-foreground">
-              Instale a dependência necessária:
-            </p>
-            <CodeBlockCommand code={install.depCommand} />
-          </div>
-        ) : (
-          <p className="text-sm text-muted-foreground">
-            Sem dependência externa — copie o arquivo do componente para o seu
-            projeto.
-          </p>
-        )}
         <div className="space-y-2">
           <p className="text-sm text-muted-foreground">
-            Importe e use no seu código:
+            Instale via CLI do shadcn (baixa os arquivos, dependências e CSS).
+            Requer <code className="font-mono text-xs">shadcn init</code> no seu
+            projeto — veja a{" "}
+            <Link
+              to="/instalacao"
+              className="font-medium text-foreground underline underline-offset-4 hover:text-primary"
+            >
+              página de instalação
+            </Link>
+            .
+          </p>
+          <CodeBlockCommand code={addCommand} />
+        </div>
+        <div className="space-y-2">
+          <p className="text-sm text-muted-foreground">
+            Depois, importe e use no seu código:
           </p>
           <CodeBlock code={importSnippet} language="tsx" />
           {!install.exportConfirmed ? (
