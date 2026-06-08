@@ -12,10 +12,6 @@ dist
 dist-ssr
 *.local
 
-# Playwright validation shots
-shots/
-tmp-shots/
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -32,8 +28,13 @@ tmp-shots/
 .pierre-analysis/
 .*analysis/
 
-# Scripts: só os validadores canônicos `val-*.mjs` (+ README) são versionados.
-# Todo o resto em scripts/ (probes, diag, inspect, debug, _* efêmeros) é ignorado.
-scripts/*
-!scripts/val-*.mjs
-!scripts/README.md
+# Uploads de runtime do backend
+uploads/
+
+# Bastidor _meta/ — playwright: só validadores canônicos versionados.
+# Todo o resto em _meta/playwright/ (probes, diag, inspect, debug, _* efêmeros)
+# é ignorado. _meta/scratch/ é coberto pelo .gitignore interno dele.
+_meta/playwright/*
+!_meta/playwright/val-*.mjs
+!_meta/playwright/_shots.mjs
+!_meta/playwright/README.md
