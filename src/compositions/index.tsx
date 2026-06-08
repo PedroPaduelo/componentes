@@ -18,6 +18,16 @@ import { CreativePortfolio } from "./creative-portfolio"
 import { SaasLanding2 } from "./saas-landing-2"
 import { WorldMapExplorer } from "./world-map-explorer"
 import { ComponentPlayground2 } from "./component-playground-2"
+import { EcommerceStorefront } from "./ecommerce-storefront"
+import { ProductDetail } from "./product-detail"
+import { BlogArticle } from "./blog-article"
+import { DocsPortal } from "./docs-portal"
+import { EventConference } from "./event-conference"
+import { SettingsProfile } from "./settings-profile"
+import { OnboardingWizard } from "./onboarding-wizard"
+import { MusicPlayer } from "./music-player"
+import { ComingSoon } from "./coming-soon"
+import { TravelBooking } from "./travel-booking"
 
 /**
  * Mapa slug → componente de tela. Compartilhado entre a página de
@@ -43,4 +53,14 @@ export const compositionScreens: Record<string, ComponentType> = {
   "interactive-dashboard": InteractiveDashboard,
   "world-map-explorer": WorldMapExplorer,
   "component-playground-2": ComponentPlayground2,
+  "ecommerce-storefront": EcommerceStorefront,
+  "product-detail": ProductDetail,
+  "blog-article": BlogArticle,
+  "docs-portal": DocsPortal,
+  "event-conference": EventConference,
+  "settings-profile": SettingsProfile,
+  "onboarding-wizard": OnboardingWizard,
+  "music-player": MusicPlayer,
+  "coming-soon": ComingSoon,
+  "travel-booking": TravelBooking,
 }

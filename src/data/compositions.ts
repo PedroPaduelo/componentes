@@ -158,6 +158,86 @@ export const compositions: Composition[] = [
     tags: ["playground", "hover", "drag", "compare", "upload"],
     category: "Showcase",
   },
+  {
+    slug: "ecommerce-storefront",
+    name: "Loja / Storefront E-commerce",
+    description:
+      "Loja online navegável: navbar com carrinho contador, hero de coleção, filtros por categoria e ordenação, grid de produtos com desconto e carrinho lateral em Sheet com subtotal e ajuste de quantidade.",
+    tags: ["e-commerce", "loja", "carrinho", "produtos", "interativo"],
+    category: "Marketing",
+  },
+  {
+    slug: "product-detail",
+    name: "Página de Produto (PDP)",
+    description:
+      "Página de detalhe de produto de e-commerce: galeria com zoom (Lens) e thumbnails que trocam a imagem, seletores de cor/tamanho/quantidade reativos, comprar agora (StatefulButton), abas de descrição/especificações/avaliações e carrossel de produtos relacionados.",
+    tags: ["e-commerce", "produto", "pdp", "loja", "carrinho"],
+    category: "Aplicação",
+  },
+  {
+    slug: "blog-article",
+    name: "Blog / Artigo Editorial",
+    description:
+      "Artigo de leitura longa com capa, kicker animado, autor em hover card, TracingBeam dirigido pelo scroll, blockquote, bloco de código, imagem, lista e cards \"Leia também\".",
+    tags: ["blog", "artigo", "editorial", "leitura", "tracing-beam"],
+    category: "Marketing",
+  },
+  {
+    slug: "docs-portal",
+    name: "Portal de Documentação",
+    description:
+      "Doc de produto navegável: sidebar troca a página exibida, command palette (⌘K) busca e navega, e cada doc tem breadcrumb, abas de exemplos, comando de instalação, callouts, tabela de props, FAQ e índice 'nesta página'.",
+    tags: ["docs", "documentação", "command palette", "navegável", "app"],
+    category: "Aplicação",
+  },
+  {
+    slug: "event-conference",
+    name: "Landing de Conferência",
+    description:
+      "Landing de evento tech com hero em Vortex, nome em ColourfulText, countdown ao vivo, palestrantes em AnimatedTooltip, depoimentos, agenda em Timeline, patrocinadores e planos de ingresso.",
+    tags: ["evento", "conferência", "countdown", "ingressos", "landing"],
+    category: "Marketing",
+  },
+  {
+    slug: "settings-profile",
+    name: "Configurações & Perfil",
+    description:
+      "Tela de configurações de conta navegável: sidebar troca seções (Perfil/Conta/Notificações/Aparência/Segurança), upload de avatar, switches funcionais, tema reativo e botão salvar com loading e toast de confirmação.",
+    tags: ["configurações", "perfil", "conta", "app"],
+    category: "Aplicação",
+  },
+  {
+    slug: "onboarding-wizard",
+    name: "Onboarding Wizard",
+    description:
+      "Wizard de onboarding multi-step com estado real: stepper progressivo, dados pessoais, seleção de objetivos em cards, preferências com switches/radio, convite de equipe por e-mail e revisão final que dispara um loader animado.",
+    tags: ["onboarding", "wizard", "multi-step", "stepper", "interativo"],
+    category: "Aplicação",
+  },
+  {
+    slug: "music-player",
+    name: "Music Player",
+    description:
+      "Player de streaming de música tipo Spotify: biblioteca de playlists, lista de faixas reativa, capa com efeito glare e player fixo com play/pause, progresso e volume.",
+    tags: ["música", "player", "streaming", "app"],
+    category: "Aplicação",
+  },
+  {
+    slug: "coming-soon",
+    name: "Coming Soon / Waitlist",
+    description:
+      "Tela de lançamento 'em breve' full-bleed com fundo de estrelas animado, título colorido, countdown dd:hh:mm:ss, captura de e-mail para waitlist com confirmação e contador de prova social.",
+    tags: ["coming soon", "waitlist", "countdown", "lançamento", "marketing"],
+    category: "Marketing",
+  },
+  {
+    slug: "travel-booking",
+    name: "Reserva de Viagem",
+    description:
+      "Landing de viagens com busca interativa (destino, datas e hóspedes), destinos populares em FocusCards, mapa-múndi com rotas, depoimentos animados e faixa de benefícios.",
+    tags: ["viagem", "booking", "busca", "mapa", "marketing"],
+    category: "Marketing",
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
