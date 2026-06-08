@@ -158,6 +158,14 @@ export const compositions: Composition[] = [
     tags: ["playground", "hover", "drag", "compare", "upload"],
     category: "Showcase",
   },
+  {
+    slug: "travel-booking",
+    name: "Reserva de Viagem",
+    description:
+      "Landing de viagens com busca interativa (destino, datas e hóspedes), destinos populares em FocusCards, mapa-múndi com rotas, depoimentos animados e faixa de benefícios.",
+    tags: ["viagem", "booking", "busca", "mapa", "marketing"],
+    category: "Marketing",
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
