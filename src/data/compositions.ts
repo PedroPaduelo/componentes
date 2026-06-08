@@ -158,6 +158,14 @@ export const compositions: Composition[] = [
     tags: ["playground", "hover", "drag", "compare", "upload"],
     category: "Showcase",
   },
+  {
+    slug: "music-player",
+    name: "Music Player",
+    description:
+      "Player de streaming de música tipo Spotify: biblioteca de playlists, lista de faixas reativa, capa com efeito glare e player fixo com play/pause, progresso e volume.",
+    tags: ["música", "player", "streaming", "app"],
+    category: "Aplicação",
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {

@@ -707,6 +707,21 @@
   }
 }
 
+/* ─── Composição — Music Player (marquee do título da faixa) ──────────────── */
+@keyframes music-marquee {
+  0%,
+  10% {
+    transform: translateX(0);
+  }
+  90%,
+  100% {
+    transform: translateX(calc(-100% + var(--marquee-w, 0px)));
+  }
+}
+.animate-music-marquee {
+  animation: music-marquee 9s ease-in-out infinite alternate;
+}
+
 /* ─── Aceternity — Aurora Background ──────────────────────────────────────── */
 @keyframes aurora {
   from {
