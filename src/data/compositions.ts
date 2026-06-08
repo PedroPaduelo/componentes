@@ -158,6 +158,14 @@ export const compositions: Composition[] = [
     tags: ["playground", "hover", "drag", "compare", "upload"],
     category: "Showcase",
   },
+  {
+    slug: "onboarding-wizard",
+    name: "Onboarding Wizard",
+    description:
+      "Wizard de onboarding multi-step com estado real: stepper progressivo, dados pessoais, seleção de objetivos em cards, preferências com switches/radio, convite de equipe por e-mail e revisão final que dispara um loader animado.",
+    tags: ["onboarding", "wizard", "multi-step", "stepper", "interativo"],
+    category: "Aplicação",
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
