@@ -158,6 +158,14 @@ export const compositions: Composition[] = [
     tags: ["playground", "hover", "drag", "compare", "upload"],
     category: "Showcase",
   },
+  {
+    slug: "event-conference",
+    name: "Landing de Conferência",
+    description:
+      "Landing de evento tech com hero em Vortex, nome em ColourfulText, countdown ao vivo, palestrantes em AnimatedTooltip, depoimentos, agenda em Timeline, patrocinadores e planos de ingresso.",
+    tags: ["evento", "conferência", "countdown", "ingressos", "landing"],
+    category: "Marketing",
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
