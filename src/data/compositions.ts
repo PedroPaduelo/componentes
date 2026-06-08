@@ -158,6 +158,14 @@ export const compositions: Composition[] = [
     tags: ["playground", "hover", "drag", "compare", "upload"],
     category: "Showcase",
   },
+  {
+    slug: "coming-soon",
+    name: "Coming Soon / Waitlist",
+    description:
+      "Tela de lançamento 'em breve' full-bleed com fundo de estrelas animado, título colorido, countdown dd:hh:mm:ss, captura de e-mail para waitlist com confirmação e contador de prova social.",
+    tags: ["coming soon", "waitlist", "countdown", "lançamento", "marketing"],
+    category: "Marketing",
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
