@@ -158,6 +158,14 @@ export const compositions: Composition[] = [
     tags: ["playground", "hover", "drag", "compare", "upload"],
     category: "Showcase",
   },
+  {
+    slug: "blog-article",
+    name: "Blog / Artigo Editorial",
+    description:
+      "Artigo de leitura longa com capa, kicker animado, autor em hover card, TracingBeam dirigido pelo scroll, blockquote, bloco de código, imagem, lista e cards \"Leia também\".",
+    tags: ["blog", "artigo", "editorial", "leitura", "tracing-beam"],
+    category: "Marketing",
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
