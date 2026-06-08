@@ -4,8 +4,8 @@
   "title": "Glass Dock",
   "description": "MacOS-inspired glassmorphic dock com scale magnification on hover.",
   "dependencies": [
-    "lucide-react",
-    "motion"
+    "lucide-react@^0.468.0",
+    "motion@^12.40.0"
   ],
   "files": [
     {

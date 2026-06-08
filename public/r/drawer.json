@@ -4,7 +4,7 @@
   "title": "Drawer",
   "description": "Drawer que abre a partir da base da tela com handle visual, baseado em vaul. Ideal para ações contextuais em mobile.",
   "dependencies": [
-    "vaul"
+    "vaul@^1.1.2"
   ],
   "files": [
     {

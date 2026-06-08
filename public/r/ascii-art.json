@@ -4,7 +4,7 @@
   "title": "ASCII Art",
   "description": "Renderizador de imagem como ASCII art em canvas com animação (fade/typewriter/matrix). Suporta múltiplos charsets (standard, blocks, braille, dense, etc.), cores customizadas, ASCII colorido e efeito matrix com caracteres katakana.",
   "dependencies": [
-    "motion"
+    "motion@^12.40.0"
   ],
   "files": [
     {

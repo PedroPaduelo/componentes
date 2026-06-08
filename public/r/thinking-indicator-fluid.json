@@ -4,7 +4,7 @@
   "title": "Thinking Indicator (Fluid)",
   "description": "Indicador de processamento da Fluid Functionalism com ícone morfando entre formas e texto com efeito shimmer que alterna palavras.",
   "dependencies": [
-    "motion"
+    "motion@^12.40.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json"

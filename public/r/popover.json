@@ -4,7 +4,7 @@
   "title": "Popover",
   "description": "Painel flutuante ancorado a um gatilho, com alinhamento configurável. Baseado em @radix-ui/react-popover.",
   "dependencies": [
-    "@radix-ui/react-popover"
+    "@radix-ui/react-popover@^1.1.15"
   ],
   "files": [
     {

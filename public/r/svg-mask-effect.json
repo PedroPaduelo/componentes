@@ -4,7 +4,7 @@
   "title": "SVG Mask Effect",
   "description": "Efeito de revelação da Aceternity UI: o texto base fica escondido por uma camada; ao mover o mouse, uma máscara circular segue o cursor e revela o conteúdo por baixo, crescendo no hover. Funciona em light e dark.",
   "dependencies": [
-    "motion"
+    "motion@^12.40.0"
   ],
   "files": [
     {

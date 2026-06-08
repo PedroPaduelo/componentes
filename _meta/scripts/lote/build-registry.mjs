@@ -76,6 +76,7 @@ function isDir(p) {
 // ── parse de package.json ────────────────────────────────────────────────
 const pkg = JSON.parse(read(resolve(ROOT, "package.json")))
 const PKG_DEPS = pkg.dependencies || {}
+const PKG_DEV_DEPS = pkg.devDependencies || {}
 const PEER_IGNORE = new Set(["react", "react-dom", "react/jsx-runtime"])
 
 /** specifier externo → nome do pacote npm. */
@@ -85,6 +86,43 @@ function pkgNameOf(spec) {
     return parts.slice(0, 2).join("/")
   }
   return spec.split("/")[0]
+}
+
+/** Nome do pacote @types correspondente a um pacote npm (convenção DT). */
+function typesPkgName(p) {
+  if (p.startsWith("@")) {
+    const [scope, name] = p.slice(1).split("/")
+    return `@types/${scope}__${name}`
+  }
+  return `@types/${p}`
+}
+
+/**
+ * Mapa curado: pacotes cujos tipos vivem em OUTRO @types (não o homônimo).
+ * Ex.: three-globe e @react-three/fiber não têm tipos embutidos e usam os
+ * tipos de `three` (@types/three). Generalizável caso surjam novos casos.
+ */
+const EXTRA_TYPES = {
+  three: ["@types/three"],
+  "three-globe": ["@types/three"],
+  "@react-three/fiber": ["@types/three"],
+}
+
+/**
+ * Dado o conjunto de pacotes externos (bare names) usados por um item, devolve
+ * os @types necessários que EXISTAM no devDependencies da vitrine, pinados na
+ * faixa de lá. Cobre tanto o @types homônimo (ex.: @types/three p/ three)
+ * quanto os casos curados (three-globe/@react-three/fiber → @types/three).
+ */
+function devTypesFor(depPkgs) {
+  const out = new Set()
+  for (const p of depPkgs) {
+    const candidates = [typesPkgName(p), ...(EXTRA_TYPES[p] || [])]
+    for (const t of candidates) {
+      if (PKG_DEV_DEPS[t]) out.add(`${t}@${PKG_DEV_DEPS[t]}`)
+    }
+  }
+  return [...out].sort()
 }
 
 // ── extração de imports de um arquivo ────────────────────────────────────
@@ -122,6 +160,26 @@ function classify(abs) {
   return "other"
 }
 const baseOf = (abs) => toRel(abs).replace(/^.*\//, "").replace(/\.(tsx|ts|jsx|js)$/, "")
+
+/**
+ * Monta a entrada files[] de um arquivo, escolhendo type/target pelo diretório.
+ * - src/components/ui/*  → registry:ui (vai pro alias ui, sem target).
+ * - src/lib/*            → registry:lib.
+ * - src/hooks/*          → registry:hook.
+ * - demais src/components/* (ex.: showcase/) → registry:component COM target
+ *   explícito (root-relative via "~/") preservando o subpath, p/ o import
+ *   `@/components/<sub>/<x>` continuar resolvendo no consumer.
+ */
+function fileEntry(rel) {
+  if (rel.startsWith("src/components/ui/")) return { path: rel, type: "registry:ui" }
+  if (rel.startsWith("src/lib/")) return { path: rel, type: "registry:lib" }
+  if (rel.startsWith("src/hooks/")) return { path: rel, type: "registry:hook" }
+  if (rel.startsWith("src/components/theme/"))
+    return { path: rel, type: "registry:component", target: `~/${rel}` }
+  if (rel.startsWith("src/components/"))
+    return { path: rel, type: "registry:component", target: `~/${rel}` }
+  return { path: rel, type: "registry:file", target: `~/${rel}` }
+}
 
 // ── 1. parse components.ts ───────────────────────────────────────────────
 function parseComponents() {
@@ -202,6 +260,8 @@ for (const c of components) {
         if (!baseToSlug.has(baseOf(r.abs))) stack.push(r.abs)
       } else if (cl === "lib" || cl === "hook" || cl === "theme") {
         registerEntry(r.abs)
+      } else {
+        stack.push(r.abs) // "other" (ex.: showcase/*) → desce p/ achar entries
       }
     }
   }
@@ -309,11 +369,13 @@ function installedVersion(pkg) {
 }
 /**
  * Resolve o "spec" de dependência npm para o array dependencies do item.
- * - em package.json → nome puro (npm resolve a faixa do consumer).
+ * - em package.json → nome@<faixa exata do package.json da vitrine> (pin!).
+ *   Sem isso o consumer instala `latest` e quebra (pdfjs-dist v6,
+ *   react-day-picker v10, three 0.18x etc.).
  * - fora do package.json mas instalado → nome@^versao (+ flag REVISAR).
  */
 function depSpec(pkg, itemName) {
-  if (PKG_DEPS[pkg]) return pkg
+  if (PKG_DEPS[pkg]) return `${pkg}@${PKG_DEPS[pkg]}`
   const v = installedVersion(pkg)
   if (!NON_PKG_DEPS.has(pkg)) NON_PKG_DEPS.set(pkg, [])
   NON_PKG_DEPS.get(pkg).push(itemName)
@@ -329,6 +391,7 @@ for (const c of components) {
 
   const files = new Map() // abs → rel (companheiros + principal)
   const deps = new Set()
+  const depPkgs = new Set() // nomes "pelados" dos pacotes externos (p/ @types)
   const registryDeps = new Set()
   const seen = new Set()
   const stack = [mainAbs]
@@ -352,6 +415,7 @@ for (const c of components) {
       const r = resolveSpec(spec, cur)
       if (r.kind === "external") {
         deps.add(depSpec(r.pkg, c.slug))
+        depPkgs.add(r.pkg)
         continue
       }
       if (r.kind !== "local" || !r.abs) continue
@@ -373,6 +437,11 @@ for (const c of components) {
         } else {
           stack.push(r.abs) // helper importado direto → inline
         }
+      } else {
+        // "other": @/components/* que NÃO é ui nem theme (ex.: showcase/*)
+        // → inlina o arquivo em files[] e continua a BFS (resolve os imports
+        //   DELE também: ex. CopyButton → button como registryDependency).
+        stack.push(r.abs)
       }
     }
   }
@@ -409,9 +478,11 @@ for (const c of components) {
     description: c.description,
   }
   if (deps.size) item.dependencies = [...deps].sort()
+  const devDeps = devTypesFor(depPkgs)
+  if (devDeps.length) item.devDependencies = devDeps
   if (registryDeps.size)
     item.registryDependencies = [...registryDeps].sort().map(regDepUrl)
-  item.files = fileList.map((p) => ({ path: p, type: "registry:ui" }))
+  item.files = fileList.map(fileEntry)
   if (curatedCss) {
     if (Object.keys(curatedCss.theme).length)
       item.cssVars = { theme: curatedCss.theme }
@@ -435,6 +506,7 @@ function buildLibItem(entryName) {
   if (!entryAbs) return
   const files = new Map()
   const deps = new Set()
+  const depPkgs = new Set()
   const registryDeps = new Set()
   const seen = new Set()
   const stack = [entryAbs]
@@ -448,6 +520,7 @@ function buildLibItem(entryName) {
       const r = resolveSpec(spec, cur)
       if (r.kind === "external") {
         deps.add(depSpec(r.pkg, entryName))
+        depPkgs.add(r.pkg)
         continue
       }
       if (r.kind !== "local" || !r.abs) continue
@@ -464,6 +537,8 @@ function buildLibItem(entryName) {
         } else {
           stack.push(r.abs)
         }
+      } else {
+        stack.push(r.abs) // "other" → inline
       }
     }
   }
@@ -471,9 +546,11 @@ function buildLibItem(entryName) {
   const fileList = [...files.values()].sort()
   const item = { name: entryName, type, title: titleize(entryName) }
   if (deps.size) item.dependencies = [...deps].sort()
+  const devDeps = devTypesFor(depPkgs)
+  if (devDeps.length) item.devDependencies = devDeps
   if (registryDeps.size)
     item.registryDependencies = [...registryDeps].sort().map(regDepUrl)
-  item.files = fileList.map((p) => ({ path: p, type }))
+  item.files = fileList.map(fileEntry)
   libItems.push(item)
 }
 
@@ -564,6 +641,65 @@ while (pending.length) {
   if (builtLib.has(e)) continue
   buildLibItem(e)
   for (const n of libItemsNeeded) if (!builtLib.has(n)) pending.push(n)
+}
+
+// ── verificação de integridade: nenhum import interno órfão ───────────────
+// Para cada item, todo import @/ (ou relativo) que aponte pra um arquivo do
+// projeto precisa estar coberto por: files[] do próprio item, uma
+// registryDependency (componente registrado OU entry lib/hook/theme), ou o
+// pré-requisito @/lib/utils (cn). Caso contrário, o JSON gerado referencia um
+// módulo que o consumer NÃO recebe → quebra. Aqui isso FALHA o build.
+function regDepNamesOf(item) {
+  const names = new Set()
+  for (const url of item.registryDependencies || []) {
+    const m = url.match(/\/r\/([^/]+)\.json$/)
+    if (m) names.add(m[1])
+  }
+  return names
+}
+const ORPHANS = []
+for (const item of [...componentItems, ...libItems]) {
+  if (!item.files || !item.files.length) continue
+  const filesRel = new Set(item.files.map((f) => f.path))
+  const regDeps = regDepNamesOf(item)
+  for (const f of item.files) {
+    const abs = resolve(ROOT, f.path)
+    let txt
+    try {
+      txt = content(abs)
+    } catch {
+      continue
+    }
+    for (const spec of extractImports(txt)) {
+      if (!spec.startsWith("@/") && !spec.startsWith("./") && !spec.startsWith("../"))
+        continue
+      const r = resolveSpec(spec, abs)
+      if (r.kind !== "local") continue
+      if (!r.abs) {
+        ORPHANS.push(`${item.name}: import "${spec}" em ${f.path} NÃO resolve a um arquivo`)
+        continue
+      }
+      const cl = classify(r.abs)
+      const b = baseOf(r.abs)
+      if (cl === "lib" && b === "utils") continue // cn → pré-requisito
+      const rel2 = toRel(r.abs)
+      if (filesRel.has(rel2)) continue // arquivo embutido no item
+      if (cl === "ui" && baseToSlug.has(b) && regDeps.has(baseToSlug.get(b))) continue
+      if (
+        (cl === "lib" || cl === "hook" || cl === "theme") &&
+        regDeps.has(b)
+      )
+        continue
+      ORPHANS.push(
+        `${item.name}: import "${spec}" (${rel2}) NÃO está em files[] nem em registryDependencies`
+      )
+    }
+  }
+}
+if (ORPHANS.length) {
+  console.error("\n✖ IMPORTS INTERNOS ÓRFÃOS DETECTADOS:")
+  for (const o of ORPHANS) console.error("   • " + o)
+  throw new Error(`Integridade do registry falhou: ${ORPHANS.length} import(s) interno(s) órfão(s).`)
 }
 
 // ── monta registry.json ──────────────────────────────────────────────────

@@ -4,8 +4,8 @@
   "title": "Menubar",
   "description": "Barra de menu horizontal com menus dropdown, submenus, checkboxes, radio groups e atalhos de teclado. Baseado em @radix-ui/react-menubar.",
   "dependencies": [
-    "@radix-ui/react-menubar",
-    "lucide-react"
+    "@radix-ui/react-menubar@^1.1.16",
+    "lucide-react@^0.468.0"
   ],
   "files": [
     {

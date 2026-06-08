@@ -269,6 +269,47 @@ export function InstallGuide() {
             </AccordionContent>
           </AccordionItem>
 
+          <AccordionItem value="tw-animate-css">
+            <AccordionTrigger>
+              Animações de entrada/saída não funcionam (overlays, accordion)
+            </AccordionTrigger>
+            <AccordionContent>
+              <div className="space-y-2 text-muted-foreground">
+                <p>
+                  Alguns componentes — overlays como{" "}
+                  <code className="font-mono text-foreground">dialog</code>,{" "}
+                  <code className="font-mono text-foreground">sheet</code>,{" "}
+                  <code className="font-mono text-foreground">dropdown-menu</code>,{" "}
+                  <code className="font-mono text-foreground">popover</code>,{" "}
+                  <code className="font-mono text-foreground">select</code>,{" "}
+                  <code className="font-mono text-foreground">tooltip</code> e o{" "}
+                  <code className="font-mono text-foreground">accordion</code> —
+                  usam classes de animação (
+                  <code className="font-mono text-foreground">animate-in</code>,{" "}
+                  <code className="font-mono text-foreground">animate-out</code>,
+                  fade/zoom/slide) que vêm do plugin{" "}
+                  <strong className="font-medium text-foreground">
+                    tw-animate-css
+                  </strong>
+                  . Se as transições de abrir/fechar não acontecerem, instale o
+                  plugin e importe-o no seu CSS principal:
+                </p>
+                <CodeBlock
+                  code={`npm install -D tw-animate-css`}
+                  language="bash"
+                />
+                <CodeBlock
+                  code={`@import "tailwindcss";\n@import "tw-animate-css";`}
+                  language="css"
+                />
+                <p>
+                  Isso não quebra o build — sem o plugin os componentes ainda
+                  funcionam, apenas sem a animação de entrada/saída.
+                </p>
+              </div>
+            </AccordionContent>
+          </AccordionItem>
+
           <AccordionItem value="dep-conflict">
             <AccordionTrigger>Conflito de versões de dependência</AccordionTrigger>
             <AccordionContent>

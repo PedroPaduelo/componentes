@@ -4,7 +4,7 @@
   "title": "Comet Card",
   "description": "Card 3D da Aceternity UI que segue o cursor com tilt (rotateX/Y), parallax (translateX/Y) e um glare radial que se move com o mouse. Profundidade de rotação e translação configuráveis via props; aceita qualquer conteúdo como children dentro de um card visual com overflow-hidden.",
   "dependencies": [
-    "motion"
+    "motion@^12.40.0"
   ],
   "files": [
     {

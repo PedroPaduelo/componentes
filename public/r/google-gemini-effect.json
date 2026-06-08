@@ -4,7 +4,7 @@
   "title": "Google Gemini Effect",
   "description": "Cinco curvas SVG onduladas e coloridas (rosa, laranja, azul-claro, azul e azul-forte) que se desenham progressivamente via pathLength conforme o scroll, com cópias borradas (Gaussian blur) por baixo formando um glow. Os MotionValue do pathLength vêm de useScroll + useTransform na área scrollável, inspirado na animação de aterrissagem do Google Gemini.",
   "dependencies": [
-    "motion"
+    "motion@^12.40.0"
   ],
   "files": [
     {

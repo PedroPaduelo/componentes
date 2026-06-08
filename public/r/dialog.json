@@ -4,8 +4,8 @@
   "title": "Dialog",
   "description": "Janela modal sobreposta ao conteúdo para fluxos focados e confirmações.",
   "dependencies": [
-    "@radix-ui/react-dialog",
-    "lucide-react"
+    "@radix-ui/react-dialog@^1.1.15",
+    "lucide-react@^0.468.0"
   ],
   "files": [
     {

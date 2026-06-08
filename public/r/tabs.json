@@ -4,7 +4,7 @@
   "title": "Tabs",
   "description": "Abas para alternar entre seções de conteúdo dentro de um mesmo contexto.",
   "dependencies": [
-    "@radix-ui/react-tabs"
+    "@radix-ui/react-tabs@^1.1.13"
   ],
   "files": [
     {

@@ -4,7 +4,7 @@
   "title": "Following Pointer",
   "description": "Substitui o cursor nativo por um ponteiro animado (motion/react) que segue o mouse dentro da área, com um badge configurável (título/avatar) ao lado. Ótimo para destacar cards de blog ou conteúdo interativo.",
   "dependencies": [
-    "motion"
+    "motion@^12.40.0"
   ],
   "files": [
     {

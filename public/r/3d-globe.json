@@ -4,7 +4,7 @@
   "title": "3D Globe",
   "description": "Globo terrestre 3D que rotaciona automaticamente, reimplementado com a lib leve cobe (~5kb) sobre WebGL — sem texturas ou imagens remotas. Os pontos do mapa e os markers são desenhados por shader. Cores dark fixas (globo escuro + markers ciano) são a assinatura visual do efeito (estilo Aceternity), então não seguem o tema shadcn. Faz cleanup do contexto WebGL (globe.destroy() + cancelAnimationFrame) ao desmontar.",
   "dependencies": [
-    "cobe"
+    "cobe@^2.0.1"
   ],
   "files": [
     {

@@ -4,7 +4,7 @@
   "title": "Sonner",
   "description": "Toast/notificação elegante e minimalista com suporte a ações, promises e posicionamento configurável. Baseada em sonner.",
   "dependencies": [
-    "sonner"
+    "sonner@^2.0.0"
   ],
   "files": [
     {

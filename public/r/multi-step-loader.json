@@ -4,8 +4,8 @@
   "title": "Multi Step Loader",
   "description": "Loader fullscreen com overlay blur, lista de etapas com índice ativo controlado por state, ícone Check progressivo (vazio → preenchido → lime), e AnimatePresence para entrada/saída. Cada etapa avança automaticamente com duração configurável e loop opcional.",
   "dependencies": [
-    "lucide-react",
-    "motion"
+    "lucide-react@^0.468.0",
+    "motion@^12.40.0"
   ],
   "files": [
     {

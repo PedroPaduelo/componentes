@@ -4,8 +4,8 @@
   "title": "Date Picker",
   "description": "Seletor de data com popover e calendário integrado. Exibe a data formatada e abre o calendário ao clicar.",
   "dependencies": [
-    "date-fns",
-    "lucide-react"
+    "date-fns@^3.6.0",
+    "lucide-react@^0.468.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",

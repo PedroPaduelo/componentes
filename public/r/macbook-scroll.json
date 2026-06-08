@@ -4,8 +4,8 @@
   "title": "Macbook Scroll",
   "description": "Mock de MacBook Pro com tampa que abre ao rolar a página. useScroll mede o progresso e useTransform aplica scaleX/scaleY/translate/rotate no lid + parallax no título. Imagem reveal dentro da tela.",
   "dependencies": [
-    "lucide-react",
-    "motion"
+    "lucide-react@^0.468.0",
+    "motion@^12.40.0"
   ],
   "files": [
     {

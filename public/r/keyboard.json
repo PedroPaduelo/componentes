@@ -4,8 +4,8 @@
   "title": "Keyboard",
   "description": "Teclado virtual estilo Apple com teclas que afundam ao clicar ou ao pressionar a tecla física correspondente. Suporte a layout QWERTZ/ANSI e preview animado da última tecla pressionada.",
   "dependencies": [
-    "@tabler/icons-react",
-    "motion"
+    "@tabler/icons-react@^3.44.0",
+    "motion@^12.40.0"
   ],
   "files": [
     {

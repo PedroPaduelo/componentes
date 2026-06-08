@@ -4,8 +4,8 @@
   "title": "Sheet",
   "description": "Painel deslizante a partir da borda da tela para navegação ou formulários.",
   "dependencies": [
-    "@radix-ui/react-dialog",
-    "lucide-react"
+    "@radix-ui/react-dialog@^1.1.15",
+    "lucide-react@^0.468.0"
   ],
   "files": [
     {

@@ -4,9 +4,9 @@
   "title": "Calendar",
   "description": "Componente de calendário com seleção de data única, múltipla ou intervalo. Baseado em react-day-picker.",
   "dependencies": [
-    "class-variance-authority",
-    "lucide-react",
-    "react-day-picker"
+    "class-variance-authority@^0.7.1",
+    "lucide-react@^0.468.0",
+    "react-day-picker@^9.8.0"
   ],
   "files": [
     {

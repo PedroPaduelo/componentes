@@ -4,7 +4,7 @@
   "title": "Elastic Slider",
   "description": "Slider com efeito elástico (rubber-band) ao arrastar além dos limites, estilo iOS.",
   "dependencies": [
-    "class-variance-authority"
+    "class-variance-authority@^0.7.1"
   ],
   "files": [
     {

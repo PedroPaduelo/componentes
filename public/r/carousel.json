@@ -4,8 +4,8 @@
   "title": "Carousel",
   "description": "Carrossel de conteúdo com scroll horizontal, controles anterior/próximo e suporte a teclado. Baseado em embla-carousel-react.",
   "dependencies": [
-    "embla-carousel-react",
-    "lucide-react"
+    "embla-carousel-react@^8.5.1",
+    "lucide-react@^0.468.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json"

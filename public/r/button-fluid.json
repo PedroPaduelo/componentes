@@ -4,8 +4,8 @@
   "title": "Button (Fluid)",
   "description": "Botão animado da Fluid Functionalism com variantes, ícones, spinner de loading e transições fluidas no hover.",
   "dependencies": [
-    "@radix-ui/react-slot",
-    "class-variance-authority"
+    "@radix-ui/react-slot@^1.2.3",
+    "class-variance-authority@^0.7.1"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",

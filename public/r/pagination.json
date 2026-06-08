@@ -4,7 +4,7 @@
   "title": "Pagination",
   "description": "Controles de paginação com links de página, navegação anterior/próxima e ellipsis para intervalos ocultos.",
   "dependencies": [
-    "lucide-react"
+    "lucide-react@^0.468.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json"

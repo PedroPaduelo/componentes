@@ -4,8 +4,8 @@
   "title": "Compare",
   "description": "Slider de comparação de 2 imagens com handle arrastável. Suporta modo hover (segue o mouse) e drag (arrastar explícito), com animação de autoplay opcional. Usa clip-path para recorte e requestAnimationFrame para movimento suave.",
   "dependencies": [
-    "lucide-react",
-    "motion"
+    "lucide-react@^0.468.0",
+    "motion@^12.40.0"
   ],
   "files": [
     {

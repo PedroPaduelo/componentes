@@ -4,8 +4,8 @@
   "title": "Sidebar",
   "description": "Barra lateral que recolhe para 60px e expande para 300px ao passar o mouse (motion/react), com rótulos que aparecem/desaparecem suavemente. No mobile vira um drawer em tela cheia. Suporta estado controlado e modo sempre-expandido (animate=false).",
   "dependencies": [
-    "lucide-react",
-    "motion"
+    "lucide-react@^0.468.0",
+    "motion@^12.40.0"
   ],
   "files": [
     {

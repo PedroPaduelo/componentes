@@ -4,8 +4,8 @@
   "title": "Form",
   "description": "Formulário com integração react-hook-form e zod, composável com FormField, FormItem, FormLabel, FormControl, FormDescription e FormMessage. Baseado em @radix-ui/react-slot e @radix-ui/react-label.",
   "dependencies": [
-    "@radix-ui/react-slot",
-    "react-hook-form"
+    "@radix-ui/react-slot@^1.2.3",
+    "react-hook-form@^7.54.0"
   ],
   "files": [
     {

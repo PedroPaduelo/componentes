@@ -4,7 +4,7 @@
   "title": "Progress",
   "description": "Barra de progresso para indicar conclusão de uma tarefa ou etapa. Baseado em @radix-ui/react-progress.",
   "dependencies": [
-    "@radix-ui/react-progress"
+    "@radix-ui/react-progress@^1.1.4"
   ],
   "files": [
     {

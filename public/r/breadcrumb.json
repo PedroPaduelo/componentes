@@ -4,8 +4,8 @@
   "title": "Breadcrumb",
   "description": "Trilha de navegação hierárquica com links, separadores e suporte a ellipsis com dropdown.",
   "dependencies": [
-    "@radix-ui/react-slot",
-    "lucide-react"
+    "@radix-ui/react-slot@^1.2.3",
+    "lucide-react@^0.468.0"
   ],
   "files": [
     {

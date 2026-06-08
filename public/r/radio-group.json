@@ -4,8 +4,8 @@
   "title": "Radio Group",
   "description": "Grupo de opções mutuamente exclusivas com navegação por teclado. Baseado em @radix-ui/react-radio-group.",
   "dependencies": [
-    "@radix-ui/react-radio-group",
-    "lucide-react"
+    "@radix-ui/react-radio-group@^1.2.3",
+    "lucide-react@^0.468.0"
   ],
   "files": [
     {

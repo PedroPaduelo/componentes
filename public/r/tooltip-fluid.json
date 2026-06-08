@@ -4,8 +4,8 @@
   "title": "Tooltip (Fluid)",
   "description": "Tooltip da Fluid Functionalism com animação de entrada/saída via motion e posicionamento em quatro lados.",
   "dependencies": [
-    "@radix-ui/react-tooltip",
-    "motion"
+    "@radix-ui/react-tooltip@^1.2.8",
+    "motion@^12.40.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",

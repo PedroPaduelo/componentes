@@ -4,8 +4,8 @@
   "title": "World Map",
   "description": "Mapa-múndi pontilhado da Aceternity UI (SVG gerado em runtime pela lib dotted-map) com arcos curvos que se desenham progressivamente (pathLength animado por motion) entre pares de coordenadas, e pontos pulsantes (animate SVG) nas pontas. Útil para ilustrar conexões/rotas globais. Cor das linhas configurável e fundo adaptativo ao tema (branco no claro, preto no escuro).",
   "dependencies": [
-    "dotted-map",
-    "motion"
+    "dotted-map@^3.1.0",
+    "motion@^12.40.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"

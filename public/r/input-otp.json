@@ -4,8 +4,8 @@
   "title": "Input OTP",
   "description": "Campo de entrada de código OTP (One-Time Password) com slots visuais, separador e suporte a teclado. Baseado em input-otp.",
   "dependencies": [
-    "input-otp",
-    "lucide-react"
+    "input-otp@^1.4.2",
+    "lucide-react@^0.468.0"
   ],
   "files": [
     {
@@ -14,5 +14,20 @@
       "type": "registry:ui"
     }
   ],
+  "cssVars": {
+    "theme": {
+      "--animate-caret-blink": "caret-blink 1.25s ease-out infinite"
+    }
+  },
+  "css": {
+    "@keyframes caret-blink": {
+      "0%, 70%, 100%": {
+        "opacity": "1"
+      },
+      "20%, 50%": {
+        "opacity": "0"
+      }
+    }
+  },
   "type": "registry:ui"
 }

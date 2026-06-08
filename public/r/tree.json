@@ -4,8 +4,8 @@
   "title": "Tree",
   "description": "Árvore de arquivos interativa com busca, drag & drop e navegação por teclado. Baseada em @pierre/trees.",
   "dependencies": [
-    "@pierre/trees",
-    "class-variance-authority"
+    "@pierre/trees@^1.0.0-beta.4",
+    "class-variance-authority@^0.7.1"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"

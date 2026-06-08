@@ -4,7 +4,7 @@
   "title": "Slide to Unlock",
   "description": "Controle estilo iOS: arrastar thumb da esquerda pra direita pra confirmar ação.",
   "dependencies": [
-    "class-variance-authority"
+    "class-variance-authority@^0.7.1"
   ],
   "files": [
     {

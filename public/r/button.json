@@ -4,8 +4,8 @@
   "title": "Button",
   "description": "Botão acionável com variantes de estilo e tamanho para disparar ações.",
   "dependencies": [
-    "@radix-ui/react-slot",
-    "class-variance-authority"
+    "@radix-ui/react-slot@^1.2.3",
+    "class-variance-authority@^0.7.1"
   ],
   "files": [
     {

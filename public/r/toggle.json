@@ -4,8 +4,8 @@
   "title": "Toggle",
   "description": "Botão de alternância com estados ligado/desligado, variantes de estilo e tamanho. Baseado em @radix-ui/react-toggle.",
   "dependencies": [
-    "@radix-ui/react-toggle",
-    "class-variance-authority"
+    "@radix-ui/react-toggle@^1.1.9",
+    "class-variance-authority@^0.7.1"
   ],
   "files": [
     {

@@ -4,7 +4,7 @@
   "title": "Scroll Fade Effect",
   "description": "Container com fade nas bordas superior/inferior quando há conteúdo scrollável além do viewport (estilo iOS).",
   "dependencies": [
-    "class-variance-authority"
+    "class-variance-authority@^0.7.1"
   ],
   "files": [
     {

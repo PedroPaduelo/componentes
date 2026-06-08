@@ -4,8 +4,11 @@
   "title": "GitHub Globe",
   "description": "Globo 3D interativo estilo GitHub (Aceternity UI) renderizado com three + three-globe sobre WebGL: continentes em hex-polígonos, arcos animados (com dash + gap) entre pares de coordenadas, anéis pulsantes nos pontos de origem e rotação automática via OrbitControls. Cores dark hardcoded (fundo preto, globo azul-marinho, atmosfera) — brand do efeito, não segue tema shadcn. Faz cleanup completo do contexto WebGL (dispose de geometrias/materiais/renderer, cancelAnimationFrame) ao desmontar.",
   "dependencies": [
-    "three",
-    "three-globe"
+    "three-globe@^2.42.4",
+    "three@^0.171.0"
+  ],
+  "devDependencies": [
+    "@types/three@^0.171.0"
   ],
   "files": [
     {

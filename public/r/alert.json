@@ -4,7 +4,7 @@
   "title": "Alert",
   "description": "Mensagem de destaque para informar, avisar ou comunicar erros. Variantes default e destrutiva.",
   "dependencies": [
-    "class-variance-authority"
+    "class-variance-authority@^0.7.1"
   ],
   "files": [
     {

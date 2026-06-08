@@ -4,8 +4,8 @@
   "title": "Text Hover Effect",
   "description": "SVG com texto em stroke que, ao passar o mouse, ganha um realce gradiente multicolor (amarelo/vermelho/azul/ciano/violeta) revelado por uma máscara radial seguindo o cursor, com stroke inicial animado via strokeDasharray. Reimplementado padronizado shadcn com motion/react, palette de gradiente configurável e variantes de densidade.",
   "dependencies": [
-    "class-variance-authority",
-    "motion"
+    "class-variance-authority@^0.7.1",
+    "motion@^12.40.0"
   ],
   "files": [
     {

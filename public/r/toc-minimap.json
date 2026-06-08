@@ -4,7 +4,7 @@
   "title": "TOC Minimap",
   "description": "Sumário/minimap de navegação com seção ativa via IntersectionObserver e barra de progresso.",
   "dependencies": [
-    "class-variance-authority"
+    "class-variance-authority@^0.7.1"
   ],
   "files": [
     {

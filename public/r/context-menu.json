@@ -4,7 +4,7 @@
   "title": "Context Menu",
   "description": "Menu de contexto acionado pelo clique direito do mouse, com itens, separadores, checkboxes, radio groups e submenus.",
   "dependencies": [
-    "@radix-ui/react-context-menu"
+    "@radix-ui/react-context-menu@^2.2.15"
   ],
   "files": [
     {

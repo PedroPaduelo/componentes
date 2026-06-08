@@ -4,8 +4,8 @@
   "title": "Select (Fluid)",
   "description": "Select da Fluid Functionalism com popover em portal, destaque por proximidade, check animado, variantes bordered/borderless e suporte a ícones e erro.",
   "dependencies": [
-    "class-variance-authority",
-    "motion"
+    "class-variance-authority@^0.7.1",
+    "motion@^12.40.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/elevated.json",

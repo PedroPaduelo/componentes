@@ -4,8 +4,8 @@
   "title": "Switch (Fluid)",
   "description": "Switch da Fluid Functionalism com thumb que estica no hover/press e suporte a arraste para alternar.",
   "dependencies": [
-    "@radix-ui/react-switch",
-    "motion"
+    "@radix-ui/react-switch@^1.1.3",
+    "motion@^12.40.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json"

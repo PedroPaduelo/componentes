@@ -29,7 +29,7 @@
       "title": "3D Globe",
       "description": "Globo terrestre 3D que rotaciona automaticamente, reimplementado com a lib leve cobe (~5kb) sobre WebGL — sem texturas ou imagens remotas. Os pontos do mapa e os markers são desenhados por shader. Cores dark fixas (globo escuro + markers ciano) são a assinatura visual do efeito (estilo Aceternity), então não seguem o tema shadcn. Faz cleanup do contexto WebGL (globe.destroy() + cancelAnimationFrame) ao desmontar.",
       "dependencies": [
-        "cobe"
+        "cobe@^2.0.1"
       ],
       "files": [
         {
@@ -44,7 +44,7 @@
       "title": "3D Marquee",
       "description": "Grid 4 colunas em perspectiva 3D (rotateX 55°, rotateZ -45°) onde cada coluna rola verticalmente em loop infinito reverso, com durações alternadas (10s nas pares, 15s nas ímpares). Cada imagem ganha um leve translateY no hover. Inclui overlays decorativos de linhas horizontais/verticais com mask gradient nas bordas. Imagens mínimas: 16 (4 por coluna) — ideal 24 (6 por coluna).",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -63,7 +63,7 @@
       "title": "3D Pin",
       "description": "Card da Aceternity UI que inclina em 3D (rotateX + scale) no hover, acompanhado de um PinPerspective (linhas cyan e bolhas concêntricas em loop) que sobe do card. Ideal para destacar um CTA ou um item em destaque numa grid.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -78,15 +78,39 @@
       "title": "Accordion",
       "description": "Grupo de itens expansíveis com animação de abertura/fechamento. Baseado em @radix-ui/react-accordion.",
       "dependencies": [
-        "@radix-ui/react-accordion",
-        "lucide-react"
+        "@radix-ui/react-accordion@^1.2.3",
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
           "path": "src/components/ui/accordion.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "cssVars": {
+        "theme": {
+          "--animate-accordion-down": "accordion-down 0.2s ease-out",
+          "--animate-accordion-up": "accordion-up 0.2s ease-out"
+        }
+      },
+      "css": {
+        "@keyframes accordion-down": {
+          "from": {
+            "height": "0"
+          },
+          "to": {
+            "height": "var(--radix-accordion-content-height)"
+          }
+        },
+        "@keyframes accordion-up": {
+          "from": {
+            "height": "var(--radix-accordion-content-height)"
+          },
+          "to": {
+            "height": "0"
+          }
+        }
+      }
     },
     {
       "name": "accordion-fluid",
@@ -94,8 +118,8 @@
       "title": "Accordion (Fluid)",
       "description": "Accordion da Fluid Functionalism com expansão animada por mola, destaque por proximidade do cursor, anel de foco e modos single/multiple.",
       "dependencies": [
-        "@radix-ui/react-accordion",
-        "motion"
+        "@radix-ui/react-accordion@^1.2.3",
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
@@ -118,7 +142,7 @@
       "title": "Alert",
       "description": "Mensagem de destaque para informar, avisar ou comunicar erros. Variantes default e destrutiva.",
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority@^0.7.1"
       ],
       "files": [
         {
@@ -137,8 +161,8 @@
       "title": "Alert Dialog",
       "description": "Diálogo modal de confirmação para ações destrutivas. Baseado em @radix-ui/react-alert-dialog.",
       "dependencies": [
-        "@radix-ui/react-alert-dialog",
-        "class-variance-authority"
+        "@radix-ui/react-alert-dialog@^1.1.15",
+        "class-variance-authority@^0.7.1"
       ],
       "files": [
         {
@@ -157,7 +181,7 @@
       "title": "Animated Button",
       "description": "Botão com borda brilhante animada e text reveal (mask gradient deslizante) — ideal para chamadas de ação (CTA).",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -172,7 +196,7 @@
       "title": "Animated Modal",
       "description": "Modal da Aceternity UI com animação de entrada cinematográfica (scale + rotateX + translateY), overlay com backdrop-blur, click-outside e body scroll-lock enquanto aberto. Composto por 5 peças (Provider, Trigger, Body, Content, Footer) que se combinam via Context.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -191,7 +215,7 @@
       "title": "Animated Number",
       "description": "Número slot-machine (dígitos rolando 0–9) + placar com feedback de cor (verde sobe, vermelho desce) e bounce.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -206,8 +230,8 @@
       "title": "Animated Testimonials",
       "description": "Carrossel de depoimentos da Aceternity UI com AnimatePresence (motion v12): imagem rotaciona 3D aleatoriamente e entra com scale + z-index, nome/cargo/citação trocam com stagger de blur por palavra. Suporta autoplay (5s) e lista arbitrária de testemunhos via prop `testimonials`.",
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react@^0.468.0",
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
@@ -229,7 +253,7 @@
       "title": "Animated Tooltip",
       "description": "Fileira de avatares com tooltip animado que segue o cursor — useSpring + useTransform + AnimatePresence. O tooltip inclina e translada conforme a posição do mouse sobre o avatar. Cores dark hardcoded (fundo preto + gradientes emerald/sky) são a assinatura visual do efeito, não seguem tema shadcn.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -248,8 +272,8 @@
       "title": "Apple Cards Carousel",
       "description": "Carrossel horizontal estilo Apple com cards que expandem em modal via layoutId (motion/react). Navegação por setas, scroll e botão X. Fecha com Escape ou clique fora.",
       "dependencies": [
-        "@tabler/icons-react",
-        "motion"
+        "@tabler/icons-react@^3.44.0",
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-outside-click.json"
@@ -267,7 +291,7 @@
       "title": "ASCII Art",
       "description": "Renderizador de imagem como ASCII art em canvas com animação (fade/typewriter/matrix). Suporta múltiplos charsets (standard, blocks, braille, dense, etc.), cores customizadas, ASCII colorido e efeito matrix com caracteres katakana.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -290,7 +314,7 @@
       "title": "Ask User Questions (Fluid)",
       "description": "Fluxo de perguntas da Fluid Functionalism: seleção única ou múltipla, campo 'Outro', mesclagem animada de seleções contíguas, navegação por teclado e Back/Skip/Continue.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button-fluid.json",
@@ -315,7 +339,7 @@
       "title": "Aspect Ratio",
       "description": "Container que mantém proporção fixa (16:9, 4:3, 1:1, etc.) para imagens e mídia. Baseado em @radix-ui/react-aspect-ratio.",
       "dependencies": [
-        "@radix-ui/react-aspect-ratio"
+        "@radix-ui/react-aspect-ratio@^1.1.3"
       ],
       "files": [
         {
@@ -357,7 +381,7 @@
       "title": "Avatar",
       "description": "Imagem de perfil com fallback automático (iniciais). Baseado em @radix-ui/react-avatar.",
       "dependencies": [
-        "@radix-ui/react-avatar"
+        "@radix-ui/react-avatar@^1.1.3"
       ],
       "files": [
         {
@@ -372,7 +396,7 @@
       "title": "Background Beams",
       "description": "Feixes de luz (\"beams\") da Aceternity UI que seguem dezenas de paths SVG curvos animados via linearGradients em movimento (x1/y1/x2/y2 percorrendo o caminho), sobre fundo escuro. Ideal como background de hero.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -391,7 +415,7 @@
       "title": "Background Beams With Collision",
       "description": "Efeito de fundo da Aceternity UI: feixes verticais coloridos caem do topo e explodem em partículas ao colidir com a base. Detecção de colisão via getBoundingClientRect; fundo adapta ao tema.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -406,7 +430,7 @@
       "title": "Background Boxes",
       "description": "Grid de células da Aceternity UI sobre fundo escuro; ao passar o mouse, cada célula acende com uma cor de highlight aleatória. Container com perspectiva isométrica (skew/translate/scale) e ícones \"+\" esparsos, via motion.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -421,7 +445,7 @@
       "title": "Background Gradient",
       "description": "Borda em gradiente radial multicolor (verde/violeta/amarelo/azul) animada em loop suave que intensifica o brilho no hover, ideal para destacar cards e botões. Reimplementado padronizado shadcn com motion/react.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -502,7 +526,7 @@
       "title": "Background Lines",
       "description": "Efeito de fundo da Aceternity UI: SVG com múltiplos paths curvos coloridos que animam em padrão de onda (wave) em loop, atrás do conteúdo. Inspirado no height.app; fundo transparente que adapta ao tema.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -551,8 +575,8 @@
       "title": "Badge",
       "description": "Etiqueta compacta para destacar status, contagens ou rótulos contextuais.",
       "dependencies": [
-        "@radix-ui/react-slot",
-        "class-variance-authority"
+        "@radix-ui/react-slot@^1.2.3",
+        "class-variance-authority@^0.7.1"
       ],
       "files": [
         {
@@ -571,7 +595,7 @@
       "title": "Badge (Fluid)",
       "description": "Selo/etiqueta da Fluid Functionalism com variantes solid e dot, paleta de cores e três tamanhos.",
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority@^0.7.1"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json"
@@ -605,8 +629,8 @@
       "title": "Breadcrumb",
       "description": "Trilha de navegação hierárquica com links, separadores e suporte a ellipsis com dropdown.",
       "dependencies": [
-        "@radix-ui/react-slot",
-        "lucide-react"
+        "@radix-ui/react-slot@^1.2.3",
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
@@ -621,8 +645,8 @@
       "title": "Button",
       "description": "Botão acionável com variantes de estilo e tamanho para disparar ações.",
       "dependencies": [
-        "@radix-ui/react-slot",
-        "class-variance-authority"
+        "@radix-ui/react-slot@^1.2.3",
+        "class-variance-authority@^0.7.1"
       ],
       "files": [
         {
@@ -641,8 +665,8 @@
       "title": "Button (Fluid)",
       "description": "Botão animado da Fluid Functionalism com variantes, ícones, spinner de loading e transições fluidas no hover.",
       "dependencies": [
-        "@radix-ui/react-slot",
-        "class-variance-authority"
+        "@radix-ui/react-slot@^1.2.3",
+        "class-variance-authority@^0.7.1"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
@@ -680,9 +704,9 @@
       "title": "Calendar",
       "description": "Componente de calendário com seleção de data única, múltipla ou intervalo. Baseado em react-day-picker.",
       "dependencies": [
-        "class-variance-authority",
-        "lucide-react",
-        "react-day-picker"
+        "class-variance-authority@^0.7.1",
+        "lucide-react@^0.468.0",
+        "react-day-picker@^9.8.0"
       ],
       "files": [
         {
@@ -701,8 +725,11 @@
       "title": "Canvas Reveal Effect",
       "description": "Efeito de revelação com dot matrix WebGL usando shader customizada via @react-three/fiber + three. Animação surge do centro para as bordas com opacidade progressiva.",
       "dependencies": [
-        "@react-three/fiber",
-        "three"
+        "@react-three/fiber@^9.6.1",
+        "three@^0.171.0"
+      ],
+      "devDependencies": [
+        "@types/three@^0.171.0"
       ],
       "files": [
         {
@@ -745,7 +772,7 @@
       "title": "Card Hover Effect",
       "description": "Grid de cards da Aceternity UI onde, ao passar o mouse, um fundo destacado desliza suavemente entre os cards via motion (AnimatePresence + layoutId compartilhado). Funciona em light e dark.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -760,7 +787,7 @@
       "title": "Card Spotlight",
       "description": "Card com spotlight radial que segue o cursor (CSS custom props --mouse-x/--mouse-y) e grid de dots animado via CanvasRevealEffect no hover. Cores dark fixas (brand do efeito).",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/canvas-reveal-effect.json"
@@ -778,7 +805,7 @@
       "title": "Card Stack",
       "description": "Pilha de cards de testimonials da Aceternity UI que rotaciona automaticamente: a cada ~5s o card do topo vai pro fundo. Empilhamento com offset vertical e escala decrescente por profundidade, animado com motion. Inclui o helper Highlight pra destacar trechos em emerald.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -797,8 +824,8 @@
       "title": "Carousel",
       "description": "Carrossel de conteúdo com scroll horizontal, controles anterior/próximo e suporte a teclado. Baseado em embla-carousel-react.",
       "dependencies": [
-        "embla-carousel-react",
-        "lucide-react"
+        "embla-carousel-react@^8.5.1",
+        "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json"
@@ -816,7 +843,7 @@
       "title": "Chat Message (Fluid)",
       "description": "Bolha de mensagem de chat da Fluid Functionalism com entrada animada, alinhamento por remetente (usuário/assistente), anexos em miniatura e meta-linha revelada no hover.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/file-thumbnail-fluid.json",
@@ -836,8 +863,8 @@
       "title": "Checkbox",
       "description": "Caixa de seleção para opções booleanas, com estados marcado e indeterminado.",
       "dependencies": [
-        "@radix-ui/react-checkbox",
-        "lucide-react"
+        "@radix-ui/react-checkbox@^1.3.3",
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
@@ -852,8 +879,8 @@
       "title": "Checkbox Group (Fluid)",
       "description": "Grupo de caixas de seleção da Fluid Functionalism com fundos contíguos que se fundem/separam (merge/split), check animado e destaque por proximidade.",
       "dependencies": [
-        "@radix-ui/react-checkbox",
-        "motion"
+        "@radix-ui/react-checkbox@^1.3.3",
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
@@ -876,8 +903,8 @@
       "title": "Chevrons Up Down Icon",
       "description": "Ícone animado de dois chevrons que rotacionam suavemente — indicador visual de dropdown/select.",
       "dependencies": [
-        "class-variance-authority",
-        "lucide-react"
+        "class-variance-authority@^0.7.1",
+        "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
@@ -899,8 +926,8 @@
       "title": "Code Block",
       "description": "Bloco de código da Aceternity UI com syntax highlight manual leve (regex para keywords, strings, números, comentários e identificadores), números de linha, linhas destacáveis, abas com indicator animado (motion v12) e botão de copiar inline com feedback visual (ícone Check + cor emerald por 2s). Suporta múltiplas linguagens (ts/tsx, js/jsx, py, bash, json, css) via prop `language` ou por aba. Fundo slate-900 com borda slate-800 (brand dark, alinhado com glare-card/text-reveal-card).",
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react@^0.468.0",
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -915,15 +942,22 @@
       "title": "Code Block Command",
       "description": "Comando shell com tokens coloridos (comando, args, flags) e botão de copiar.",
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority@^0.7.1",
+        "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
+        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {
           "path": "src/components/ui/code-block-command.tsx",
           "type": "registry:ui"
+        },
+        {
+          "path": "src/components/showcase/CopyButton.tsx",
+          "type": "registry:component",
+          "target": "~/src/components/showcase/CopyButton.tsx"
         },
         {
           "path": "src/components/ui/code-block-command-variants.ts",
@@ -952,7 +986,7 @@
       "title": "Color Picker (Fluid)",
       "description": "Seletor de cor da Fluid Functionalism com quadrado de saturação, sliders de matiz e alpha, conta-gotas, swatches e formatos hex/rgb/hsl/oklch — em painel inline ou popover.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/dropdown-fluid.json",
@@ -987,7 +1021,7 @@
       "title": "Colourful Text",
       "description": "Componente Aceternity UI: cada caractere do texto anima com cor (10 tons do espectro RGB reembaralhados a cada 5s), y, scale, filter blur e opacity em loop, dando efeito de 'onda' colorida. Cores são fixas (brand do efeito, alinhado com glitch/cyber). Ideal para hero headlines e CTAs que precisam de destaque animado sem competir com o restante do copy.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1006,7 +1040,7 @@
       "title": "Comet Card",
       "description": "Card 3D da Aceternity UI que segue o cursor com tilt (rotateX/Y), parallax (translateX/Y) e um glare radial que se move com o mouse. Profundidade de rotação e translação configuráveis via props; aceita qualquer conteúdo como children dentro de um card visual com overflow-hidden.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1021,8 +1055,8 @@
       "title": "Command",
       "description": "Palette de comandos estilo Spotlight/Alfred com busca, agrupamento, atalhos de teclado e suporte a dialog. Baseado em cmdk.",
       "dependencies": [
-        "cmdk",
-        "lucide-react"
+        "cmdk@^1.0.4",
+        "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/dialog.json"
@@ -1040,8 +1074,8 @@
       "title": "Compare",
       "description": "Slider de comparação de 2 imagens com handle arrastável. Suporta modo hover (segue o mouse) e drag (arrastar explícito), com animação de autoplay opcional. Usa clip-path para recorte e requestAnimationFrame para movimento suave.",
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react@^0.468.0",
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1060,7 +1094,7 @@
       "title": "Consent Manager",
       "description": "Gerenciador de consentimento de cookies com categorias, switches e persistência local.",
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority@^0.7.1"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
@@ -1087,7 +1121,7 @@
       "title": "Container Cover",
       "description": "Destaque animado para texto inline: ao passar o mouse, o fundo escurece, partículas (sparkles) percorrem a área, beams horizontais varrem o bloco e o texto treme e encolhe levemente. Ideal para realçar palavras em headlines.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/sparkles.json"
@@ -1109,7 +1143,7 @@
       "title": "Container Scroll Animation",
       "description": "Efeito de scroll 3D da Aceternity UI: conforme o usuário rola, um card/mockup rotaciona (rotateX), escala e o título translada para cima. Dirigido por useScroll/useTransform (motion/react); detecção de mobile ajusta a escala. Funciona em light e dark.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1124,7 +1158,7 @@
       "title": "Container Text Flip",
       "description": "Container animado da Aceternity UI que muda de largura suavemente para acomodar a palavra atual e cicla por uma lista de palavras com stagger de blur por letra (10px → nítido). Tema segue tokens semânticos shadcn (text-foreground, bg-muted, border). Aceita lista de palavras, intervalo entre trocas e duração da animação.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
@@ -1142,7 +1176,7 @@
       "title": "Context Menu",
       "description": "Menu de contexto acionado pelo clique direito do mouse, com itens, separadores, checkboxes, radio groups e submenus.",
       "dependencies": [
-        "@radix-ui/react-context-menu"
+        "@radix-ui/react-context-menu@^2.2.15"
       ],
       "files": [
         {
@@ -1157,8 +1191,8 @@
       "title": "Copy Button",
       "description": "Botão de copiar para a área de transferência com feedback visual e fallback execCommand.",
       "dependencies": [
-        "class-variance-authority",
-        "lucide-react"
+        "class-variance-authority@^0.7.1",
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
@@ -1177,7 +1211,7 @@
       "title": "Creepy Button",
       "description": "Botão interativo com olhos que seguem o cursor (pupil tracking), animação de piscar periódica e cover que rotaciona em hover.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1192,7 +1226,7 @@
       "title": "Cyber Glitch Text",
       "description": "Bloco de texto estilizado com scramble (decodificação hacker) e chromatic aberration RGB no hover.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1207,8 +1241,8 @@
       "title": "Data Table",
       "description": "Tabela de dados avançada com ordenação, paginação e busca global. Baseada em @tanstack/react-table.",
       "dependencies": [
-        "@tanstack/react-table",
-        "lucide-react"
+        "@tanstack/react-table@^8.21.0",
+        "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
@@ -1227,8 +1261,8 @@
       "title": "Date Picker",
       "description": "Seletor de data com popover e calendário integrado. Exibe a data formatada e abre o calendário ao clicar.",
       "dependencies": [
-        "date-fns",
-        "lucide-react"
+        "date-fns@^3.6.0",
+        "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
@@ -1248,8 +1282,8 @@
       "title": "Dialog",
       "description": "Janela modal sobreposta ao conteúdo para fluxos focados e confirmações.",
       "dependencies": [
-        "@radix-ui/react-dialog",
-        "lucide-react"
+        "@radix-ui/react-dialog@^1.1.15",
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
@@ -1264,8 +1298,8 @@
       "title": "Dialog (Fluid)",
       "description": "Modal da Fluid Functionalism com overlay e conteúdo animados por mola, elevação de superfície empilhável, formas configuráveis e botão de fechar integrado.",
       "dependencies": [
-        "@radix-ui/react-dialog",
-        "motion"
+        "@radix-ui/react-dialog@^1.1.15",
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button-fluid.json",
@@ -1289,7 +1323,7 @@
       "title": "Direction Aware Hover",
       "description": "Card da Aceternity UI que detecta a borda de entrada do mouse via atan2 e desloca imagem + texto pela direção oposta: entrar por baixo → imagem sobe; entrar por cima → imagem desce. O overlay escuro e o texto surgem suavemente no hover. Ideal para grids de perfis, testemunhos ou vitrines visuais que precisam de microinteração direcional.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1347,7 +1381,7 @@
       "title": "Draggable Card",
       "description": "Card arrastável da Aceternity UI com física de mola (spring) e rotação 3D seguindo o cursor. Ao soltar, o gesto de arrastar é animado com spring e bounce proporcional à velocidade.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1366,7 +1400,7 @@
       "title": "Drawer",
       "description": "Drawer que abre a partir da base da tela com handle visual, baseado em vaul. Ideal para ações contextuais em mobile.",
       "dependencies": [
-        "vaul"
+        "vaul@^1.1.2"
       ],
       "files": [
         {
@@ -1381,7 +1415,7 @@
       "title": "Dropdown (Fluid)",
       "description": "Menu dropdown da Fluid Functionalism com itens (MenuItem) selecionáveis, destaque por proximidade, check animado e elevação de superfície.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/elevated.json",
@@ -1407,8 +1441,8 @@
       "title": "Dropdown Menu",
       "description": "Menu suspenso acionado por um gatilho, com itens, separadores e submenus.",
       "dependencies": [
-        "@radix-ui/react-dropdown-menu",
-        "lucide-react"
+        "@radix-ui/react-dropdown-menu@^2.1.16",
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
@@ -1423,7 +1457,7 @@
       "title": "Elastic Slider",
       "description": "Slider com efeito elástico (rubber-band) ao arrastar além dos limites, estilo iOS.",
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority@^0.7.1"
       ],
       "files": [
         {
@@ -1457,7 +1491,7 @@
       "title": "Encrypted Text",
       "description": "Texto que entra como ruído aleatório e é descriptografado caractere a caractere quando aparece no viewport. Charset, velocidade de revelação e de flip configuráveis, com classes separadas para os estados embaralhado e revelado.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1472,7 +1506,7 @@
       "title": "Evervault Card",
       "description": "Card da Aceternity UI que revela uma chuva de caracteres aleatórios sob um mask radial que segue o cursor: ao passar o mouse, um gradient verde→azul com efeito de mix-blend-overlay exibe uma string alfanumérica gerada dinamicamente, mantendo no centro um badge circular desfocado com o texto da prop `text`. Ideal para hero, CTAs criptografados e destaque visual. Reimplementado padronizado shadcn com motion/react.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1491,7 +1525,7 @@
       "title": "Expandable Cards",
       "description": "Lista de cards da Aceternity UI que expandem para um modal centralizado fullscreen via shared layout (layoutId/motion). Overlay com blur, fecha com Escape ou clique fora, e trava o scroll do body enquanto aberto.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-outside-click.json"
@@ -1513,7 +1547,7 @@
       "title": "Features Section with Skeletons",
       "description": "Seção de features em grade bento responsiva (lg:grid-cols-6) com cards que exibem skeletons animados (motion/react) como preview — grade de imagens com hover, barras de analytics e anel pulsante. Cabeçalho e features configuráveis via props.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1528,7 +1562,7 @@
       "title": "File Thumbnail (Fluid)",
       "description": "Miniatura quadrada de arquivo da Fluid Functionalism: pré-visualiza imagens e a primeira página de PDFs (via pdfjs) com spinner enquanto carrega.",
       "dependencies": [
-        "pdfjs-dist"
+        "pdfjs-dist@^4.10.38"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json"
@@ -1550,9 +1584,9 @@
       "title": "File Upload",
       "description": "File Upload",
       "dependencies": [
-        "@tabler/icons-react",
-        "motion",
-        "react-dropzone"
+        "@tabler/icons-react@^3.44.0",
+        "motion@^12.40.0",
+        "react-dropzone@^15.0.0"
       ],
       "files": [
         {
@@ -1571,7 +1605,7 @@
       "title": "Flip Fade Text",
       "description": "Texto 3D flip animado por letra, ciclando por palavras com stagger configurável. Ideal para loading states e hero sections.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1655,7 +1689,7 @@
       "title": "Flip Words",
       "description": "Ciclador de palavras da Aceternity UI: AnimatePresence com troca animada por letra (entrada com stagger blur→nítido, saída dramática com scale, blur e deslocamento). Tema segue token semântico text-foreground; aceita lista de palavras e duração customizável.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1670,8 +1704,8 @@
       "title": "Floating Dock",
       "description": "Dock de navegação estilo macOS com magnificação dos ícones conforme a proximidade do cursor (motion useTransform + useSpring). Responsivo: barra horizontal no desktop (md+) e botão flutuante expansível no mobile, com tooltip por item.",
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react@^0.468.0",
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1686,7 +1720,7 @@
       "title": "Floating Navbar",
       "description": "Navbar pill flutuante (rounded-full) que aparece ao rolar para cima e some ao rolar para baixo. Animação de entrada/saída via motion (translateY + opacity) controlada por useScroll/useMotionValueEvent. Itens com ícone (mobile) ou rótulo (desktop) + botão de CTA opcional. Aceita scrollContainer próprio.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1701,7 +1735,7 @@
       "title": "Fluid Gradient Text",
       "description": "Texto com gradiente animado (mesh gradient) que flui continuamente.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1813,7 +1847,7 @@
       "title": "Following Pointer",
       "description": "Substitui o cursor nativo por um ponteiro animado (motion/react) que segue o mouse dentro da área, com um badge configurável (título/avatar) ao lado. Ótimo para destacar cards de blog ou conteúdo interativo.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1839,8 +1873,8 @@
       "title": "Form",
       "description": "Formulário com integração react-hook-form e zod, composável com FormField, FormItem, FormLabel, FormControl, FormDescription e FormMessage. Baseado em @radix-ui/react-slot e @radix-ui/react-label.",
       "dependencies": [
-        "@radix-ui/react-slot",
-        "react-hook-form"
+        "@radix-ui/react-slot@^1.2.3",
+        "react-hook-form@^7.54.0"
       ],
       "files": [
         {
@@ -1863,7 +1897,7 @@
       "title": "GitHub Contributions",
       "description": "Heatmap de contribuições estilo GitHub, com células por dia, tooltips e escalas de cor.",
       "dependencies": [
-        "@radix-ui/react-tooltip"
+        "@radix-ui/react-tooltip@^1.2.8"
       ],
       "files": [
         {
@@ -1882,8 +1916,11 @@
       "title": "GitHub Globe",
       "description": "Globo 3D interativo estilo GitHub (Aceternity UI) renderizado com three + three-globe sobre WebGL: continentes em hex-polígonos, arcos animados (com dash + gap) entre pares de coordenadas, anéis pulsantes nos pontos de origem e rotação automática via OrbitControls. Cores dark hardcoded (fundo preto, globo azul-marinho, atmosfera) — brand do efeito, não segue tema shadcn. Faz cleanup completo do contexto WebGL (dispose de geometrias/materiais/renderer, cancelAnimationFrame) ao desmontar.",
       "dependencies": [
-        "three",
-        "three-globe"
+        "three-globe@^2.42.4",
+        "three@^0.171.0"
+      ],
+      "devDependencies": [
+        "@types/three@^0.171.0"
       ],
       "files": [
         {
@@ -1918,8 +1955,8 @@
       "title": "Glass Dock",
       "description": "MacOS-inspired glassmorphic dock com scale magnification on hover.",
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react@^0.468.0",
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1954,7 +1991,7 @@
       "title": "Glowing Effect",
       "description": "Borda luminosa que segue o cursor: gradiente cônico rotacionado em torno do card via máscara, atualizado por pointermove e interpolado com easing do motion.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json"
@@ -1972,7 +2009,7 @@
       "title": "Glowing Stars Effect",
       "description": "Card da Aceternity UI com uma malha de estrelinhas (108 pontos em 18 colunas) que brilham aleatoriamente a cada 3s e acendem todas no hover, com glows azuis (motion/react). Inclui subcomponentes GlowingStarsTitle e GlowingStarsDescription para o conteúdo do card.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -1987,7 +2024,7 @@
       "title": "Gooey Input",
       "description": "Search input com efeito gooey da Aceternity UI: filtro SVG (feGaussianBlur + feColorMatrix com alpha boost 20 -10) que faz o ícone circular 'derreter' e se fundir com a barra de search expandida. O ícone da lupa compartilha um layoutId entre o botão e o bubble destacado, criando uma transição orgânica via motion/react. Ao desfocar com campo vazio, o controle volta ao estado colapsado.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2006,7 +2043,7 @@
       "title": "Google Gemini Effect",
       "description": "Cinco curvas SVG onduladas e coloridas (rosa, laranja, azul-claro, azul e azul-forte) que se desenham progressivamente via pathLength conforme o scroll, com cópias borradas (Gaussian blur) por baixo formando um glow. Os MotionValue do pathLength vêm de useScroll + useTransform na área scrollável, inspirado na animação de aterrissagem do Google Gemini.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2037,7 +2074,7 @@
       "title": "Hero Highlight",
       "description": "Seção hero com fundo de pontos que revela um realce indigo seguindo o cursor (radial mask) e texto destacado com fundo gradiente animado.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2056,7 +2093,7 @@
       "title": "Hero Parallax",
       "description": "Hero da Aceternity UI: header (título + descrição) sobre 3 fileiras de 5 thumbnails de produtos que transladam horizontalmente em direções opostas conforme o scroll, com o conjunto rotacionando (rotateX/rotateZ), transladando e esmaecendo — suavizado por springs (useScroll/useTransform/useSpring de motion/react).",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2075,7 +2112,7 @@
       "title": "Hero Section with Mousemove",
       "description": "Hero imersivo da Aceternity UI com elementos flutuantes que reagem ao movimento do mouse: cada cartão se desloca em parallax proporcional à sua profundidade (depth), sobre um fundo escuro com grade e brilho radial. Título, descrição e itens são configuráveis.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2094,7 +2131,7 @@
       "title": "Hover Border Gradient",
       "description": "Botão (ou wrapper polimórfico via `as`) com borda que ganha gradiente radial animado ao passar o mouse. Em repouso a direção do gradiente rotaciona ciclicamente (TOP→LEFT→BOTTOM→RIGHT) a cada `duration`s; no hover a borda preenche com o highlight azul (#3275F8). Cores são fixas (brand do efeito) — não segue tema shadcn.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2109,7 +2146,7 @@
       "title": "Hover Card",
       "description": "Card flutuante com conteúdo rico que aparece ao passar o mouse sobre um gatilho. Baseado em @radix-ui/react-hover-card.",
       "dependencies": [
-        "@radix-ui/react-hover-card"
+        "@radix-ui/react-hover-card@^1.1.15"
       ],
       "files": [
         {
@@ -2123,7 +2160,7 @@
       "type": "registry:lib",
       "title": "Icon Context",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
@@ -2150,7 +2187,7 @@
       "title": "Icon Swap",
       "description": "Componente que troca entre dois ícones com crossfade (Sun↔Moon, Eye↔EyeOff, etc.).",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
@@ -2165,7 +2202,7 @@
       "title": "Images Badge",
       "description": "Badge da Aceternity UI com ícone de pasta + texto; no hover, até 3 imagens saem da pasta num leque animado (fan-out via translate/spread/rotation) usando motion.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2180,7 +2217,7 @@
       "title": "Images Slider",
       "description": "Slider de imagens em tela cheia com autoplay (5s), navegação por teclado (← →) e transição 3D (escala + rotateX + saída deslizante para cima/baixo). Suporta overlay escuro e conteúdo sobreposto centralizado via children.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2231,7 +2268,7 @@
       "title": "Input Copy (Fluid)",
       "description": "Campo somente leitura da Fluid Functionalism para exibir e copiar um valor, com variantes ícone (tooltip) e botão e animação de check.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
@@ -2271,7 +2308,7 @@
       "title": "Input Message (Fluid)",
       "description": "Composer de mensagem da Fluid Functionalism: textarea auto-expansível, anexos via drag-and-drop e picker, preview de imagens/PDF, slots customizáveis e botão de envio.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button-fluid.json",
@@ -2298,15 +2335,30 @@
       "title": "Input OTP",
       "description": "Campo de entrada de código OTP (One-Time Password) com slots visuais, separador e suporte a teclado. Baseado em input-otp.",
       "dependencies": [
-        "input-otp",
-        "lucide-react"
+        "input-otp@^1.4.2",
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
           "path": "src/components/ui/input-otp.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "cssVars": {
+        "theme": {
+          "--animate-caret-blink": "caret-blink 1.25s ease-out infinite"
+        }
+      },
+      "css": {
+        "@keyframes caret-blink": {
+          "0%, 70%, 100%": {
+            "opacity": "1"
+          },
+          "20%, 50%": {
+            "opacity": "0"
+          }
+        }
+      }
     },
     {
       "name": "keyboard",
@@ -2314,8 +2366,8 @@
       "title": "Keyboard",
       "description": "Teclado virtual estilo Apple com teclas que afundam ao clicar ou ao pressionar a tecla física correspondente. Suporte a layout QWERTZ/ANSI e preview animado da última tecla pressionada.",
       "dependencies": [
-        "@tabler/icons-react",
-        "motion"
+        "@tabler/icons-react@^3.44.0",
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2334,7 +2386,7 @@
       "title": "Lamp Effect",
       "description": "Efeito \"lâmpada\" da Aceternity UI: dois cones de luz cônicos (conic-gradient) com blur que crescem ao entrar na viewport, acompanhados de uma linha brilhante horizontal, projetando luz ciano sobre um fundo escuro (slate-950) para revelar um título abaixo. Animado por whileInView de motion/react.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2349,7 +2401,7 @@
       "title": "Layout Grid",
       "description": "Grid bento responsivo (1 col mobile, 3 col desktop) com cards clicáveis que expandem em overlay centralizado usando layoutId compartilhado do motion. Cards com thumbnail e conteúdo JSX customizável.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2364,7 +2416,7 @@
       "title": "Layout Text Flip",
       "description": "Título fixo + palavra que rotaciona com flip vertical (y -40 → 0 → +50) e blur de entrada/saída (Aceternity UI). O layoutId do título permite transição suave entre seções; a palavra rotativa usa popLayout para preservar posição. A pill rotativa usa tokens semânticos shadcn (bg-card + ring-border), aceitando duration customizável e children opcional (ex.: separador).",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2379,7 +2431,7 @@
       "title": "Lens",
       "description": "Lente de aumento que segue o cursor sobre uma imagem ou card, ampliando a região sob ela com máscara radial. Suporta posição fixa (estática) e estado de hover controlado externamente.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2414,9 +2466,9 @@
       "title": "Link Preview",
       "description": "Hover-card que mostra um screenshot da URL apontada por um link, com leve parallax no eixo X seguindo o cursor. Usa @radix-ui/react-hover-card + qss.",
       "dependencies": [
-        "@radix-ui/react-hover-card",
-        "motion",
-        "qss"
+        "@radix-ui/react-hover-card@^1.1.15",
+        "motion@^12.40.0",
+        "qss@^3.0.0"
       ],
       "files": [
         {
@@ -2435,7 +2487,7 @@
       "title": "Loader",
       "description": "Coleção de cinco loaders animados da Aceternity UI: três pontos saltitantes em onda, três pontos deslizando horizontalmente, raio SVG com pathLength 0→1 e fill animado, texto com skew/scale glitch e camadas RGB (verde+violeta) atrás, e caracteres pulsando com text-shadow. Cores são fixas (assinatura visual do efeito) e não seguem o tema shadcn.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2537,8 +2589,8 @@
       "title": "Macbook Scroll",
       "description": "Mock de MacBook Pro com tampa que abre ao rolar a página. useScroll mede o progresso e useTransform aplica scaleX/scaleY/translate/rotate no lid + parallax no título. Imagem reveal dentro da tela.",
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react@^0.468.0",
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2557,7 +2609,7 @@
       "title": "Magnetic Button",
       "description": "Wrapper que atrai o conteúdo em direção ao cursor com spring (useMotionValue + useSpring). Quando o mouse se aproxima, o filho é deslocado proporcionalmente em direção ao ponteiro; ao sair, retorna ao centro com física de mola. A borda azul aparece no hover como feedback visual. Útil para CTAs e botões interativos.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2576,8 +2628,8 @@
       "title": "Menubar",
       "description": "Barra de menu horizontal com menus dropdown, submenus, checkboxes, radio groups e atalhos de teclado. Baseado em @radix-ui/react-menubar.",
       "dependencies": [
-        "@radix-ui/react-menubar",
-        "lucide-react"
+        "@radix-ui/react-menubar@^1.1.16",
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
@@ -2592,7 +2644,7 @@
       "title": "Meteors",
       "description": "Efeito de fundo da Aceternity UI: uma chuva de meteoros diagonais que cruzam a tela em loop, cada um com atraso e duração aleatórios. Fica atrás do conteúdo (card/hero) para dar movimento sutil. Quantidade configurável via prop number.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2627,7 +2679,7 @@
       "title": "Middle Truncation",
       "description": "Trunca texto no meio preservando início e fim — ideal para hashes, paths e e-mails.",
       "dependencies": [
-        "@radix-ui/react-tooltip"
+        "@radix-ui/react-tooltip@^1.2.8"
       ],
       "files": [
         {
@@ -2646,7 +2698,7 @@
       "title": "Mobius Loop Icon",
       "description": "Ícono animado de loop infinito (mobius strip) com morphing SVG entre círculos e infinito.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2661,7 +2713,7 @@
       "title": "Moving Border",
       "description": "Botão (ou wrapper polimórfico via `as`) com borda que se move continuamente ao longo do perímetro, implementada com um `<rect>` SVG invisível percorrido por um gradiente radial via `getPointAtLength` + `useAnimationFrame` (motion v12). Duração configurável em ms, raio da borda customizável e gradiente da 'bola' substituível. Cores são fixas (slate-900 + cyan, brand do efeito) — não segue tema shadcn.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2676,8 +2728,8 @@
       "title": "Multi Step Loader",
       "description": "Loader fullscreen com overlay blur, lista de etapas com índice ativo controlado por state, ícone Check progressivo (vazio → preenchido → lime), e AnimatePresence para entrada/saída. Cada etapa avança automaticamente com duração configurável e loop opcional.",
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react@^0.468.0",
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2692,7 +2744,7 @@
       "title": "Navbar Menu",
       "description": "Navbar pill (rounded-full) com menu hover-dropdown fullscreen-blur. Hover num item (MenuItem) abre card dropdown com backdrop-blur-sm rounded-2xl border shadow-xl. Itens internos: ProductItem (img + título + descrição) e HoveredLink (link simples).",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2711,9 +2763,9 @@
       "title": "Navigation Menu",
       "description": "Menu de navegação horizontal com dropdowns de conteúdo rico, viewport animado e indicador de posição. Baseado em @radix-ui/react-navigation-menu.",
       "dependencies": [
-        "@radix-ui/react-navigation-menu",
-        "class-variance-authority",
-        "lucide-react"
+        "@radix-ui/react-navigation-menu@1.2.13",
+        "class-variance-authority@^0.7.1",
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
@@ -2728,7 +2780,7 @@
       "title": "Noise Background",
       "description": "Fundo da Aceternity UI com camadas de gradiente radial que flutuam aleatoriamente em loop, sobrepostas por uma textura de ruído sutil (mix-blend overlay) e uma faixa de luz no topo. Cores, intensidade do ruído e velocidade configuráveis; envolve qualquer conteúdo.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2747,7 +2799,7 @@
       "title": "Notch",
       "description": "Barra/notch fixa no topo ou base do viewport (estilo iOS Dynamic Island) com grupos de triggers que abrem um popover de opções animado via motion/react. Cores dark hardcoded (bg-neutral-950/95, text-neutral-100/300/400) — brand do efeito, não segue tema shadcn.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2766,7 +2818,7 @@
       "title": "Pagination",
       "description": "Controles de paginação com links de página, navegação anterior/próxima e ellipsis para intervalos ocultos.",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json"
@@ -2784,7 +2836,7 @@
       "title": "Parallax Hero Images",
       "description": "Hero com imagens em profundidades distintas que transladam em parallax ao mover o mouse; entrada com fade-in + blur. Variante default vs edge-focus muda o mapa de profundidade.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2803,7 +2855,7 @@
       "title": "Parallax Hero Images 2",
       "description": "Variante 2 (scroll-driven) do parallax hero da Aceternity UI: imagens distribuídas em 3 colunas que deslizam verticalmente conforme a rolagem avança (laterais sobem, meio desce, com leve zoom-out), criando profundidade. Aceita uma área scrollável própria via scrollRef para hero sections com conteúdo sobreposto.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2822,7 +2874,7 @@
       "title": "Parallax Scroll",
       "description": "Galeria de imagens da Aceternity UI em 3 colunas que se movem em velocidades e direções diferentes conforme o scroll da própria área (altura fixa, overflow-y-auto): as laterais sobem e a do meio desce, criando profundidade. Usa useScroll/useTransform da motion.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2918,7 +2970,7 @@
       "title": "Placeholders and Vanish Input",
       "description": "Campo de texto com placeholders animados que desaparecem ao focar, e botão de submit com loading animado. Efeito de 'vanish' no texto ao enviar.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -2937,7 +2989,7 @@
       "title": "Popover",
       "description": "Painel flutuante ancorado a um gatilho, com alinhamento configurável. Baseado em @radix-ui/react-popover.",
       "dependencies": [
-        "@radix-ui/react-popover"
+        "@radix-ui/react-popover@^1.1.15"
       ],
       "files": [
         {
@@ -2952,7 +3004,7 @@
       "title": "Progress",
       "description": "Barra de progresso para indicar conclusão de uma tarefa ou etapa. Baseado em @radix-ui/react-progress.",
       "dependencies": [
-        "@radix-ui/react-progress"
+        "@radix-ui/react-progress@^1.1.4"
       ],
       "files": [
         {
@@ -2967,8 +3019,8 @@
       "title": "Radio Group",
       "description": "Grupo de opções mutuamente exclusivas com navegação por teclado. Baseado em @radix-ui/react-radio-group.",
       "dependencies": [
-        "@radix-ui/react-radio-group",
-        "lucide-react"
+        "@radix-ui/react-radio-group@^1.2.3",
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
@@ -2983,8 +3035,8 @@
       "title": "Radio Group (Fluid)",
       "description": "Grupo de opções exclusivas da Fluid Functionalism com fundo selecionado animado, destaque por proximidade, navegação por teclado e ponto animado.",
       "dependencies": [
-        "@radix-ui/react-radio-group",
-        "motion"
+        "@radix-ui/react-radio-group@^1.2.3",
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
@@ -3006,8 +3058,8 @@
       "title": "React Wheel Picker",
       "description": "Picker estilo iOS com 3 colunas (data picker) que rola como uma roda. Wrapper sobre react-wheel-picker.",
       "dependencies": [
-        "@ncdai/react-wheel-picker",
-        "class-variance-authority"
+        "@ncdai/react-wheel-picker@^1.2.2",
+        "class-variance-authority@^0.7.1"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
@@ -3034,7 +3086,7 @@
       "title": "Resizable",
       "description": "Painéis redimensionáveis via arraste, com suporte a direção horizontal e vertical, múltiplos painéis e handle visual. Baseado em react-resizable-panels.",
       "dependencies": [
-        "react-resizable-panels"
+        "react-resizable-panels@^4.11.2"
       ],
       "files": [
         {
@@ -3049,8 +3101,8 @@
       "title": "Resizable Navbar",
       "description": "Barra de navegação que encolhe ao rolar a página (motion/react + useScroll): ganha blur, sombra e reduz a largura. Inclui variante desktop e menu mobile colapsável com toggle animado.",
       "dependencies": [
-        "@tabler/icons-react",
-        "motion"
+        "@tabler/icons-react@^3.44.0",
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -3077,7 +3129,7 @@
       "title": "Scroll Area",
       "description": "Área de rolagem customizada com scrollbar estilizado. Baseado em @radix-ui/react-scroll-area.",
       "dependencies": [
-        "@radix-ui/react-scroll-area"
+        "@radix-ui/react-scroll-area@^1.2.10"
       ],
       "files": [
         {
@@ -3092,7 +3144,7 @@
       "title": "Scroll Fade Effect",
       "description": "Container com fade nas bordas superior/inferior quando há conteúdo scrollável além do viewport (estilo iOS).",
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority@^0.7.1"
       ],
       "files": [
         {
@@ -3111,8 +3163,8 @@
       "title": "Select",
       "description": "Seletor de opções com trigger, conteúdo em portal, grupos, separadores e suporte a scroll. Baseado em @radix-ui/react-select.",
       "dependencies": [
-        "@radix-ui/react-select",
-        "lucide-react"
+        "@radix-ui/react-select@^2.1.7",
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
@@ -3127,8 +3179,8 @@
       "title": "Select (Fluid)",
       "description": "Select da Fluid Functionalism com popover em portal, destaque por proximidade, check animado, variantes bordered/borderless e suporte a ícones e erro.",
       "dependencies": [
-        "class-variance-authority",
-        "motion"
+        "class-variance-authority@^0.7.1",
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/elevated.json",
@@ -3155,7 +3207,7 @@
       "title": "Separator",
       "description": "Divisor visual horizontal ou vertical para separar conteúdo. Baseado em @radix-ui/react-separator.",
       "dependencies": [
-        "@radix-ui/react-separator"
+        "@radix-ui/react-separator@^1.1.2"
       ],
       "files": [
         {
@@ -3189,8 +3241,8 @@
       "title": "Sheet",
       "description": "Painel deslizante a partir da borda da tela para navegação ou formulários.",
       "dependencies": [
-        "@radix-ui/react-dialog",
-        "lucide-react"
+        "@radix-ui/react-dialog@^1.1.15",
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
@@ -3239,8 +3291,8 @@
       "title": "Sidebar",
       "description": "Barra lateral que recolhe para 60px e expande para 300px ao passar o mouse (motion/react), com rótulos que aparecem/desaparecem suavemente. No mobile vira um drawer em tela cheia. Suporta estado controlado e modo sempre-expandido (animate=false).",
       "dependencies": [
-        "lucide-react",
-        "motion"
+        "lucide-react@^0.468.0",
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -3271,7 +3323,7 @@
       "title": "Slide to Unlock",
       "description": "Controle estilo iOS: arrastar thumb da esquerda pra direita pra confirmar ação.",
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority@^0.7.1"
       ],
       "files": [
         {
@@ -3306,7 +3358,7 @@
       "title": "Slider",
       "description": "Controle deslizante para selecionar um valor ou intervalo. Suporta um ou múltiplos thumbs, steps e estado desabilitado. Baseado em @radix-ui/react-slider.",
       "dependencies": [
-        "@radix-ui/react-slider"
+        "@radix-ui/react-slider@^1.2.3"
       ],
       "files": [
         {
@@ -3321,8 +3373,8 @@
       "title": "Slider (Fluid)",
       "description": "Slider da Fluid Functionalism com thumb animado, faixa (range), step dots, tooltip de valor e edição inline.",
       "dependencies": [
-        "@radix-ui/react-slider",
-        "motion"
+        "@radix-ui/react-slider@^1.2.3",
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
@@ -3342,7 +3394,7 @@
       "title": "Sonner",
       "description": "Toast/notificação elegante e minimalista com suporte a ações, promises e posicionamento configurável. Baseada em sonner.",
       "dependencies": [
-        "sonner"
+        "sonner@^2.0.0"
       ],
       "files": [
         {
@@ -3377,7 +3429,24 @@
           "path": "src/components/ui/spotlight.tsx",
           "type": "registry:ui"
         }
-      ]
+      ],
+      "cssVars": {
+        "theme": {
+          "--animate-spotlight": "spotlight 2s ease 0.75s 1 forwards"
+        }
+      },
+      "css": {
+        "@keyframes spotlight": {
+          "0%": {
+            "opacity": "0",
+            "transform": "translate(-72%, -62%) scale(0.5)"
+          },
+          "100%": {
+            "opacity": "1",
+            "transform": "translate(-50%, -40%) scale(1)"
+          }
+        }
+      }
     },
     {
       "name": "spotlight-new",
@@ -3385,7 +3454,7 @@
       "title": "Spotlight New",
       "description": "Versão nova do spotlight da Aceternity UI: dois feixes de luz (radial-gradient) que balançam em loop suave sobre um fundo escuro, ideal para destacar um hero. Cores, amplitude e velocidade configuráveis.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -3411,7 +3480,7 @@
       "title": "Squiggly Text",
       "description": "Texto da Aceternity UI que 'treme' ciclicamente entre filtros SVG (feTurbulence + feDisplacementMap) com seeds diferentes, criando efeito de vibração/ondulação configurável (steps, stepDuration, scale, baseFrequency, numOctaves). Animação por useTime + useTransform de motion/react; o filtro aplica em qualquer texto inline ou em bloco (as='span'|'div').",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -3426,7 +3495,7 @@
       "title": "Stateful Button",
       "description": "Botão com feedback de estado: ao clicar dispara um spinner de loading (motion/react) enquanto o handler assíncrono resolve e exibe um check de sucesso ao concluir. Animações de layout suaves e cor/tamanho customizáveis via className.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -3441,7 +3510,7 @@
       "title": "Sticky Banner",
       "description": "Banner fixo no topo (sticky) que oculta/mostra conforme a posição de scroll, com botão de fechar interno. Wrapper bg-transparent — cor fica nos children.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -3460,7 +3529,7 @@
       "title": "Sticky Scroll Reveal",
       "description": "Container scrollável vertical com seções de texto à esquerda e um card sticky à direita que troca conteúdo e gradiente de fundo conforme a seção ativa muda. O progresso do scroll interno é medido por `useScroll({ container })` (motion v12) e mapeado em breakpoints normalizados (i/N) para decidir qual card está em foco. Cores são hardcoded (slate-900/black + gradientes cyan/pink/orange) — brand do efeito, não segue tema shadcn.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -3505,7 +3574,7 @@
       "title": "SVG Mask Effect",
       "description": "Efeito de revelação da Aceternity UI: o texto base fica escondido por uma camada; ao mover o mouse, uma máscara circular segue o cursor e revela o conteúdo por baixo, crescendo no hover. Funciona em light e dark.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -3524,7 +3593,7 @@
       "title": "Switch",
       "description": "Controle de alternância ligar/desligar para configurações e preferências. Baseado em @radix-ui/react-switch.",
       "dependencies": [
-        "@radix-ui/react-switch"
+        "@radix-ui/react-switch@^1.1.3"
       ],
       "files": [
         {
@@ -3539,8 +3608,8 @@
       "title": "Switch (Fluid)",
       "description": "Switch da Fluid Functionalism com thumb que estica no hover/press e suporte a arraste para alternar.",
       "dependencies": [
-        "@radix-ui/react-switch",
-        "motion"
+        "@radix-ui/react-switch@^1.1.3",
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json"
@@ -3570,7 +3639,7 @@
       "title": "Table (Fluid)",
       "description": "Tabela da Fluid Functionalism com destaque de linha por proximidade do cursor e transições suaves.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
@@ -3590,7 +3659,7 @@
       "title": "Tabs",
       "description": "Abas para alternar entre seções de conteúdo dentro de um mesmo contexto.",
       "dependencies": [
-        "@radix-ui/react-tabs"
+        "@radix-ui/react-tabs@^1.1.13"
       ],
       "files": [
         {
@@ -3605,8 +3674,8 @@
       "title": "Tabs (Fluid)",
       "description": "Abas da Fluid Functionalism com indicador de pílula elevada animado, hover por proximidade no eixo horizontal, anel de foco e painéis controlados.",
       "dependencies": [
-        "@radix-ui/react-tabs",
-        "motion"
+        "@radix-ui/react-tabs@^1.1.13",
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
@@ -3631,7 +3700,7 @@
       "title": "Tabs Subtle (Fluid)",
       "description": "Abas sutis da Fluid Functionalism com pílula selecionada animada, hover por proximidade, anel de foco e modo de rótulo só na ativa.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
@@ -3663,7 +3732,7 @@
       "title": "Team Section with Scales",
       "description": "Seção de equipe com cabeçalho (eyebrow + título + descrição) e grade responsiva de cards de membros sobre o pattern decorativo Scales (linhas via CSS, reativo ao tema). Cada card traz avatar, nome, cargo, bio e links sociais opcionais, com realce no hover (motion/react).",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/scales.json"
@@ -3697,7 +3766,7 @@
       "title": "Text Flipping Board",
       "description": "Split-flap board estilo aeroporto: cada caractere gira pra revelar a letra, com delay em cascata por linha e coluna.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -3716,7 +3785,7 @@
       "title": "Text Generate Effect",
       "description": "Texto da Aceternity UI em que cada palavra entra com fade + blur desfocado (10px) com stagger de 0.2s. Tema via token semântico text-foreground; aceita frase, flag de blur e duração customizada. Animado na montagem via useAnimate (motion/react).",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -3731,8 +3800,8 @@
       "title": "Text Hover Effect",
       "description": "SVG com texto em stroke que, ao passar o mouse, ganha um realce gradiente multicolor (amarelo/vermelho/azul/ciano/violeta) revelado por uma máscara radial seguindo o cursor, com stroke inicial animado via strokeDasharray. Reimplementado padronizado shadcn com motion/react, palette de gradiente configurável e variantes de densidade.",
       "dependencies": [
-        "class-variance-authority",
-        "motion"
+        "class-variance-authority@^0.7.1",
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -3755,7 +3824,7 @@
       "title": "Text Reveal Card",
       "description": "Card Aceternity UI: arraste o mouse sobre o card e um texto escondido é revelado progressivamente da esquerda pra direita via clip-path animado por motion, com estrelinhas piscando ao fundo. Background escuro fixo (brand do efeito).",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -3782,8 +3851,8 @@
       "title": "Theme Switcher",
       "description": "Seletor de tema elaborado com opções light/dark/system (e talvez accent color).",
       "dependencies": [
-        "@radix-ui/react-tooltip",
-        "lucide-react"
+        "@radix-ui/react-tooltip@^1.2.8",
+        "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/dropdown-menu.json",
@@ -3806,7 +3875,7 @@
       "title": "Theme Toggle Effect",
       "description": "Toggle de tema com animação de view transition (círculo expandindo do botão até a tela inteira).",
       "dependencies": [
-        "lucide-react"
+        "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
@@ -3837,7 +3906,7 @@
       "title": "Thinking Indicator (Fluid)",
       "description": "Indicador de processamento da Fluid Functionalism com ícone morfando entre formas e texto com efeito shimmer que alterna palavras.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json"
@@ -3873,8 +3942,8 @@
       "title": "Thinking Steps (Fluid)",
       "description": "Trilha de raciocínio da Fluid Functionalism: accordion com passos animados, status (ativo/concluído), detalhes aninhados, fontes em badges e imagens — para exibir o pensamento de uma IA.",
       "dependencies": [
-        "class-variance-authority",
-        "motion"
+        "class-variance-authority@^0.7.1",
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/accordion-fluid.json",
@@ -3919,7 +3988,7 @@
       "title": "Timeline",
       "description": "Linha do tempo vertical da Aceternity UI com uma barra de progresso que cresce (gradiente roxo→azul) conforme a rolagem, dirigida por motion useScroll. Cada entrada tem um marco com título (data) e conteúdo arbitrário; sticky labels no desktop. Cabeçalho e descrição configuráveis.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -3938,9 +4007,9 @@
       "title": "Toast",
       "description": "Notificação temporária e não-bloqueante para confirmar ações, exibir alertas ou comunicar estados do sistema. Baseado em @radix-ui/react-toast.",
       "dependencies": [
-        "@radix-ui/react-toast",
-        "class-variance-authority",
-        "lucide-react"
+        "@radix-ui/react-toast@^1.2.15",
+        "class-variance-authority@^0.7.1",
+        "lucide-react@^0.468.0"
       ],
       "files": [
         {
@@ -3955,7 +4024,7 @@
       "title": "TOC Minimap",
       "description": "Sumário/minimap de navegação com seção ativa via IntersectionObserver e barra de progresso.",
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority@^0.7.1"
       ],
       "files": [
         {
@@ -3974,8 +4043,8 @@
       "title": "Toggle",
       "description": "Botão de alternância com estados ligado/desligado, variantes de estilo e tamanho. Baseado em @radix-ui/react-toggle.",
       "dependencies": [
-        "@radix-ui/react-toggle",
-        "class-variance-authority"
+        "@radix-ui/react-toggle@^1.1.9",
+        "class-variance-authority@^0.7.1"
       ],
       "files": [
         {
@@ -3998,7 +4067,7 @@
       "title": "Tooltip Card",
       "description": "Tooltip da Aceternity UI que aparece no hover e SEGUE o cursor (motion/react com AnimatePresence + spring). O conteúdo pode ser texto simples ou um card React rico (avatar, nome, bio); posição calculada a partir do mouse com clamp nas bordas do viewport.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -4013,8 +4082,8 @@
       "title": "Tooltip (Fluid)",
       "description": "Tooltip da Fluid Functionalism com animação de entrada/saída via motion e posicionamento em quatro lados.",
       "dependencies": [
-        "@radix-ui/react-tooltip",
-        "motion"
+        "@radix-ui/react-tooltip@^1.2.8",
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
@@ -4034,7 +4103,7 @@
       "title": "Tracing Beam",
       "description": "Feixe luminoso da Aceternity UI que acompanha a rolagem ao lado do conteúdo: um caminho SVG preenchido por um gradiente (ciano → violeta) cujo progresso evolui com o scroll, dirigido por motion (useScroll + useSpring). Ideal para artigos longos e landing pages narrativas; envolve qualquer conteúdo e mede sua altura automaticamente.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -4053,8 +4122,8 @@
       "title": "Tree",
       "description": "Árvore de arquivos interativa com busca, drag & drop e navegação por teclado. Baseada em @pierre/trees.",
       "dependencies": [
-        "@pierre/trees",
-        "class-variance-authority"
+        "@pierre/trees@^1.0.0-beta.4",
+        "class-variance-authority@^0.7.1"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
@@ -4125,7 +4194,7 @@
       "title": "Typewriter Effect",
       "description": "Efeito de datilografia da Aceternity UI em duas variantes: TypewriterEffect revela cada caractere com stagger de 0.1s quando entra na viewport; TypewriterEffectSmooth (máquina de escrever) anima a largura do container de 0% até fit-content em 2s. Cursor (token --primary do shadcn) pisca em loop infinito em ambas. Ideal para títulos de hero, slogans e CTAs animados.",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -4143,7 +4212,7 @@
       "type": "registry:hook",
       "title": "Use Merge Split",
       "dependencies": [
-        "framer-motion@^12.40.0"
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
@@ -4192,11 +4261,13 @@
       "files": [
         {
           "path": "src/components/theme/theme-context.ts",
-          "type": "registry:lib"
+          "type": "registry:component",
+          "target": "~/src/components/theme/theme-context.ts"
         },
         {
           "path": "src/components/theme/use-theme.ts",
-          "type": "registry:lib"
+          "type": "registry:component",
+          "target": "~/src/components/theme/use-theme.ts"
         }
       ]
     },
@@ -4206,8 +4277,8 @@
       "title": "Vortex",
       "description": "Fundo de partículas em redemoinho (swirl) animado em canvas via simplex noise 3D, com glow aditivo e CTA sobreposto. Cor, contagem de partículas, amplitude e velocidade configuráveis; fundo escuro fixo (brand do efeito).",
       "dependencies": [
-        "motion",
-        "simplex-noise"
+        "motion@^12.40.0",
+        "simplex-noise@^4.0.3"
       ],
       "files": [
         {
@@ -4254,7 +4325,7 @@
       "title": "Wobble Card",
       "description": "Card que balança e translada com o mouse via motion (tilt 3D + scale do conteúdo + noise overlay).",
       "dependencies": [
-        "motion"
+        "motion@^12.40.0"
       ],
       "files": [
         {
@@ -4273,7 +4344,7 @@
       "title": "Work Experience",
       "description": "Card/timeline de experiência profissional com empresa, cargo, período, descrição e tecnologias.",
       "dependencies": [
-        "class-variance-authority"
+        "class-variance-authority@^0.7.1"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/badge.json",
@@ -4296,8 +4367,8 @@
       "title": "World Map",
       "description": "Mapa-múndi pontilhado da Aceternity UI (SVG gerado em runtime pela lib dotted-map) com arcos curvos que se desenham progressivamente (pathLength animado por motion) entre pares de coordenadas, e pontos pulsantes (animate SVG) nas pontas. Útil para ilustrar conexões/rotas globais. Cor das linhas configurável e fundo adaptativo ao tema (branco no claro, preto no escuro).",
       "dependencies": [
-        "dotted-map",
-        "motion"
+        "dotted-map@^3.1.0",
+        "motion@^12.40.0"
       ],
       "registryDependencies": [
         "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"

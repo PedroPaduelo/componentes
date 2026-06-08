@@ -4,7 +4,7 @@
   "title": "Color Picker (Fluid)",
   "description": "Seletor de cor da Fluid Functionalism com quadrado de saturação, sliders de matiz e alpha, conta-gotas, swatches e formatos hex/rgb/hsl/oklch — em painel inline ou popover.",
   "dependencies": [
-    "motion"
+    "motion@^12.40.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/dropdown-fluid.json",

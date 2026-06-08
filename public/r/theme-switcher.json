@@ -4,8 +4,8 @@
   "title": "Theme Switcher",
   "description": "Seletor de tema elaborado com opções light/dark/system (e talvez accent color).",
   "dependencies": [
-    "@radix-ui/react-tooltip",
-    "lucide-react"
+    "@radix-ui/react-tooltip@^1.2.8",
+    "lucide-react@^0.468.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/dropdown-menu.json",

@@ -4,7 +4,7 @@
   "title": "Slider",
   "description": "Controle deslizante para selecionar um valor ou intervalo. Suporta um ou múltiplos thumbs, steps e estado desabilitado. Baseado em @radix-ui/react-slider.",
   "dependencies": [
-    "@radix-ui/react-slider"
+    "@radix-ui/react-slider@^1.2.3"
   ],
   "files": [
     {

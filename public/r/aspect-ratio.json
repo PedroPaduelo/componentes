@@ -4,7 +4,7 @@
   "title": "Aspect Ratio",
   "description": "Container que mantém proporção fixa (16:9, 4:3, 1:1, etc.) para imagens e mídia. Baseado em @radix-ui/react-aspect-ratio.",
   "dependencies": [
-    "@radix-ui/react-aspect-ratio"
+    "@radix-ui/react-aspect-ratio@^1.1.3"
   ],
   "files": [
     {

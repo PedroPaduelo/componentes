@@ -4,7 +4,7 @@
   "title": "Wobble Card",
   "description": "Card que balança e translada com o mouse via motion (tilt 3D + scale do conteúdo + noise overlay).",
   "dependencies": [
-    "motion"
+    "motion@^12.40.0"
   ],
   "files": [
     {

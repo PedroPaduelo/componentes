@@ -4,8 +4,8 @@
   "title": "Copy Button",
   "description": "Botão de copiar para a área de transferência com feedback visual e fallback execCommand.",
   "dependencies": [
-    "class-variance-authority",
-    "lucide-react"
+    "class-variance-authority@^0.7.1",
+    "lucide-react@^0.468.0"
   ],
   "files": [
     {

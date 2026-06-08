@@ -4,7 +4,7 @@
   "title": "GitHub Contributions",
   "description": "Heatmap de contribuições estilo GitHub, com células por dia, tooltips e escalas de cor.",
   "dependencies": [
-    "@radix-ui/react-tooltip"
+    "@radix-ui/react-tooltip@^1.2.8"
   ],
   "files": [
     {

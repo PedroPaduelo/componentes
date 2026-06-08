@@ -4,8 +4,8 @@
   "title": "Dropdown Menu",
   "description": "Menu suspenso acionado por um gatilho, com itens, separadores e submenus.",
   "dependencies": [
-    "@radix-ui/react-dropdown-menu",
-    "lucide-react"
+    "@radix-ui/react-dropdown-menu@^2.1.16",
+    "lucide-react@^0.468.0"
   ],
   "files": [
     {

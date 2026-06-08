@@ -4,8 +4,8 @@
   "title": "React Wheel Picker",
   "description": "Picker estilo iOS com 3 colunas (data picker) que rola como uma roda. Wrapper sobre react-wheel-picker.",
   "dependencies": [
-    "@ncdai/react-wheel-picker",
-    "class-variance-authority"
+    "@ncdai/react-wheel-picker@^1.2.2",
+    "class-variance-authority@^0.7.1"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"

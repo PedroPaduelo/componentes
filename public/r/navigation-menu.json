@@ -4,9 +4,9 @@
   "title": "Navigation Menu",
   "description": "Menu de navegação horizontal com dropdowns de conteúdo rico, viewport animado e indicador de posição. Baseado em @radix-ui/react-navigation-menu.",
   "dependencies": [
-    "@radix-ui/react-navigation-menu",
-    "class-variance-authority",
-    "lucide-react"
+    "@radix-ui/react-navigation-menu@1.2.13",
+    "class-variance-authority@^0.7.1",
+    "lucide-react@^0.468.0"
   ],
   "files": [
     {

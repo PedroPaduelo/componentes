@@ -4,8 +4,8 @@
   "title": "Tabs (Fluid)",
   "description": "Abas da Fluid Functionalism com indicador de pílula elevada animado, hover por proximidade no eixo horizontal, anel de foco e painéis controlados.",
   "dependencies": [
-    "@radix-ui/react-tabs",
-    "motion"
+    "@radix-ui/react-tabs@^1.1.13",
+    "motion@^12.40.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",

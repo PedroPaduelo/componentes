@@ -4,7 +4,7 @@
   "title": "Work Experience",
   "description": "Card/timeline de experiência profissional com empresa, cargo, período, descrição e tecnologias.",
   "dependencies": [
-    "class-variance-authority"
+    "class-variance-authority@^0.7.1"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/badge.json",

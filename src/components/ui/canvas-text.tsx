@@ -1,6 +1,6 @@
 import * as React from "react"
 import { cn } from "@/lib/utils"
-import { CanvasTextProps } from "@/components/ui/canvas-text-types"
+import type { CanvasTextProps } from "@/components/ui/canvas-text-types"
 
 const DEFAULT_COLORS = [
   "#ff6b6b",

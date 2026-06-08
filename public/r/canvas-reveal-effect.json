@@ -4,8 +4,11 @@
   "title": "Canvas Reveal Effect",
   "description": "Efeito de revelação com dot matrix WebGL usando shader customizada via @react-three/fiber + three. Animação surge do centro para as bordas com opacidade progressiva.",
   "dependencies": [
-    "@react-three/fiber",
-    "three"
+    "@react-three/fiber@^9.6.1",
+    "three@^0.171.0"
+  ],
+  "devDependencies": [
+    "@types/three@^0.171.0"
   ],
   "files": [
     {

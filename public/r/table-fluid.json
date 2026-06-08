@@ -4,7 +4,7 @@
   "title": "Table (Fluid)",
   "description": "Tabela da Fluid Functionalism com destaque de linha por proximidade do cursor e transições suaves.",
   "dependencies": [
-    "motion"
+    "motion@^12.40.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",

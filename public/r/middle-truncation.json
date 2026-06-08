@@ -4,7 +4,7 @@
   "title": "Middle Truncation",
   "description": "Trunca texto no meio preservando início e fim — ideal para hashes, paths e e-mails.",
   "dependencies": [
-    "@radix-ui/react-tooltip"
+    "@radix-ui/react-tooltip@^1.2.8"
   ],
   "files": [
     {

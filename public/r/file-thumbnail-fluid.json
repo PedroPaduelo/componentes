@@ -4,7 +4,7 @@
   "title": "File Thumbnail (Fluid)",
   "description": "Miniatura quadrada de arquivo da Fluid Functionalism: pré-visualiza imagens e a primeira página de PDFs (via pdfjs) com spinner enquanto carrega.",
   "dependencies": [
-    "pdfjs-dist"
+    "pdfjs-dist@^4.10.38"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json"

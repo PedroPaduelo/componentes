@@ -4,9 +4,9 @@
   "title": "Toast",
   "description": "Notificação temporária e não-bloqueante para confirmar ações, exibir alertas ou comunicar estados do sistema. Baseado em @radix-ui/react-toast.",
   "dependencies": [
-    "@radix-ui/react-toast",
-    "class-variance-authority",
-    "lucide-react"
+    "@radix-ui/react-toast@^1.2.15",
+    "class-variance-authority@^0.7.1",
+    "lucide-react@^0.468.0"
   ],
   "files": [
     {

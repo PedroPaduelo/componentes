@@ -4,7 +4,7 @@
   "title": "Separator",
   "description": "Divisor visual horizontal ou vertical para separar conteúdo. Baseado em @radix-ui/react-separator.",
   "dependencies": [
-    "@radix-ui/react-separator"
+    "@radix-ui/react-separator@^1.1.2"
   ],
   "files": [
     {

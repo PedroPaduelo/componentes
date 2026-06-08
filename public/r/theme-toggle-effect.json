@@ -4,7 +4,7 @@
   "title": "Theme Toggle Effect",
   "description": "Toggle de tema com animação de view transition (círculo expandindo do botão até a tela inteira).",
   "dependencies": [
-    "lucide-react"
+    "lucide-react@^0.468.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"

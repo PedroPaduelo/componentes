@@ -4,8 +4,8 @@
   "title": "Badge",
   "description": "Etiqueta compacta para destacar status, contagens ou rótulos contextuais.",
   "dependencies": [
-    "@radix-ui/react-slot",
-    "class-variance-authority"
+    "@radix-ui/react-slot@^1.2.3",
+    "class-variance-authority@^0.7.1"
   ],
   "files": [
     {

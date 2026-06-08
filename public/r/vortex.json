@@ -4,8 +4,8 @@
   "title": "Vortex",
   "description": "Fundo de partículas em redemoinho (swirl) animado em canvas via simplex noise 3D, com glow aditivo e CTA sobreposto. Cor, contagem de partículas, amplitude e velocidade configuráveis; fundo escuro fixo (brand do efeito).",
   "dependencies": [
-    "motion",
-    "simplex-noise"
+    "motion@^12.40.0",
+    "simplex-noise@^4.0.3"
   ],
   "files": [
     {

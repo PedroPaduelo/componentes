@@ -4,8 +4,8 @@
   "title": "Select",
   "description": "Seletor de opções com trigger, conteúdo em portal, grupos, separadores e suporte a scroll. Baseado em @radix-ui/react-select.",
   "dependencies": [
-    "@radix-ui/react-select",
-    "lucide-react"
+    "@radix-ui/react-select@^2.1.7",
+    "lucide-react@^0.468.0"
   ],
   "files": [
     {

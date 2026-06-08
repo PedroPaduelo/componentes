@@ -4,8 +4,8 @@
   "title": "Resizable Navbar",
   "description": "Barra de navegação que encolhe ao rolar a página (motion/react + useScroll): ganha blur, sombra e reduz a largura. Inclui variante desktop e menu mobile colapsável com toggle animado.",
   "dependencies": [
-    "@tabler/icons-react",
-    "motion"
+    "@tabler/icons-react@^3.44.0",
+    "motion@^12.40.0"
   ],
   "files": [
     {

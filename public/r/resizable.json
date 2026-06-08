@@ -4,7 +4,7 @@
   "title": "Resizable",
   "description": "Painéis redimensionáveis via arraste, com suporte a direção horizontal e vertical, múltiplos painéis e handle visual. Baseado em react-resizable-panels.",
   "dependencies": [
-    "react-resizable-panels"
+    "react-resizable-panels@^4.11.2"
   ],
   "files": [
     {

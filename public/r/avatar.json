@@ -4,7 +4,7 @@
   "title": "Avatar",
   "description": "Imagem de perfil com fallback automático (iniciais). Baseado em @radix-ui/react-avatar.",
   "dependencies": [
-    "@radix-ui/react-avatar"
+    "@radix-ui/react-avatar@^1.1.3"
   ],
   "files": [
     {

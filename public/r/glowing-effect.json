@@ -4,7 +4,7 @@
   "title": "Glowing Effect",
   "description": "Borda luminosa que segue o cursor: gradiente cônico rotacionado em torno do card via máscara, atualizado por pointermove e interpolado com easing do motion.",
   "dependencies": [
-    "motion"
+    "motion@^12.40.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json"

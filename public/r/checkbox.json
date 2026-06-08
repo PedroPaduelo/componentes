@@ -4,8 +4,8 @@
   "title": "Checkbox",
   "description": "Caixa de seleção para opções booleanas, com estados marcado e indeterminado.",
   "dependencies": [
-    "@radix-ui/react-checkbox",
-    "lucide-react"
+    "@radix-ui/react-checkbox@^1.3.3",
+    "lucide-react@^0.468.0"
   ],
   "files": [
     {

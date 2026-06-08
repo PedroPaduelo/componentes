@@ -4,8 +4,8 @@
   "title": "Apple Cards Carousel",
   "description": "Carrossel horizontal estilo Apple com cards que expandem em modal via layoutId (motion/react). Navegação por setas, scroll e botão X. Fecha com Escape ou clique fora.",
   "dependencies": [
-    "@tabler/icons-react",
-    "motion"
+    "@tabler/icons-react@^3.44.0",
+    "motion@^12.40.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-outside-click.json"

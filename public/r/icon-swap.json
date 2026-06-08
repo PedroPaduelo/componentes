@@ -4,7 +4,7 @@
   "title": "Icon Swap",
   "description": "Componente que troca entre dois ícones com crossfade (Sun↔Moon, Eye↔EyeOff, etc.).",
   "dependencies": [
-    "lucide-react"
+    "lucide-react@^0.468.0"
   ],
   "files": [
     {

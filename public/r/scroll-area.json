@@ -4,7 +4,7 @@
   "title": "Scroll Area",
   "description": "Área de rolagem customizada com scrollbar estilizado. Baseado em @radix-ui/react-scroll-area.",
   "dependencies": [
-    "@radix-ui/react-scroll-area"
+    "@radix-ui/react-scroll-area@^1.2.10"
   ],
   "files": [
     {

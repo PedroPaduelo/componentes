@@ -26,6 +26,11 @@ export const DEFINED_ANIMATIONS = new Set([
   "third",
   "fourth",
   "fifth",
+  // keyframes próprios embutidos abaixo (accordion / input-otp / spotlight)
+  "accordion-up",
+  "accordion-down",
+  "caret-blink",
+  "spotlight",
 ])
 
 /** Animações nativas do Tailwind (não precisam de CSS no registry). */
@@ -37,12 +42,10 @@ export const BUILTIN_ANIMATIONS = new Set(["spin", "ping", "pulse", "bounce"])
  * ou simplesmente não foram definidas). Servem para o REVISAR_CSS.
  */
 export const UNDEFINED_IN_SOURCE = new Set([
+  // animate-in / animate-out vêm do plugin tw-animate-css (overlays Radix);
+  // documentados na página de instalação, não embutidos no registry.
   "in",
   "out",
-  "spotlight",
-  "caret-blink",
-  "accordion-up",
-  "accordion-down",
 ])
 
 export const CSS_BLOCKS = [
@@ -417,6 +420,53 @@ export const CSS_BLOCKS = [
 }
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
+}`,
+  },
+
+  // ── Accordion (shadcn) — expand/collapse animado ────────────────────
+  // Keyframes padrão shadcn. Não estavam no src/index.css da vitrine
+  // (a animação dependia do tw-animate-css); aqui ficam EMBUTIDOS no item
+  // p/ o consumer animar sem precisar de plugin extra.
+  {
+    slugs: ["accordion"],
+    themeVars: {
+      "--animate-accordion-down": "accordion-down 0.2s ease-out",
+      "--animate-accordion-up": "accordion-up 0.2s ease-out",
+    },
+    cssText: `
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}`,
+  },
+
+  // ── Input OTP (shadcn) — cursor piscando ────────────────────────────
+  {
+    slugs: ["input-otp"],
+    themeVars: {
+      "--animate-caret-blink": "caret-blink 1.25s ease-out infinite",
+    },
+    cssText: `
+@keyframes caret-blink {
+  0%, 70%, 100% { opacity: 1; }
+  20%, 50% { opacity: 0; }
+}`,
+  },
+
+  // ── Spotlight (Aceternity) — fade-in do facho de luz ────────────────
+  {
+    slugs: ["spotlight"],
+    themeVars: {
+      "--animate-spotlight": "spotlight 2s ease 0.75s 1 forwards",
+    },
+    cssText: `
+@keyframes spotlight {
+  0% { opacity: 0; transform: translate(-72%, -62%) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
 }`,
   },
 ]

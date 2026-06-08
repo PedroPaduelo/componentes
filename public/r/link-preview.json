@@ -4,9 +4,9 @@
   "title": "Link Preview",
   "description": "Hover-card que mostra um screenshot da URL apontada por um link, com leve parallax no eixo X seguindo o cursor. Usa @radix-ui/react-hover-card + qss.",
   "dependencies": [
-    "@radix-ui/react-hover-card",
-    "motion",
-    "qss"
+    "@radix-ui/react-hover-card@^1.1.15",
+    "motion@^12.40.0",
+    "qss@^3.0.0"
   ],
   "files": [
     {

@@ -4,7 +4,7 @@
   "title": "Cyber Glitch Text",
   "description": "Bloco de texto estilizado com scramble (decodificação hacker) e chromatic aberration RGB no hover.",
   "dependencies": [
-    "motion"
+    "motion@^12.40.0"
   ],
   "files": [
     {

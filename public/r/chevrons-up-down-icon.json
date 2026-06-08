@@ -4,8 +4,8 @@
   "title": "Chevrons Up Down Icon",
   "description": "Ícone animado de dois chevrons que rotacionam suavemente — indicador visual de dropdown/select.",
   "dependencies": [
-    "class-variance-authority",
-    "lucide-react"
+    "class-variance-authority@^0.7.1",
+    "lucide-react@^0.468.0"
   ],
   "registryDependencies": [
     "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
