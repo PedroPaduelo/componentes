@@ -70,10 +70,10 @@ export const compositions: Composition[] = [
   },
   {
     slug: "text-effects-showcase",
-    name: "Text Effects Showcase",
+    name: "Text Effects Playground",
     description:
-      "Vitrine de efeitos animados de texto, ícones e botões: glitch, flip, shimmer, gradiente e mais.",
-    tags: ["texto", "efeitos", "animação"],
+      "Gerador interativo de texto animado: digite seu texto, escolha um efeito (gradiente, shimmer, flip, glitch, encrypted e mais), ajuste os parâmetros ao vivo e copie o JSX pronto — com uma seção de uso em contexto real.",
+    tags: ["texto", "efeitos", "playground", "gerador", "animação"],
     category: "Showcase",
   },
   {
