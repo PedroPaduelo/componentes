@@ -2,15 +2,15 @@
  * Demos com hooks/refs da composição "Hero Gallery".
  *
  * Os componentes scroll-driven do registry (`HeroParallax`, `ContainerScroll`)
- * usam `useScroll({ container })` apontando para uma área scrollável PRÓPRIA.
- * Por isso precisam de um `useRef` + wrapper `overflow-y-auto`, passando o ref
- * via `scrollRef`. Esses sub-componentes (que usam hooks) vivem aqui — um
- * arquivo com export ÚNICO de componente por export — para não disparar o lint
- * `react-refresh/only-export-components` no `hero-gallery.tsx`, que também
- * exporta a função de composição.
+ * são dirigidos pela ROLAGEM DA PÁGINA (rolagem da janela) — o jeito natural do
+ * efeito Aceternity. Por isso NÃO passamos `scrollRef`: cada um observa o
+ * próprio elemento entrando/saindo da viewport conforme o usuário desce a
+ * página, e a animação 3D evolui junto com o scroll.
+ *
+ * Esses sub-componentes vivem aqui (e não inline no `hero-gallery.tsx`) para
+ * manter o arquivo de composição com um único export de componente — evitando
+ * ruído no Fast Refresh.
  */
-
-import * as React from "react"
 
 import { ContainerScroll } from "@/components/ui/container-scroll-animation"
 import { HeroParallax } from "@/components/ui/hero-parallax"
@@ -23,67 +23,51 @@ const PRODUCTS: Product[] = Array.from({ length: 15 }, (_, i) => ({
 }))
 
 /**
- * Hero Parallax dentro de uma área scrollável própria. Rolar DENTRO do
- * container dispara o efeito de parallax das 3 fileiras.
+ * Hero Parallax dirigido pela rolagem da página. Conforme o usuário desce, as
+ * três fileiras de imagens deslizam em direções opostas e o conjunto se
+ * "abre" (rotateX/rotateZ/translateY) com profundidade.
  */
 export function HeroGalleryParallax() {
-  const scrollRef = React.useRef<HTMLDivElement>(null)
   return (
-    <div
-      ref={scrollRef}
-      className="h-[520px] w-full overflow-y-auto rounded-xl border border-border bg-background"
-    >
-      <HeroParallax
-        products={PRODUCTS}
-        scrollRef={scrollRef}
-        heading={
-          <>
-            A galeria <br /> em movimento
-          </>
-        }
-        description="Role esta área para ver as três fileiras de imagens deslizarem em direções opostas com profundidade."
-      />
-    </div>
+    <HeroParallax
+      products={PRODUCTS}
+      heading={
+        <>
+          A galeria <br /> em movimento
+        </>
+      }
+      description="Continue descendo a página: as três fileiras deslizam em direções opostas, com profundidade e leve rotação 3D."
+    />
   )
 }
 
 /**
- * Container Scroll dentro de uma área scrollável própria. Rolar revela o card
- * 3D rotacionando (rotateX), escalando e o título subindo.
+ * Container Scroll dirigido pela rolagem da página. O card começa deitado
+ * (rotateX 20°) ao entrar por baixo e ENDIREITA até ficar de frente (0°) quando
+ * alcança o centro da viewport — a imagem "vem para a frente" conforme o scroll.
+ *
+ * O `offset` calibra essa faixa: progresso 0 quando o topo do card encosta na
+ * base da tela; progresso 1 quando o centro do card alcança o centro da tela.
  */
 export function HeroGalleryContainerScroll() {
-  const scrollRef = React.useRef<HTMLDivElement>(null)
   return (
-    <div
-      ref={scrollRef}
-      className="h-[520px] w-full overflow-y-auto rounded-xl border border-border bg-background"
+    <ContainerScroll
+      offset={["start end", "center center"]}
+      titleComponent={
+        <h2 className="text-2xl font-semibold text-foreground">
+          Role para revelar <br />
+          <span className="mt-1 block text-4xl leading-none font-bold md:text-[4.5rem]">
+            A imagem de destaque
+          </span>
+        </h2>
+      }
     >
-      <div className="flex flex-col">
-        {/* Espaçador inicial: garante que, no topo do scroll, o target comece
-            ABAIXO da viewport (scrollYProgress = 0). */}
-        <div className="h-[30vh] shrink-0" aria-hidden />
-        <ContainerScroll
-          scrollRef={scrollRef}
-          titleComponent={
-            <h2 className="text-2xl font-semibold text-foreground">
-              Role para revelar <br />
-              <span className="mt-1 block text-4xl leading-none font-bold md:text-[4.5rem]">
-                A imagem de destaque
-              </span>
-            </h2>
-          }
-        >
-          <img
-            src="https://picsum.photos/seed/hg-scroll/1400/720"
-            alt="Destaque da galeria"
-            className="mx-auto h-full w-full rounded-2xl object-cover object-left-top"
-            draggable={false}
-          />
-        </ContainerScroll>
-        {/* Espaçador final: garante que o target consiga SAIR por cima da
-            viewport, levando scrollYProgress até 1. */}
-        <div className="h-[260vh] shrink-0" aria-hidden />
-      </div>
-    </div>
+      <img
+        src="https://picsum.photos/seed/hg-scroll/1400/720"
+        alt="Destaque da galeria"
+        className="mx-auto h-full w-full rounded-2xl object-cover object-left-top"
+        draggable={false}
+      />
+    </ContainerScroll>
   )
 }

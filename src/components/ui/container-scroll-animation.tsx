@@ -32,6 +32,9 @@ import {
 
 import { cn } from "@/lib/utils"
 
+/** Tipo do `offset` aceito pelo `useScroll` do motion (derivado da própria API). */
+type ScrollOffset = NonNullable<Parameters<typeof useScroll>[0]>["offset"]
+
 type ContainerScrollProps = {
   /** Conteúdo do título exibido acima do card (sobe conforme o scroll). */
   titleComponent: React.ReactNode
@@ -45,6 +48,13 @@ type ContainerScrollProps = {
    * da rolagem da janela). Quando omitido, usa a rolagem da janela.
    */
   scrollRef?: React.RefObject<HTMLElement | null>
+  /**
+   * Faixa de interseção alvo↔viewport (ou alvo↔container) que mapeia o progresso
+   * 0→1 da animação, repassada ao `useScroll` do motion. Permite calibrar quando
+   * o efeito começa/termina conforme a seção entra na tela. Default:
+   * `["start end", "end start"]` (progride da entrada até a saída do elemento).
+   */
+  offset?: ScrollOffset
 }
 
 function ContainerScroll({
@@ -52,12 +62,13 @@ function ContainerScroll({
   children,
   className,
   scrollRef,
+  offset = ["start end", "end start"],
 }: ContainerScrollProps) {
   const containerRef = React.useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
     container: scrollRef,
-    offset: ["start end", "end start"],
+    offset,
   })
   const [isMobile, setIsMobile] = React.useState(false)
 

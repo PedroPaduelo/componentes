@@ -5,8 +5,8 @@
  * registry da vitrine:
  * - Hero topo: `ParallaxHeroImages` (parallax dirigido pelo mouse) + heading.
  * - Destaques 3D: `CardContainer`/`CardBody`/`CardItem` (inclinam no hover).
- * - Scroll reveal: `ContainerScroll` (via demo com área scrollável própria).
- * - Galeria parallax: `HeroParallax` (via demo com área scrollável própria).
+ * - Scroll reveal: `ContainerScroll` (via demo, dirigido pela rolagem da página).
+ * - Galeria parallax: `HeroParallax` (via demo, dirigido pela rolagem da página).
  * - Coleção: `ExpandableCards` (cards que expandem para um modal).
  *
  * Os sub-componentes scroll-driven (que usam `useScroll`/refs) vivem em
@@ -210,8 +210,8 @@ export function HeroGallery() {
               Imagem em destaque
             </h2>
             <p className="mt-4 text-base text-muted-foreground">
-              Role a área abaixo para revelar a foto principal com uma animação
-              3D dirigida pelo scroll.
+              Role a página para revelar a foto principal: o card sai inclinado
+              e vem pra frente com uma animação 3D dirigida pelo scroll.
             </p>
           </div>
           <HeroGalleryContainerScroll />
@@ -221,19 +221,10 @@ export function HeroGallery() {
       {/* ----------------------------------------------------------------- */}
       {/* Galeria parallax — Hero Parallax                                  */}
       {/* ----------------------------------------------------------------- */}
-      <section className="bg-background py-20">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="mx-auto mb-10 max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-              Toda a coleção em movimento
-            </h2>
-            <p className="mt-4 text-base text-muted-foreground">
-              Role a galeria — as fileiras deslizam em direções opostas com
-              profundidade e leve rotação.
-            </p>
-          </div>
-          <HeroGalleryParallax />
-        </div>
+      {/* Full-bleed: o HeroParallax precisa da largura total para as fileiras
+          deslizarem horizontalmente e traz seu próprio header interno. */}
+      <section className="overflow-hidden border-t bg-background">
+        <HeroGalleryParallax />
       </section>
 
       {/* ----------------------------------------------------------------- */}
