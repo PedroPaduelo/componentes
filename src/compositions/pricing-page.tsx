@@ -348,6 +348,31 @@ function formatPrice(value: number): string {
   return value.toLocaleString("pt-BR")
 }
 
+/** Cabeçalho de seção padronizado (eyebrow + título + subtítulo). */
+function SectionHeading({
+  eyebrow,
+  title,
+  subtitle,
+}: {
+  eyebrow: string
+  title: string
+  subtitle?: string
+}) {
+  return (
+    <div className="mx-auto max-w-2xl text-center">
+      <p className="text-xs font-semibold uppercase tracking-widest text-primary">
+        {eyebrow}
+      </p>
+      <h2 className="mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+        {title}
+      </h2>
+      {subtitle && (
+        <p className="mt-3 text-sm text-muted-foreground">{subtitle}</p>
+      )}
+    </div>
+  )
+}
+
 /** Renderiza uma célula da tabela de comparação. */
 function FeatureValue({ value }: { value: FeatureCell }) {
   if (value === true) {
@@ -404,17 +429,17 @@ export function PricingPage() {
         glowColorDarkVar="--color-violet-400"
       />
 
-      <div className="relative z-10 mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
+      <div className="relative z-10 mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
         {/* Cabeçalho */}
         <div className="mx-auto max-w-2xl text-center">
           <Badge variant="secondary" className="mb-4 gap-1">
             <Sparkles className="size-3.5" aria-hidden="true" />
             Planos para todo tamanho de time
           </Badge>
-          <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+          <h1 className="text-3xl font-semibold tracking-tight text-balance text-foreground sm:text-5xl">
             Preços simples e transparentes
           </h1>
-          <p className="mt-3 text-base text-muted-foreground">
+          <p className="mt-4 text-base text-pretty text-muted-foreground sm:text-lg">
             Escolha o plano ideal para o seu time. Mude ou cancele quando quiser.
           </p>
         </div>
@@ -451,7 +476,7 @@ export function PricingPage() {
         <ScalesContainer
           orientation="diagonal"
           size={12}
-          containerClassName="mt-10 overflow-hidden rounded-lg border border-border/60 bg-card/40"
+          containerClassName="mt-8 overflow-hidden rounded-lg border border-border/60 bg-card/40"
         >
           <div className="flex items-center justify-center px-6 py-4">
             <p className="text-center text-xs font-medium uppercase tracking-widest text-muted-foreground">
@@ -459,27 +484,6 @@ export function PricingPage() {
             </p>
           </div>
         </ScalesContainer>
-
-        {/* Barra de estatísticas / confiança */}
-        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {stats.map((stat) => {
-            const Icon = stat.icon
-            return (
-              <div
-                key={stat.label}
-                className="flex flex-col items-center gap-1 rounded-lg border border-border/60 bg-card/40 px-4 py-5 text-center"
-              >
-                <Icon className="size-5 text-primary" aria-hidden="true" />
-                <span className="text-2xl font-bold text-foreground">
-                  {stat.value}
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  {stat.label}
-                </span>
-              </div>
-            )
-          })}
-        </div>
 
         {/* Grade de planos */}
         <div className="mt-10 grid gap-6 md:grid-cols-3 md:items-stretch">
@@ -555,18 +559,36 @@ export function PricingPage() {
           })}
         </div>
 
-        {/* Diferenciais incluídos em todos os planos */}
-        <div className="mt-16">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-              Tudo que você precisa, em qualquer plano
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Recursos essenciais que acompanham você desde o primeiro dia.
-            </p>
-          </div>
+        {/* Barra de estatísticas / confiança */}
+        <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {stats.map((stat) => {
+            const Icon = stat.icon
+            return (
+              <div
+                key={stat.label}
+                className="flex flex-col items-center gap-1 rounded-xl border border-border/60 bg-card/40 px-4 py-5 text-center"
+              >
+                <Icon className="size-5 text-primary" aria-hidden="true" />
+                <span className="text-2xl font-bold text-foreground">
+                  {stat.value}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {stat.label}
+                </span>
+              </div>
+            )
+          })}
+        </div>
 
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Diferenciais incluídos em todos os planos */}
+        <div className="mt-20">
+          <SectionHeading
+            eyebrow="Incluído em todos"
+            title="Tudo que você precisa, em qualquer plano"
+            subtitle="Recursos essenciais que acompanham você desde o primeiro dia."
+          />
+
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {benefits.map((benefit) => {
               const Icon = benefit.icon
               return (
@@ -590,7 +612,7 @@ export function PricingPage() {
         </div>
 
         {/* Calculadora de assentos */}
-        <Card className="mt-12 bg-card/80 backdrop-blur-sm">
+        <Card className="mt-20 bg-card/80 backdrop-blur-sm">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-lg">
               <Users className="size-5 text-primary" aria-hidden="true" />
@@ -647,17 +669,14 @@ export function PricingPage() {
         </Card>
 
         {/* Seletor guiado por perfil */}
-        <div className="mt-16">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-              Não sabe qual escolher?
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Conte como você trabalha e recomendamos o plano ideal.
-            </p>
-          </div>
+        <div className="mt-20">
+          <SectionHeading
+            eyebrow="Guia rápido"
+            title="Não sabe qual escolher?"
+            subtitle="Conte como você trabalha e recomendamos o plano ideal."
+          />
 
-          <Tabs defaultValue="indie" className="mx-auto mt-8 max-w-3xl">
+          <Tabs defaultValue="indie" className="mx-auto mt-10 max-w-3xl">
             <TabsList className="mx-auto">
               {profiles.map((profile) => (
                 <TabsTrigger key={profile.id} value={profile.id}>
@@ -710,17 +729,14 @@ export function PricingPage() {
         </div>
 
         {/* Tabela comparativa de recursos */}
-        <div className="mt-16">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-              Compare todos os recursos
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Veja exatamente o que está incluído em cada plano.
-            </p>
-          </div>
+        <div className="mt-20">
+          <SectionHeading
+            eyebrow="Comparativo"
+            title="Compare todos os recursos"
+            subtitle="Veja exatamente o que está incluído em cada plano."
+          />
 
-          <div className="mt-8 overflow-hidden rounded-xl border border-border/60 bg-card/60 backdrop-blur-sm">
+          <div className="mt-10 overflow-hidden rounded-xl border border-border/60 bg-card/60 backdrop-blur-sm">
             <Table>
               <TableHeader>
                 <TableRow className="hover:bg-transparent">
@@ -770,18 +786,14 @@ export function PricingPage() {
         </div>
 
         {/* Add-ons opcionais */}
-        <div className="mt-16">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-              Potencialize com add-ons
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Recursos opcionais que você adiciona a qualquer plano pago quando
-              precisar.
-            </p>
-          </div>
+        <div className="mt-20">
+          <SectionHeading
+            eyebrow="Extras"
+            title="Potencialize com add-ons"
+            subtitle="Recursos opcionais que você adiciona a qualquer plano pago quando precisar."
+          />
 
-          <div className="mt-8 grid gap-6 md:grid-cols-3">
+          <div className="mt-10 grid gap-6 md:grid-cols-3">
             {addons.map((addon) => {
               const Icon = addon.icon
               const price = annual ? addon.monthly * 10 : addon.monthly
@@ -819,7 +831,7 @@ export function PricingPage() {
         </div>
 
         {/* Prova social — logos */}
-        <div className="mt-16">
+        <div className="mt-20">
           <p className="text-center text-xs font-medium uppercase tracking-widest text-muted-foreground">
             Times de todos os tamanhos confiam na plataforma
           </p>
@@ -829,16 +841,13 @@ export function PricingPage() {
         </div>
 
         {/* Depoimentos */}
-        <div className="mt-16">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-              Quem usa, recomenda
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Histórias reais de times que escalaram com a gente.
-            </p>
-          </div>
-          <div className="mt-8 overflow-hidden">
+        <div className="mt-20">
+          <SectionHeading
+            eyebrow="Depoimentos"
+            title="Quem usa, recomenda"
+            subtitle="Histórias reais de times que escalaram com a gente."
+          />
+          <div className="mt-10 overflow-hidden">
             <InfiniteMovingCards
               items={testimonials}
               direction="left"
@@ -848,16 +857,13 @@ export function PricingPage() {
         </div>
 
         {/* FAQ */}
-        <div className="mt-16">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
-              Perguntas frequentes
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">
-              Tudo o que você precisa saber antes de assinar.
-            </p>
-          </div>
-          <div className="mx-auto mt-8 max-w-2xl">
+        <div className="mt-20">
+          <SectionHeading
+            eyebrow="Dúvidas"
+            title="Perguntas frequentes"
+            subtitle="Tudo o que você precisa saber antes de assinar."
+          />
+          <div className="mx-auto mt-10 max-w-2xl">
             <Accordion type="single" collapsible className="w-full">
               {faqs.map((faq, i) => (
                 <AccordionItem key={faq.q} value={`faq-${i}`}>
@@ -874,7 +880,7 @@ export function PricingPage() {
         </div>
 
         {/* Segurança & compliance */}
-        <div className="mt-16">
+        <div className="mt-20">
           <p className="text-center text-xs font-medium uppercase tracking-widest text-muted-foreground">
             Segurança de nível empresarial
           </p>
@@ -895,7 +901,7 @@ export function PricingPage() {
         </div>
 
         {/* Garantia */}
-        <div className="mt-16">
+        <div className="mt-8">
           <div className="flex flex-col items-center gap-4 rounded-2xl border border-primary/30 bg-primary/5 px-6 py-8 text-center sm:flex-row sm:gap-5 sm:text-left">
             <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
               <ShieldCheck className="size-6" aria-hidden="true" />
@@ -917,7 +923,7 @@ export function PricingPage() {
         </div>
 
         {/* Contato Enterprise */}
-        <div className="mt-16">
+        <div className="mt-20">
           <Card className="bg-card/80 backdrop-blur-sm">
             <CardContent className="grid gap-8 py-8 md:grid-cols-2 md:items-center">
               <div>
@@ -971,7 +977,7 @@ export function PricingPage() {
         </div>
 
         {/* CTA final */}
-        <div className="mt-16">
+        <div className="mt-8">
           <ScalesContainer
             orientation="diagonal"
             size={14}
