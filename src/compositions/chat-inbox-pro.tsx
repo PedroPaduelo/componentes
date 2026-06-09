@@ -437,7 +437,7 @@ function QuickReplies({ options, onSelect }: { options: string[]; onSelect: (tex
           key={opt}
           type="button"
           onClick={() => onSelect(opt)}
-          className="rounded-full border border-border bg-background px-2.5 py-1 text-[12px] text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#6B97FF]"
+          className="rounded-full border border-border bg-background px-2.5 py-1 text-[12px] text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-foreground/20"
         >
           {opt}
         </button>
