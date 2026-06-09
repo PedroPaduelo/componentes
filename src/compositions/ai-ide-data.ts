@@ -417,6 +417,32 @@ export type ThinkStep = {
   details?: { summary: string; items: string[] }
 }
 
+/** Ícone (mock) associado a uma chamada de ferramenta do agente. */
+export type ToolIcon = "file" | "search" | "terminal" | "folder" | "regex"
+
+/**
+ * Cartão de \"uso de ferramenta\" exibido durante o raciocínio (estilo agentic):
+ * nome da tool (mono), argumento e um mini-resultado mocado determinístico.
+ */
+export type ToolCall = {
+  icon: ToolIcon
+  /** Nome da ferramenta (ex.: `read_file`). */
+  tool: string
+  /** Argumento da chamada (ex.: `api.ts`). */
+  arg: string
+  /** Mini-resultado mocado (ex.: `42 linhas`). */
+  result: string
+}
+
+/**
+ * Item do fluxo de raciocínio embutido: ou um passo textual (`text`) ou um
+ * cartão de chamada de ferramenta (`tool`). Renderizados na mesma sequência de
+ * reveal por timer determinístico — um único pipeline de scroll.
+ */
+export type ReasoningItem =
+  | { kind: "text"; step: ThinkStep }
+  | { kind: "tool"; tool: ToolCall }
+
 export const THINK_STEPS: ThinkStep[] = [
   {
     icon: "search",
@@ -445,10 +471,38 @@ export const THINK_STEPS: ThinkStep[] = [
   },
 ]
 
+/**
+ * Chamadas de ferramenta mocadas (determinísticas) que o agente \"executa\"
+ * durante o raciocínio. Cobrem leitura de arquivo, busca, terminal e listagem.
+ */
+export const TOOL_CALLS: ToolCall[] = [
+  { icon: "file", tool: "read_file", arg: "src/App.tsx", result: "32 linhas" },
+  { icon: "search", tool: "search", arg: '"buildGreeting"', result: "3 ocorrências" },
+  { icon: "folder", tool: "list_dir", arg: "src/lib", result: "8 itens" },
+  { icon: "file", tool: "read_file", arg: "lib/api.ts", result: "42 linhas" },
+  { icon: "terminal", tool: "run_terminal", arg: "npm test", result: "✓ 12 passando" },
+]
+
+/**
+ * Fluxo unificado do raciocínio embutido: intercala os passos textuais com os
+ * cartões de chamada de ferramenta, em ordem determinística de reveal. Um único
+ * pipeline garante a mesma cadência e o mesmo stick-to-bottom.
+ */
+export const REASONING_ITEMS: ReasoningItem[] = [
+  { kind: "text", step: THINK_STEPS[0] },
+  { kind: "tool", tool: TOOL_CALLS[0] },
+  { kind: "tool", tool: TOOL_CALLS[1] },
+  { kind: "text", step: THINK_STEPS[1] },
+  { kind: "tool", tool: TOOL_CALLS[2] },
+  { kind: "tool", tool: TOOL_CALLS[3] },
+  { kind: "tool", tool: TOOL_CALLS[4] },
+  { kind: "text", step: THINK_STEPS[2] },
+]
+
 /** Estado do raciocínio embutido na bolha do assistant. */
 export type ReasoningState = {
-  steps: ThinkStep[]
-  /** Quantos passos já apareceram (streaming dos passos). */
+  items: ReasoningItem[]
+  /** Quantos itens já apareceram (streaming dos passos + tool calls). */
   visibleSteps: number
   /** Tempo de raciocínio em décimos de segundo (determinístico, por timer). */
   elapsedTenths: number
@@ -609,8 +663,8 @@ export const GEN_TIMING = {
   tickMs: 100,
   /** Atraso até o primeiro passo aparecer. */
   firstStepMs: 450,
-  /** Espaçamento entre passos. */
-  stepGapMs: 800,
+  /** Espaçamento entre itens do raciocínio (passos textuais + tool calls). */
+  stepGapMs: 300,
   /** Folga após o último passo antes de contrair e streamar. */
   afterStepsMs: 450,
   /** Respiro após o auto-contrair (≈ duração da transição de altura) antes de começar a streamar — evita o "pulo" de tela. */

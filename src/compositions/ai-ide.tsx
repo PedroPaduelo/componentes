@@ -45,8 +45,11 @@ import {
   Files,
   FolderOpen,
   FolderPlus,
+  FolderTree,
   GitBranch,
   Hash,
+  Loader2,
+  Regex,
   Pencil,
   Play,
   Puzzle,
@@ -105,11 +108,11 @@ import {
   INITIAL_TREE,
   LANG_LABEL,
   MODELS,
+  REASONING_ITEMS,
   REPLY,
   ROOT_NAME,
   SLASH_COMMANDS,
   TERMINAL_RESPONSES,
-  THINK_STEPS,
   TOKEN_CLASS,
   collectFiles,
   countDiff,
@@ -129,6 +132,8 @@ import {
   type FileData,
   type HunkStatus,
   type Lang,
+  type ToolCall,
+  type ToolIcon,
   type TreeNode,
 } from "@/compositions/ai-ide-data"
 
@@ -142,6 +147,15 @@ const LANG_ICON: Record<Lang, LucideIcon> = {
   css: Braces,
   md: FileText,
   json: Braces,
+}
+
+/** Ícone lucide de cada tipo de chamada de ferramenta exibida no raciocínio. */
+const TOOL_ICON: Record<ToolIcon, LucideIcon> = {
+  file: FileText,
+  search: Search,
+  terminal: TerminalSquare,
+  folder: FolderTree,
+  regex: Regex,
 }
 
 function HighlightedLine({ line }: { line: string }) {
@@ -673,6 +687,39 @@ function SidePanelHeader({
   )
 }
 
+/* ---- cartão de uso de ferramenta (tool call) no raciocínio ---- */
+
+function ToolCallCard({ tool, running }: { tool: ToolCall; running: boolean }) {
+  const Icon = TOOL_ICON[tool.icon]
+  return (
+    <div
+      data-tool-call="true"
+      data-tool-name={tool.tool}
+      data-tool-status={running ? "running" : "complete"}
+      className="my-0.5 ml-1 flex items-center gap-2 rounded-md border border-border bg-card/70 px-2 py-1.5"
+    >
+      <span className="flex size-5 shrink-0 items-center justify-center rounded bg-primary/10 text-primary">
+        <Icon className="size-3.5" />
+      </span>
+      <span className="flex min-w-0 flex-1 items-baseline gap-1 font-mono text-[11px]">
+        <span className="shrink-0 font-medium text-foreground">{tool.tool}</span>
+        <span className="truncate text-muted-foreground">({tool.arg})</span>
+      </span>
+      <span
+        data-tool-result="true"
+        className="flex shrink-0 items-center gap-1 text-[11px] text-muted-foreground"
+      >
+        {running ? (
+          <Loader2 className="size-3 animate-spin text-primary" />
+        ) : (
+          <Check className="size-3 text-emerald-600 dark:text-emerald-400" />
+        )}
+        <span className="tabular-nums">{tool.result}</span>
+      </span>
+    </div>
+  )
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                   AiIde                                     */
 /* -------------------------------------------------------------------------- */
@@ -1124,7 +1171,7 @@ export function AiIde() {
           shownText: "",
           streamed: false,
           reasoning: {
-            steps: THINK_STEPS,
+            items: REASONING_ITEMS,
             visibleSteps: 0,
             elapsedTenths: 0,
             active: true,
@@ -1166,8 +1213,8 @@ export function AiIde() {
         )
       }, GEN_TIMING.tickMs)
 
-      // revela os passos um a um.
-      THINK_STEPS.forEach((_, i) => {
+      // revela os itens do raciocínio (passos textuais + tool calls) um a um.
+      REASONING_ITEMS.forEach((_, i) => {
         const t = setTimeout(
           () => patchReasoning({ visibleSteps: i + 1 }),
           GEN_TIMING.firstStepMs + i * GEN_TIMING.stepGapMs,
@@ -1175,10 +1222,10 @@ export function AiIde() {
         stepTimersRef.current.push(t)
       })
 
-      // ao terminar os passos: para o contador, auto-contrai e streama.
+      // ao terminar os itens: para o contador, auto-contrai e streama.
       const totalThinkMs =
         GEN_TIMING.firstStepMs +
-        THINK_STEPS.length * GEN_TIMING.stepGapMs +
+        REASONING_ITEMS.length * GEN_TIMING.stepGapMs +
         GEN_TIMING.afterStepsMs
       const finishThink = setTimeout(() => {
         if (tickTimerRef.current) {
@@ -1372,20 +1419,36 @@ export function AiIde() {
             )}
           >
             <div className="flex flex-col border-t border-border px-2 py-2">
-              {r.steps.map((step, i) => {
+              {r.items.map((item, i) => {
                 if (i >= r.visibleSteps) return null
                 const isLastVisible = i === r.visibleSteps - 1
-                const status =
-                  r.active && isLastVisible ? "active" : "complete"
+                const isRunning = r.active && isLastVisible
+
+                if (item.kind === "tool") {
+                  return (
+                    <ToolCallCard
+                      key={`tool-${i}`}
+                      tool={item.tool}
+                      running={isRunning}
+                    />
+                  )
+                }
+
+                const step = item.step
+                // Conector da timeline só não desce no último item textual revelado
+                // que também é o último item do fluxo.
+                const isLastTextItem = !r.items
+                  .slice(i + 1)
+                  .some((it) => it.kind === "text")
                 return (
                   <ThinkingStepFluid
-                    key={step.label}
+                    key={`step-${i}`}
                     index={i}
                     icon={step.icon}
                     label={step.label}
                     description={step.description}
-                    status={status}
-                    isLast={i === r.steps.length - 1}
+                    status={isRunning ? "active" : "complete"}
+                    isLast={isLastTextItem}
                   >
                     {step.sources ? (
                       <ThinkingStepSourcesFluid>

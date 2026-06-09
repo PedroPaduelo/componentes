@@ -86,7 +86,23 @@ async function run() {
         const ta = page.locator("textarea[aria-label='Message']").first()
         await ta.fill("Refatore o App.tsx")
         await ta.press("Enter")
-        await page.waitForTimeout(5200)
+        // F3 em DARK: durante o thinking, mede a borda de um card de tool call
+        await page.waitForTimeout(1600)
+        const toolBorderDark = await page.evaluate(() => {
+          const r = document.querySelector("[data-reasoning]")
+          const card = r?.querySelector("[data-tool-call]")
+          if (!card) return null
+          const cs = getComputedStyle(card)
+          return { borderWidth: cs.borderTopWidth, borderColor: cs.borderTopColor }
+        })
+        report.interactions.toolCallsDark = {
+          toolBorderDark,
+          toolBorderDarkVisible:
+            toolBorderDark !== null &&
+            parseFloat(toolBorderDark.borderWidth) > 0 &&
+            parseColorAlpha(toolBorderDark.borderColor) > 0.02,
+        }
+        await page.waitForTimeout(3600)
         const rev = page.locator("button:has-text('Revisar mudança')").first()
         if ((await rev.count()) > 0) {
           await rev.click()
@@ -177,6 +193,85 @@ async function run() {
         const reasoning = page.locator("[data-reasoning]").last()
         const expandedDuring = await reasoning.getAttribute("data-expanded")
         const activeDuring = await reasoning.getAttribute("data-active")
+
+        // ── F3 TOOL CALLS: amostra os cartões de uso de ferramenta enquanto pensa.
+        // Os itens surgem em sequência; coletamos por ~2.4s e ficamos com o pico.
+        // Mede também o scrollTop a cada passo: surgimento de card NÃO pode causar
+        // reversão (jitter) — stick-to-bottom deve crescer monotonicamente.
+        let toolPeak = 0
+        const toolSamples = []
+        const toolScroll = []
+        for (let i = 0; i < 12; i += 1) {
+          const snap = await page.evaluate(() => {
+            const r = document.querySelector("[data-reasoning]")
+            if (!r) return { cards: [], top: null }
+            let el = r.parentElement
+            let top = null
+            while (el) {
+              const oy = getComputedStyle(el).overflowY
+              if (oy === "auto" || oy === "scroll") {
+                top = Math.round(el.scrollTop)
+                break
+              }
+              el = el.parentElement
+            }
+            const cards = Array.from(r.querySelectorAll("[data-tool-call]")).map(
+              (c) => ({
+                name: c.getAttribute("data-tool-name"),
+                status: c.getAttribute("data-tool-status"),
+                text: (c.textContent || "").replace(/\s+/g, " ").trim(),
+                hasResult: !!c.querySelector("[data-tool-result]"),
+              }),
+            )
+            return { cards, top }
+          })
+          if (snap.cards.length > toolPeak) toolPeak = snap.cards.length
+          toolSamples.push(snap.cards)
+          if (snap.top !== null) toolScroll.push(snap.top)
+          await page.waitForTimeout(200)
+        }
+        let toolPhaseReversal = 0
+        for (let i = 1; i < toolScroll.length; i += 1) {
+          const up = toolScroll[i - 1] - toolScroll[i]
+          if (up > toolPhaseReversal) toolPhaseReversal = up
+        }
+        const peakSnapshot =
+          toolSamples.find((s) => s.length === toolPeak) ?? []
+        // cada card tem nome (mono), argumento entre parênteses e um resultado
+        const wellFormed = peakSnapshot.filter(
+          (c) =>
+            c.name &&
+            c.hasResult &&
+            /\(.+\)/.test(c.text) &&
+            c.text.length > (c.name?.length ?? 0),
+        ).length
+        // mede a borda de um card real em light (precisa ser visível)
+        const toolBorder = await page.evaluate(() => {
+          const r = document.querySelector("[data-reasoning]")
+          const card = r?.querySelector("[data-tool-call]")
+          if (!card) return null
+          const cs = getComputedStyle(card)
+          return {
+            borderWidth: cs.borderTopWidth,
+            borderColor: cs.borderTopColor,
+          }
+        })
+        report.interactions.toolCalls = {
+          toolPeak,
+          wellFormed,
+          enough: toolPeak >= 4 && wellFormed >= 4,
+          names: peakSnapshot.map((c) => c.name),
+          sample: peakSnapshot.slice(0, 6),
+          toolBorder,
+          toolBorderVisible:
+            toolBorder !== null &&
+            parseFloat(toolBorder.borderWidth) > 0 &&
+            parseColorAlpha(toolBorder.borderColor) > 0.02,
+          toolScroll,
+          toolPhaseReversal,
+          toolPhaseStable: toolPhaseReversal <= 24,
+        }
+        await shot(page, "ai-ide-toolcalls-light", { sub: "ai-ide" })
 
         // ── ESTABILIDADE DO SCROLL: amostra scrollTop do container do chat ao longo
         // de todo o ciclo (thinking → auto-contrair → streaming). Sem reversão brusca.
