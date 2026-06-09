@@ -22,12 +22,20 @@ import {
   Bell,
   Search,
   Plus,
+  Zap,
+  Flame,
+  TrendingUp,
+  CalendarDays,
 } from "lucide-react"
 
 import {
   Button,
   Badge,
   AnimatedNumber,
+  AnimatedTooltip,
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
   GitHubContributions,
   TableFluid,
   TableFluidHeader,
@@ -43,6 +51,7 @@ import {
   TOCMinimap,
 } from "@/components/ui"
 import type { ContributionDay } from "@/components/ui/github-contributions"
+import type { AnimatedTooltipItem } from "@/components/ui/animated-tooltip-types"
 
 /* -------------------------------------------------------------------------- */
 /*                                   dados                                     */
@@ -181,6 +190,119 @@ function buildContributions(weeks: number): ContributionDay[] {
 
 const CONTRIBUTIONS = buildContributions(30)
 
+/* Resumos rápidos exibidos acima do heatmap (números animados). */
+type ActivityStat = {
+  label: string
+  value: number
+  prefix?: string
+  suffix?: string
+  icon: React.ComponentType<{ className?: string }>
+}
+
+const ACTIVITY_STATS: ActivityStat[] = [
+  { label: "Eventos hoje", value: 348, icon: Zap },
+  { label: "Sequência ativa", value: 14, suffix: " dias", icon: Flame },
+  { label: "Pico semanal", value: 1290, icon: TrendingUp },
+  { label: "Total no período", value: 18640, icon: CalendarDays },
+]
+
+/* Membros ativos agora — exibidos com AnimatedTooltip no header da seção. */
+const ACTIVE_MEMBERS: AnimatedTooltipItem[] = [
+  {
+    id: 1,
+    name: "Aurora Vale",
+    designation: "Produto",
+    image: "https://picsum.photos/seed/aurora/64/64",
+  },
+  {
+    id: 2,
+    name: "Caleb Monroe",
+    designation: "Engenharia",
+    image: "https://picsum.photos/seed/caleb/64/64",
+  },
+  {
+    id: 3,
+    name: "Dahlia Reyes",
+    designation: "Design",
+    image: "https://picsum.photos/seed/dahlia/64/64",
+  },
+  {
+    id: 4,
+    name: "Mira Sandoval",
+    designation: "Sucesso",
+    image: "https://picsum.photos/seed/mira/64/64",
+  },
+  {
+    id: 5,
+    name: "Theo Nakamura",
+    designation: "Dados",
+    image: "https://picsum.photos/seed/theo/64/64",
+  },
+]
+
+/* Feed de atividade recente — eventos determinísticos da equipe. */
+type ActivityKind = "deploy" | "ticket" | "membro" | "billing" | "comentário"
+
+type ActivityEvent = {
+  id: string
+  name: string
+  seed: string
+  action: string
+  kind: ActivityKind
+  time: string
+}
+
+const ACTIVITY_FEED: ActivityEvent[] = [
+  {
+    id: "evt-1",
+    name: "Caleb Monroe",
+    seed: "caleb",
+    action: "publicou um deploy em produção",
+    kind: "deploy",
+    time: "há 5 min",
+  },
+  {
+    id: "evt-2",
+    name: "Dahlia Reyes",
+    seed: "dahlia",
+    action: "fechou o ticket #1042",
+    kind: "ticket",
+    time: "há 22 min",
+  },
+  {
+    id: "evt-3",
+    name: "Aurora Vale",
+    seed: "aurora",
+    action: "convidou um novo membro para a equipe",
+    kind: "membro",
+    time: "há 1 h",
+  },
+  {
+    id: "evt-4",
+    name: "Mira Sandoval",
+    seed: "mira",
+    action: "atualizou o plano para Enterprise",
+    kind: "billing",
+    time: "há 3 h",
+  },
+  {
+    id: "evt-5",
+    name: "Theo Nakamura",
+    seed: "theo",
+    action: "comentou no relatório semanal",
+    kind: "comentário",
+    time: "há 5 h",
+  },
+  {
+    id: "evt-6",
+    name: "Caleb Monroe",
+    seed: "caleb",
+    action: "fez merge da branch feature/auth",
+    kind: "deploy",
+    time: "há 8 h",
+  },
+]
+
 const NAV = [
   { label: "Visão geral", icon: LayoutDashboard, active: true },
   { label: "Análises", icon: BarChart3, active: false },
@@ -259,6 +381,75 @@ function KpiCard({ kpi }: { kpi: Kpi }) {
         <span className="text-muted-foreground">vs. mês anterior</span>
       </div>
     </div>
+  )
+}
+
+function ActivityStatCard({ stat }: { stat: ActivityStat }) {
+  const Icon = stat.icon
+  return (
+    <div className="flex flex-col gap-2 rounded-lg border border-border bg-card p-3 shadow-sm">
+      <div className="flex items-center gap-2 text-muted-foreground">
+        <span className="flex size-7 items-center justify-center rounded-md bg-muted">
+          <Icon className="size-3.5" />
+        </span>
+        <span className="text-xs">{stat.label}</span>
+      </div>
+      <div className="flex items-baseline gap-0.5 text-xl font-semibold tracking-tight text-foreground">
+        {stat.prefix ? <span>{stat.prefix}</span> : null}
+        <AnimatedNumber value={stat.value} />
+        {stat.suffix ? (
+          <span className="text-sm font-normal text-muted-foreground">
+            {stat.suffix}
+          </span>
+        ) : null}
+      </div>
+    </div>
+  )
+}
+
+function eventKindVariant(kind: ActivityKind) {
+  if (kind === "deploy") return "default" as const
+  if (kind === "ticket") return "secondary" as const
+  if (kind === "billing") return "destructive" as const
+  return "outline" as const
+}
+
+function eventKindLabel(kind: ActivityKind) {
+  if (kind === "deploy") return "Deploy"
+  if (kind === "ticket") return "Ticket"
+  if (kind === "membro") return "Equipe"
+  if (kind === "billing") return "Cobrança"
+  return "Comentário"
+}
+
+function ActivityFeedItem({ event }: { event: ActivityEvent }) {
+  const initials = event.name
+    .split(" ")
+    .map((part) => part[0])
+    .slice(0, 2)
+    .join("")
+  return (
+    <li className="flex items-start gap-3">
+      <Avatar className="size-8 shrink-0">
+        <AvatarImage
+          src={`https://picsum.photos/seed/${event.seed}/64/64`}
+          alt={event.name}
+        />
+        <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+      </Avatar>
+      <div className="min-w-0 flex-1">
+        <p className="text-sm leading-snug text-foreground">
+          <span className="font-medium">{event.name}</span>{" "}
+          <span className="text-muted-foreground">{event.action}</span>
+        </p>
+        <div className="mt-1 flex items-center gap-2">
+          <Badge variant={eventKindVariant(event.kind)} className="text-[10px]">
+            {eventKindLabel(event.kind)}
+          </Badge>
+          <span className="text-xs text-muted-foreground">{event.time}</span>
+        </div>
+      </div>
+    </li>
   )
 }
 
@@ -371,20 +562,64 @@ export function SaasDashboard() {
             id="section-activity"
             className="rounded-xl border border-border bg-card p-5 shadow-sm"
           >
-            <div className="mb-4 flex items-center justify-between">
+            <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
-                <h2 className="text-sm font-semibold">Atividade da equipe</h2>
-                <p className="text-xs text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <h2 className="text-sm font-semibold">Atividade da equipe</h2>
+                  <Badge variant="outline">Heatmap</Badge>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">
                   Eventos de produto nas últimas 30 semanas.
                 </p>
               </div>
-              <Badge variant="outline">Heatmap</Badge>
+              <div className="flex items-center gap-3">
+                <span className="hidden text-xs text-muted-foreground sm:inline">
+                  Ativos agora
+                </span>
+                <AnimatedTooltip items={ACTIVE_MEMBERS} />
+              </div>
             </div>
-            <GitHubContributions
-              data={CONTRIBUTIONS}
-              weeks={30}
-              colorScale="green"
-            />
+
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+              {/* Coluna principal — resumos + heatmap */}
+              <div className="flex flex-col gap-4 lg:col-span-2">
+                <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
+                  {ACTIVITY_STATS.map((stat) => (
+                    <ActivityStatCard key={stat.label} stat={stat} />
+                  ))}
+                </div>
+
+                <div className="rounded-lg border border-border bg-muted/20 p-4">
+                  <GitHubContributions
+                    data={CONTRIBUTIONS}
+                    weeks={30}
+                    colorScale="green"
+                  />
+                </div>
+              </div>
+
+              {/* Coluna lateral — feed de atividade recente */}
+              <div className="flex flex-col rounded-lg border border-border bg-muted/20 p-4">
+                <div className="mb-3 flex items-center justify-between">
+                  <h3 className="text-sm font-semibold">Atividade recente</h3>
+                  <Badge variant="secondary" className="text-[10px]">
+                    Ao vivo
+                  </Badge>
+                </div>
+                <ul className="flex flex-col gap-4">
+                  {ACTIVITY_FEED.map((event) => (
+                    <ActivityFeedItem key={event.id} event={event} />
+                  ))}
+                </ul>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="mt-4 w-full justify-center"
+                >
+                  Ver tudo
+                </Button>
+              </div>
+            </div>
           </section>
 
           {/* Tabelas com abas */}
