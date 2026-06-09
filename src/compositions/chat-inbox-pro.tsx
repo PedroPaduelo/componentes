@@ -683,7 +683,7 @@ export function ChatInboxPro() {
       data-layout="chat-inbox-pro"
       className="flex h-[78vh] w-full overflow-hidden rounded-2xl border border-border bg-card text-card-foreground shadow-sm"
     >
-      <aside className="flex w-80 shrink-0 flex-col border-r border-border">
+      <aside className="hidden w-80 shrink-0 flex-col border-r border-border md:flex">
         <header className="flex h-[3.75rem] shrink-0 items-center justify-between gap-2 border-b border-border px-4 py-3">
           <h2 className="text-sm font-semibold">Mensagens</h2>
           <span className="text-[11px] text-muted-foreground">
@@ -1119,7 +1119,8 @@ function bumpLastUserTicks(histories: Record<string, Msg[]>, convId: string, to:
     }
   }
   if (idx < 0) return histories
-  const updated = { ...thread, [idx]: { ...thread[idx], ticks: to } }
+  const updated = [...thread]
+  updated[idx] = { ...thread[idx], ticks: to }
   return { ...histories, [convId]: updated }
 }
 
