@@ -38,6 +38,7 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
+  AnimatedNumber,
   Badge,
   Button,
   Card,
@@ -574,8 +575,9 @@ export function PricingPage() {
               <p className="text-xs uppercase tracking-widest text-muted-foreground">
                 Total estimado
               </p>
-              <p className="mt-1 text-3xl font-bold text-foreground">
-                R$ {formatPrice(estimate.total)}
+              <p className="mt-1 inline-flex items-baseline gap-1 text-3xl font-bold text-foreground">
+                <span className="text-xl">R$</span>
+                <AnimatedNumber value={estimate.total} />
               </p>
               <p className="text-xs text-muted-foreground">
                 {annual ? "cobrança anual" : "cobrança mensal"}
