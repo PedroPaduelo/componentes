@@ -96,7 +96,7 @@ export const compositions: Composition[] = [
     slug: "chat-inbox-pro",
     name: "Chat / Inbox Completo",
     description:
-      "Inbox de mensagens com lista de conversas (busca controlada, abas Todas/Não lidas/Favoritas, fixadas no topo, presença online/ausente, ticks, badge de não-lidas, favorito) e thread com header de presença e ações (Fixar, Marcar não lida, Silenciar, Limpar), separadores de data, agrupamento de mensagens consecutivas do mesmo autor, avatares no contato, auto-scroll e resposta simulada com indicador de digitação. Selecionar zera não-lidas e enviar adiciona a mensagem na thread certa.",
+      "Inbox de mensagens com lista de conversas (busca controlada, abas Todas/Não lidas/Favoritas, fixadas no topo, presença online/ausente, ticks, badge de não-lidas, favorito) e thread com header de presença e ações (Fixar, Marcar não lida, Silenciar, Limpar), separadores de data, agrupamento de mensagens consecutivas do mesmo autor, avatares no contato, auto-scroll e resposta simulada com indicador de digitação. Selecionar zera não-lidas e enviar adiciona a mensagem na thread certa. Inclui quick replies em chips, painel de detalhes do contato (com SwitchFluid) e responsividade 390px (lista vira drawer Sheet em viewport estreito).",
     tags: [
       "chat",
       "inbox",
