@@ -40,6 +40,7 @@ import {
   Minus,
   Plus,
   FileCode2,
+  FileEdit,
   FilePlus,
   FileText,
   Files,
@@ -48,11 +49,14 @@ import {
   FolderTree,
   GitBranch,
   Hash,
+  ListChecks,
   Loader2,
   Regex,
+  Pause,
   Pencil,
   Play,
   Puzzle,
+  Square,
   Search,
   Settings,
   Sparkles,
@@ -102,6 +106,10 @@ import { MenuItemFluid } from "@/components/ui/menu-item-fluid"
 import { useTheme } from "@/components/theme/use-theme"
 import { cn } from "@/lib/utils"
 import {
+  AGENT_KIND_LABEL,
+  AGENT_PLAN,
+  AGENT_REPLY_TEXT,
+  AGENT_TIMING,
   AI_MODES,
   GEN_TIMING,
   INITIAL_THREAD,
@@ -117,14 +125,19 @@ import {
   collectFiles,
   countDiff,
   deleteNode,
+  fileExists,
   findPath,
   insertAtRoot,
+  insertIntoDir,
   langFromName,
   materializeDiff,
   renameNode,
   toggleDir,
   tokenizeLine,
   updateFileCode,
+  type AgentRun,
+  type AgentStep,
+  type AgentStepKind,
   type AiCode,
   type AiMessage,
   type DiffBlock,
@@ -156,6 +169,22 @@ const TOOL_ICON: Record<ToolIcon, LucideIcon> = {
   terminal: TerminalSquare,
   folder: FolderTree,
   regex: Regex,
+}
+
+/** Ícone lucide de cada tipo de passo do plano do modo Agent. */
+const AGENT_STEP_ICON: Record<AgentStepKind, LucideIcon> = {
+  create: FilePlus,
+  edit: FileEdit,
+  run: TerminalSquare,
+}
+
+/** Rótulo do status geral da execução do agente (header do plano). */
+const AGENT_STATUS_LABEL: Record<AgentRun["status"], string> = {
+  idle: "Plano",
+  running: "Executando",
+  paused: "Pausado",
+  stopped: "Interrompido",
+  done: "Concluído",
 }
 
 function HighlightedLine({ line }: { line: string }) {
@@ -720,6 +749,199 @@ function ToolCallCard({ tool, running }: { tool: ToolCall; running: boolean }) {
   )
 }
 
+/* ---- plano de execução do modo Agent ---- */
+
+function AgentPlanStepRow({ step }: { step: AgentStep }) {
+  const Icon = AGENT_STEP_ICON[step.kind]
+  return (
+    <li
+      data-agent-step={step.id}
+      data-step-status={step.status}
+      className={cn(
+        "flex items-center gap-2 rounded-md border px-2 py-1.5 transition-colors",
+        step.status === "running"
+          ? "border-primary/40 bg-primary/5"
+          : step.status === "done"
+            ? "border-border bg-card/40"
+            : "border-border bg-background opacity-80",
+      )}
+    >
+      <span
+        className={cn(
+          "flex size-5 shrink-0 items-center justify-center rounded",
+          step.status === "running"
+            ? "bg-primary/15 text-primary"
+            : "bg-muted text-muted-foreground",
+        )}
+      >
+        <Icon className="size-3.5" />
+      </span>
+      <span className="flex min-w-0 flex-1 flex-col">
+        <span
+          className={cn(
+            "truncate font-mono text-[11px]",
+            step.status === "pending" ? "text-muted-foreground" : "text-foreground",
+          )}
+        >
+          {step.label}
+        </span>
+        <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+          {AGENT_KIND_LABEL[step.kind]}
+        </span>
+      </span>
+      <span className="flex shrink-0 items-center gap-1 text-[11px] text-muted-foreground">
+        {step.status === "running" ? (
+          <Loader2 className="size-3 animate-spin text-primary" />
+        ) : step.status === "done" ? (
+          <>
+            <Check className="size-3 text-emerald-600 dark:text-emerald-400" />
+            <span className="tabular-nums">{step.detail}</span>
+          </>
+        ) : null}
+      </span>
+    </li>
+  )
+}
+
+function AgentPlanCard({
+  run,
+  onPause,
+  onResume,
+  onStop,
+}: {
+  run: AgentRun
+  onPause: () => void
+  onResume: () => void
+  onStop: () => void
+}) {
+  const total = run.steps.length
+  const doneCount = run.steps.filter((s) => s.status === "done").length
+  const progressPct = total > 0 ? Math.round((doneCount / total) * 100) : 0
+  const activeStep = Math.min(run.currentIndex + 1, total)
+  const filesChanged = run.steps.filter(
+    (s) => s.status === "done" && (s.kind === "create" || s.kind === "edit"),
+  ).length
+  const commandsRun = run.steps.filter(
+    (s) => s.status === "done" && s.kind === "run",
+  ).length
+  const interruptible = run.status === "running" || run.status === "paused"
+
+  return (
+    <div
+      data-agent-plan="true"
+      data-agent-status={run.status}
+      className="w-full max-w-full overflow-hidden rounded-lg border border-border bg-muted/40"
+    >
+      {/* header: título + status + controles */}
+      <div className="flex items-center gap-2 border-b border-border px-3 py-2">
+        <ListChecks className="size-3.5 shrink-0 text-primary" />
+        <span className="text-[12px] font-medium text-foreground">
+          Plano de execução
+        </span>
+        <span
+          className={cn(
+            "rounded-full border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider",
+            run.status === "done"
+              ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
+              : run.status === "stopped"
+                ? "border-rose-500/40 bg-rose-500/10 text-rose-700 dark:text-rose-300"
+                : "border-border bg-background text-muted-foreground",
+          )}
+        >
+          {AGENT_STATUS_LABEL[run.status]}
+        </span>
+        <div className="ml-auto flex items-center gap-1">
+          {run.status === "running" ? (
+            <button
+              type="button"
+              data-agent-action="pause"
+              onClick={onPause}
+              className="flex items-center gap-1 rounded border border-border bg-background px-1.5 py-0.5 text-[11px] text-foreground transition-colors hover:bg-accent/50"
+            >
+              <Pause className="size-3" />
+              Pausar
+            </button>
+          ) : null}
+          {run.status === "paused" ? (
+            <button
+              type="button"
+              data-agent-action="resume"
+              onClick={onResume}
+              className="flex items-center gap-1 rounded border border-primary/40 bg-primary/10 px-1.5 py-0.5 text-[11px] font-medium text-primary transition-colors hover:bg-primary/20"
+            >
+              <Play className="size-3" />
+              Continuar
+            </button>
+          ) : null}
+          {interruptible ? (
+            <button
+              type="button"
+              data-agent-action="stop"
+              onClick={onStop}
+              className="flex items-center gap-1 rounded border border-border bg-background px-1.5 py-0.5 text-[11px] text-rose-700 transition-colors hover:bg-rose-500/10 dark:text-rose-300"
+            >
+              <Square className="size-3" />
+              Parar
+            </button>
+          ) : null}
+        </div>
+      </div>
+
+      {/* progresso: contador "passo X de N" + barra */}
+      <div className="space-y-1.5 px-3 py-2">
+        <div className="flex items-center justify-between text-[11px] text-muted-foreground">
+          <span data-agent-progress="true" className="tabular-nums">
+            {run.status === "done"
+              ? `${total} de ${total} passos`
+              : `Passo ${activeStep} de ${total}`}
+          </span>
+          <span className="tabular-nums">{progressPct}%</span>
+        </div>
+        <div
+          role="progressbar"
+          aria-valuenow={progressPct}
+          aria-valuemin={0}
+          aria-valuemax={100}
+          aria-label="Progresso do plano"
+          className="h-1.5 w-full overflow-hidden rounded-full bg-muted"
+        >
+          <div
+            className="h-full rounded-full bg-primary transition-[width] duration-300 ease-out"
+            style={{ width: `${progressPct}%` }}
+          />
+        </div>
+      </div>
+
+      {/* passos */}
+      <ul className="flex flex-col gap-1 px-3 pb-2">
+        {run.steps.map((step) => (
+          <AgentPlanStepRow key={step.id} step={step} />
+        ))}
+      </ul>
+
+      {/* rodapé: resumo final ou aviso de interrupção */}
+      {run.status === "done" ? (
+        <div
+          data-agent-summary="true"
+          className="flex items-center gap-1.5 border-t border-border bg-emerald-500/10 px-3 py-2 text-[12px] font-medium text-emerald-700 dark:text-emerald-300"
+        >
+          <Check className="size-3.5" />
+          {filesChanged} arquivo(s) alterado(s), {commandsRun} comando(s) executado(s)
+        </div>
+      ) : null}
+      {run.status === "stopped" ? (
+        <div
+          data-agent-summary="true"
+          className="flex items-center gap-1.5 border-t border-border bg-rose-500/10 px-3 py-2 text-[12px] text-rose-700 dark:text-rose-300"
+        >
+          <Square className="size-3" />
+          Execução interrompida — {doneCount} de {total} passos concluídos.
+        </div>
+      ) : null}
+    </div>
+  )
+}
+
 /* -------------------------------------------------------------------------- */
 /*                                   AiIde                                     */
 /* -------------------------------------------------------------------------- */
@@ -794,10 +1016,15 @@ export function AiIde() {
     [files],
   )
 
+  // ── modo Agent: plano de execução multi-arquivo ────────────────────────
+  const [agentRun, setAgentRun] = useState<AgentRun | null>(null)
+
   // timers (todos guardados em refs e limpos no unmount / novo prompt)
   const stepTimersRef = useRef<ReturnType<typeof setTimeout>[]>([])
   const tickTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const streamTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  // timers do driver do modo Agent (avanço passo a passo do plano)
+  const agentTimersRef = useRef<ReturnType<typeof setTimeout>[]>([])
   const chatScrollRef = useRef<HTMLDivElement>(null)
   const terminalScrollRef = useRef<HTMLDivElement>(null)
   // Stick-to-bottom: true enquanto o usuário está perto do fim do chat.
@@ -805,7 +1032,13 @@ export function AiIde() {
   // rAF que coalesce os auto-scrolls (evita reescrever scrollTop em alta frequência).
   const scrollRafRef = useRef<number | null>(null)
 
+  const clearAgentTimers = useCallback(() => {
+    agentTimersRef.current.forEach((t) => clearTimeout(t))
+    agentTimersRef.current = []
+  }, [])
+
   const clearAiTimers = useCallback(() => {
+    clearAgentTimers()
     stepTimersRef.current.forEach((t) => clearTimeout(t))
     stepTimersRef.current = []
     if (tickTimerRef.current) {
@@ -820,7 +1053,7 @@ export function AiIde() {
       cancelAnimationFrame(scrollRafRef.current)
       scrollRafRef.current = null
     }
-  }, [])
+  }, [clearAgentTimers])
 
   // Limpa todos os timers ao desmontar.
   useEffect(() => clearAiTimers, [clearAiTimers])
@@ -846,8 +1079,9 @@ export function AiIde() {
       reasoning?.expanded ? 1 : 0,
       last?.shownText.length ?? 0,
       pending ? 1 : 0,
+      agentRun ? `${agentRun.currentIndex}-${agentRun.status}` : "",
     ].join(":")
-  }, [thread, pending])
+  }, [thread, pending, agentRun])
 
   useEffect(() => {
     if (!stickToBottomRef.current) return
@@ -1144,6 +1378,147 @@ export function AiIde() {
     })
   }, [])
 
+  // ── modo Agent: efeitos reais dos passos + driver determinístico ───────
+
+  /**
+   * Aplica o efeito de um passo do plano na IDE: criar arquivo (árvore + tab),
+   * editar arquivo (editor + modificado) ou rodar comando (terminal).
+   */
+  const applyAgentStep = useCallback(
+    (step: (typeof AGENT_PLAN)[number]) => {
+      if (step.kind === "create") {
+        setTree((prev) => {
+          if (fileExists(prev, step.fileId)) {
+            return updateFileCode(prev, step.fileId, step.code)
+          }
+          const node: FileData = {
+            kind: "file",
+            id: step.fileId,
+            name: step.fileName,
+            lang: step.lang,
+            code: step.code,
+          }
+          const inserted = insertIntoDir(prev, step.dirId, node)
+          return fileExists(inserted, step.fileId)
+            ? inserted
+            : insertAtRoot(prev, node)
+        })
+        setOpenTabs((prev) =>
+          prev.includes(step.fileId) ? prev : [...prev, step.fileId],
+        )
+        setActiveId(step.fileId)
+        setCaret({ line: 1, col: 1 })
+      } else if (step.kind === "edit") {
+        setFileCode(step.targetId, step.code)
+        setModified((prev) => new Set(prev).add(step.targetId))
+        setOpenTabs((prev) =>
+          prev.includes(step.targetId) ? prev : [...prev, step.targetId],
+        )
+        setActiveId(step.targetId)
+      } else {
+        setBottomTab("terminal")
+        setBottomCollapsed(false)
+        setTerminalLines((prev) => [...prev, `$ ${step.command}`, ...step.output])
+      }
+    },
+    [setFileCode],
+  )
+
+  /**
+   * Driver do plano: marca o passo `index` como em execução, aplica o efeito ao
+   * fim do "tempo de execução" e agenda o próximo passo. Recursão via ref para
+   * o timer sempre chamar a versão mais recente. Pausar/Parar limpam os timers
+   * deste driver, então nenhum callback dispara após a interrupção.
+   */
+  const runAgentFromRef = useRef<(index: number) => void>(() => {})
+
+  const runAgentFrom = useCallback(
+    (index: number) => {
+      const total = AGENT_PLAN.length
+      if (index >= total) {
+        setAgentRun((prev) =>
+          prev ? { ...prev, currentIndex: total, status: "done" } : prev,
+        )
+        return
+      }
+      setAgentRun((prev) =>
+        prev
+          ? {
+              ...prev,
+              currentIndex: index,
+              status: "running",
+              steps: prev.steps.map((s, i) =>
+                i === index ? { ...s, status: "running" } : s,
+              ),
+            }
+          : prev,
+      )
+      const finish = setTimeout(() => {
+        applyAgentStep(AGENT_PLAN[index])
+        setAgentRun((prev) =>
+          prev
+            ? {
+                ...prev,
+                steps: prev.steps.map((s, i) =>
+                  i === index ? { ...s, status: "done" } : s,
+                ),
+              }
+            : prev,
+        )
+        const next = setTimeout(
+          () => runAgentFromRef.current(index + 1),
+          AGENT_TIMING.stepGapMs,
+        )
+        agentTimersRef.current.push(next)
+      }, AGENT_TIMING.stepRunMs)
+      agentTimersRef.current.push(finish)
+    },
+    [applyAgentStep],
+  )
+
+  useEffect(() => {
+    runAgentFromRef.current = runAgentFrom
+  }, [runAgentFrom])
+
+  /** Pausa entre passos: limpa os timers e volta o passo corrente a pendente. */
+  const pauseAgentRun = useCallback(() => {
+    clearAgentTimers()
+    setAgentRun((prev) =>
+      prev && prev.status === "running"
+        ? {
+            ...prev,
+            status: "paused",
+            steps: prev.steps.map((s) =>
+              s.status === "running" ? { ...s, status: "pending" } : s,
+            ),
+          }
+        : prev,
+    )
+  }, [clearAgentTimers])
+
+  /** Retoma a execução do primeiro passo ainda não concluído. */
+  const resumeAgentRun = useCallback(() => {
+    if (!agentRun || agentRun.status !== "paused") return
+    const nextIndex = agentRun.steps.findIndex((s) => s.status !== "done")
+    runAgentFromRef.current(nextIndex === -1 ? agentRun.steps.length : nextIndex)
+  }, [agentRun])
+
+  /** Aborta a execução: limpa timers e deixa o estado coerente (sem travar). */
+  const stopAgentRun = useCallback(() => {
+    clearAgentTimers()
+    setAgentRun((prev) =>
+      prev && (prev.status === "running" || prev.status === "paused" || prev.status === "idle")
+        ? {
+            ...prev,
+            status: "stopped",
+            steps: prev.steps.map((s) =>
+              s.status === "running" ? { ...s, status: "pending" } : s,
+            ),
+          }
+        : prev,
+    )
+  }, [clearAgentTimers])
+
   // ── envio de prompt → raciocínio embutido + streaming ─────────────────
   const sendPrompt = useCallback(
     (text: string) => {
@@ -1153,8 +1528,56 @@ export function AiIde() {
       clearAiTimers()
       // ao enviar um novo prompt, retomamos o acompanhamento do fim do chat.
       stickToBottomRef.current = true
+      // um plano anterior ainda ativo é interrompido (timers já limpos acima).
+      setAgentRun((prev) =>
+        prev && (prev.status === "running" || prev.status === "paused" || prev.status === "idle")
+          ? {
+              ...prev,
+              status: "stopped",
+              steps: prev.steps.map((s) =>
+                s.status === "running" ? { ...s, status: "pending" } : s,
+              ),
+            }
+          : prev,
+      )
 
       const assistantId = Date.now()
+
+      // ── modo Agent: monta o plano e dispara o driver passo a passo ──────
+      if (AI_MODES[mode] === "Agent") {
+        setThread((prev) => {
+          const baseId = prev.length ? prev[prev.length - 1].id + 1 : 1
+          const userMsg: AiMessage = {
+            id: baseId,
+            from: "user",
+            fullText: trimmed,
+            shownText: trimmed,
+            streamed: true,
+          }
+          const assistantMsg: AiMessage = {
+            id: assistantId,
+            from: "assistant",
+            fullText: AGENT_REPLY_TEXT,
+            shownText: AGENT_REPLY_TEXT,
+            streamed: true,
+          }
+          return [...prev, userMsg, assistantMsg]
+        })
+        setComposer("")
+        setAgentRun({
+          messageId: assistantId,
+          prompt: trimmed,
+          currentIndex: 0,
+          status: "idle",
+          steps: AGENT_PLAN.map((s) => ({ ...s, status: "pending" })),
+        })
+        const start = setTimeout(
+          () => runAgentFromRef.current(0),
+          AGENT_TIMING.planRevealMs,
+        )
+        agentTimersRef.current.push(start)
+        return
+      }
       setThread((prev) => {
         const baseId = prev.length ? prev[prev.length - 1].id + 1 : 1
         const userMsg: AiMessage = {
@@ -1268,7 +1691,7 @@ export function AiIde() {
       }, totalThinkMs)
       stepTimersRef.current.push(finishThink)
     },
-    [pending, clearAiTimers],
+    [pending, clearAiTimers, mode],
   )
 
   const toggleReasoning = useCallback((id: number) => {
@@ -1546,6 +1969,14 @@ export function AiIde() {
           ) : (
             <div key={m.id} className="flex w-full flex-col gap-2 self-start">
               {m.reasoning ? <ReasoningBlock message={m} /> : null}
+              {agentRun && agentRun.messageId === m.id ? (
+                <AgentPlanCard
+                  run={agentRun}
+                  onPause={pauseAgentRun}
+                  onResume={resumeAgentRun}
+                  onStop={stopAgentRun}
+                />
+              ) : null}
               {m.shownText !== "" ? (
                 <ChatMessageFluid from="assistant">
                   {m.shownText}

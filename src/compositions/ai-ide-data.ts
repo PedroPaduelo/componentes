@@ -301,6 +301,30 @@ export function insertAtRoot(nodes: TreeNode[], node: TreeNode): TreeNode[] {
   })
 }
 
+/**
+ * Insere um nó dentro de uma pasta específica (por id), reabrindo-a e ordenando
+ * pastas antes de arquivos. Se a pasta não existir, retorna a árvore inalterada.
+ */
+export function insertIntoDir(
+  nodes: TreeNode[],
+  dirId: string,
+  node: TreeNode,
+): TreeNode[] {
+  return nodes.map((current) => {
+    if (current.kind === "dir") {
+      if (current.id === dirId) {
+        const children = [...current.children, node].sort((a, b) => {
+          if (a.kind !== b.kind) return a.kind === "dir" ? -1 : 1
+          return a.name.localeCompare(b.name)
+        })
+        return { ...current, open: true, children }
+      }
+      return { ...current, children: insertIntoDir(current.children, dirId, node) }
+    }
+    return current
+  })
+}
+
 /** Atualiza o código de um arquivo. */
 export function updateFileCode(
   nodes: TreeNode[],
@@ -310,6 +334,18 @@ export function updateFileCode(
   return mapTree(nodes, (node) =>
     node.kind === "file" && node.id === id ? { ...node, code } : node,
   )
+}
+
+/** Indica se já existe um arquivo com este id em qualquer profundidade. */
+export function fileExists(nodes: TreeNode[], id: string): boolean {
+  for (const node of nodes) {
+    if (node.kind === "file") {
+      if (node.id === id) return true
+    } else if (fileExists(node.children, id)) {
+      return true
+    }
+  }
+  return false
 }
 
 /** Lista plana de todos os arquivos da árvore. */
@@ -655,6 +691,201 @@ export function App() {
       },
     ],
   },
+}
+
+/* -------------------------------------------------------------------------- */
+/*                       modo Agent — plano multi-arquivo                      */
+/* -------------------------------------------------------------------------- */
+
+/** Tipo de cada passo do plano de execução do agente. */
+export type AgentStepKind = "create" | "edit" | "run"
+
+/** Estado de um passo durante a execução do plano. */
+export type AgentStepStatus = "pending" | "running" | "done"
+
+/**
+ * Passo TIPADO de um plano do modo Agent (determinístico, sem runtime real).
+ * `kind` decide o efeito aplicado na IDE ao executar:
+ *  - `create`: insere `fileId`/`fileName` na árvore e abre a tab (conteúdo `code`).
+ *  - `edit`: substitui o conteúdo de `targetId` no editor e marca modificado.
+ *  - `run`: escreve `command` + `output` no terminal mock.
+ * `detail` é um mini-resumo exibido ao concluir (ex.: `+24 linhas`, `✓ 12 passando`).
+ */
+export type AgentPlanStep =
+  | {
+      kind: "create"
+      id: string
+      label: string
+      detail: string
+      fileId: string
+      fileName: string
+      /** Pasta-alvo (id) onde o arquivo é criado; fallback para a raiz. */
+      dirId: string
+      lang: Lang
+      code: string
+    }
+  | {
+      kind: "edit"
+      id: string
+      label: string
+      detail: string
+      targetId: string
+      code: string
+    }
+  | {
+      kind: "run"
+      id: string
+      label: string
+      detail: string
+      command: string
+      output: string[]
+    }
+
+/** Estado de um passo do plano em execução (definição + status corrente). */
+export type AgentStep = AgentPlanStep & { status: AgentStepStatus }
+
+/** Fase do orquestrador do agente. */
+export type AgentRunStatus =
+  | "idle"
+  | "running"
+  | "paused"
+  | "stopped"
+  | "done"
+
+/** Estado completo de uma execução de plano do agente. */
+export type AgentRun = {
+  /** Id da mensagem do assistant que hospeda o plano na thread. */
+  messageId: number
+  prompt: string
+  steps: AgentStep[]
+  /** Índice do passo corrente (0..steps.length); === length quando concluído. */
+  currentIndex: number
+  status: AgentRunStatus
+}
+
+/** Rótulo curto de cada tipo de passo (badge do plano). */
+export const AGENT_KIND_LABEL: Record<AgentStepKind, string> = {
+  create: "Criar",
+  edit: "Editar",
+  run: "Rodar",
+}
+
+/**
+ * Plano de execução determinístico do modo Agent: cria dois arquivos novos,
+ * edita o `App.tsx` para usá-los e roda os comandos de teste e build. Inclui ao
+ * menos um passo de cada tipo (create/edit/run), na ordem de reveal/execução.
+ */
+export const AGENT_PLAN: AgentPlanStep[] = [
+  {
+    kind: "create",
+    id: "ag-create-types",
+    label: "Criar src/lib/types.ts",
+    detail: "+12 linhas",
+    fileId: "agent-types",
+    fileName: "types.ts",
+    dirId: "lib",
+    lang: "ts",
+    code: `// Tipos compartilhados do domínio
+export type User = {
+  id: string
+  name: string
+  email: string
+}
+
+export type ApiResult<T> = {
+  data: T
+  error: string | null
+}`,
+  },
+  {
+    kind: "create",
+    id: "ag-create-format",
+    label: "Criar src/lib/format.ts",
+    detail: "+9 linhas",
+    fileId: "agent-format",
+    fileName: "format.ts",
+    dirId: "lib",
+    lang: "ts",
+    code: `import type { User } from "@/lib/types"
+
+export function formatUser(user: User): string {
+  return user.name + " <" + user.email + ">"
+}
+
+export function initials(name: string): string {
+  return name.split(" ").map((p) => p[0]).join("").toUpperCase()
+}`,
+  },
+  {
+    kind: "edit",
+    id: "ag-edit-app",
+    label: "Editar src/App.tsx",
+    detail: "+3 linhas",
+    targetId: "app",
+    code: `import { useMemo, useState } from "react"
+import { buildGreeting } from "@/lib/utils"
+import { fetchUser } from "@/lib/api"
+import type { User } from "@/lib/types"
+import { formatUser } from "@/lib/format"
+
+export function App() {
+  const [user, setUser] = useState<User | null>(null)
+  const greeting = useMemo(() => buildGreeting(user), [user])
+
+  return (
+    <main className="app">
+      <h1>{greeting}</h1>
+      <p>{user ? formatUser(user) : "Carregando…"}</p>
+    </main>
+  )
+}`,
+  },
+  {
+    kind: "run",
+    id: "ag-run-test",
+    label: "Rodar npm test",
+    detail: "✓ 12 passando",
+    command: "npm test",
+    output: [
+      "> aurora-app@1.0.0 test",
+      "> vitest run",
+      "",
+      "✓ src/lib/format.test.ts (4)",
+      "✓ src/lib/utils.test.ts (8)",
+      "",
+      "Test Files  2 passed (2)",
+      "     Tests  12 passed (12)",
+    ],
+  },
+  {
+    kind: "run",
+    id: "ag-run-build",
+    label: "Rodar npm run build",
+    detail: "✓ build ok",
+    command: "npm run build",
+    output: [
+      "> aurora-app@1.0.0 build",
+      "> vite build",
+      "",
+      "✓ 40 modules transformed.",
+      "dist/index.html  0.46 kB",
+      "✓ built in 1.34s",
+    ],
+  },
+]
+
+/** Resposta do assistant ao receber um prompt no modo Agent. */
+export const AGENT_REPLY_TEXT =
+  "Montei um plano de execução com 5 passos: 2 arquivos novos, 1 edição e 2 comandos. Acompanhe o progresso abaixo — dá para pausar ou parar a qualquer momento."
+
+/** Tempos (em ms) do roteiro determinístico do driver do modo Agent. */
+export const AGENT_TIMING = {
+  /** Atraso até o plano ficar visível e o primeiro passo começar. */
+  planRevealMs: 360,
+  /** Duração em que um passo fica "em execução" antes de concluir. */
+  stepRunMs: 820,
+  /** Folga entre concluir um passo e iniciar o próximo. */
+  stepGapMs: 260,
 }
 
 /** Tempos (em ms) do roteiro determinístico de geração da resposta. */

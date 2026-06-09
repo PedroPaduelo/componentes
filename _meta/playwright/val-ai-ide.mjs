@@ -416,6 +416,191 @@ async function run() {
         }
         report.interactions.palette = { paletteVisible }
         await page.keyboard.press("Escape")
+
+        // ── MODO AGENT (F2): troca pra aba Agent, envia prompt, acompanha plano ──
+        // Conta quantos arquivos existem no explorer ANTES do plano.
+        const fileNamesBefore = await page
+          .locator("[data-slot='ai-ide'] aside button[aria-current], [data-slot='ai-ide'] aside [aria-current='true']")
+          .count()
+        const typesBefore = await page
+          .locator("[data-slot='ai-ide'] aside button:has-text('types.ts')")
+          .count()
+        const formatBefore = await page
+          .locator("[data-slot='ai-ide'] aside button:has-text('format.ts')")
+          .count()
+        const termLinesBefore = await page.evaluate(() => {
+          let el = document.querySelector("[data-slot='ai-ide']")
+          while (el) {
+            const oy = getComputedStyle(el).overflowY
+            if (oy === "auto" || oy === "scroll") return el.scrollHeight
+            el = el.parentElement
+          }
+          return 0
+        })
+        // Clica na aba "Agent" (TabsSubtleFluidItem com label "Agent")
+        const agentTab = page.locator("[role='tablist'] button:has-text('Agent')").first()
+        await agentTab.click()
+        await page.waitForTimeout(200)
+        const agentTabActive = await page.locator("[role='tab'][aria-selected='true']:has-text('Agent')").count()
+        // Envia prompt
+        const taAgent = page.locator("textarea[aria-label='Message']").first()
+        await taAgent.fill("Implemente a feature")
+        await taAgent.press("Enter")
+        // Espera o plano aparecer
+        await page.waitForSelector("[data-agent-plan]", { timeout: 8000 })
+        const agentPlanCount = await page.locator("[data-agent-plan]").count()
+        const agentSteps = await page.locator("[data-agent-step]").count()
+        // Lê o tipo de cada passo pelo atributo data-step-status (amostra em t1, t2, t3)
+        const stepSamples = []
+        // primeiro passo: deve estar pending ou running
+        const step0Status = await page.locator("[data-agent-step]").nth(0).getAttribute("data-step-status")
+        stepSamples.push({ index: 0, status: step0Status })
+        // Espera algum passo virar done
+        await page.waitForFunction(
+          () => {
+            const steps = document.querySelectorAll("[data-agent-step][data-step-status='done']")
+            return steps.length >= 1
+          },
+          { timeout: 15000 },
+        )
+        const step1Status = await page.locator("[data-agent-step]").nth(0).getAttribute("data-step-status")
+        stepSamples.push({ index: 0, status: step1Status, after: "wait-done" })
+        // Espera todos os 5 passos concluírem
+        await page.waitForFunction(
+          () => {
+            const steps = document.querySelectorAll("[data-agent-step][data-step-status='done']")
+            return steps.length >= 5
+          },
+          { timeout: 30000 },
+        )
+        const stepFinalDone = await page.locator("[data-agent-step][data-step-status='done']").count()
+        // Efeitos reais: criar adicionou types.ts e format.ts no explorer; editar abriu App.tsx e modificou.
+        const typesAfter = await page
+          .locator("[data-slot='ai-ide'] aside button:has-text('types.ts')")
+          .count()
+        const formatAfter = await page
+          .locator("[data-slot='ai-ide'] aside button:has-text('format.ts')")
+          .count()
+        const typesTab = await page
+          .locator("[data-slot='ai-ide'] [aria-label='Fechar types.ts']")
+          .count()
+        const modifiedCount = await page.locator("footer >> text=modificado").count()
+        // Terminal deve ter ganhado as linhas de npm test e npm run build
+        const termText = await page.locator("[aria-label='Comando do terminal']").first().evaluate(
+          (input) => {
+            // pega o terminal: irmão do input, ou container anterior
+            const root = input.closest("[data-slot='ai-ide']")
+            return root ? root.textContent || "" : ""
+          },
+        )
+        const hasNpmTest = termText.includes("npm test") || termText.includes("vitest")
+        const hasNpmBuild = termText.includes("npm run build") || termText.includes("vite build")
+        // Resumo final (o status geral vira "done" um gap após o último passo)
+        await page.waitForSelector("[data-agent-summary]", { timeout: 5000 })
+        const summaryShown = await page.locator("[data-agent-summary]").count()
+        const summaryText = await page
+          .locator("[data-agent-summary]")
+          .first()
+          .textContent()
+          .catch(() => "")
+        // Progresso: contagem de passos concluídos chegou a 5?
+        const progressText = await page
+          .locator("[data-agent-progress]")
+          .first()
+          .textContent()
+          .catch(() => "")
+        const stepKinds = await page.evaluate(() => {
+          return Array.from(document.querySelectorAll("[data-agent-step]")).map((s) => {
+            const txt = (s.textContent || "").toLowerCase()
+            if (txt.includes("criar")) return "create"
+            if (txt.includes("editar")) return "edit"
+            if (txt.includes("rodar")) return "run"
+            return "other"
+          })
+        })
+        report.interactions.agent = {
+          agentTabActive,
+          agentPlanCount,
+          agentSteps,
+          stepFinalDone,
+          stepKinds,
+          hasCreate: stepKinds.includes("create"),
+          hasEdit: stepKinds.includes("edit"),
+          hasRun: stepKinds.includes("run"),
+          typesBefore,
+          formatBefore,
+          typesAfter,
+          formatAfter,
+          treeAddedTypes: typesAfter > typesBefore,
+          treeAddedFormat: formatAfter > formatBefore,
+          typesTab,
+          modifiedCount,
+          terminalAppended: hasNpmTest && hasNpmBuild,
+          hasNpmTest,
+          hasNpmBuild,
+          summaryShown,
+          summaryText: (summaryText || "").replace(/\s+/g, " ").trim(),
+          progressText: (progressText || "").replace(/\s+/g, " ").trim(),
+          stepSamples,
+          fileNamesBefore,
+          termLinesBefore,
+        }
+        await shot(page, "ai-ide-agent-light", { sub: "ai-ide" })
+
+        // ── AGENT: controles Pausar/Continuar/Parar (segundo ciclo) ──────
+        const agentTab2 = page.locator("[role='tablist'] button:has-text('Agent')").first()
+        await agentTab2.click()
+        await page.waitForTimeout(200)
+        const taAgent2 = page.locator("textarea[aria-label='Message']").first()
+        await taAgent2.fill("Outro plano de teste")
+        await taAgent2.press("Enter")
+        await page.waitForSelector("[data-agent-plan]", { timeout: 8000 })
+        // espera algum passo ficar running
+        await page.waitForFunction(
+          () => {
+            const steps = document.querySelectorAll("[data-agent-step][data-step-status='running']")
+            return steps.length >= 1
+          },
+          { timeout: 10000 },
+        )
+        // Pausar
+        const pauseBtn = page.locator("[data-agent-action='pause']").first()
+        const pauseVisible = await pauseBtn.count()
+        await pauseBtn.click()
+        await page.waitForTimeout(200)
+        const statusAfterPause = await page
+          .locator("[data-agent-plan]")
+          .first()
+          .getAttribute("data-agent-status")
+        const resumeBtn = page.locator("[data-agent-action='resume']").first()
+        const resumeVisible = await resumeBtn.count()
+        // Continuar
+        await resumeBtn.click()
+        await page.waitForTimeout(300)
+        const runningAfterResume = await page
+          .locator("[data-agent-step][data-step-status='running']")
+          .count()
+        // Parar
+        const stopBtn = page.locator("[data-agent-action='stop']").first()
+        await stopBtn.click()
+        await page.waitForTimeout(300)
+        const statusAfterStop = await page
+          .locator("[data-agent-plan]")
+          .first()
+          .getAttribute("data-agent-status")
+        const stuckRunning = await page
+          .locator("[data-agent-step][data-step-status='running']")
+          .count()
+        report.interactions.agentControls = {
+          pauseVisible,
+          statusAfterPause,
+          resumeVisible,
+          runningAfterResume,
+          statusAfterStop,
+          stuckRunning,
+          noStuck: stuckRunning === 0,
+        }
+        await shot(page, "ai-ide-agent-controls", { sub: "ai-ide" })
       }
 
       await ctx.close()
