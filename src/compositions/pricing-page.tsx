@@ -16,7 +16,18 @@
  * - `DottedGlowBackground` / `ScalesContainer` como decoração sutil.
  */
 import { Fragment, useMemo, useState } from "react"
-import { Check, Minus, Sparkles, Users } from "lucide-react"
+import {
+  BadgeCheck,
+  Check,
+  Headphones,
+  Minus,
+  Plug,
+  ShieldCheck,
+  Sparkles,
+  TrendingDown,
+  Users,
+  Zap,
+} from "lucide-react"
 
 import {
   Accordion,
@@ -206,6 +217,42 @@ const brandLogos = [
   </span>
 ))
 
+/** Indicadores de confiança exibidos na barra de stats. */
+const stats: { icon: typeof Zap; value: string; label: string }[] = [
+  { icon: Users, value: "12k+", label: "times ativos" },
+  { icon: Zap, value: "99,9%", label: "uptime garantido" },
+  { icon: BadgeCheck, value: "4,9/5", label: "avaliação média" },
+  { icon: Headphones, value: "< 2h", label: "tempo de resposta" },
+]
+
+/** Add-ons opcionais que podem ser somados a qualquer plano pago. */
+const addons: {
+  icon: typeof Plug
+  name: string
+  description: string
+  /** preço mensal do add-on, em reais. */
+  monthly: number
+}[] = [
+  {
+    icon: Plug,
+    name: "Integrações premium",
+    description: "Conecte a 50+ ferramentas com sincronização em tempo real.",
+    monthly: 9,
+  },
+  {
+    icon: ShieldCheck,
+    name: "Auditoria avançada",
+    description: "Logs de auditoria detalhados e retenção estendida de 1 ano.",
+    monthly: 15,
+  },
+  {
+    icon: Headphones,
+    name: "Suporte premium 24/7",
+    description: "Canal dedicado com SLA de resposta em até 1 hora.",
+    monthly: 19,
+  },
+]
+
 function formatPrice(value: number): string {
   return value.toLocaleString("pt-BR")
 }
@@ -244,7 +291,10 @@ export function PricingPage() {
   const estimate = useMemo(() => {
     const perSeat = annual ? proMonthly * 10 : proMonthly
     const total = perSeat * seats
-    return { perSeat, total }
+    // economia anual vs. pagar 12 meses no mensal (2 meses grátis).
+    const fullYear = proMonthly * 12 * seats
+    const savings = annual ? fullYear - total : 0
+    return { perSeat, total, savings }
   }, [annual, seats, proMonthly])
 
   return (
@@ -316,6 +366,27 @@ export function PricingPage() {
             </p>
           </div>
         </ScalesContainer>
+
+        {/* Barra de estatísticas / confiança */}
+        <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {stats.map((stat) => {
+            const Icon = stat.icon
+            return (
+              <div
+                key={stat.label}
+                className="flex flex-col items-center gap-1 rounded-lg border border-border/60 bg-card/40 px-4 py-5 text-center"
+              >
+                <Icon className="size-5 text-primary" aria-hidden="true" />
+                <span className="text-2xl font-bold text-foreground">
+                  {stat.value}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {stat.label}
+                </span>
+              </div>
+            )
+          })}
+        </div>
 
         {/* Grade de planos */}
         <div className="mt-10 grid gap-6 md:grid-cols-3 md:items-stretch">
@@ -437,6 +508,12 @@ export function PricingPage() {
               <p className="text-xs text-muted-foreground">
                 {annual ? "cobrança anual" : "cobrança mensal"}
               </p>
+              {estimate.savings > 0 && (
+                <p className="mt-2 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                  <TrendingDown className="size-3.5" aria-hidden="true" />
+                  Economize R$ {formatPrice(estimate.savings)}/ano
+                </p>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -501,6 +578,55 @@ export function PricingPage() {
           </div>
         </div>
 
+        {/* Add-ons opcionais */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+              Potencialize com add-ons
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Recursos opcionais que você adiciona a qualquer plano pago quando
+              precisar.
+            </p>
+          </div>
+
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {addons.map((addon) => {
+              const Icon = addon.icon
+              const price = annual ? addon.monthly * 10 : addon.monthly
+              return (
+                <Card
+                  key={addon.name}
+                  className="flex flex-col bg-card/80 backdrop-blur-sm"
+                >
+                  <CardHeader>
+                    <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                      <Icon className="size-5" aria-hidden="true" />
+                    </div>
+                    <CardTitle className="mt-3 text-base">
+                      {addon.name}
+                    </CardTitle>
+                    <CardDescription>{addon.description}</CardDescription>
+                  </CardHeader>
+                  <CardFooter className="mt-auto flex items-center justify-between">
+                    <span className="text-sm">
+                      <span className="font-semibold text-foreground">
+                        + R$ {formatPrice(price)}
+                      </span>{" "}
+                      <span className="text-muted-foreground">
+                        {annual ? "/ano" : "/mês"}
+                      </span>
+                    </span>
+                    <Button variant="outline" size="sm">
+                      Adicionar
+                    </Button>
+                  </CardFooter>
+                </Card>
+              )
+            })}
+          </div>
+        </div>
+
         {/* Prova social — logos */}
         <div className="mt-16">
           <p className="text-center text-xs font-medium uppercase tracking-widest text-muted-foreground">
@@ -553,6 +679,28 @@ export function PricingPage() {
                 </AccordionItem>
               ))}
             </Accordion>
+          </div>
+        </div>
+
+        {/* Garantia */}
+        <div className="mt-16">
+          <div className="flex flex-col items-center gap-4 rounded-2xl border border-primary/30 bg-primary/5 px-6 py-8 text-center sm:flex-row sm:gap-5 sm:text-left">
+            <div className="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+              <ShieldCheck className="size-6" aria-hidden="true" />
+            </div>
+            <div className="flex-1">
+              <h3 className="text-base font-semibold text-foreground">
+                Garantia de 30 dias ou seu dinheiro de volta
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Experimente qualquer plano pago sem risco. Se não for pra você,
+                devolvemos 100% do valor — sem perguntas.
+              </p>
+            </div>
+            <Badge variant="secondary" className="shrink-0 gap-1">
+              <BadgeCheck className="size-3.5" aria-hidden="true" />
+              Sem risco
+            </Badge>
           </div>
         </div>
 
