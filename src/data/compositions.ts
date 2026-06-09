@@ -96,8 +96,17 @@ export const compositions: Composition[] = [
     slug: "chat-inbox-pro",
     name: "Chat / Inbox Completo",
     description:
-      "Inbox de mensagens com lista de conversas, thread por conversa e composer: trocar de conversa muda o histórico, selecionar zera não-lidas e enviar adiciona a mensagem na thread certa.",
-    tags: ["chat", "inbox", "mensagens", "app"],
+      "Inbox de mensagens com lista de conversas (busca controlada, abas Todas/Não lidas/Favoritas, fixadas no topo, presença online/ausente, ticks, badge de não-lidas, favorito) e thread com header de presença e ações (Fixar, Marcar não lida, Silenciar, Limpar), separadores de data, agrupamento de mensagens consecutivas do mesmo autor, avatares no contato, auto-scroll e resposta simulada com indicador de digitação. Selecionar zera não-lidas e enviar adiciona a mensagem na thread certa.",
+    tags: [
+      "chat",
+      "inbox",
+      "mensagens",
+      "busca",
+      "abas",
+      "presença",
+      "app",
+      "interativo",
+    ],
     category: "Aplicação",
   },
   {
@@ -132,10 +141,10 @@ export const compositions: Composition[] = [
   },
   {
     slug: "saas-landing-2",
-    name: "SaaS Landing 2.0",
+    name: "SaaS Landing 2.0 — Nimbus",
     description:
-      "Landing SaaS premium de ponta a ponta: hero com facho de luz (Spotlight) e texto que cicla (FlipWords), prova social com avatares, navbar que encolhe no scroll, faixa de logos, showcase de produto dirigido por scroll (ContainerScroll), métricas que contam na entrada, features com skeletons animados, grid bento com borda luminosa, depoimentos, pricing elevado, FAQ e CTA final em efeito lâmpada.",
-    tags: ["saas", "landing", "hero", "spotlight", "pricing", "depoimentos", "bento", "métricas"],
+      "Landing SaaS premium de 18 seções coesas: banner sticky com cupom, navbar com atalho ⌘K, hero com Spotlight/FlipWords/AnimatedTooltip, faixa de mídias (InfiniteMovingCards), logo slider, ThreeDMarquee com 20 screenshots, StickyScroll 'Como funciona', métricas com count-up + Terminal simulando deploy, features com skeletons, HoverEffect de vantagens, ExpandableCards com 3 personas (Startup/Scale-up/Enterprise), bento com GlowingEffect, CodeBlock multi-linguagem para devs, depoimentos autoplay com stats agregados, LogoSlider de integrações, pricing com comparativo, customer story em destaque, FAQ categorizado, CTA em LampContainer e footer com newsletter/selos/redes.",
+    tags: ["saas", "landing", "hero", "spotlight", "pricing", "depoimentos", "bento", "métricas", "3d-marquee", "sticky-scroll", "expandable-cards", "code-block", "terminal", "use-cases", "customer-story", "integrações"],
     category: "Marketing",
   },
   {
