@@ -88,8 +88,8 @@ export const compositions: Composition[] = [
     slug: "chat-app",
     name: "Chat / IA",
     description:
-      "Interface de chat com assistente: mensagens, indicador de raciocínio, anexos, composer e controles de tema.",
-    tags: ["chat", "ia", "app"],
+      "Assistente de IA em 3 painéis: sidebar de conversas com busca e nova conversa, thread central com raciocínio e composer com anexo, e painel de contexto com modelo, tópicos e ações. Trocar de conversa muda o histórico e enviar dispara resposta simulada com scroll automático.",
+    tags: ["chat", "ia", "assistente", "app", "interativo"],
     category: "Aplicação",
   },
   {
@@ -102,10 +102,10 @@ export const compositions: Composition[] = [
   },
   {
     slug: "component-playground",
-    name: "Component Playground",
+    name: "Quadro Kanban",
     description:
-      "Bancada de primitivos e overlays — abas, accordion, diálogos, sheets, dropdowns e blocos de código.",
-    tags: ["primitivos", "overlays", "playground"],
+      "Board de projeto interativo estilo Trello/Linear: colunas por status com contador, cards arrastáveis entre colunas (drag-and-drop nativo), criação de tarefa em diálogo, menu de ações por card e filtros por busca, prioridade e responsável.",
+    tags: ["kanban", "board", "drag and drop", "tarefas", "interativo"],
     category: "Aplicação",
   },
   {
@@ -133,8 +133,9 @@ export const compositions: Composition[] = [
   {
     slug: "saas-landing-2",
     name: "SaaS Landing 2.0",
-    description: "Landing page SaaS com navbar dropdown, banner sticky, botões magnéticos e bordas animadas.",
-    tags: ["saas", "landing", "magnetic", "navbar", "banner"],
+    description:
+      "Landing SaaS premium de ponta a ponta: hero com facho de luz (Spotlight) e texto que cicla (FlipWords), prova social com avatares, navbar que encolhe no scroll, faixa de logos, showcase de produto dirigido por scroll (ContainerScroll), métricas que contam na entrada, features com skeletons animados, grid bento com borda luminosa, depoimentos, pricing elevado, FAQ e CTA final em efeito lâmpada.",
+    tags: ["saas", "landing", "hero", "spotlight", "pricing", "depoimentos", "bento", "métricas"],
     category: "Marketing",
   },
   {
