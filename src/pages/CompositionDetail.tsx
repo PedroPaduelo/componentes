@@ -19,9 +19,10 @@ export function CompositionDetail() {
   }
 
   const Screen = compositionScreens[composition.slug]
+  const widthClass = composition.wide ? "max-w-[1600px]" : "max-w-6xl"
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
+    <div className={`mx-auto ${widthClass} px-4 py-12 sm:px-6`}>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
