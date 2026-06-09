@@ -63,6 +63,7 @@ import {
   TerminalSquare,
   Trash2,
   TriangleAlert,
+  Wand2,
   X,
   Braces,
   FileType2,
@@ -148,6 +149,11 @@ import {
   type ToolCall,
   type ToolIcon,
   type TreeNode,
+  INLINE_ACTION_LABEL,
+  INLINE_ACTION_HINT,
+  INLINE_TIMING,
+  resolveInlinePatch,
+  type InlineAction,
 } from "@/compositions/ai-ide-data"
 
 /* -------------------------------------------------------------------------- */
@@ -1031,6 +1037,13 @@ export function AiIde() {
   const stickToBottomRef = useRef(true)
   // rAF que coalesce os auto-scrolls (evita reescrever scrollTop em alta frequência).
   const scrollRafRef = useRef<number | null>(null)
+  // rAF do inline edit (coalesce o foco do input ao abrir).
+  const inlineFocusRafRef = useRef<number | null>(null)
+  // Timer do mini-loading do popover inline, sempre guardado em ref e limpo
+  // em cleanup/unmount/fechar.
+  const inlineLoadingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(
+    null,
+  )
 
   const clearAgentTimers = useCallback(() => {
     agentTimersRef.current.forEach((t) => clearTimeout(t))
@@ -1052,6 +1065,14 @@ export function AiIde() {
     if (scrollRafRef.current !== null) {
       cancelAnimationFrame(scrollRafRef.current)
       scrollRafRef.current = null
+    }
+    if (inlineLoadingTimerRef.current !== null) {
+      clearTimeout(inlineLoadingTimerRef.current)
+      inlineLoadingTimerRef.current = null
+    }
+    if (inlineFocusRafRef.current !== null) {
+      cancelAnimationFrame(inlineFocusRafRef.current)
+      inlineFocusRafRef.current = null
     }
   }, [clearAgentTimers])
 
@@ -1098,18 +1119,6 @@ export function AiIde() {
     const el = terminalScrollRef.current
     if (el) el.scrollTop = el.scrollHeight
   }, [terminalLines, bottomTab])
-
-  // ⌘K / Ctrl+K abre o command palette.
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key.toLowerCase() === "k" && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault()
-        setPaletteOpen((prev) => !prev)
-      }
-    }
-    document.addEventListener("keydown", onKey)
-    return () => document.removeEventListener("keydown", onKey)
-  }, [])
 
   const activeFile = useMemo(
     () => filesById.get(activeId) ?? files[0],
@@ -1248,6 +1257,110 @@ export function AiIde() {
     setDiffPlan(null)
     setHunkStatus({})
   }, [])
+
+  // ── ⌘K inline (F4): popover ancorado à linha, reusa o diff da F1 ─────
+  // O foco do editor E a linha "selecionada" (cuidado: o caret.line JÁ marca
+  // uma posição; basta o usuário ter clicado em alguma linha) são o gatilho
+  // de precedência do ⌘K sobre o command palette global.
+  const [editorFocused, setEditorFocused] = useState(false)
+  const [inlineEditOpen, setInlineEditOpen] = useState(false)
+  const [inlineEditLoading, setInlineEditLoading] = useState(false)
+  const [inlineEditAction, setInlineEditAction] = useState<InlineAction | null>(
+    null,
+  )
+  const [inlineEditPrompt, setInlineEditPrompt] = useState("")
+  const [inlineEditAnchorLine, setInlineEditAnchorLine] = useState<number>(1)
+  // Resultado leve (modal no popover) para /explicar; diff é acionado via
+  // startReview (reuso F1) e não passa por aqui.
+  const [inlineEditResult, setInlineEditResult] =
+    useState<{ text: string } | null>(null)
+
+  /** Fecha o popover inline: limpa timers, reseta estado, cancela loading. */
+  const closeInlineEdit = useCallback(() => {
+    if (inlineLoadingTimerRef.current !== null) {
+      clearTimeout(inlineLoadingTimerRef.current)
+      inlineLoadingTimerRef.current = null
+    }
+    setInlineEditOpen(false)
+    setInlineEditLoading(false)
+    setInlineEditAction(null)
+    setInlineEditResult(null)
+    setInlineEditPrompt("")
+  }, [])
+
+  /**
+   * Aciona uma ação do popover inline. Faz mini-loading determinístico e, ao
+   * final:
+   *  - `refactor` / `test`: chama `startReview(...)` (F1) para abrir a revisão
+   *    de diff com hunks aceitáveis/rejeitáveis — REUSO obrigatório.
+   *  - `explain`: popula o modal leve do popover com o texto explicativo.
+   *
+   * O arquivo-alvo é o atualmente ativo. Se a combinação (arquivo+ação) não
+   * tem patch, fecha silenciosamente (sem crashar).
+   */
+  const runInlineAction = useCallback(
+    (action: InlineAction) => {
+      if (!activeFile) return
+      const patch = resolveInlinePatch(activeFile.id, action)
+      if (!patch) {
+        closeInlineEdit()
+        return
+      }
+      setInlineEditAction(action)
+      setInlineEditLoading(true)
+      setInlineEditResult(null)
+      const anchorLine = caret.line
+      setInlineEditAnchorLine(anchorLine)
+      const timer = setTimeout(() => {
+        inlineLoadingTimerRef.current = null
+        setInlineEditLoading(false)
+        if (patch.kind === "diff") {
+          // fecha o popover e dispara o modo diff da F1
+          setInlineEditOpen(false)
+          setInlineEditResult(null)
+          setInlineEditAction(null)
+          setInlineEditPrompt("")
+          startReview(patch.code)
+        } else {
+          // mantém o popover aberto com o modal leve do /explicar
+          setInlineEditResult({ text: patch.text })
+        }
+      }, INLINE_TIMING.loadingMs)
+      inlineLoadingTimerRef.current = timer
+    },
+    [activeFile, caret.line, closeInlineEdit, startReview],
+  )
+
+  // ⌘K / Ctrl+K: PRECEDÊNCIA do inline sobre o command palette global.
+  //   - editor focado → abre o popover inline ancorado à linha; o palette
+  //     global é ignorado. O critério é o FOCO do container do editor
+  //     (onMouseDown/onFocus setam `editorFocused`; onBlur libera ao sair).
+  //     Cuidar que `caret.line` sozinho NÃO é critério: o caret é setado
+  //     quando o usuário clica em uma linha, mas a "seleção" só vale
+  //     enquanto o editor mantém o foco — fora dele, o usuário não tem
+  //     nenhuma linha "selecionada" para ancorar o popover.
+  //   - sem foco no editor → command palette global (comportamento F3).
+  //   - enquanto o popover inline está aberto, ⌘K alterna o estado dele
+  //     (não conflita com o palette) e ESC fecha (delegado ao Radix Popover).
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key.toLowerCase() !== "k") return
+      if (!(event.metaKey || event.ctrlKey)) return
+      event.preventDefault()
+      if (inlineEditOpen) {
+        setInlineEditOpen(false)
+        return
+      }
+      if (editorFocused) {
+        setInlineEditAnchorLine(caret.line)
+        setInlineEditOpen((prev) => !prev)
+        return
+      }
+      setPaletteOpen((prev) => !prev)
+    }
+    document.addEventListener("keydown", onKey)
+    return () => document.removeEventListener("keydown", onKey)
+  }, [editorFocused, caret.line, inlineEditOpen])
 
   // ── árvore: criar / renomear / excluir ───────────────────────────────
   const startCreate = useCallback((kind: "file" | "dir") => {
@@ -2463,7 +2576,20 @@ export function AiIde() {
           </div>
 
           {/* área de código */}
-          <div className="min-h-0 flex-1 overflow-auto bg-background">
+          <div
+            tabIndex={-1}
+            onMouseDown={() => setEditorFocused(true)}
+            onFocus={() => setEditorFocused(true)}
+            onBlur={(e) => {
+              // mantém o foco se o novo destino é o popover inline (Radix
+              // foca dentro dele) ou o próprio container; senão, libera.
+              const next = e.relatedTarget as HTMLElement | null
+              if (next && e.currentTarget.contains(next)) return
+              if (next && next.closest("[data-inline-edit]")) return
+              setEditorFocused(false)
+            }}
+            className="relative min-h-0 flex-1 overflow-auto bg-background outline-none"
+          >
             {diffPlan && diffPlan.targetId === activeId ? (
               <DiffReview
                 plan={diffPlan}
@@ -2522,6 +2648,150 @@ export function AiIde() {
                 </ButtonFluid>
               </div>
             )}
+
+            {/* ⌘K inline (F4): gatilho visível + popover ancorado à linha.
+                Renderizado DENTRO do container `relative` (pai) para o Popover
+                Trigger absoluto ficar preso ao canto da área de código. Só
+                aparece quando há arquivo ativo (e NÃO durante o modo diff F1,
+                que ocupa a área toda). */}
+            {activeFile && !(diffPlan && diffPlan.targetId === activeId) ? (
+              <Popover
+                open={inlineEditOpen}
+                onOpenChange={(o) => {
+                  if (o) {
+                    setInlineEditAnchorLine(caret.line)
+                    setInlineEditOpen(true)
+                  } else {
+                    closeInlineEdit()
+                  }
+                }}
+              >
+                <PopoverTrigger asChild>
+                  <button
+                    type="button"
+                    data-inline-edit-trigger="true"
+                    onClick={() => {
+                      setInlineEditAnchorLine(caret.line)
+                    }}
+                    className="absolute right-2 top-2 z-10 flex items-center gap-1 rounded-md border border-border bg-card/90 px-1.5 py-1 font-sans text-[11px] text-muted-foreground shadow-sm backdrop-blur transition-colors hover:bg-accent hover:text-foreground"
+                    aria-label="Editar com IA (⌘K)"
+                  >
+                    <Wand2 className="size-3" />
+                    Editar com IA
+                    <kbd className="rounded border border-border bg-background px-1 font-mono text-[10px]">
+                      ⌘K
+                    </kbd>
+                  </button>
+                </PopoverTrigger>
+                <PopoverContent
+                  align="end"
+                  side="bottom"
+                  sideOffset={6}
+                  className="w-[360px] p-0"
+                  data-inline-edit="true"
+                  onOpenAutoFocus={(e) => {
+                    // não rouba o foco do editor automaticamente — o usuário
+                    // continua com o caret no código. Impede que o Radix faça
+                    // o focus-trap default e cause scroll jump.
+                    e.preventDefault()
+                  }}
+                >
+                  <div className="flex flex-col gap-2 border-b border-border bg-card/80 px-3 py-2">
+                    <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                      <Sparkles className="size-3 text-primary" />
+                      <span className="font-medium text-foreground">
+                        Edição inline
+                      </span>
+                      <span className="ml-auto tabular-nums" data-inline-edit-anchor="true">
+                        Linha {inlineEditAnchorLine}
+                      </span>
+                    </div>
+                    <input
+                      data-inline-edit-input="true"
+                      value={inlineEditPrompt}
+                      onChange={(e) => setInlineEditPrompt(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" && !inlineEditLoading) {
+                          e.preventDefault()
+                          if (inlineEditPrompt.trim().length > 0) {
+                            runInlineAction("refactor")
+                          }
+                        } else if (e.key === "Escape") {
+                          e.preventDefault()
+                          closeInlineEdit()
+                        }
+                      }}
+                      placeholder="Descreva a edição…"
+                      aria-label="Descreva a edição inline"
+                      className="w-full rounded-md border border-border bg-background px-2 py-1.5 text-[13px] text-foreground outline-none placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring"
+                    />
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {(["refactor", "explain", "test"] as const).map((act) => {
+                        const label = INLINE_ACTION_LABEL[act]
+                        const Icon = act === "refactor" ? Wand2 : act === "explain" ? Sparkles : Check
+                        const isActive = inlineEditAction === act && inlineEditLoading
+                        return (
+                          <button
+                            key={act}
+                            type="button"
+                            data-inline-edit-action={act}
+                            disabled={inlineEditLoading}
+                            onClick={() => runInlineAction(act)}
+                            title={INLINE_ACTION_HINT[act]}
+                            className={cn(
+                              "flex items-center gap-1 rounded-md border px-1.5 py-0.5 font-mono text-[11px] transition-colors",
+                              isActive
+                                ? "border-primary/40 bg-primary/10 text-foreground"
+                                : "border-border bg-background text-muted-foreground hover:bg-accent/50 hover:text-foreground",
+                              "disabled:cursor-not-allowed disabled:opacity-60",
+                            )}
+                          >
+                            <Icon className="size-3" />
+                            {label}
+                          </button>
+                        )
+                      })}
+                      <span className="ml-auto text-[10px] text-muted-foreground">
+                        Esc fecha
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* mini-loading determinístico enquanto a IA "processa" */}
+                  {inlineEditLoading ? (
+                    <div
+                      data-inline-edit-loading="true"
+                      className="flex items-center gap-2 px-3 py-2 text-[12px] text-muted-foreground"
+                    >
+                      <Loader2 className="size-3.5 animate-spin text-primary" />
+                      Aplicando {INLINE_ACTION_LABEL[inlineEditAction ?? "refactor"]}…
+                    </div>
+                  ) : null}
+
+                  {/* modal leve do /explicar (sem diff) */}
+                  {inlineEditResult ? (
+                    <div
+                      data-inline-edit-explain="true"
+                      className="flex max-h-56 flex-col gap-1.5 overflow-y-auto px-3 py-2 text-[12px] text-foreground"
+                    >
+                      <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                        <Sparkles className="size-3 text-primary" />
+                        Explicação
+                      </div>
+                      <p className="leading-relaxed">{inlineEditResult.text}</p>
+                    </div>
+                  ) : null}
+
+                  {/* dica padrão quando não há loading nem result */}
+                  {!inlineEditLoading && !inlineEditResult ? (
+                    <div className="px-3 py-2 text-[11px] text-muted-foreground">
+                      Digite um pedido e pressione Enter, ou escolha uma ação
+                      rápida. O resultado é aplicado via revisão de diff.
+                    </div>
+                  ) : null}
+                </PopoverContent>
+              </Popover>
+            ) : null}
           </div>
 
           {/* painel inferior */}

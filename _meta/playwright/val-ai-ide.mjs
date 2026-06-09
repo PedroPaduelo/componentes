@@ -128,6 +128,55 @@ async function run() {
           }
           await shot(page, "ai-ide-diff-dark", { sub: "ai-ide" })
         }
+
+        // ── F4 ⌘K INLINE em DARK: garante que abre com editor focado e que
+        // a borda do popover é visível no tema escuro (mesmo tratamento
+        // oklch/oklab do resto do validador).
+        const rejectAllDark = page.locator("[data-diff-action='reject-all']")
+        if ((await rejectAllDark.count()) > 0) {
+          await rejectAllDark.first().click()
+          await page.waitForTimeout(300)
+        }
+        const editorSurfaceDk = page
+          .locator("[data-slot='ai-ide'] .relative.min-h-0.flex-1.overflow-auto")
+          .first()
+        const boxDk = await editorSurfaceDk.boundingBox()
+        if (boxDk) {
+          await page.mouse.click(
+            boxDk.x + boxDk.width / 2,
+            boxDk.y + Math.min(40, boxDk.height / 3),
+          )
+          await page.waitForTimeout(120)
+        }
+        const firstLineDk = editorSurfaceDk.locator("button").first()
+        if ((await firstLineDk.count()) > 0) {
+          await firstLineDk.click()
+          await page.waitForTimeout(120)
+        }
+        await page.keyboard.press("Meta+k")
+        let inlineOpenedDk = await page.locator("[data-inline-edit]").count()
+        if (inlineOpenedDk === 0) {
+          await page.keyboard.press("Control+k")
+          await page.waitForTimeout(200)
+          inlineOpenedDk = await page.locator("[data-inline-edit]").count()
+        }
+        const inlineBorderDk = await page.evaluate(() => {
+          const pe = document.querySelector("[data-inline-edit]")
+          if (!pe) return null
+          const cs = getComputedStyle(pe)
+          return { borderWidth: cs.borderTopWidth, borderColor: cs.borderTopColor }
+        })
+        await shot(page, "ai-ide-inline-open-dark", { sub: "ai-ide" })
+        await page.keyboard.press("Escape")
+        await page.waitForTimeout(200)
+        report.interactions.inlineDark = {
+          inlineOpenedDk,
+          inlineBorderDk,
+          inlineBorderDarkVisible:
+            inlineBorderDk !== null &&
+            parseFloat(inlineBorderDk.borderWidth) > 0 &&
+            parseColorAlpha(inlineBorderDk.borderColor) > 0.02,
+        }
       }
 
       if (theme === "light") {
@@ -601,6 +650,200 @@ async function run() {
           noStuck: stuckRunning === 0,
         }
         await shot(page, "ai-ide-agent-controls", { sub: "ai-ide" })
+
+        // ── F4 ⌘K INLINE: popover ancorado à linha, reusa diff da F1 ─────
+        // Garante que estamos de volta em alguma aba Chat/Edit (não Agent) e
+        // que o popover/palette anteriores foram fechados.
+        const editorSurface = page
+          .locator("[data-slot='ai-ide'] .relative.min-h-0.flex-1.overflow-auto")
+          .first()
+        // foca a superfície do editor (click no meio da área de código)
+        const editorBox = await editorSurface.boundingBox()
+        if (editorBox) {
+          await page.mouse.click(
+            editorBox.x + editorBox.width / 2,
+            editorBox.y + Math.min(40, editorBox.height / 3),
+          )
+          await page.waitForTimeout(120)
+        }
+        // fecha qualquer palette/inline aberto antes
+        await page.keyboard.press("Escape")
+        await page.waitForTimeout(120)
+        await page.keyboard.press("Escape")
+        await page.waitForTimeout(120)
+        // garante caret em uma linha (click num botão de linha do editor)
+        const firstLineBtn = editorSurface.locator("button").first()
+        const firstLineCount = await firstLineBtn.count()
+        if (firstLineCount > 0) {
+          await firstLineBtn.click()
+          await page.waitForTimeout(120)
+        }
+        // mede a borda do popover (precisa estar visível nos 2 temas)
+        const inlineBorder = await page.evaluate(() => {
+          const pe = document.querySelector("[data-inline-edit]")
+          if (!pe) return null
+          const cs = getComputedStyle(pe)
+          return { borderWidth: cs.borderTopWidth, borderColor: cs.borderTopColor }
+        })
+        report.interactions = report.interactions || {}
+        // ⌘K com editor focado → abre o INLINE
+        await page.keyboard.press("Meta+k")
+        let inlineOpened = await page.locator("[data-inline-edit]").count()
+        if (inlineOpened === 0) {
+          await page.keyboard.press("Control+k")
+          await page.waitForTimeout(200)
+          inlineOpened = await page.locator("[data-inline-edit]").count()
+        }
+        // mede a borda do popover AGORA que está aberto
+        const inlineBorderOpen = await page.evaluate(() => {
+          const pe = document.querySelector("[data-inline-edit]")
+          if (!pe) return null
+          const cs = getComputedStyle(pe)
+          return { borderWidth: cs.borderTopWidth, borderColor: cs.borderTopColor }
+        })
+        await shot(page, "ai-ide-inline-open-light", { sub: "ai-ide" })
+        // verifica os hooks de Playwright
+        const inlineTrigger = await page.locator("[data-inline-edit-trigger]").count()
+        const inlineInput = await page.locator("[data-inline-edit-input]").count()
+        const inlineActions = await page.locator("[data-inline-edit-action]").count()
+        const inlineAnchorText = await page
+          .locator("[data-inline-edit-anchor]")
+          .first()
+          .textContent()
+          .catch(() => "")
+        // preenche o input + Enter → dispara loading → depois data-diff
+        await page.locator("[data-inline-edit-input]").first().fill("Refatorar essa parte")
+        await page.locator("[data-inline-edit-input]").first().press("Enter")
+        // mini-loading deve aparecer
+        await page.waitForSelector("[data-inline-edit-loading]", { timeout: 2000 })
+        const loadingShown = await page.locator("[data-inline-edit-loading]").count()
+        // espera o loading sumir (timer 820ms + folga) e o diff inline abrir
+        await page.waitForTimeout(1100)
+        const diffAfterInline = await page.locator("[data-diff]").count()
+        const hunksAfterInline = await page.locator("[data-hunk]").count()
+        // popover deve ter fechado (o /refatorar aciona o diff da F1)
+        const popoverStillOpen = await page.locator("[data-inline-edit]").count()
+        await shot(page, "ai-ide-inline-diff-light", { sub: "ai-ide" })
+        // aceita todos os hunks → marca modificado e fecha diff
+        let modifiedAfterInlineAccept = 0
+        if (hunksAfterInline > 0) {
+          await page.locator("[data-diff-action='accept-all']").first().click()
+          await page.waitForTimeout(400)
+          modifiedAfterInlineAccept = await page
+            .locator("footer >> text=modificado")
+            .count()
+        }
+        // Esc fecha: abre o inline, depois Esc
+        await page.keyboard.press("Meta+k")
+        if ((await page.locator("[data-inline-edit]").count()) === 0) {
+          await page.keyboard.press("Control+k")
+          await page.waitForTimeout(200)
+        }
+        const inlineOpenBeforeEsc = await page.locator("[data-inline-edit]").count()
+        await page.keyboard.press("Escape")
+        await page.waitForTimeout(300)
+        const inlineOpenAfterEsc = await page.locator("[data-inline-edit]").count()
+        // SEM foco no editor: ⌘K abre o command palette global (NÃO o inline)
+        // clica no título do arquivo (fora do editor) para tirar o foco
+        const headerArea = page
+          .locator("[data-slot='ai-ide'] header")
+          .first()
+        const headerBox = await headerArea.boundingBox()
+        if (headerBox) {
+          await page.mouse.click(headerBox.x + 20, headerBox.y + headerBox.height / 2)
+          await page.waitForTimeout(150)
+        }
+        // clica no Explorer para tirar o foco do editor definitivamente
+        await page
+          .locator("nav[aria-label='Barra de atividades'] button")
+          .first()
+          .click()
+        await page.waitForTimeout(200)
+        // também clica no body do aside do Explorer para garantir blur
+        const aside = page.locator("[data-slot='ai-ide'] aside").first()
+        const asideBox = await aside.boundingBox()
+        if (asideBox) {
+          await page.mouse.click(asideBox.x + 10, asideBox.y + 30)
+          await page.waitForTimeout(150)
+        }
+        await page.keyboard.press("Escape")
+        await page.waitForTimeout(150)
+        await page.keyboard.press("Meta+k")
+        let paletteOpenedGlobal = await page
+          .locator("input[placeholder*='Buscar arquivos']")
+          .count()
+        if (paletteOpenedGlobal === 0) {
+          await page.keyboard.press("Control+k")
+          await page.waitForTimeout(200)
+          paletteOpenedGlobal = await page
+            .locator("input[placeholder*='Buscar arquivos']")
+            .count()
+        }
+        // o inline NÃO pode estar aberto nesse momento
+        const inlineOpenedWhenPaletteOpen = await page
+          .locator("[data-inline-edit]")
+          .count()
+        await page.keyboard.press("Escape")
+        await page.waitForTimeout(200)
+        // /explicar (sem diff): abre o inline de novo, clica na ação
+        await page.keyboard.press("Meta+k")
+        if ((await page.locator("[data-inline-edit]").count()) === 0) {
+          await page.keyboard.press("Control+k")
+          await page.waitForTimeout(200)
+        }
+        // garante foco no editor
+        if (firstLineCount > 0) {
+          await firstLineBtn.click()
+          await page.waitForTimeout(100)
+          await page.keyboard.press("Meta+k")
+          if ((await page.locator("[data-inline-edit]").count()) === 0) {
+            await page.keyboard.press("Control+k")
+            await page.waitForTimeout(200)
+          }
+        }
+        await page.locator("[data-inline-edit-action='explain']").first().click()
+        await page.waitForTimeout(1100)
+        const explainShown = await page.locator("[data-inline-edit-explain]").count()
+        // ao usar /explicar, o popover continua aberto com o modal leve
+        const popoverAfterExplain = await page.locator("[data-inline-edit]").count()
+        const explainText = await page
+          .locator("[data-inline-edit-explain] p")
+          .first()
+          .textContent()
+          .catch(() => "")
+        await shot(page, "ai-ide-inline-explain-light", { sub: "ai-ide" })
+        // fecha
+        await page.keyboard.press("Escape")
+        await page.waitForTimeout(200)
+
+        report.interactions.inline = {
+          theme,
+          inlineBorder,
+          inlineBorderOpen,
+          inlineBorderVisible:
+            inlineBorderOpen !== null &&
+            parseFloat(inlineBorderOpen.borderWidth) > 0 &&
+            parseColorAlpha(inlineBorderOpen.borderColor) > 0.02,
+          inlineTrigger,
+          inlineInput,
+          inlineActions,
+          inlineAnchorText: (inlineAnchorText || "").replace(/\s+/g, " ").trim(),
+          inlineOpened,
+          loadingShown,
+          diffAfterInline,
+          hunksAfterInline,
+          popoverStillOpen,
+          modifiedAfterInlineAccept,
+          inlineOpenBeforeEsc,
+          inlineOpenAfterEsc,
+          escCloses: inlineOpenAfterEsc === 0,
+          paletteOpenedGlobal,
+          inlineOpenedWhenPaletteOpen,
+          globalPrecedence: paletteOpenedGlobal > 0 && inlineOpenedWhenPaletteOpen === 0,
+          explainShown,
+          popoverAfterExplain,
+          explainText: (explainText || "").replace(/\s+/g, " ").trim(),
+        }
       }
 
       await ctx.close()

@@ -903,3 +903,206 @@ export const GEN_TIMING = {
   /** Intervalo de revelação de cada token no streaming da resposta. */
   streamMs: 38,
 }
+
+/* -------------------------------------------------------------------------- */
+/*                   ⌘K INLINE — patches determinísticos                       */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Ações rápidas do popover inline (⌘K focado no editor).
+ *  - `refactor` e `test` retornam hunks de diff — reusam o modo revisão da F1.
+ *  - `explain` não produz diff: renderiza um texto explicativo dentro do próprio
+ *    popover (modal leve), sem mexer no arquivo.
+ *
+ * Determinístico: cada combinação (arquivo + ação) sempre devolve os MESMOS
+ * hunks/explicação. Sem `Math.random()`.
+ */
+export type InlineAction = "refactor" | "explain" | "test"
+
+export const INLINE_ACTION_LABEL: Record<InlineAction, string> = {
+  refactor: "/refatorar",
+  explain: "/explicar",
+  test: "/gerar teste",
+}
+
+export const INLINE_ACTION_HINT: Record<InlineAction, string> = {
+  refactor: "Refatora a linha atual para ficar mais legível.",
+  explain: "Explica o que a linha/trecho atual faz.",
+  test: "Gera um teste para a função próxima ao caret.",
+}
+
+/**
+ * Mini-resposta explicativa determinística por arquivo (apenas para `/explicar`).
+ * Aparece no próprio popover (estado `inlineEditResult`), sem acionar diff.
+ */
+export const INLINE_EXPLAIN: Record<string, string> = {
+  app:
+    "Este é o componente raiz do app. Ele importa `useState` e `useMemo` do React, lê um `user` da rede via `fetchUser` e renderiza a saudação do `buildGreeting`. A variável `setUser` está reservada para hidratação posterior (ex.: useEffect).",
+  utils:
+    "`utils.ts` reúne funções utilitárias puras. `buildGreeting` formata uma saudação usando o nome do `user` (ou um fallback) — é determinística, sem side-effects. `classNames` é um `cn` minimalista, equivalente a juntar truthy strings.",
+  api:
+    "Pequeno wrapper de `fetch` com BASE_URL fixa e tratamento de erro (`!res.ok`). Para um projeto real vale extrair a base do `import.meta.env` e tipar a resposta com `User`.",
+  styles:
+    "Folha de estilo do `App`. Usa `display: grid` no container e tipografia com `system-ui` — minimalista, sem dependências.",
+  readme:
+    "README curto explicando o que é o projeto e listando os scripts `npm run dev` / `npm run build`. Boa base para documentar arquitetura depois.",
+  pkg:
+    "`package.json` mínimo com dois scripts (`dev` e `build`) usando Vite. Sem dependências declaradas — ideal para expandir conforme o app cresce.",
+}
+
+function refactorApp(): AiCode {
+  return {
+    language: "tsx",
+    filename: "src/App.tsx",
+    targetId: "app",
+    code: `import { useMemo, useState } from "react"
+import { buildGreeting } from "@/lib/utils"
+import { fetchUser } from "@/lib/api"
+import type { User } from "@/lib/api"
+
+export function App() {
+  const [user, setUser] = useState<User | null>(null)
+  const greeting = useMemo(() => buildGreeting(user), [user])
+
+  return (
+    <main className="app">
+      <h1>{greeting}</h1>
+      <p>{user ? user.name : "Carregando…"}</p>
+    </main>
+  )
+}`,
+    blocks: [
+      {
+        kind: "context",
+        lines: [
+          `import { useMemo, useState } from "react"`,
+          `import { buildGreeting } from "@/lib/utils"`,
+          `import { fetchUser } from "@/lib/api"`,
+        ],
+      },
+      {
+        kind: "hunk",
+        id: "inline-refactor-app-import",
+        removed: [],
+        added: [`import type { User } from "@/lib/api"`],
+      },
+      { kind: "context", lines: ["", "export function App() {"] },
+      {
+        kind: "hunk",
+        id: "inline-refactor-app-state",
+        removed: ["  const [user, setUser] = useState(null)"],
+        added: [
+          "  const [user, setUser] = useState<User | null>(null)",
+          "  const greeting = useMemo(() => buildGreeting(user), [user])",
+        ],
+      },
+      {
+        kind: "context",
+        lines: ["", "  return (", `    <main className="app">`],
+      },
+      {
+        kind: "hunk",
+        id: "inline-refactor-app-h1",
+        removed: ["      <h1>Olá, mundo</h1>"],
+        added: ["      <h1>{greeting}</h1>"],
+      },
+      {
+        kind: "context",
+        lines: [
+          `      <p>{user ? user.name : "Carregando…"}</p>`,
+          "    </main>",
+          "  )",
+          "}",
+        ],
+      },
+    ],
+  }
+}
+
+function testApp(): AiCode {
+  return {
+    language: "tsx",
+    filename: "src/App.test.tsx",
+    targetId: "app",
+    code: `import { describe, expect, it } from "vitest"
+import { render, screen } from "@testing-library/react"
+import { App } from "@/App"
+
+describe("App", () => {
+  it("renderiza o estado inicial com a saudação padrão", () => {
+    render(<App />)
+    expect(screen.getByText("Olá, mundo")).toBeInTheDocument()
+  })
+
+  it("mostra 'Carregando…' enquanto não há usuário", () => {
+    render(<App />)
+    expect(screen.getByText(/Carregando…/)).toBeInTheDocument()
+  })
+})`,
+    blocks: [
+      { kind: "context", lines: ["// arquivo: src/App.tsx"] },
+      {
+        kind: "hunk",
+        id: "inline-test-app",
+        removed: [
+          `import { useMemo, useState } from "react"`,
+          `import { buildGreeting } from "@/lib/utils"`,
+          `import { fetchUser } from "@/lib/api"`,
+        ],
+        added: [
+          `import { describe, expect, it } from "vitest"`,
+          `import { render, screen } from "@testing-library/react"`,
+          `import { App } from "@/App"`,
+        ],
+      },
+      {
+        kind: "context",
+        lines: [
+          "",
+          'describe("App", () => {',
+          '  it("renderiza o estado inicial com a saudação padrão", () => {',
+          "    render(<App />)",
+          '    expect(screen.getByText("Olá, mundo")).toBeInTheDocument()',
+          "  })",
+          "",
+          '  it("mostra \'Carregando…\' enquanto não há usuário", () => {',
+          "    render(<App />)",
+          "    expect(screen.getByText(/Carregando…/)).toBeInTheDocument()",
+          "  })",
+          "})",
+        ],
+      },
+    ],
+  }
+}
+
+/**
+ * Resolve o patch determinístico para um arquivo+ação. Retorna `null` para a
+ * combinação desconhecida (a UI exibe "nada para aplicar" sem crashar).
+ */
+export function resolveInlinePatch(
+  fileId: string,
+  action: InlineAction,
+):
+  | { kind: "diff"; code: AiCode }
+  | { kind: "explain"; text: string }
+  | null {
+  if (action === "explain") {
+    const text = INLINE_EXPLAIN[fileId]
+    return text ? { kind: "explain", text } : null
+  }
+  if (action === "refactor") {
+    if (fileId === "app") return { kind: "diff", code: refactorApp() }
+    return null
+  }
+  if (action === "test") {
+    if (fileId === "app") return { kind: "diff", code: testApp() }
+    return null
+  }
+  return null
+}
+
+/** Tempo (ms) do mini-loading do popover inline antes de aplicar a sugestão. */
+export const INLINE_TIMING = {
+  loadingMs: 820,
+}
