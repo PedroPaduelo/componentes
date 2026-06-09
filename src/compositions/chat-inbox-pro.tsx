@@ -19,9 +19,12 @@
  */
 import { useEffect, useRef, useState } from "react"
 import {
-  BellOff,
+  Bell,
   Check,
   CheckCheck,
+  ChevronLeft,
+  Eraser,
+  Info,
   MoreVertical,
   Paperclip,
   Phone,
@@ -29,10 +32,10 @@ import {
   PinOff,
   Search,
   Star,
-  Trash2,
+  StarOff,
   Video,
+  VolumeX,
   X,
-  Mail,
 } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 
@@ -58,6 +61,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { SwitchFluid } from "@/components/ui/switch-fluid"
 import { cn } from "@/lib/utils"
 import { springs } from "@/lib/springs"
 
@@ -183,6 +188,110 @@ const AUTO_REPLIES: Record<string, string> = {
 }
 
 const SIMULATED_REPLY_MS = 1100
+
+const SHARED_MEDIA: Record<string, { src: string; alt: string }[]> = {
+  ana: [
+    { src: "https://picsum.photos/seed/ana-m1/200/200", alt: "Mockup home" },
+    { src: "https://picsum.photos/seed/ana-m2/200/200", alt: "Proposta v2" },
+    { src: "https://picsum.photos/seed/ana-m3/200/200", alt: "Contrato PDF" },
+  ],
+  bruno: [
+    { src: "https://picsum.photos/seed/bruno-m1/200/200", alt: "Screenshot CI" },
+    { src: "https://picsum.photos/seed/bruno-m2/200/200", alt: "Dashboard" },
+  ],
+  carla: [
+    { src: "https://picsum.photos/seed/carla-m1/200/200", alt: "Hero home" },
+    { src: "https://picsum.photos/seed/carla-m2/200/200", alt: "CTA escuro" },
+  ],
+  diego: [
+    { src: "https://picsum.photos/seed/diego-m1/200/200", alt: "Roadmap Q1" },
+  ],
+  elaine: [
+    { src: "https://picsum.photos/seed/elaine-m1/200/200", alt: "Relatório" },
+  ],
+  felipe: [
+    { src: "https://picsum.photos/seed/felipe-m1/200/200", alt: "Café roadmap" },
+  ],
+}
+
+const CONTACT_PROFILE: Record<string, { role: string; email: string; phone: string; location: string }> = {
+  ana: { role: "Diretora comercial · Acme Co.", email: "ana.marques@acme.com", phone: "+55 11 98812-4421", location: "São Paulo, BR" },
+  bruno: { role: "Engenheiro de plataforma · Bytewave", email: "bruno.t@bytewave.io", phone: "+55 11 99745-1102", location: "Rio de Janeiro, BR" },
+  carla: { role: "Lead designer · Folio Studio", email: "carla@folio.studio", phone: "+55 21 98230-0921", location: "Belo Horizonte, BR" },
+  diego: { role: "PM · Northstar Labs", email: "diego.lemos@northstar.dev", phone: "+55 31 98911-7740", location: "Curitiba, BR" },
+  elaine: { role: "Analista de dados · Quartzo", email: "elaine.s@quartzo.com.br", phone: "+55 11 99872-2244", location: "Florianópolis, BR" },
+  felipe: { role: "Head de produto · Polvo", email: "felipe@polvo.app", phone: "+55 11 98123-9090", location: "Porto Alegre, BR" },
+}
+
+function ContactDetailsPanel({
+  conversation,
+  muted,
+  pinned,
+  onToggleMute,
+  onTogglePin,
+  onClose,
+}: {
+  conversation: Conversation
+  muted: boolean
+  pinned: boolean
+  onToggleMute: () => void
+  onTogglePin: () => void
+  onClose?: () => void
+}) {
+  const profile = CONTACT_PROFILE[conversation.id] ?? { role: "Contato", email: "—", phone: "—", location: "—" }
+  const media = SHARED_MEDIA[conversation.id] ?? []
+  return (
+    <div className="flex h-full min-h-0 flex-col">
+      <header className="flex items-center justify-between border-b border-border px-4 py-3">
+        <h2 className="text-sm font-semibold">Detalhes do contato</h2>
+        {onClose && (
+          <ButtonFluid variant="ghost" size="icon-sm" aria-label="Fechar detalhes" onClick={onClose}>
+            <X size={16} />
+          </ButtonFluid>
+        )}
+      </header>
+      <div className="flex shrink-0 flex-col items-center gap-2 border-b border-border px-6 py-5 text-center">
+        <img src={avatarUrl(conversation.seed, 160)} alt="" width={96} height={96} className="size-24 rounded-full object-cover" />
+        <p className="truncate text-sm font-semibold text-foreground">{conversation.name}</p>
+        <p className="truncate text-[12px] text-muted-foreground">{profile.role}</p>
+        <div className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+          <span aria-hidden className={cn("size-1.5 rounded-full", PRESENCE_COLOR[conversation.presence])} />
+          {presenceSubtitle(conversation.presence, false, conversation.lastSeenMin)}
+        </div>
+      </div>
+      <div className="flex shrink-0 flex-col gap-2 border-b border-border px-4 py-3 text-[12px]">
+        <DetailRow label="E-mail" value={profile.email} />
+        <DetailRow label="Telefone" value={profile.phone} />
+        <DetailRow label="Local" value={profile.location} />
+      </div>
+      <div className="flex shrink-0 flex-col gap-0.5 border-b border-border px-2 py-2">
+        <SwitchFluid label="Silenciar conversa" checked={muted} onToggle={onToggleMute} />
+        <SwitchFluid label="Fixar conversa" checked={pinned} onToggle={onTogglePin} />
+      </div>
+      <div className="flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto px-4 py-4">
+        <h3 className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">Mídia compartilhada</h3>
+        {media.length === 0 ? (
+          <p className="text-[12px] text-muted-foreground">Nenhuma mídia ainda nesta conversa.</p>
+        ) : (
+          <div className="grid grid-cols-3 gap-2">
+            {media.map((m) => (
+              <img key={m.src} src={m.src} alt={m.alt} loading="lazy" className="aspect-square w-full rounded-md object-cover ring-1 ring-border" />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function DetailRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between gap-2">
+      <span className="text-muted-foreground">{label}</span>
+      <span className="truncate text-right font-medium text-foreground">{value}</span>
+    </div>
+  )
+}
 
 function avatarUrl(seed: string, size = 80) {
   return `https://picsum.photos/seed/${seed}/${size}/${size}`
@@ -348,6 +457,81 @@ function presenceSubtitle(presence: Presence, isTyping: boolean, lastSeenMin: nu
   return `Visto há ${days} ${days === 1 ? "dia" : "dias"}`
 }
 
+/* -------------------------------------------------------------------------- */
+/*                       Mobile list panel (extracted)                          */
+/* -------------------------------------------------------------------------- */
+
+function MobileListPanelInner({
+  selectedId,
+  unread,
+  previewTicks,
+  query,
+  onQueryChange,
+  tab,
+  onTabChange,
+  conversations,
+  totalUnread,
+  favoritesCount,
+  onSelect,
+}: {
+  selectedId: string
+  unread: Record<string, number>
+  previewTicks: Record<string, Ticks | undefined>
+  query: string
+  onQueryChange: (q: string) => void
+  tab: FilterTab
+  onTabChange: (t: FilterTab) => void
+  conversations: Conversation[]
+  totalUnread: number
+  favoritesCount: number
+  onSelect: (id: string) => void
+}) {
+  const visible = filterConversations(conversations, tab, query, unread)
+  return (
+    <div className="flex h-full w-full flex-col">
+      <header className="flex h-[3.75rem] shrink-0 items-center justify-between gap-2 border-b border-border px-4 py-3">
+        <h2 className="text-sm font-semibold">Mensagens</h2>
+        <span className="text-[11px] text-muted-foreground">{visible.length} de {conversations.length}</span>
+      </header>
+      <div className="shrink-0 px-3 pt-3">
+        <SearchInput value={query} onChange={onQueryChange} />
+      </div>
+      <div className="shrink-0 px-3 pt-2">
+        <TabsSubtleFluid selectedIndex={tabToIndex(tab)} onSelect={(i) => onTabChange(indexToTab(i))} activeLabel className="w-full">
+          <TabsSubtleFluidItem icon={InboxAllIcon} label={`Todas (${conversations.length})`} index={0} />
+          <TabsSubtleFluidItem icon={InboxUnreadIcon} label={`Não lidas (${totalUnread})`} index={1} />
+          <TabsSubtleFluidItem icon={Star} label={`Favoritas (${favoritesCount})`} index={2} />
+        </TabsSubtleFluid>
+      </div>
+      <div className="flex flex-1 flex-col gap-1 overflow-y-auto p-2">
+        {visible.length > 0 ? (
+          visible.map((c) => (
+            <ConversationItem
+              key={c.id}
+              conversation={c}
+              active={c.id === selectedId}
+              unread={unread[c.id] ?? 0}
+              previewTicks={previewTicks[c.id]}
+              onSelect={() => onSelect(c.id)}
+            />
+          ))
+        ) : (
+          <EmptyListState
+            hasQuery={query.trim().length > 0}
+            tab={tab}
+            onClearQuery={() => onQueryChange("")}
+            onClearTab={() => onTabChange("all")}
+          />
+        )}
+      </div>
+    </div>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                ChatInboxPro                                 */
+/* -------------------------------------------------------------------------- */
+
 export function ChatInboxPro() {
   const attachment = useGeneratedImageFile()
   const [selectedId, setSelectedId] = useState<string>("ana")
@@ -360,6 +544,8 @@ export function ChatInboxPro() {
   const [tab, setTab] = useState<FilterTab>("all")
   const [thinkingId, setThinkingId] = useState<string | null>(null)
   const [muted, setMuted] = useState<Record<string, boolean>>({})
+  const [detailsOpen, setDetailsOpen] = useState(false)
+  const [listMobileOpen, setListMobileOpen] = useState(false)
 
   const scrollRef = useRef<HTMLDivElement>(null)
   const thinkingTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -540,6 +726,15 @@ export function ChatInboxPro() {
       <section className="flex min-w-0 flex-1 flex-col">
         <header className="flex h-[3.75rem] shrink-0 items-center justify-between gap-3 border-b border-border px-4 py-3">
           <div className="flex min-w-0 items-center gap-3">
+            <ButtonFluid
+              variant="ghost"
+              size="icon-sm"
+              aria-label="Voltar para a lista"
+              onClick={() => setListMobileOpen(true)}
+              className="md:hidden"
+            >
+              <ChevronLeft size={16} />
+            </ButtonFluid>
             <span className="relative inline-flex shrink-0">
               <img src={avatarUrl(selected.seed)} alt="" width={36} height={36} className="size-9 rounded-full object-cover" />
               <span aria-hidden className={cn("absolute -bottom-0.5 -right-0.5 size-2.5 rounded-full ring-2 ring-card", selectedPresence)} />
@@ -582,6 +777,15 @@ export function ChatInboxPro() {
               onClear={() => clearConversation(selected.id)}
               onToggleFavorite={() => toggleFavorite(selected.id)}
             />
+            <ButtonFluid
+              variant="ghost"
+              size="icon-sm"
+              aria-label="Abrir detalhes do contato"
+              onClick={() => setDetailsOpen(true)}
+              className="md:inline-flex xl:hidden"
+            >
+              <Info size={16} />
+            </ButtonFluid>
           </div>
         </header>
 
@@ -681,6 +885,64 @@ export function ChatInboxPro() {
           )}
         </div>
       </section>
+
+      {/* ── Painel de detalhes (3ª coluna em xl+) ─────────────────────── */}
+      <aside className="hidden w-80 shrink-0 border-l border-border xl:flex">
+        <ContactDetailsPanel
+          conversation={selected}
+          muted={!!muted[selected.id]}
+          pinned={selected.pinned}
+          onToggleMute={() => toggleMute(selected.id)}
+          onTogglePin={() => togglePin(selected.id)}
+        />
+      </aside>
+
+      {/* ── Drawer: lista (mobile) ──────────────────────────────────────── */}
+      <Sheet open={listMobileOpen} onOpenChange={setListMobileOpen}>
+        <SheetContent
+          side="left"
+          className="w-80 max-w-[90vw] gap-0 border-r border-border bg-card p-0 text-card-foreground"
+        >
+          <SheetHeader className="sr-only">
+            <SheetTitle>Lista de conversas</SheetTitle>
+            <SheetDescription>Selecione uma conversa para abrir a thread.</SheetDescription>
+          </SheetHeader>
+          <MobileListPanelInner
+            selectedId={selectedId}
+            unread={unread}
+            previewTicks={previewTicks}
+            query={query}
+            onQueryChange={setQuery}
+            tab={tab}
+            onTabChange={setTab}
+            conversations={sortedConversations}
+            totalUnread={totalUnread(unread)}
+            favoritesCount={countFavorites(conversations)}
+            onSelect={selectConversation}
+          />
+        </SheetContent>
+      </Sheet>
+
+      {/* ── Drawer: detalhes (md–xl) ────────────────────────────────────── */}
+      <Sheet open={detailsOpen} onOpenChange={setDetailsOpen}>
+        <SheetContent
+          side="right"
+          className="w-96 max-w-[95vw] gap-0 border-l border-border bg-card p-0 text-card-foreground"
+        >
+          <SheetHeader className="sr-only">
+            <SheetTitle>Detalhes do contato</SheetTitle>
+            <SheetDescription>Mídia compartilhada e configurações da conversa.</SheetDescription>
+          </SheetHeader>
+          <ContactDetailsPanel
+            conversation={selected}
+            muted={!!muted[selected.id]}
+            pinned={selected.pinned}
+            onToggleMute={() => toggleMute(selected.id)}
+            onTogglePin={() => togglePin(selected.id)}
+            onClose={() => setDetailsOpen(false)}
+          />
+        </SheetContent>
+      </Sheet>
     </div>
   )
 }
@@ -708,11 +970,11 @@ function ThreadActions({ conversation, muted, onTogglePin, onMarkUnread, onToggl
           <DropdownFluidLabel>Conversa com {conversation.name}</DropdownFluidLabel>
           <DropdownFluidSeparator />
           <MenuItemFluid index={0} icon={conversation.pinned ? PinOff : Pin} label={conversation.pinned ? "Desafixar" : "Fixar"} onSelect={() => onTogglePin()} />
-          <MenuItemFluid index={1} icon={Star} label={conversation.favorite ? "Remover dos favoritos" : "Favoritar"} onSelect={() => onToggleFavorite()} />
-          <MenuItemFluid index={2} icon={Mail} label="Marcar como não lida" onSelect={() => onMarkUnread()} />
-          <MenuItemFluid index={3} icon={BellOff} label={muted ? "Reativar notificações" : "Silenciar"} onSelect={() => onToggleMute()} />
+          <MenuItemFluid index={1} icon={conversation.favorite ? StarOff : Star} label={conversation.favorite ? "Remover dos favoritos" : "Favoritar"} onSelect={() => onToggleFavorite()} />
+          <MenuItemFluid index={2} icon={Bell} label="Marcar como não lida" onSelect={() => onMarkUnread()} />
+          <MenuItemFluid index={3} icon={VolumeX} label={muted ? "Reativar notificações" : "Silenciar"} onSelect={() => onToggleMute()} />
           <DropdownFluidSeparator />
-          <MenuItemFluid index={4} icon={Trash2} label="Limpar conversa" onSelect={() => onClear()} />
+          <MenuItemFluid index={4} icon={Eraser} label="Limpar conversa" onSelect={() => onClear()} />
         </DropdownFluid>
       </PopoverContent>
     </Popover>
