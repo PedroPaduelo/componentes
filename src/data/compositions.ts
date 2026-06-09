@@ -248,6 +248,14 @@ export const compositions: Composition[] = [
     tags: ["viagem", "booking", "busca", "mapa", "marketing"],
     category: "Marketing",
   },
+  {
+    slug: "ai-ide",
+    name: "IDE com IA",
+    description:
+      "Ambiente de programação estilo VS Code com a IA como protagonista: title bar com traffic-lights e menus, activity bar que troca o side panel (Explorer com file tree clicável, Search com resultados, Source Control com caixa de commit), editor com tabs fecháveis, dot de não-salvo, breadcrumb, numeração de linha, syntax highlight por tokens e ghost suggestion aceitável. Painel inferior com Terminal mock que responde a comandos, Problemas e Saída. Painel da IA (DropdownFluid de modelo, modos Chat/Edit/Agent em TabsSubtleFluid, thread com ThinkingStepsFluid no envio e resposta com bloco de código aplicável que edita o editor e marca o arquivo como modificado), chips de contexto @arquivo, slash commands e composer InputMessageFluid. Command palette ⌘K, status bar reativa e responsivo (IA vira Sheet em telas estreitas).",
+    tags: ["ide", "ia", "vscode", "editor", "copiloto", "app", "interativo"],
+    category: "Aplicação",
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
