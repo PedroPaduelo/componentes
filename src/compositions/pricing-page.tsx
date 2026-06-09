@@ -19,9 +19,13 @@ import { Fragment, useMemo, useState } from "react"
 import {
   BadgeCheck,
   Check,
+  Gauge,
+  Globe,
   Headphones,
+  Lock,
   Minus,
   Plug,
+  Puzzle,
   ShieldCheck,
   Sparkles,
   TrendingDown,
@@ -44,6 +48,7 @@ import {
   CardTitle,
   DottedGlowBackground,
   InfiniteMovingCards,
+  Input,
   LogoSlider,
   ScalesContainer,
   Slider,
@@ -253,6 +258,37 @@ const addons: {
   },
 ]
 
+/** Diferenciais incluídos em todos os planos. */
+const benefits: { icon: typeof Gauge; title: string; description: string }[] = [
+  {
+    icon: Gauge,
+    title: "Performance de ponta",
+    description:
+      "Infraestrutura distribuída globalmente para carregar tudo em milissegundos.",
+  },
+  {
+    icon: Puzzle,
+    title: "Encaixa no seu fluxo",
+    description:
+      "Integra com as ferramentas que você já usa, sem reinventar o processo.",
+  },
+  {
+    icon: Lock,
+    title: "Seguro por padrão",
+    description:
+      "Criptografia de ponta a ponta e controle granular de permissões.",
+  },
+  {
+    icon: Globe,
+    title: "Pronto para escala",
+    description:
+      "De projetos solo a organizações com milhares de assentos ativos.",
+  },
+]
+
+/** Selos de conformidade exibidos na faixa de segurança. */
+const compliance = ["SOC 2 Type II", "GDPR", "ISO 27001", "LGPD", "99,9% SLA"]
+
 function formatPrice(value: number): string {
   return value.toLocaleString("pt-BR")
 }
@@ -284,6 +320,8 @@ function FeatureValue({ value }: { value: FeatureCell }) {
 export function PricingPage() {
   const [annual, setAnnual] = useState(false)
   const [seats, setSeats] = useState(5)
+  const [email, setEmail] = useState("")
+  const [submitted, setSubmitted] = useState(false)
 
   const proMonthly = plans.find((p) => p.highlighted)?.monthly ?? 29
 
@@ -460,6 +498,40 @@ export function PricingPage() {
               </Card>
             )
           })}
+        </div>
+
+        {/* Diferenciais incluídos em todos os planos */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+              Tudo que você precisa, em qualquer plano
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Recursos essenciais que acompanham você desde o primeiro dia.
+            </p>
+          </div>
+
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {benefits.map((benefit) => {
+              const Icon = benefit.icon
+              return (
+                <div
+                  key={benefit.title}
+                  className="flex flex-col gap-3 rounded-xl border border-border/60 bg-card/40 p-5"
+                >
+                  <div className="flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <Icon className="size-5" aria-hidden="true" />
+                  </div>
+                  <h3 className="text-sm font-semibold text-foreground">
+                    {benefit.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    {benefit.description}
+                  </p>
+                </div>
+              )
+            })}
+          </div>
         </div>
 
         {/* Calculadora de assentos */}
@@ -682,6 +754,27 @@ export function PricingPage() {
           </div>
         </div>
 
+        {/* Segurança & compliance */}
+        <div className="mt-16">
+          <p className="text-center text-xs font-medium uppercase tracking-widest text-muted-foreground">
+            Segurança de nível empresarial
+          </p>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+            {compliance.map((item) => (
+              <span
+                key={item}
+                className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-card/60 px-3 py-1.5 text-xs font-medium text-foreground"
+              >
+                <ShieldCheck
+                  className="size-3.5 text-primary"
+                  aria-hidden="true"
+                />
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+
         {/* Garantia */}
         <div className="mt-16">
           <div className="flex flex-col items-center gap-4 rounded-2xl border border-primary/30 bg-primary/5 px-6 py-8 text-center sm:flex-row sm:gap-5 sm:text-left">
@@ -702,6 +795,60 @@ export function PricingPage() {
               Sem risco
             </Badge>
           </div>
+        </div>
+
+        {/* Contato Enterprise */}
+        <div className="mt-16">
+          <Card className="bg-card/80 backdrop-blur-sm">
+            <CardContent className="grid gap-8 py-8 md:grid-cols-2 md:items-center">
+              <div>
+                <Badge variant="secondary" className="mb-3 gap-1">
+                  <Sparkles className="size-3.5" aria-hidden="true" />
+                  Enterprise
+                </Badge>
+                <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+                  Precisa de algo sob medida?
+                </h2>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  Volumes maiores, contratos personalizados e onboarding
+                  dedicado. Deixe seu e-mail que nosso time entra em contato.
+                </p>
+              </div>
+
+              {submitted ? (
+                <div className="flex items-center gap-3 rounded-lg border border-primary/30 bg-primary/5 px-4 py-4 text-sm text-foreground">
+                  <BadgeCheck
+                    className="size-5 shrink-0 text-primary"
+                    aria-hidden="true"
+                  />
+                  <span>
+                    Obrigado! Recebemos seu contato e retornaremos em breve.
+                  </span>
+                </div>
+              ) : (
+                <form
+                  className="flex flex-col gap-3 sm:flex-row"
+                  onSubmit={(e) => {
+                    e.preventDefault()
+                    if (email.trim()) setSubmitted(true)
+                  }}
+                >
+                  <Input
+                    type="email"
+                    required
+                    placeholder="seu@email.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    aria-label="E-mail corporativo"
+                    className="bg-background"
+                  />
+                  <Button type="submit" className="shrink-0">
+                    Falar com vendas
+                  </Button>
+                </form>
+              )}
+            </CardContent>
+          </Card>
         </div>
 
         {/* CTA final */}
