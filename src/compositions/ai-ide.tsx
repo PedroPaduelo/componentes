@@ -3,21 +3,25 @@
  *
  * Ambiente de IDE estilo VS Code montado SÓ com componentes do registry da
  * vitrine, 100% mocado, com a IA como protagonista. Tudo em tokens shadcn
- * (light/dark), responsivo (painel da IA vira Sheet em telas estreitas).
+ * (light/dark), responsivo (painel da IA vira Sheet em telas estreitas) e
+ * mais largo via flag `wide` em CompositionDetail.
  *
- * Estado real (useState/useMemo/useRef):
- *  - Activity bar troca o side panel (Explorer / Search / Source Control).
- *  - File tree abre/foca tabs no editor; tabs fecháveis com dot de não-salvo.
- *  - Editor apresentacional com numeração de linha, syntax highlight por
- *    tokens e ghost suggestion inline aceitável (Tab/botão).
- *  - Painel da IA: seletor de modelo (DropdownFluid), modos Chat/Edit/Agent
- *    (TabsSubtleFluid), thread (ChatMessageFluid), raciocínio (ThinkingStepsFluid)
- *    no envio, resposta com bloco de código + "Aplicar" que edita o arquivo
- *    (mock) e o marca como modificado (dot na tab + Source Control + status bar),
- *    chips de contexto (@arquivo), slash commands e composer (InputMessageFluid).
- *  - Painel inferior: Terminal mock que responde a comandos, Problems, Output.
- *  - Command palette (⌘K) busca arquivos e comandos e executa a ação.
- *  - Status bar reativa (branch, erros/warnings, linguagem, Ln/Col).
+ * Imersão total — todos os botões reagem:
+ *  - Explorer com árvore MUTÁVEL: abrir/fechar pastas, criar arquivo/pasta
+ *    (input inline), renomear e excluir (menu de ações no hover).
+ *  - Title bar com menus Arquivo/Editar/Ver como dropdowns de ações reais.
+ *  - Activity bar troca painel (Explorer/Search/SCM/Run/Extensions/Settings);
+ *    Run dispara no terminal; Settings tem preferências com SwitchFluid.
+ *  - Editor com tabs fecháveis, caret por linha (Ln/Col) e ghost suggestion.
+ *  - Painel inferior Terminal/Problems/Output, colapsável; terminal responde.
+ *  - Command palette ⌘K.
+ *
+ * Chat com IA "UAU": ao enviar um prompt, a bolha do assistant traz o
+ * raciocínio EMBUTIDO num bloco disclosure — expandido durante o "pensar"
+ * (passos em streaming + indicador + contador de tempo) e auto-contraído ao
+ * terminar para "Pensei por Ns ›", reabrível por clique. Em seguida a resposta
+ * final aparece com efeito de digitação token-a-token e bloco de código
+ * aplicável. Todos os timers limpos via refs no unmount/troca de prompt.
  */
 import {
   useCallback,
@@ -34,33 +38,35 @@ import {
   Circle,
   CircleDot,
   FileCode2,
+  FilePlus,
   FileText,
   Files,
-  FileType2,
   FolderOpen,
+  FolderPlus,
   GitBranch,
   Hash,
+  Pencil,
   Play,
   Puzzle,
   Search,
   Settings,
   Sparkles,
   TerminalSquare,
+  Trash2,
   TriangleAlert,
   X,
   Braces,
+  FileType2,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
 
 import { ButtonFluid } from "@/components/ui/button-fluid"
 import { BadgeFluid } from "@/components/ui/badge-fluid"
 import { TooltipFluid } from "@/components/ui/tooltip-fluid"
+import { SwitchFluid } from "@/components/ui/switch-fluid"
 import { InputMessageFluid } from "@/components/ui/input-message-fluid"
 import {
   ChatMessageFluid,
-  ThinkingStepsFluid,
-  ThinkingStepsHeaderFluid,
-  ThinkingStepsContentFluid,
   ThinkingStepFluid,
   ThinkingStepDetailsFluid,
   ThinkingStepSourcesFluid,
@@ -88,72 +94,47 @@ import {
 } from "@/components/ui"
 import { ThinkingIndicatorFluid } from "@/components/ui/thinking-indicator-fluid"
 import { MenuItemFluid } from "@/components/ui/menu-item-fluid"
+import { useTheme } from "@/components/theme/use-theme"
 import { cn } from "@/lib/utils"
+import {
+  AI_MODES,
+  GEN_TIMING,
+  INITIAL_THREAD,
+  INITIAL_TREE,
+  LANG_LABEL,
+  MODELS,
+  REPLY,
+  ROOT_NAME,
+  SLASH_COMMANDS,
+  TERMINAL_RESPONSES,
+  THINK_STEPS,
+  TOKEN_CLASS,
+  collectFiles,
+  deleteNode,
+  findPath,
+  insertAtRoot,
+  langFromName,
+  renameNode,
+  toggleDir,
+  tokenizeLine,
+  updateFileCode,
+  type AiCode,
+  type AiMessage,
+  type FileData,
+  type Lang,
+  type TreeNode,
+} from "@/compositions/ai-ide-data"
 
 /* -------------------------------------------------------------------------- */
 /*                            syntax highlight leve                            */
 /* -------------------------------------------------------------------------- */
 
-type TokenKind =
-  | "keyword"
-  | "string"
-  | "comment"
-  | "number"
-  | "fn"
-  | "tag"
-  | "plain"
-
-const TOKEN_CLASS: Record<TokenKind, string> = {
-  keyword: "text-violet-500 dark:text-violet-400",
-  string: "text-emerald-600 dark:text-emerald-400",
-  comment: "text-muted-foreground italic",
-  number: "text-amber-600 dark:text-amber-400",
-  fn: "text-sky-600 dark:text-sky-400",
-  tag: "text-rose-600 dark:text-rose-400",
-  plain: "text-foreground",
-}
-
-const KEYWORDS = new Set([
-  "const", "let", "var", "function", "return", "if", "else", "for", "while",
-  "import", "export", "from", "default", "async", "await", "class", "extends",
-  "new", "type", "interface", "of", "in", "as", "typeof", "true", "false",
-  "null", "undefined", "void", "this", "def", "lambda", "and", "or", "not",
-])
-
-const TOKEN_RE =
-  /(\/\/[^\n]*|#[^\n]*)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|`(?:\\.|[^`\\])*`)|(\b\d+(?:\.\d+)?\b)|(\b[A-Za-z_$][A-Za-z0-9_$]*\b)|(\s+)|([^\sA-Za-z0-9_$])/g
-
-type Token = { text: string; kind: TokenKind }
-
-function tokenizeLine(line: string): Token[] {
-  const tokens: Token[] = []
-  TOKEN_RE.lastIndex = 0
-  let match: RegExpExecArray | null
-  while ((match = TOKEN_RE.exec(line)) !== null) {
-    const [, comment, str, num, ident, space, sym] = match
-    if (comment !== undefined) {
-      tokens.push({ text: comment, kind: "comment" })
-    } else if (str !== undefined) {
-      tokens.push({ text: str, kind: "string" })
-    } else if (num !== undefined) {
-      tokens.push({ text: num, kind: "number" })
-    } else if (ident !== undefined) {
-      if (KEYWORDS.has(ident)) {
-        tokens.push({ text: ident, kind: "keyword" })
-      } else {
-        let k = TOKEN_RE.lastIndex
-        while (k < line.length && line[k] === " ") k++
-        if (line[k] === "(") tokens.push({ text: ident, kind: "fn" })
-        else if (/^[A-Z]/.test(ident)) tokens.push({ text: ident, kind: "tag" })
-        else tokens.push({ text: ident, kind: "plain" })
-      }
-    } else if (space !== undefined) {
-      tokens.push({ text: space, kind: "plain" })
-    } else if (sym !== undefined) {
-      tokens.push({ text: sym, kind: "plain" })
-    }
-  }
-  return tokens
+const LANG_ICON: Record<Lang, LucideIcon> = {
+  tsx: FileCode2,
+  ts: FileType2,
+  css: Braces,
+  md: FileText,
+  json: Braces,
 }
 
 function HighlightedLine({ line }: { line: string }) {
@@ -174,307 +155,16 @@ function HighlightedLine({ line }: { line: string }) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                              modelo de dados                                */
-/* -------------------------------------------------------------------------- */
-
-type Lang = "tsx" | "ts" | "css" | "md" | "json"
-
-const LANG_LABEL: Record<Lang, string> = {
-  tsx: "TypeScript React",
-  ts: "TypeScript",
-  css: "CSS",
-  md: "Markdown",
-  json: "JSON",
-}
-
-const LANG_ICON: Record<Lang, LucideIcon> = {
-  tsx: FileCode2,
-  ts: FileType2,
-  css: Braces,
-  md: FileText,
-  json: Braces,
-}
-
-type FileNode = {
-  id: string
-  name: string
-  path: string
-  lang: Lang
-  /** Código inicial (mock). Mutável em runtime via "Aplicar" da IA. */
-  code: string
-  /** Sugestão fantasma inline aceitável (apenas no arquivo de boas-vindas). */
-  ghost?: string
-  /** Problemas associados ao arquivo (para o painel Problems). */
-  problems?: { line: number; message: string; severity: "error" | "warning" }[]
-}
-
-type TreeDir = {
-  id: string
-  name: string
-  children: (TreeDir | { fileId: string })[]
-}
-
-const FILES: FileNode[] = [
-  {
-    id: "app",
-    name: "App.tsx",
-    path: "src/App.tsx",
-    lang: "tsx",
-    ghost: `  const greeting = useMemo(() => buildGreeting(user), [user])`,
-    code: `import { useMemo, useState } from "react"
-import { buildGreeting } from "@/lib/utils"
-import { fetchUser } from "@/lib/api"
-
-export function App() {
-  const [user, setUser] = useState(null)
-
-  return (
-    <main className="app">
-      <h1>Olá, mundo</h1>
-      <p>{user ? user.name : "Carregando…"}</p>
-    </main>
-  )
-}`,
-    problems: [
-      { line: 5, message: "'setUser' is declared but never used.", severity: "warning" },
-    ],
-  },
-  {
-    id: "utils",
-    name: "utils.ts",
-    path: "src/lib/utils.ts",
-    lang: "ts",
-    code: `// Funções utilitárias compartilhadas
-export function buildGreeting(user) {
-  if (!user) return "Bem-vindo"
-  return "Olá, " + user.name + "!"
-}
-
-export function classNames(...parts) {
-  return parts.filter(Boolean).join(" ")
-}`,
-  },
-  {
-    id: "api",
-    name: "api.ts",
-    path: "src/lib/api.ts",
-    lang: "ts",
-    code: `const BASE_URL = "https://api.exemplo.dev"
-
-export async function fetchUser(id) {
-  const res = await fetch(BASE_URL + "/users/" + id)
-  if (!res.ok) throw new Error("Falha ao buscar usuário")
-  return res.json()
-}`,
-    problems: [
-      { line: 3, message: "Parameter 'id' implicitly has an 'any' type.", severity: "error" },
-    ],
-  },
-  {
-    id: "styles",
-    name: "index.css",
-    path: "src/index.css",
-    lang: "css",
-    code: `.app {
-  display: grid;
-  gap: 1rem;
-  padding: 2rem;
-  font-family: system-ui, sans-serif;
-}
-
-.app h1 {
-  font-size: 1.5rem;
-  font-weight: 600;
-}`,
-  },
-  {
-    id: "readme",
-    name: "README.md",
-    path: "README.md",
-    lang: "md",
-    code: `# Aurora App
-
-Projeto de exemplo gerado pela IDE com IA.
-
-## Scripts
-
-- npm run dev — inicia o servidor
-- npm run build — gera o bundle de produção
-
-> Dica: peça à IA para explicar ou refatorar qualquer arquivo.`,
-  },
-  {
-    id: "pkg",
-    name: "package.json",
-    path: "package.json",
-    lang: "json",
-    code: `{
-  "name": "aurora-app",
-  "version": "1.0.0",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build"
-  }
-}`,
-  },
-]
-
-const TREE: TreeDir = {
-  id: "root",
-  name: "aurora-app",
-  children: [
-    {
-      id: "src",
-      name: "src",
-      children: [
-        {
-          id: "lib",
-          name: "lib",
-          children: [{ fileId: "utils" }, { fileId: "api" }],
-        },
-        { fileId: "app" },
-        { fileId: "styles" },
-      ],
-    },
-    { fileId: "readme" },
-    { fileId: "pkg" },
-  ],
-}
-
-type Role = "user" | "assistant"
-
-type AiCode = { language: Lang; filename: string; code: string; targetId: string }
-
-type AiMessage = {
-  id: number
-  from: Role
-  text: string
-  code?: AiCode
-}
-
-const INITIAL_THREAD: AiMessage[] = [
-  {
-    id: 1,
-    from: "assistant",
-    text: "Oi! Sou seu copiloto. Posso explicar, corrigir ou refatorar qualquer arquivo do projeto. Use os comandos rápidos ou escreva um pedido — eu mostro o raciocínio e proponho um patch para você aplicar.",
-  },
-]
-
-type ThinkStep = {
-  icon: "search" | "brain" | "settings" | "check" | "globe"
-  label: string
-  description?: string
-  sources?: { label: string; color: "blue" | "green" | "violet" }[]
-  details?: { summary: string; items: string[] }
-}
-
-const THINK_STEPS: ThinkStep[] = [
-  {
-    icon: "search",
-    label: "Lendo arquivos do contexto",
-    description: "Abrindo o arquivo ativo e suas dependências.",
-    sources: [
-      { label: "src/App.tsx", color: "blue" },
-      { label: "src/lib/utils.ts", color: "green" },
-    ],
-  },
-  {
-    icon: "brain",
-    label: "Analisando o código",
-    description: "Mapeando tipos, fluxo de dados e pontos de melhoria.",
-  },
-  {
-    icon: "settings",
-    label: "Gerando o patch",
-    details: {
-      summary: "Ver raciocínio",
-      items: [
-        "Preserva a API pública dos componentes.",
-        "Adiciona tipos explícitos onde faltavam.",
-      ],
-    },
-  },
-]
-
-type AiModel = { id: string; name: string; vendor: string }
-
-const MODELS: AiModel[] = [
-  { id: "gpt-4o", name: "GPT-4o", vendor: "OpenAI" },
-  { id: "claude-3-7", name: "Claude 3.7 Sonnet", vendor: "Anthropic" },
-  { id: "gemini-2", name: "Gemini 2.0 Pro", vendor: "Google" },
-  { id: "llama-3", name: "Llama 3.1 70B", vendor: "Meta" },
-]
-
-const AI_MODES = ["Chat", "Edit", "Agent"] as const
-
-const SLASH_COMMANDS: { cmd: string; label: string; prompt: string }[] = [
-  { cmd: "/explain", label: "Explicar", prompt: "Explique o que este arquivo faz, linha a linha." },
-  { cmd: "/fix", label: "Corrigir", prompt: "Corrija os erros e warnings deste arquivo." },
-  { cmd: "/tests", label: "Testes", prompt: "Gere testes unitários para as funções deste arquivo." },
-  { cmd: "/refactor", label: "Refatorar", prompt: "Refatore este arquivo para ficar mais legível e tipado." },
-]
-
-const TERMINAL_RESPONSES: Record<string, string[]> = {
-  "npm run dev": [
-    "> aurora-app@1.0.0 dev",
-    "> vite",
-    "",
-    "  VITE v6.0.0  ready in 412 ms",
-    "  ➜  Local:   http://localhost:5173/",
-  ],
-  "npm run build": [
-    "> aurora-app@1.0.0 build",
-    "> vite build",
-    "",
-    "✓ 38 modules transformed.",
-    "dist/index.html  0.46 kB",
-    "✓ built in 1.21s",
-  ],
-  "git status": [
-    "On branch main",
-    "Changes not staged for commit:",
-    "  modified:   src/App.tsx",
-    "",
-    'no changes added to commit (use "git add")',
-  ],
-  ls: ["README.md  package.json  src  node_modules"],
-  help: [
-    "Comandos disponíveis: npm run dev, npm run build, git status, ls, clear, help",
-  ],
-}
-
-const REPLY_DELAY_MS = 1300
-
-const REPLY: { text: string; code: AiCode } = {
-  text: "Analisei o arquivo e preparei um patch: tipei os parâmetros, removi o estado não usado e memoizei a saudação. Revise e clique em Aplicar para escrever no editor.",
-  code: {
-    language: "tsx",
-    filename: "src/App.tsx",
-    targetId: "app",
-    code: `import { useMemo, useState } from "react"
-import { buildGreeting } from "@/lib/utils"
-import { fetchUser } from "@/lib/api"
-import type { User } from "@/lib/api"
-
-export function App() {
-  const [user, setUser] = useState<User | null>(null)
-  const greeting = useMemo(() => buildGreeting(user), [user])
-
-  return (
-    <main className="app">
-      <h1>{greeting}</h1>
-      <p>{user ? user.name : "Carregando…"}</p>
-    </main>
-  )
-}`,
-  },
-}
-
-/* -------------------------------------------------------------------------- */
 /*                              sub-componentes                                */
 /* -------------------------------------------------------------------------- */
 
-type ActivityKey = "explorer" | "search" | "scm" | "run" | "extensions"
+type ActivityKey =
+  | "explorer"
+  | "search"
+  | "scm"
+  | "run"
+  | "extensions"
+  | "settings"
 
 function ActivityBar({
   active,
@@ -535,7 +225,15 @@ function ActivityBar({
         <TooltipFluid content="Configurações" side="right">
           <button
             type="button"
-            className="flex size-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent/50 hover:text-foreground"
+            onClick={() => onSelect("settings")}
+            aria-current={active === "settings" ? "true" : undefined}
+            data-active={active === "settings" ? "true" : undefined}
+            className={cn(
+              "flex size-10 items-center justify-center rounded-lg transition-colors",
+              active === "settings"
+                ? "bg-accent text-foreground"
+                : "text-muted-foreground hover:bg-accent/50 hover:text-foreground",
+            )}
             aria-label="Configurações"
           >
             <Settings className="size-5" />
@@ -546,35 +244,126 @@ function ActivityBar({
   )
 }
 
+/* ---- file tree (estado mutável) ---- */
+
+const TREE_PAD: Record<number, string> = {
+  0: "pl-2",
+  1: "pl-5",
+  2: "pl-8",
+  3: "pl-11",
+  4: "pl-14",
+}
+
+type TreeActions = {
+  activeId: string
+  modified: Set<string>
+  renamingId: string | null
+  renameValue: string
+  onOpenFile: (id: string) => void
+  onToggleDir: (id: string) => void
+  onStartRename: (id: string, current: string) => void
+  onRenameChange: (value: string) => void
+  onCommitRename: () => void
+  onCancelRename: () => void
+  onDelete: (id: string) => void
+}
+
+function TreeRowActions({
+  id,
+  name,
+  actions,
+}: {
+  id: string
+  name: string
+  actions: TreeActions
+}) {
+  return (
+    <span className="ml-auto hidden shrink-0 items-center gap-0.5 pl-1 group-hover:flex">
+      <span
+        role="button"
+        tabIndex={0}
+        aria-label={`Renomear ${name}`}
+        onClick={(e) => {
+          e.stopPropagation()
+          actions.onStartRename(id, name)
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault()
+            e.stopPropagation()
+            actions.onStartRename(id, name)
+          }
+        }}
+        className="flex size-5 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+      >
+        <Pencil className="size-3" />
+      </span>
+      <span
+        role="button"
+        tabIndex={0}
+        aria-label={`Excluir ${name}`}
+        onClick={(e) => {
+          e.stopPropagation()
+          actions.onDelete(id)
+        }}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault()
+            e.stopPropagation()
+            actions.onDelete(id)
+          }
+        }}
+        className="flex size-5 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-rose-500"
+      >
+        <Trash2 className="size-3" />
+      </span>
+    </span>
+  )
+}
+
+function RenameInput({ actions }: { actions: TreeActions }) {
+  return (
+    <input
+      autoFocus
+      value={actions.renameValue}
+      onChange={(e) => actions.onRenameChange(e.target.value)}
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          e.preventDefault()
+          actions.onCommitRename()
+        } else if (e.key === "Escape") {
+          e.preventDefault()
+          actions.onCancelRename()
+        }
+      }}
+      onBlur={actions.onCommitRename}
+      aria-label="Novo nome"
+      className="min-w-0 flex-1 rounded border border-primary/50 bg-background px-1 py-0 text-[13px] text-foreground outline-none"
+    />
+  )
+}
+
 function FileTreeNode({
   node,
   depth,
-  activeId,
-  modified,
-  onOpen,
+  actions,
 }: {
-  node: TreeDir | { fileId: string }
+  node: TreeNode
   depth: number
-  activeId: string
-  modified: Set<string>
-  onOpen: (id: string) => void
+  actions: TreeActions
 }) {
-  const PAD: Record<number, string> = { 0: "pl-2", 1: "pl-5", 2: "pl-8", 3: "pl-11" }
-  const padClass = PAD[depth] ?? "pl-11"
+  const padClass = TREE_PAD[depth] ?? "pl-14"
+  const isRenaming = actions.renamingId === node.id
 
-  if ("fileId" in node) {
-    const file = FILES.find((f) => f.id === node.fileId)
-    if (!file) return null
-    const isActive = file.id === activeId
-    const isModified = modified.has(file.id)
-    const Icon = LANG_ICON[file.lang]
+  if (node.kind === "file") {
+    const isActive = node.id === actions.activeId
+    const isModified = actions.modified.has(node.id)
+    const Icon = LANG_ICON[node.lang]
     return (
-      <button
-        type="button"
-        onClick={() => onOpen(file.id)}
-        aria-current={isActive ? "true" : undefined}
+      <div
         className={cn(
-          "flex w-full items-center gap-1.5 py-1 pr-2 text-left text-[13px] transition-colors",
+          "group flex w-full items-center gap-1.5 py-1 pr-2 text-left text-[13px] transition-colors",
           padClass,
           isActive
             ? "bg-accent text-foreground"
@@ -582,11 +371,25 @@ function FileTreeNode({
         )}
       >
         <Icon className="size-3.5 shrink-0" />
-        <span className="truncate">{file.name}</span>
-        {isModified ? (
-          <CircleDot className="ml-auto size-3 shrink-0 text-amber-500" />
-        ) : null}
-      </button>
+        {isRenaming ? (
+          <RenameInput actions={actions} />
+        ) : (
+          <>
+            <button
+              type="button"
+              onClick={() => actions.onOpenFile(node.id)}
+              aria-current={isActive ? "true" : undefined}
+              className="min-w-0 flex-1 truncate text-left"
+            >
+              {node.name}
+            </button>
+            {isModified ? (
+              <CircleDot className="size-3 shrink-0 text-amber-500 group-hover:hidden" />
+            ) : null}
+            <TreeRowActions id={node.id} name={node.name} actions={actions} />
+          </>
+        )}
+      </div>
     )
   }
 
@@ -594,33 +397,61 @@ function FileTreeNode({
     <div>
       <div
         className={cn(
-          "flex items-center gap-1.5 py-1 pr-2 text-[13px] font-medium text-foreground",
+          "group flex items-center gap-1.5 py-1 pr-2 text-[13px] font-medium text-foreground transition-colors hover:bg-accent/50",
           padClass,
         )}
       >
-        <FolderOpen className="size-3.5 shrink-0 text-muted-foreground" />
-        <span className="truncate">{node.name}</span>
-      </div>
-      <div>
-        {node.children.map((child, i) => (
-          <FileTreeNode
-            key={"id" in child ? child.id : child.fileId + i}
-            node={child}
-            depth={depth + 1}
-            activeId={activeId}
-            modified={modified}
-            onOpen={onOpen}
+        <button
+          type="button"
+          onClick={() => actions.onToggleDir(node.id)}
+          aria-expanded={node.open}
+          aria-label={`${node.open ? "Recolher" : "Expandir"} pasta ${node.name}`}
+          className="flex min-w-0 flex-1 items-center gap-1.5 text-left"
+        >
+          <ChevronRight
+            className={cn(
+              "size-3.5 shrink-0 text-muted-foreground transition-transform",
+              node.open ? "rotate-90" : "",
+            )}
           />
-        ))}
+          <FolderOpen className="size-3.5 shrink-0 text-muted-foreground" />
+          {isRenaming ? (
+            <RenameInput actions={actions} />
+          ) : (
+            <span className="truncate">{node.name}</span>
+          )}
+        </button>
+        {isRenaming ? null : (
+          <TreeRowActions id={node.id} name={node.name} actions={actions} />
+        )}
       </div>
+      {node.open ? (
+        <div>
+          {node.children.map((child) => (
+            <FileTreeNode
+              key={child.id}
+              node={child}
+              depth={depth + 1}
+              actions={actions}
+            />
+          ))}
+        </div>
+      ) : null}
     </div>
   )
 }
 
-function SidePanelHeader({ children }: { children: ReactNode }) {
+function SidePanelHeader({
+  children,
+  actions,
+}: {
+  children: ReactNode
+  actions?: ReactNode
+}) {
   return (
-    <div className="flex h-8 items-center px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-      {children}
+    <div className="flex h-8 items-center gap-1 px-3 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+      <span className="flex-1">{children}</span>
+      {actions}
     </div>
   )
 }
@@ -629,20 +460,37 @@ function SidePanelHeader({ children }: { children: ReactNode }) {
 /*                                   AiIde                                     */
 /* -------------------------------------------------------------------------- */
 
+let uidCounter = 0
+function nextUid(prefix: string): string {
+  uidCounter += 1
+  return `${prefix}-${uidCounter}`
+}
+
 export function AiIde() {
+  const { setTheme, resolvedTheme } = useTheme()
+
+  // ── árvore de arquivos (estado mutável) ────────────────────────────────
+  const [tree, setTree] = useState<TreeNode[]>(INITIAL_TREE)
+  const [renamingId, setRenamingId] = useState<string | null>(null)
+  const [renameValue, setRenameValue] = useState("")
+  const [creating, setCreating] = useState<null | "file" | "dir">(null)
+  const [createValue, setCreateValue] = useState("")
+
   // ── activity bar + side panel ──────────────────────────────────────────
   const [activity, setActivity] = useState<ActivityKey>("explorer")
   const [searchQuery, setSearchQuery] = useState("")
   const [commitMsg, setCommitMsg] = useState("")
 
+  // ── preferências (Settings) ─────────────────────────────────────────────
+  const [wordWrap, setWordWrap] = useState(false)
+  const [minimap, setMinimap] = useState(true)
+  const [ligatures, setLigatures] = useState(true)
+
   // ── editor ──────────────────────────────────────────────────────────────
   const [openTabs, setOpenTabs] = useState<string[]>(["app", "utils"])
   const [activeId, setActiveId] = useState<string>("app")
-  const [codes, setCodes] = useState<Record<string, string>>(() =>
-    Object.fromEntries(FILES.map((f) => [f.id, f.code])),
-  )
   const [modified, setModified] = useState<Set<string>>(() => new Set())
-  const [ghostAccepted, setGhostAccepted] = useState(false)
+  const [ghostAccepted, setGhostAccepted] = useState<Set<string>>(() => new Set())
 
   // ── painel IA ─────────────────────────────────────────────────────────
   const [thread, setThread] = useState<AiMessage[]>(INITIAL_THREAD)
@@ -668,16 +516,35 @@ export function AiIde() {
   // ── caret (Ln/Col) ──────────────────────────────────────────────────
   const [caret, setCaret] = useState<{ line: number; col: number }>({ line: 1, col: 1 })
 
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  // ── derivados da árvore ────────────────────────────────────────────────
+  const files = useMemo(() => collectFiles(tree), [tree])
+  const filesById = useMemo(
+    () => new Map(files.map((f) => [f.id, f])),
+    [files],
+  )
+
+  // timers (todos guardados em refs e limpos no unmount / novo prompt)
+  const stepTimersRef = useRef<ReturnType<typeof setTimeout>[]>([])
+  const tickTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  const streamTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const chatScrollRef = useRef<HTMLDivElement>(null)
   const terminalScrollRef = useRef<HTMLDivElement>(null)
 
-  // Limpa o timer pendente ao desmontar.
-  useEffect(() => {
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current)
+  const clearAiTimers = useCallback(() => {
+    stepTimersRef.current.forEach((t) => clearTimeout(t))
+    stepTimersRef.current = []
+    if (tickTimerRef.current) {
+      clearInterval(tickTimerRef.current)
+      tickTimerRef.current = null
+    }
+    if (streamTimerRef.current) {
+      clearInterval(streamTimerRef.current)
+      streamTimerRef.current = null
     }
   }, [])
+
+  // Limpa todos os timers ao desmontar.
+  useEffect(() => clearAiTimers, [clearAiTimers])
 
   // Auto-scroll do chat ao mudar a thread ou o estado de "thinking".
   useEffect(() => {
@@ -704,18 +571,24 @@ export function AiIde() {
   }, [])
 
   const activeFile = useMemo(
-    () => FILES.find((f) => f.id === activeId) ?? FILES[0],
-    [activeId],
+    () => filesById.get(activeId) ?? files[0],
+    [filesById, activeId, files],
   )
-  const activeCode = codes[activeId] ?? ""
+  const activeCode = activeFile?.code ?? ""
   const codeLines = useMemo(() => activeCode.split("\n"), [activeCode])
+  const activePath = useMemo(
+    () => (activeFile ? findPath(tree, activeFile.id) ?? [activeFile.name] : []),
+    [tree, activeFile],
+  )
+  const ghostShown =
+    activeFile?.ghost !== undefined && !ghostAccepted.has(activeFile.id)
 
   const allProblems = useMemo(
     () =>
-      FILES.flatMap((f) =>
+      files.flatMap((f) =>
         (f.problems ?? []).map((p) => ({ ...p, file: f })),
       ),
-    [],
+    [files],
   )
   const errorCount = allProblems.filter((p) => p.severity === "error").length
   const warningCount = allProblems.filter((p) => p.severity === "warning").length
@@ -724,9 +597,9 @@ export function AiIde() {
   const searchResults = useMemo(() => {
     const q = searchQuery.trim().toLowerCase()
     if (!q) return []
-    const out: { file: FileNode; line: number; text: string }[] = []
-    for (const file of FILES) {
-      const lines = (codes[file.id] ?? "").split("\n")
+    const out: { file: FileData; line: number; text: string }[] = []
+    for (const file of files) {
+      const lines = file.code.split("\n")
       lines.forEach((text, i) => {
         if (text.toLowerCase().includes(q)) {
           out.push({ file, line: i + 1, text: text.trim() })
@@ -734,9 +607,9 @@ export function AiIde() {
       })
     }
     return out.slice(0, 20)
-  }, [searchQuery, codes])
+  }, [searchQuery, files])
 
-  // ── ações ───────────────────────────────────────────────────────────
+  // ── ações de arquivo / editor ───────────────────────────────────────
   const openFile = useCallback((id: string) => {
     setOpenTabs((prev) => (prev.includes(id) ? prev : [...prev, id]))
     setActiveId(id)
@@ -756,52 +629,118 @@ export function AiIde() {
     [activeId],
   )
 
+  const setFileCode = useCallback((id: string, code: string) => {
+    setTree((prev) => updateFileCode(prev, id, code))
+  }, [])
+
   const acceptGhost = useCallback(() => {
-    const ghost = activeFile.ghost
-    if (!ghost || ghostAccepted) return
-    setCodes((prev) => {
-      const lines = (prev[activeFile.id] ?? "").split("\n")
-      // Insere a sugestão logo após a linha do useState (linha 6 do App.tsx).
-      const insertAt = Math.min(6, lines.length)
-      lines.splice(insertAt, 0, ghost)
-      return { ...prev, [activeFile.id]: lines.join("\n") }
-    })
-    setGhostAccepted(true)
+    if (!activeFile?.ghost || ghostAccepted.has(activeFile.id)) return
+    const lines = activeFile.code.split("\n")
+    const insertAt = Math.min(6, lines.length)
+    lines.splice(insertAt, 0, activeFile.ghost)
+    setFileCode(activeFile.id, lines.join("\n"))
+    setGhostAccepted((prev) => new Set(prev).add(activeFile.id))
     setModified((prev) => new Set(prev).add(activeFile.id))
-  }, [activeFile, ghostAccepted])
+  }, [activeFile, ghostAccepted, setFileCode])
 
-  const applyPatch = useCallback((code: AiCode) => {
-    setCodes((prev) => ({ ...prev, [code.targetId]: code.code }))
-    setModified((prev) => new Set(prev).add(code.targetId))
-    setOpenTabs((prev) => (prev.includes(code.targetId) ? prev : [...prev, code.targetId]))
-    setActiveId(code.targetId)
-    setActivity("scm")
+  const applyPatch = useCallback(
+    (code: AiCode) => {
+      setFileCode(code.targetId, code.code)
+      setModified((prev) => new Set(prev).add(code.targetId))
+      setOpenTabs((prev) =>
+        prev.includes(code.targetId) ? prev : [...prev, code.targetId],
+      )
+      setActiveId(code.targetId)
+      setActivity("scm")
+    },
+    [setFileCode],
+  )
+
+  // ── árvore: criar / renomear / excluir ───────────────────────────────
+  const startCreate = useCallback((kind: "file" | "dir") => {
+    setActivity("explorer")
+    setCreating(kind)
+    setCreateValue("")
   }, [])
 
-  const sendPrompt = useCallback((text: string) => {
-    const trimmed = text.trim()
-    if (!trimmed) return
-    setThread((prev) => {
-      const nextId = prev.length ? prev[prev.length - 1].id + 1 : 1
-      return [...prev, { id: nextId, from: "user", text: trimmed }]
+  const commitCreate = useCallback(() => {
+    const name = createValue.trim()
+    if (!name) {
+      setCreating(null)
+      return
+    }
+    const kind = creating
+    if (kind === "dir") {
+      const id = nextUid("dir")
+      setTree((prev) =>
+        insertAtRoot(prev, { kind: "dir", id, name, open: true, children: [] }),
+      )
+    } else {
+      const id = nextUid("file")
+      const node: FileData = {
+        kind: "file",
+        id,
+        name,
+        lang: langFromName(name),
+        code: `// ${name}\n`,
+      }
+      setTree((prev) => insertAtRoot(prev, node))
+      setOpenTabs((prev) => [...prev, id])
+      setActiveId(id)
+      setCaret({ line: 1, col: 1 })
+    }
+    setCreating(null)
+    setCreateValue("")
+  }, [createValue, creating])
+
+  const startRename = useCallback((id: string, current: string) => {
+    setRenamingId(id)
+    setRenameValue(current)
+  }, [])
+
+  const commitRename = useCallback(() => {
+    setRenamingId((id) => {
+      if (id) {
+        const name = renameValue.trim()
+        if (name) setTree((prev) => renameNode(prev, id, name))
+      }
+      return null
     })
-    setComposer("")
-    setPending(true)
+  }, [renameValue])
 
-    if (timerRef.current) clearTimeout(timerRef.current)
-    timerRef.current = setTimeout(() => {
-      setThread((prev) => {
-        const nextId = prev.length ? prev[prev.length - 1].id + 1 : 1
-        return [
-          ...prev,
-          { id: nextId, from: "assistant", text: REPLY.text, code: REPLY.code },
-        ]
-      })
-      setPending(false)
-      timerRef.current = null
-    }, REPLY_DELAY_MS)
+  const cancelRename = useCallback(() => setRenamingId(null), [])
+
+  const deleteItem = useCallback((id: string) => {
+    setTree((prev) => deleteNode(prev, id))
+    setOpenTabs((prev) => prev.filter((t) => t !== id))
+    setActiveId((curr) => (curr === id ? "" : curr))
+    setModified((prev) => {
+      if (!prev.has(id)) return prev
+      const next = new Set(prev)
+      next.delete(id)
+      return next
+    })
   }, [])
 
+  const toggleDirOpen = useCallback((id: string) => {
+    setTree((prev) => toggleDir(prev, id))
+  }, [])
+
+  const treeActions: TreeActions = {
+    activeId,
+    modified,
+    renamingId,
+    renameValue,
+    onOpenFile: openFile,
+    onToggleDir: toggleDirOpen,
+    onStartRename: startRename,
+    onRenameChange: setRenameValue,
+    onCommitRename: commitRename,
+    onCancelRename: cancelRename,
+    onDelete: deleteItem,
+  }
+
+  // ── terminal ──────────────────────────────────────────────────────────
   const runTerminal = useCallback(() => {
     const cmd = terminalInput.trim()
     if (!cmd) return
@@ -815,14 +754,25 @@ export function AiIde() {
     setTerminalInput("")
   }, [terminalInput])
 
+  const runScript = useCallback((cmd: string) => {
+    setBottomTab("terminal")
+    setBottomCollapsed(false)
+    setTerminalLines((prev) => [
+      ...prev,
+      `$ ${cmd}`,
+      ...(TERMINAL_RESPONSES[cmd] ?? [`zsh: command not found: ${cmd}`]),
+    ])
+  }, [])
+
   const commitChanges = useCallback(() => {
     if (modified.size === 0) return
+    const count = modified.size
     setModified(new Set())
     setCommitMsg("")
     setTerminalLines((prev) => [
       ...prev,
       `$ git commit -m "${commitMsg || "atualiza arquivos"}"`,
-      `[main] ${modified.size} arquivo(s) committed`,
+      `[main] ${count} arquivo(s) committed`,
     ])
   }, [modified, commitMsg])
 
@@ -834,6 +784,308 @@ export function AiIde() {
       return next
     })
   }, [])
+
+  // ── envio de prompt → raciocínio embutido + streaming ─────────────────
+  const sendPrompt = useCallback(
+    (text: string) => {
+      const trimmed = text.trim()
+      if (!trimmed || pending) return
+
+      clearAiTimers()
+
+      const assistantId = Date.now()
+      setThread((prev) => {
+        const baseId = prev.length ? prev[prev.length - 1].id + 1 : 1
+        const userMsg: AiMessage = {
+          id: baseId,
+          from: "user",
+          fullText: trimmed,
+          shownText: trimmed,
+          streamed: true,
+        }
+        const assistantMsg: AiMessage = {
+          id: assistantId,
+          from: "assistant",
+          fullText: REPLY.text,
+          shownText: "",
+          streamed: false,
+          reasoning: {
+            steps: THINK_STEPS,
+            visibleSteps: 0,
+            elapsedTenths: 0,
+            active: true,
+            expanded: true,
+            done: false,
+          },
+        }
+        return [...prev, userMsg, assistantMsg]
+      })
+      setComposer("")
+      setPending(true)
+
+      const patchReasoning = (
+        patch: Partial<NonNullable<AiMessage["reasoning"]>>,
+      ) => {
+        setThread((prev) =>
+          prev.map((m) =>
+            m.id === assistantId && m.reasoning
+              ? { ...m, reasoning: { ...m.reasoning, ...patch } }
+              : m,
+          ),
+        )
+      }
+
+      // contador de tempo de raciocínio (determinístico).
+      tickTimerRef.current = setInterval(() => {
+        setThread((prev) =>
+          prev.map((m) =>
+            m.id === assistantId && m.reasoning && m.reasoning.active
+              ? {
+                  ...m,
+                  reasoning: {
+                    ...m.reasoning,
+                    elapsedTenths: m.reasoning.elapsedTenths + 1,
+                  },
+                }
+              : m,
+          ),
+        )
+      }, GEN_TIMING.tickMs)
+
+      // revela os passos um a um.
+      THINK_STEPS.forEach((_, i) => {
+        const t = setTimeout(
+          () => patchReasoning({ visibleSteps: i + 1 }),
+          GEN_TIMING.firstStepMs + i * GEN_TIMING.stepGapMs,
+        )
+        stepTimersRef.current.push(t)
+      })
+
+      // ao terminar os passos: para o contador, auto-contrai e streama.
+      const totalThinkMs =
+        GEN_TIMING.firstStepMs +
+        THINK_STEPS.length * GEN_TIMING.stepGapMs +
+        GEN_TIMING.afterStepsMs
+      const finishThink = setTimeout(() => {
+        if (tickTimerRef.current) {
+          clearInterval(tickTimerRef.current)
+          tickTimerRef.current = null
+        }
+        patchReasoning({ active: false, expanded: false, done: true })
+
+        // streaming token-a-token da resposta final (por palavras).
+        const words = REPLY.text.split(" ")
+        let wi = 0
+        streamTimerRef.current = setInterval(() => {
+          wi += 1
+          const shown = words.slice(0, wi).join(" ")
+          const isDone = wi >= words.length
+          setThread((prev) =>
+            prev.map((m) =>
+              m.id === assistantId
+                ? {
+                    ...m,
+                    shownText: shown,
+                    streamed: isDone,
+                    code: isDone ? REPLY.code : m.code,
+                  }
+                : m,
+            ),
+          )
+          if (isDone && streamTimerRef.current) {
+            clearInterval(streamTimerRef.current)
+            streamTimerRef.current = null
+            setPending(false)
+          }
+        }, GEN_TIMING.streamMs)
+      }, totalThinkMs)
+      stepTimersRef.current.push(finishThink)
+    },
+    [pending, clearAiTimers],
+  )
+
+  const toggleReasoning = useCallback((id: number) => {
+    setThread((prev) =>
+      prev.map((m) =>
+        m.id === id && m.reasoning
+          ? { ...m, reasoning: { ...m.reasoning, expanded: !m.reasoning.expanded } }
+          : m,
+      ),
+    )
+  }, [])
+
+  // ── menus da title bar ────────────────────────────────────────────────
+  const fileMenuItems = [
+    { icon: FilePlus, label: "Novo arquivo", action: () => startCreate("file") },
+    { icon: FolderPlus, label: "Nova pasta", action: () => startCreate("dir") },
+    {
+      icon: Check,
+      label: "Salvar",
+      action: () => {
+        if (activeFile) {
+          setModified((prev) => {
+            if (!prev.has(activeFile.id)) return prev
+            const next = new Set(prev)
+            next.delete(activeFile.id)
+            return next
+          })
+          setTerminalLines((prev) => [...prev, `$ salvar ${activeFile.name} ✓`])
+        }
+      },
+    },
+    {
+      icon: X,
+      label: "Fechar aba",
+      action: () => {
+        if (activeId) closeTab(activeId)
+      },
+    },
+  ]
+
+  const editMenuItems = [
+    {
+      icon: Sparkles,
+      label: "Inserir snippet",
+      action: () => {
+        if (activeFile) {
+          setFileCode(
+            activeFile.id,
+            `${activeFile.code}\n\n// snippet inserido pelo editor`,
+          )
+          setModified((prev) => new Set(prev).add(activeFile.id))
+        }
+      },
+    },
+    {
+      icon: Check,
+      label: "Aceitar sugestão",
+      action: acceptGhost,
+    },
+    {
+      icon: Search,
+      label: "Localizar no arquivo",
+      action: () => {
+        setActivity("search")
+        if (activeFile) setSearchQuery(activeFile.name.split(".")[0])
+      },
+    },
+  ]
+
+  const viewMenuItems = [
+    {
+      icon: TerminalSquare,
+      label: "Alternar painel inferior",
+      action: () => setBottomCollapsed((c) => !c),
+    },
+    {
+      icon: Sparkles,
+      label: "Alternar painel IA",
+      action: () => setAiSheetOpen((o) => !o),
+    },
+    {
+      icon: resolvedTheme === "dark" ? Circle : CircleDot,
+      label: "Alternar tema claro/escuro",
+      action: () => setTheme(resolvedTheme === "dark" ? "light" : "dark"),
+    },
+    {
+      icon: Search,
+      label: "Paleta de comandos (⌘K)",
+      action: () => setPaletteOpen(true),
+    },
+  ]
+
+  type MenuConfig = {
+    name: string
+    label: string
+    items: { icon: LucideIcon; label: string; action: () => void }[]
+  }
+  const menus: MenuConfig[] = [
+    { name: "file", label: "Arquivo", items: fileMenuItems },
+    { name: "edit", label: "Editar", items: editMenuItems },
+    { name: "view", label: "Ver", items: viewMenuItems },
+  ]
+
+  /* ---- bloco de raciocínio embutido ---- */
+  function ReasoningBlock({ message }: { message: AiMessage }) {
+    const r = message.reasoning
+    if (!r) return null
+    const seconds = (r.elapsedTenths / 10).toFixed(1)
+    const headerLabel = r.active
+      ? `Pensando… ${seconds}s`
+      : `Pensei por ${seconds}s`
+    return (
+      <div
+        data-reasoning="true"
+        data-expanded={r.expanded ? "true" : "false"}
+        data-active={r.active ? "true" : "false"}
+        className="w-full max-w-full overflow-hidden rounded-lg border border-border bg-muted/40"
+      >
+        <button
+          type="button"
+          onClick={() => toggleReasoning(message.id)}
+          aria-expanded={r.expanded}
+          className="flex w-full items-center gap-2 px-3 py-2 text-left text-[12px] text-muted-foreground transition-colors hover:bg-accent/40"
+        >
+          {r.active ? (
+            <ThinkingIndicatorFluid />
+          ) : (
+            <Sparkles className="size-3.5 text-primary" />
+          )}
+          <span className="font-medium text-foreground">{headerLabel}</span>
+          <ChevronRight
+            className={cn(
+              "ml-auto size-3.5 transition-transform",
+              r.expanded ? "rotate-90" : "",
+            )}
+          />
+        </button>
+        <div
+          className={cn(
+            "grid transition-[grid-template-rows] duration-300 ease-out",
+            r.expanded ? "[grid-template-rows:1fr]" : "[grid-template-rows:0fr]",
+          )}
+        >
+          <div className="min-h-0 overflow-hidden">
+            <div className="flex flex-col border-t border-border px-2 py-2">
+              {r.steps.map((step, i) => {
+                if (i >= r.visibleSteps) return null
+                const isLastVisible = i === r.visibleSteps - 1
+                const status =
+                  r.active && isLastVisible ? "active" : "complete"
+                return (
+                  <ThinkingStepFluid
+                    key={step.label}
+                    index={i}
+                    icon={step.icon}
+                    label={step.label}
+                    description={step.description}
+                    status={status}
+                    isLast={i === r.steps.length - 1}
+                  >
+                    {step.sources ? (
+                      <ThinkingStepSourcesFluid>
+                        {step.sources.map((s) => (
+                          <ThinkingStepSourceFluid key={s.label} color={s.color}>
+                            {s.label}
+                          </ThinkingStepSourceFluid>
+                        ))}
+                      </ThinkingStepSourcesFluid>
+                    ) : null}
+                    {step.details ? (
+                      <ThinkingStepDetailsFluid
+                        summary={step.details.summary}
+                        details={step.details.items}
+                      />
+                    ) : null}
+                  </ThinkingStepFluid>
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   /* ---- painel IA (reutilizado no desktop e no Sheet mobile) ---- */
   const aiPanel = (
@@ -900,12 +1152,20 @@ export function AiIde() {
         {thread.map((m) =>
           m.from === "user" ? (
             <ChatMessageFluid key={m.id} from="user">
-              {m.text}
+              {m.fullText}
             </ChatMessageFluid>
           ) : (
             <div key={m.id} className="flex w-full flex-col gap-2 self-start">
-              <ChatMessageFluid from="assistant">{m.text}</ChatMessageFluid>
-              {m.code ? (
+              {m.reasoning ? <ReasoningBlock message={m} /> : null}
+              {m.shownText !== "" ? (
+                <ChatMessageFluid from="assistant">
+                  {m.shownText}
+                  {!m.streamed ? (
+                    <span className="ml-0.5 inline-block h-3.5 w-1.5 translate-y-0.5 animate-pulse rounded-sm bg-primary align-middle" />
+                  ) : null}
+                </ChatMessageFluid>
+              ) : null}
+              {m.code && m.streamed ? (
                 <div className="w-full max-w-full overflow-hidden rounded-lg border border-border bg-muted/40">
                   <div className="flex items-center justify-between border-b border-border px-3 py-1.5">
                     <span className="flex items-center gap-1.5 font-mono text-[11px] text-muted-foreground">
@@ -935,57 +1195,13 @@ export function AiIde() {
             </div>
           ),
         )}
-
-        {pending ? (
-          <div className="flex w-full max-w-full flex-col gap-2 self-start">
-            <ThinkingStepsFluid defaultOpen>
-              <ThinkingStepsHeaderFluid>Raciocinando</ThinkingStepsHeaderFluid>
-              <ThinkingStepsContentFluid>
-                {THINK_STEPS.map((step, i) => {
-                  const isLast = i === THINK_STEPS.length - 1
-                  return (
-                    <ThinkingStepFluid
-                      key={step.label}
-                      index={i}
-                      icon={step.icon}
-                      label={step.label}
-                      description={step.description}
-                      status={isLast ? "active" : "complete"}
-                      isLast={isLast}
-                    >
-                      {step.sources ? (
-                        <ThinkingStepSourcesFluid>
-                          {step.sources.map((s) => (
-                            <ThinkingStepSourceFluid key={s.label} color={s.color}>
-                              {s.label}
-                            </ThinkingStepSourceFluid>
-                          ))}
-                        </ThinkingStepSourcesFluid>
-                      ) : null}
-                      {step.details ? (
-                        <ThinkingStepDetailsFluid
-                          summary={step.details.summary}
-                          details={step.details.items}
-                        />
-                      ) : null}
-                    </ThinkingStepFluid>
-                  )
-                })}
-              </ThinkingStepsContentFluid>
-            </ThinkingStepsFluid>
-            <div className="flex items-center gap-2 pl-1 text-[13px] text-muted-foreground">
-              <ThinkingIndicatorFluid />
-              <span>Gerando resposta…</span>
-            </div>
-          </div>
-        ) : null}
       </div>
 
       {/* chips de contexto + slash commands + composer */}
       <div className="shrink-0 space-y-2 border-t border-border px-3 py-3">
         <div className="flex flex-wrap items-center gap-1.5">
           <span className="text-[11px] text-muted-foreground">Contexto:</span>
-          {FILES.slice(0, 4).map((f) => {
+          {files.slice(0, 4).map((f) => {
             const on = contextFiles.has(f.id)
             return (
               <button
@@ -1023,34 +1239,78 @@ export function AiIde() {
           onValueChange={setComposer}
           placeholder="Peça uma explicação, correção ou patch…"
           onSend={sendPrompt}
+          disabled={pending}
         />
       </div>
     </div>
   )
 
   /* ---- side panel ---- */
+  const explorerActions = (
+    <span className="flex items-center gap-0.5">
+      <button
+        type="button"
+        onClick={() => startCreate("file")}
+        aria-label="Novo arquivo"
+        className="flex size-5 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+      >
+        <FilePlus className="size-3.5" />
+      </button>
+      <button
+        type="button"
+        onClick={() => startCreate("dir")}
+        aria-label="Nova pasta"
+        className="flex size-5 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+      >
+        <FolderPlus className="size-3.5" />
+      </button>
+    </span>
+  )
+
+  const explorerPanel = (
+    <>
+      <SidePanelHeader actions={explorerActions}>Explorer</SidePanelHeader>
+      <div className="min-h-0 flex-1 overflow-y-auto pb-2">
+        <div className="px-3 py-1 text-[11px] font-semibold uppercase text-muted-foreground">
+          {ROOT_NAME}
+        </div>
+        {tree.map((node) => (
+          <FileTreeNode key={node.id} node={node} depth={0} actions={treeActions} />
+        ))}
+        {creating ? (
+          <div className="flex items-center gap-1.5 py-1 pl-5 pr-2">
+            {creating === "dir" ? (
+              <FolderOpen className="size-3.5 shrink-0 text-muted-foreground" />
+            ) : (
+              <FileCode2 className="size-3.5 shrink-0 text-muted-foreground" />
+            )}
+            <input
+              autoFocus
+              value={createValue}
+              onChange={(e) => setCreateValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault()
+                  commitCreate()
+                } else if (e.key === "Escape") {
+                  e.preventDefault()
+                  setCreating(null)
+                }
+              }}
+              onBlur={commitCreate}
+              placeholder={creating === "dir" ? "nova-pasta" : "arquivo.tsx"}
+              aria-label={creating === "dir" ? "Nome da nova pasta" : "Nome do novo arquivo"}
+              className="min-w-0 flex-1 rounded border border-primary/50 bg-background px-1 py-0 text-[13px] text-foreground outline-none placeholder:text-muted-foreground"
+            />
+          </div>
+        ) : null}
+      </div>
+    </>
+  )
+
   const sidePanel = (
     <aside className="hidden w-60 shrink-0 flex-col border-r border-border bg-card/40 md:flex">
-      {activity === "explorer" ? (
-        <>
-          <SidePanelHeader>Explorer</SidePanelHeader>
-          <div className="min-h-0 flex-1 overflow-y-auto pb-2">
-            <div className="px-3 py-1 text-[11px] font-semibold uppercase text-muted-foreground">
-              {TREE.name}
-            </div>
-            {TREE.children.map((child, i) => (
-              <FileTreeNode
-                key={"id" in child ? child.id : child.fileId + i}
-                node={child}
-                depth={0}
-                activeId={activeId}
-                modified={modified}
-                onOpen={openFile}
-              />
-            ))}
-          </div>
-        </>
-      ) : null}
+      {activity === "explorer" ? explorerPanel : null}
 
       {activity === "search" ? (
         <>
@@ -1134,7 +1394,7 @@ export function AiIde() {
             ) : (
               <ul className="flex flex-col gap-0.5">
                 {[...modified].map((id) => {
-                  const f = FILES.find((x) => x.id === id)
+                  const f = filesById.get(id)
                   if (!f) return null
                   return (
                     <li key={id}>
@@ -1162,20 +1422,27 @@ export function AiIde() {
         <>
           <SidePanelHeader>Executar e depurar</SidePanelHeader>
           <div className="px-3 py-4 text-[12px] text-muted-foreground">
-            <p>Nenhuma configuração de execução.</p>
-            <ButtonFluid
-              variant="secondary"
-              size="sm"
-              className="mt-3 w-full"
-              onClick={() => {
-                setBottomTab("terminal")
-                setBottomCollapsed(false)
-                setTerminalLines((prev) => [...prev, "$ npm run dev", ...TERMINAL_RESPONSES["npm run dev"]])
-              }}
-            >
-              <Play className="size-3.5" />
-              Executar npm run dev
-            </ButtonFluid>
+            <p>Scripts disponíveis no package.json:</p>
+            <div className="mt-3 flex flex-col gap-2">
+              <ButtonFluid
+                variant="primary"
+                size="sm"
+                className="w-full"
+                onClick={() => runScript("npm run dev")}
+              >
+                <Play className="size-3.5" />
+                npm run dev
+              </ButtonFluid>
+              <ButtonFluid
+                variant="secondary"
+                size="sm"
+                className="w-full"
+                onClick={() => runScript("npm run build")}
+              >
+                <Play className="size-3.5" />
+                npm run build
+              </ButtonFluid>
+            </div>
           </div>
         </>
       ) : null}
@@ -1199,6 +1466,48 @@ export function AiIde() {
           </ul>
         </>
       ) : null}
+
+      {activity === "settings" ? (
+        <>
+          <SidePanelHeader>Preferências</SidePanelHeader>
+          <div className="flex flex-col gap-3 px-3 py-3">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[13px] text-foreground">Tema escuro</span>
+              <SwitchFluid
+                label="Tema escuro"
+                checked={resolvedTheme === "dark"}
+                onToggle={() =>
+                  setTheme(resolvedTheme === "dark" ? "light" : "dark")
+                }
+              />
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[13px] text-foreground">Quebra de linha</span>
+              <SwitchFluid
+                label="Quebra de linha"
+                checked={wordWrap}
+                onToggle={() => setWordWrap((v) => !v)}
+              />
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[13px] text-foreground">Minimapa</span>
+              <SwitchFluid
+                label="Minimapa"
+                checked={minimap}
+                onToggle={() => setMinimap((v) => !v)}
+              />
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-[13px] text-foreground">Ligaduras de fonte</span>
+              <SwitchFluid
+                label="Ligaduras de fonte"
+                checked={ligatures}
+                onToggle={() => setLigatures((v) => !v)}
+              />
+            </div>
+          </div>
+        </>
+      ) : null}
     </aside>
   )
 
@@ -1219,14 +1528,33 @@ export function AiIde() {
           aurora-app
         </span>
         <nav className="ml-2 hidden items-center gap-1 text-[12px] text-muted-foreground sm:flex">
-          {["Arquivo", "Editar", "Ver"].map((menu) => (
-            <button
-              key={menu}
-              type="button"
-              className="rounded px-2 py-1 transition-colors hover:bg-accent/50 hover:text-foreground"
-            >
-              {menu}
-            </button>
+          {menus.map((menu) => (
+            <Popover key={menu.name}>
+              <PopoverTrigger asChild>
+                <button
+                  type="button"
+                  data-menu={menu.name}
+                  className="rounded px-2 py-1 transition-colors hover:bg-accent/50 hover:text-foreground data-[state=open]:bg-accent/50 data-[state=open]:text-foreground"
+                >
+                  {menu.label}
+                </button>
+              </PopoverTrigger>
+              <PopoverContent align="start" sideOffset={4} className="p-0">
+                <DropdownFluid data-slot={`menu-${menu.name}`}>
+                  <DropdownFluidLabel>{menu.label}</DropdownFluidLabel>
+                  <DropdownFluidSeparator />
+                  {menu.items.map((item, i) => (
+                    <MenuItemFluid
+                      key={item.label}
+                      index={i}
+                      icon={item.icon}
+                      label={item.label}
+                      onSelect={item.action}
+                    />
+                  ))}
+                </DropdownFluid>
+              </PopoverContent>
+            </Popover>
           ))}
         </nav>
         <button
@@ -1265,7 +1593,7 @@ export function AiIde() {
           {/* tabs do editor */}
           <div className="flex h-9 shrink-0 items-center overflow-x-auto border-b border-border bg-card/40">
             {openTabs.map((id) => {
-              const f = FILES.find((x) => x.id === id)
+              const f = filesById.get(id)
               if (!f) return null
               const isActive = id === activeId
               const isModified = modified.has(id)
@@ -1306,7 +1634,7 @@ export function AiIde() {
 
           {/* breadcrumb */}
           <div className="flex h-7 shrink-0 items-center gap-1 border-b border-border px-3 text-[11px] text-muted-foreground">
-            {activeFile.path.split("/").map((part, i, arr) => (
+            {activePath.map((part, i, arr) => (
               <span key={i} className="flex items-center gap-1">
                 {i > 0 ? <ChevronRight className="size-3" /> : null}
                 <span className={i === arr.length - 1 ? "text-foreground" : ""}>{part}</span>
@@ -1316,45 +1644,56 @@ export function AiIde() {
 
           {/* área de código */}
           <div className="min-h-0 flex-1 overflow-auto bg-background">
-            <div className="flex min-w-max font-mono text-[13px] leading-6">
-              <div className="select-none border-r border-border bg-card/30 px-3 py-2 text-right tabular-nums text-muted-foreground">
-                {codeLines.map((_, i) => (
-                  <div key={i}>{i + 1}</div>
-                ))}
-                {activeFile.ghost && !ghostAccepted ? (
-                  <div className="opacity-40">{codeLines.length + 1}</div>
-                ) : null}
-              </div>
-              <div className="px-3 py-2">
-                {codeLines.map((line, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    onClick={() => setCaret({ line: i + 1, col: line.length + 1 })}
-                    className={cn(
-                      "block w-full whitespace-pre text-left",
-                      caret.line === i + 1 ? "bg-accent/40" : "",
-                    )}
-                  >
-                    <HighlightedLine line={line} />
-                  </button>
-                ))}
-                {activeFile.ghost && !ghostAccepted ? (
-                  <div className="group flex items-center gap-2">
-                    <span className="whitespace-pre text-muted-foreground/50 italic">
-                      {activeFile.ghost}
-                    </span>
+            {activeFile ? (
+              <div className="flex min-w-max font-mono text-[13px] leading-6">
+                <div className="select-none border-r border-border bg-card/30 px-3 py-2 text-right tabular-nums text-muted-foreground">
+                  {codeLines.map((_, i) => (
+                    <div key={i}>{i + 1}</div>
+                  ))}
+                  {ghostShown ? (
+                    <div className="opacity-40">{codeLines.length + 1}</div>
+                  ) : null}
+                </div>
+                <div className="px-3 py-2">
+                  {codeLines.map((line, i) => (
                     <button
+                      key={i}
                       type="button"
-                      onClick={acceptGhost}
-                      className="rounded border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                      onClick={() => setCaret({ line: i + 1, col: line.length + 1 })}
+                      className={cn(
+                        "block w-full whitespace-pre text-left",
+                        caret.line === i + 1 ? "bg-accent/40" : "",
+                      )}
                     >
-                      Tab para aceitar
+                      <HighlightedLine line={line} />
                     </button>
-                  </div>
-                ) : null}
+                  ))}
+                  {ghostShown ? (
+                    <div className="group flex items-center gap-2">
+                      <span className="whitespace-pre text-muted-foreground/50 italic">
+                        {activeFile.ghost}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={acceptGhost}
+                        className="rounded border border-border bg-muted px-1.5 py-0.5 font-sans text-[10px] text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+                      >
+                        Tab para aceitar
+                      </button>
+                    </div>
+                  ) : null}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="flex h-full flex-col items-center justify-center gap-2 text-muted-foreground">
+                <FileCode2 className="size-8 opacity-40" />
+                <p className="text-[13px]">Nenhum arquivo aberto.</p>
+                <ButtonFluid variant="secondary" size="sm" onClick={() => startCreate("file")}>
+                  <FilePlus className="size-3.5" />
+                  Novo arquivo
+                </ButtonFluid>
+              </div>
+            )}
           </div>
 
           {/* painel inferior */}
@@ -1457,7 +1796,10 @@ export function AiIde() {
                           <li key={i}>
                             <button
                               type="button"
-                              onClick={() => openFile(p.file.id)}
+                              onClick={() => {
+                                openFile(p.file.id)
+                                setCaret({ line: p.line, col: 1 })
+                              }}
                               className="flex w-full items-start gap-2 rounded px-1 py-0.5 text-left text-[12px] transition-colors hover:bg-accent/50"
                             >
                               <TriangleAlert
@@ -1518,7 +1860,7 @@ export function AiIde() {
             {modified.size} modificado(s)
           </span>
         ) : null}
-        <span className="ml-auto">{LANG_LABEL[activeFile.lang]}</span>
+        <span className="ml-auto">{activeFile ? LANG_LABEL[activeFile.lang] : "—"}</span>
         <span className="tabular-nums">
           Ln {caret.line}, Col {caret.col}
         </span>
@@ -1548,10 +1890,10 @@ export function AiIde() {
         <CommandList>
           <CommandEmpty>Nenhum resultado encontrado.</CommandEmpty>
           <CommandGroup heading="Arquivos">
-            {FILES.map((f) => (
+            {files.map((f) => (
               <CommandItem
                 key={f.id}
-                value={`arquivo ${f.name} ${f.path}`}
+                value={`arquivo ${f.name}`}
                 onSelect={() => {
                   openFile(f.id)
                   setPaletteOpen(false)
@@ -1559,18 +1901,26 @@ export function AiIde() {
               >
                 <FileCode2 />
                 <span>{f.name}</span>
-                <CommandShortcut>{f.path}</CommandShortcut>
+                <CommandShortcut>{f.name}</CommandShortcut>
               </CommandItem>
             ))}
           </CommandGroup>
           <CommandSeparator />
           <CommandGroup heading="Comandos">
             <CommandItem
+              value="comando novo arquivo"
+              onSelect={() => {
+                startCreate("file")
+                setPaletteOpen(false)
+              }}
+            >
+              <FilePlus />
+              <span>Novo arquivo</span>
+            </CommandItem>
+            <CommandItem
               value="comando executar terminal npm run dev"
               onSelect={() => {
-                setBottomTab("terminal")
-                setBottomCollapsed(false)
-                setTerminalLines((prev) => [...prev, "$ npm run dev", ...TERMINAL_RESPONSES["npm run dev"]])
+                runScript("npm run dev")
                 setPaletteOpen(false)
               }}
             >
