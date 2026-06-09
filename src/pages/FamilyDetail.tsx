@@ -7,10 +7,12 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { CodeBlockCommand } from "@/components/ui/code-block-command"
 import { ExampleBlock } from "@/components/showcase/ExampleBlock"
 import { CodeBlock } from "@/components/showcase/CodeBlock"
+import { CopyPromptButton } from "@/components/showcase/CopyPromptButton"
 import { OnThisPage, type TocSection } from "@/components/showcase/OnThisPage"
 import { OriginBadge } from "@/components/catalog/OriginBadge"
 import { ORIGIN_DESCRIPTIONS } from "@/components/catalog/origin-meta"
 import type { ComponentMeta } from "@/data/components"
+import { buildComponentPrompt, buildUsageTip } from "@/data/component-prompt"
 import {
   getFamilyBase,
   getOrigin,
@@ -123,18 +125,26 @@ function FamilyView({ family, hash }: { family: Family; hash: string }) {
 
         {/* Header da página */}
         <header className="space-y-4 border-b border-border pb-8">
-          <div className="flex flex-wrap items-center gap-2">
-            <Badge variant="secondary">{family.category}</Badge>
-            {family.origins.map((origin) => (
-              <OriginBadge key={origin} origin={origin} />
-            ))}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+            <div className="flex flex-1 flex-col gap-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant="secondary">{family.category}</Badge>
+                {family.origins.map((origin) => (
+                  <OriginBadge key={origin} origin={origin} />
+                ))}
+              </div>
+              <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                {family.name}
+              </h1>
+              <p className="text-base leading-relaxed text-muted-foreground">
+                {representative.description}
+              </p>
+            </div>
+            <CopyPromptButton
+              prompt={buildComponentPrompt(family)}
+              className="shrink-0"
+            />
           </div>
-          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-            {family.name}
-          </h1>
-          <p className="text-base leading-relaxed text-muted-foreground">
-            {representative.description}
-          </p>
           {multi ? (
             <p className="text-sm text-muted-foreground">
               {family.variants.length} variantes nesta família.
@@ -331,32 +341,4 @@ function VariantSection({
       </div>
     </section>
   )
-}
-
-/**
- * Gera um parágrafo curto de "quando usar / boas práticas".
- *
- * Prioriza o texto curado em `variant.usage` (registry). Quando ausente, cai
- * no fallback derivado de description + tags — que NÃO inventa API nem props,
- * só recombina os metadados existentes em uma frase orientativa.
- */
-function buildUsageTip(
-  variant: ComponentMeta,
-  origin: ComponentOrigin
-): string {
-  if (variant.usage && variant.usage.trim().length > 0) {
-    return variant.usage.trim()
-  }
-  const keywords = variant.tags
-    .filter((t) => t !== "fluid" && t !== origin.toLowerCase())
-    .slice(0, 3)
-  const keywordPart =
-    keywords.length > 0
-      ? ` Boa escolha em contextos de ${keywords.join(", ")}.`
-      : ""
-  const originPart =
-    origin === "shadcn"
-      ? ""
-      : ` Variante ${origin}, indicada quando você quer o acabamento visual dessa coleção.`
-  return `${variant.description}${keywordPart}${originPart}`
 }
