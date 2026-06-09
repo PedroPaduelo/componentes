@@ -1,19 +1,28 @@
 /**
  * Composição "Pricing".
  *
- * Página de preços coesa, montada SÓ com componentes do registry:
+ * Página de preços completa e coesa, montada SÓ com componentes do registry:
  * - `Card` (+ Header/Title/Description/Content/Footer) para os 3 planos.
  * - `Badge` "Popular" destacando o plano do meio.
  * - `SwitchFluid` (controlado) alternando entre cobrança mensal e anual; ao
- *   alternar, os preços de TODOS os planos mudam (anual = mensal * 10, ou seja,
- *   "2 meses grátis").
- * - `Button` como CTA de cada plano.
- * - `DottedGlowBackground` como fundo decorativo sutil atrás da seção.
+ *   alternar, os preços de TODOS os planos, a calculadora e a tabela mudam
+ *   (anual = mensal * 10, ou seja, "2 meses grátis").
+ * - `Slider` numa calculadora de assentos que recalcula o custo do plano Pro.
+ * - `Table` comparando os recursos de cada plano lado a lado.
+ * - `LogoSlider` com a prova social de marcas que usam o produto.
+ * - `InfiniteMovingCards` com depoimentos de clientes.
+ * - `Accordion` com as perguntas frequentes.
+ * - `Button` como CTA de cada plano e da seção final.
+ * - `DottedGlowBackground` / `ScalesContainer` como decoração sutil.
  */
-import { useState } from "react"
-import { Check } from "lucide-react"
+import { Fragment, useMemo, useState } from "react"
+import { Check, Minus, Sparkles, Users } from "lucide-react"
 
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
   Badge,
   Button,
   Card,
@@ -23,15 +32,24 @@ import {
   CardHeader,
   CardTitle,
   DottedGlowBackground,
+  InfiniteMovingCards,
+  LogoSlider,
   ScalesContainer,
+  Slider,
   SwitchFluid,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
 } from "@/components/ui"
 import { cn } from "@/lib/utils"
 
 type Plan = {
   name: string
   description: string
-  /** preço mensal base, em reais. `0` = grátis. */
+  /** preço mensal base por assento, em reais. `0` = grátis. */
   monthly: number
   features: string[]
   cta: string
@@ -80,12 +98,154 @@ const plans: Plan[] = [
   },
 ]
 
+/** Matriz de comparação de recursos por plano. */
+type FeatureCell = boolean | string
+type FeatureRow = {
+  label: string
+  starter: FeatureCell
+  pro: FeatureCell
+  enterprise: FeatureCell
+}
+
+const comparison: { group: string; rows: FeatureRow[] }[] = [
+  {
+    group: "Essencial",
+    rows: [
+      { label: "Projetos", starter: "1", pro: "Ilimitados", enterprise: "Ilimitados" },
+      { label: "Colaboradores", starter: "3", pro: "Ilimitados", enterprise: "Ilimitados" },
+      { label: "Componentes da comunidade", starter: true, pro: true, enterprise: true },
+      { label: "Biblioteca premium", starter: false, pro: true, enterprise: true },
+    ],
+  },
+  {
+    group: "Colaboração & dados",
+    rows: [
+      { label: "Histórico de versões", starter: "7 dias", pro: "Ilimitado", enterprise: "Ilimitado" },
+      { label: "Analytics avançado", starter: false, pro: true, enterprise: true },
+      { label: "Exportação de dados", starter: false, pro: true, enterprise: true },
+      { label: "Ambientes de teste", starter: "1", pro: "5", enterprise: "Ilimitados" },
+    ],
+  },
+  {
+    group: "Segurança & suporte",
+    rows: [
+      { label: "SSO & SAML", starter: false, pro: false, enterprise: true },
+      { label: "SLA 99,9%", starter: false, pro: false, enterprise: true },
+      { label: "Suporte", starter: "E-mail", pro: "Prioritário", enterprise: "Dedicado 24/7" },
+      { label: "Gerente de conta", starter: false, pro: false, enterprise: true },
+    ],
+  },
+]
+
+const testimonials = [
+  {
+    quote:
+      "Migramos toda a nossa design system em uma semana. O plano Pro pagou por si só no primeiro mês.",
+    name: "Marina Alves",
+    title: "Head of Design · Nuveo",
+  },
+  {
+    quote:
+      "A cobrança por assento é justa e previsível. Escalamos de 5 para 40 pessoas sem surpresa na fatura.",
+    name: "Rafael Santos",
+    title: "CTO · Cumulus",
+  },
+  {
+    quote:
+      "O suporte dedicado do Enterprise resolveu nosso onboarding de SSO em horas, não dias.",
+    name: "Júlia Pereira",
+    title: "Eng. Manager · Lumini",
+  },
+  {
+    quote:
+      "Comecei no plano grátis pra testar e nunca mais saí da plataforma. Vale cada centavo.",
+    name: "Diego Martins",
+    title: "Founder · Indie Labs",
+  },
+]
+
+const faqs = [
+  {
+    q: "Posso trocar de plano a qualquer momento?",
+    a: "Sim. Você pode fazer upgrade ou downgrade quando quiser. O valor é ajustado de forma proporcional no próximo ciclo de cobrança, sem multa.",
+  },
+  {
+    q: "Como funciona a cobrança anual?",
+    a: "No plano anual você paga por 10 meses e usa 12 — ou seja, 2 meses grátis. O valor é cobrado uma vez por ano e some os assentos ativos.",
+  },
+  {
+    q: "O plano grátis tem prazo de validade?",
+    a: "Não. O Starter é gratuito para sempre, com 1 projeto e até 3 colaboradores. É ideal para validar ideias antes de escalar.",
+  },
+  {
+    q: "Vocês oferecem desconto para ONGs e educação?",
+    a: "Sim. Instituições de ensino e organizações sem fins lucrativos têm condições especiais. Fale com nosso time de vendas para saber mais.",
+  },
+  {
+    q: "Quais formas de pagamento são aceitas?",
+    a: "Aceitamos os principais cartões de crédito, Pix e boleto para planos anuais. Contas Enterprise podem ser faturadas via nota fiscal.",
+  },
+]
+
+/** Logos fictícios (texto estilizado) usados na faixa de prova social. */
+const brandLogos = [
+  "Nuveo",
+  "Cumulus",
+  "Lumini",
+  "Vértice",
+  "Orbital",
+  "Praxis",
+  "Helio",
+  "Quanta",
+].map((name) => (
+  <span
+    key={name}
+    className="text-lg font-semibold tracking-tight text-muted-foreground"
+  >
+    {name}
+  </span>
+))
+
 function formatPrice(value: number): string {
   return value.toLocaleString("pt-BR")
 }
 
+/** Renderiza uma célula da tabela de comparação. */
+function FeatureValue({ value }: { value: FeatureCell }) {
+  if (value === true) {
+    return (
+      <>
+        <Check className="mx-auto size-4 text-primary" aria-hidden="true" />
+        <span className="sr-only">Incluído</span>
+      </>
+    )
+  }
+  if (value === false) {
+    return (
+      <>
+        <Minus
+          className="mx-auto size-4 text-muted-foreground/40"
+          aria-hidden="true"
+        />
+        <span className="sr-only">Não incluído</span>
+      </>
+    )
+  }
+  return <span className="text-sm text-foreground">{value}</span>
+}
+
 export function PricingPage() {
   const [annual, setAnnual] = useState(false)
+  const [seats, setSeats] = useState(5)
+
+  const proMonthly = plans.find((p) => p.highlighted)?.monthly ?? 29
+
+  /** Custo da calculadora de assentos para o plano Pro. */
+  const estimate = useMemo(() => {
+    const perSeat = annual ? proMonthly * 10 : proMonthly
+    const total = perSeat * seats
+    return { perSeat, total }
+  }, [annual, seats, proMonthly])
 
   return (
     <div className="relative overflow-hidden rounded-xl border bg-background">
@@ -104,6 +264,10 @@ export function PricingPage() {
       <div className="relative z-10 mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
         {/* Cabeçalho */}
         <div className="mx-auto max-w-2xl text-center">
+          <Badge variant="secondary" className="mb-4 gap-1">
+            <Sparkles className="size-3.5" aria-hidden="true" />
+            Planos para todo tamanho de time
+          </Badge>
           <h1 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
             Preços simples e transparentes
           </h1>
@@ -192,7 +356,7 @@ export function PricingPage() {
                           R$ {formatPrice(price)}
                         </span>
                         <span className="text-sm text-muted-foreground">
-                          {unit}
+                          {unit} · por assento
                         </span>
                       </>
                     )}
@@ -225,6 +389,195 @@ export function PricingPage() {
               </Card>
             )
           })}
+        </div>
+
+        {/* Calculadora de assentos */}
+        <Card className="mt-12 bg-card/80 backdrop-blur-sm">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Users className="size-5 text-primary" aria-hidden="true" />
+              Calcule o custo do seu time
+            </CardTitle>
+            <CardDescription>
+              Estime o investimento no plano Pro de acordo com o número de
+              assentos ativos.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="grid gap-8 md:grid-cols-[1fr_auto] md:items-center">
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between text-sm">
+                <span className="font-medium text-foreground">
+                  {seats} {seats === 1 ? "assento" : "assentos"}
+                </span>
+                <span className="text-muted-foreground">
+                  R$ {formatPrice(estimate.perSeat)} {annual ? "/ano" : "/mês"} por assento
+                </span>
+              </div>
+              <Slider
+                value={[seats]}
+                min={1}
+                max={50}
+                step={1}
+                onValueChange={(v) => setSeats(v[0] ?? 1)}
+                aria-label="Número de assentos"
+              />
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>1</span>
+                <span>50</span>
+              </div>
+            </div>
+
+            <div className="rounded-lg border border-border/60 bg-muted/40 px-6 py-5 text-center md:min-w-[200px]">
+              <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                Total estimado
+              </p>
+              <p className="mt-1 text-3xl font-bold text-foreground">
+                R$ {formatPrice(estimate.total)}
+              </p>
+              <p className="text-xs text-muted-foreground">
+                {annual ? "cobrança anual" : "cobrança mensal"}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Tabela comparativa de recursos */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+              Compare todos os recursos
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Veja exatamente o que está incluído em cada plano.
+            </p>
+          </div>
+
+          <div className="mt-8 overflow-hidden rounded-xl border border-border/60 bg-card/60 backdrop-blur-sm">
+            <Table>
+              <TableHeader>
+                <TableRow className="hover:bg-transparent">
+                  <TableHead className="w-[40%]">Recurso</TableHead>
+                  <TableHead className="text-center">Starter</TableHead>
+                  <TableHead className="text-center">
+                    <span className="inline-flex items-center gap-1.5">
+                      Pro
+                      <Badge className="px-1.5 py-0 text-[10px]">Popular</Badge>
+                    </span>
+                  </TableHead>
+                  <TableHead className="text-center">Enterprise</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {comparison.map((section) => (
+                  <Fragment key={section.group}>
+                    <TableRow className="bg-muted/40 hover:bg-muted/40">
+                      <TableCell
+                        colSpan={4}
+                        className="py-2 text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+                      >
+                        {section.group}
+                      </TableCell>
+                    </TableRow>
+                    {section.rows.map((row) => (
+                      <TableRow key={row.label}>
+                        <TableCell className="font-medium text-foreground">
+                          {row.label}
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <FeatureValue value={row.starter} />
+                        </TableCell>
+                        <TableCell className="bg-primary/5 text-center">
+                          <FeatureValue value={row.pro} />
+                        </TableCell>
+                        <TableCell className="text-center">
+                          <FeatureValue value={row.enterprise} />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </Fragment>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+
+        {/* Prova social — logos */}
+        <div className="mt-16">
+          <p className="text-center text-xs font-medium uppercase tracking-widest text-muted-foreground">
+            Times de todos os tamanhos confiam na plataforma
+          </p>
+          <div className="mt-6">
+            <LogoSlider logos={brandLogos} speed={28} />
+          </div>
+        </div>
+
+        {/* Depoimentos */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+              Quem usa, recomenda
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Histórias reais de times que escalaram com a gente.
+            </p>
+          </div>
+          <div className="mt-8 overflow-hidden">
+            <InfiniteMovingCards
+              items={testimonials}
+              direction="left"
+              speed="slow"
+            />
+          </div>
+        </div>
+
+        {/* FAQ */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+              Perguntas frequentes
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Tudo o que você precisa saber antes de assinar.
+            </p>
+          </div>
+          <div className="mx-auto mt-8 max-w-2xl">
+            <Accordion type="single" collapsible className="w-full">
+              {faqs.map((faq, i) => (
+                <AccordionItem key={faq.q} value={`faq-${i}`}>
+                  <AccordionTrigger className="text-left text-base">
+                    {faq.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-sm text-muted-foreground">
+                    {faq.a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </div>
+
+        {/* CTA final */}
+        <div className="mt-16">
+          <ScalesContainer
+            orientation="diagonal"
+            size={14}
+            containerClassName="overflow-hidden rounded-2xl border border-border/60 bg-card/60"
+          >
+            <div className="flex flex-col items-center gap-4 px-6 py-12 text-center">
+              <h2 className="max-w-xl text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+                Pronto para acelerar seu próximo projeto?
+              </h2>
+              <p className="max-w-md text-sm text-muted-foreground">
+                Comece grátis hoje. Sem cartão de crédito, sem compromisso.
+              </p>
+              <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
+                <Button size="lg">Começar grátis</Button>
+                <Button size="lg" variant="outline">
+                  Falar com vendas
+                </Button>
+              </div>
+            </div>
+          </ScalesContainer>
         </div>
       </div>
     </div>
