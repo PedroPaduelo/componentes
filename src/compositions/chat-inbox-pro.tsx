@@ -308,6 +308,35 @@ function TicksIcon({ state, className }: { state: Ticks; className?: string }) {
   return <Check size={13} strokeWidth={2} className={className} aria-label="Enviada" />
 }
 
+const QUICK_REPLIES: Record<string, string[]> = {
+  ana: ["Pode mandar!", "Combinado ✅", "Obrigado(a)!", "Anotado."],
+  bruno: ["Já vou olhar", "Pode promover", "Boa, valeu!", "Fico no aguardo."],
+  carla: ["Ficou ótimo!", "Manda a v2", "Curti bastante", "Anotado 👀"],
+  diego: ["Confirmado, 10h", "Vou entrar", "Obrigado!", "Combinado."],
+  elaine: ["Salvou meu dia!", "Manda o link", "Combinado", "Valeu mesmo!"],
+  felipe: ["Quinta de manhã", "Sexta melhor", "Vou confirmar", "Combinado!"],
+}
+const DEFAULT_QUICK_REPLIES = ["Combinado!", "Obrigado(a)!", "Mando em breve.", "👍"]
+
+function QuickReplies({ options, onSelect }: { options: string[]; onSelect: (text: string) => void }) {
+  if (options.length === 0) return null
+  return (
+    <div className="flex shrink-0 flex-wrap items-center gap-1.5 border-t border-border bg-card px-4 pt-2.5">
+      <span className="mr-1 text-[11px] text-muted-foreground">Sugestões:</span>
+      {options.map((opt) => (
+        <button
+          key={opt}
+          type="button"
+          onClick={() => onSelect(opt)}
+          className="rounded-full border border-border bg-background px-2.5 py-1 text-[12px] text-foreground transition-colors hover:bg-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#6B97FF]"
+        >
+          {opt}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 function presenceSubtitle(presence: Presence, isTyping: boolean, lastSeenMin: number): string {
   if (isTyping) return "Digitando…"
   if (presence === "online") return "Ativo agora"
@@ -455,6 +484,10 @@ export function ChatInboxPro() {
     }
     if (thinkingId === id) setThinkingId(null)
     setHistories((prev) => ({ ...prev, [id]: [] }))
+  }
+
+  function handleQuickReply(text: string) {
+    handleSend(text, [])
   }
 
   const renderedItems = buildRenderedItems(messages)
@@ -618,6 +651,11 @@ export function ChatInboxPro() {
             )}
           </AnimatePresence>
         </div>
+
+        <QuickReplies
+          options={QUICK_REPLIES[selectedId] ?? DEFAULT_QUICK_REPLIES}
+          onSelect={handleQuickReply}
+        />
 
         <div className="shrink-0 border-t border-border px-4 py-3">
           <InputMessageFluid
