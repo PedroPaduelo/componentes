@@ -179,26 +179,39 @@ function Vortex({
       animationFrameId.current = window.requestAnimationFrame(draw)
     }
 
-    const resize = (): void => {
-      const { innerWidth, innerHeight } = window
-      canvas.width = innerWidth
-      canvas.height = innerHeight
-      center[0] = 0.5 * canvas.width
-      center[1] = 0.5 * canvas.height
-    }
+    // Dimensiona o canvas pelo tamanho REAL do container (não da janela).
+    // Antes usava `window.innerWidth/innerHeight`, então o canvas transbordava /
+    // desalinhava sempre que o Vortex não ocupava a viewport inteira. Agora
+    // observamos o container com ResizeObserver (mesmo padrão do SparklesCore).
+    // As composições de glow (`drawImage(canvas, canvas)`) exigem o backing store
+    // 1:1 com as coordenadas de desenho, então NÃO aplicamos devicePixelRatio
+    // aqui (preservando a matemática original baseada em canvas.width/height).
+    const container = containerRef.current
 
-    const handleResize = (): void => {
-      resize()
+    const resize = (): void => {
+      const rect = container?.getBoundingClientRect()
+      const w = Math.max(1, Math.floor(rect?.width ?? window.innerWidth))
+      const h = Math.max(1, Math.floor(rect?.height ?? window.innerHeight))
+      if (canvas.width === w && canvas.height === h) return
+      canvas.width = w
+      canvas.height = h
+      canvas.style.width = `${w}px`
+      canvas.style.height = `${h}px`
+      center[0] = 0.5 * w
+      center[1] = 0.5 * h
     }
 
     resize()
     initParticles()
     draw()
 
-    window.addEventListener("resize", handleResize)
+    const observer = new ResizeObserver(() => {
+      resize()
+    })
+    if (container) observer.observe(container)
 
     return () => {
-      window.removeEventListener("resize", handleResize)
+      observer.disconnect()
       if (animationFrameId.current !== null) {
         cancelAnimationFrame(animationFrameId.current)
         animationFrameId.current = null
