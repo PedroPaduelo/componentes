@@ -37,6 +37,8 @@ import {
   ChevronRight,
   Circle,
   CircleDot,
+  Minus,
+  Plus,
   FileCode2,
   FilePlus,
   FileText,
@@ -110,17 +112,22 @@ import {
   THINK_STEPS,
   TOKEN_CLASS,
   collectFiles,
+  countDiff,
   deleteNode,
   findPath,
   insertAtRoot,
   langFromName,
+  materializeDiff,
   renameNode,
   toggleDir,
   tokenizeLine,
   updateFileCode,
   type AiCode,
   type AiMessage,
+  type DiffBlock,
+  type DiffPlan,
   type FileData,
+  type HunkStatus,
   type Lang,
   type TreeNode,
 } from "@/compositions/ai-ide-data"
@@ -151,6 +158,216 @@ function HighlightedLine({ line }: { line: string }) {
         ),
       )}
     </>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+/*                         revisão de diff inline                              */
+/* -------------------------------------------------------------------------- */
+
+/** Linha de contexto (inalterada) dentro do diff. */
+function DiffContextLine({ line }: { line: string }) {
+  return (
+    <div className="flex">
+      <span className="w-5 shrink-0 select-none text-center text-muted-foreground/50">
+        {"\u00A0"}
+      </span>
+      <span className="whitespace-pre pl-1 text-muted-foreground">
+        <HighlightedLine line={line} />
+      </span>
+    </div>
+  )
+}
+
+/** Linha removida (−) ou adicionada (+) com realce visível em light/dark. */
+function DiffChangeLine({ sign, line }: { sign: "+" | "-"; line: string }) {
+  const isAdd = sign === "+"
+  return (
+    <div
+      className={cn(
+        "flex",
+        isAdd
+          ? "bg-emerald-500/10 dark:bg-emerald-400/10"
+          : "bg-rose-500/10 dark:bg-rose-400/10",
+      )}
+    >
+      <span
+        className={cn(
+          "w-5 shrink-0 select-none text-center font-semibold",
+          isAdd
+            ? "text-emerald-700 dark:text-emerald-300"
+            : "text-rose-700 dark:text-rose-300",
+        )}
+      >
+        {sign}
+      </span>
+      <span className="whitespace-pre pl-1">
+        <HighlightedLine line={line === "" ? "" : line} />
+      </span>
+    </div>
+  )
+}
+
+function DiffHunkBlock({
+  block,
+  status,
+  onDecide,
+}: {
+  block: Extract<DiffBlock, { kind: "hunk" }>
+  status: HunkStatus
+  onDecide: (id: string, status: HunkStatus) => void
+}) {
+  const decided = status !== "pending"
+  return (
+    <div
+      data-hunk={block.id}
+      data-hunk-status={status}
+      className={cn(
+        "my-1 overflow-hidden rounded-md border",
+        status === "accepted"
+          ? "border-emerald-500/40"
+          : status === "rejected"
+            ? "border-rose-500/40 opacity-60"
+            : "border-border",
+      )}
+    >
+      <div className="flex items-center gap-2 border-b border-border bg-card/60 px-2 py-1 font-sans">
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+          Bloco
+        </span>
+        <span className="flex items-center gap-2 text-[11px]">
+          <span className="flex items-center gap-0.5 text-emerald-700 dark:text-emerald-300">
+            <Plus className="size-3" />
+            {block.added.length}
+          </span>
+          <span className="flex items-center gap-0.5 text-rose-700 dark:text-rose-300">
+            <Minus className="size-3" />
+            {block.removed.length}
+          </span>
+        </span>
+        <div className="ml-auto flex items-center gap-1">
+          {decided ? (
+            <span
+              className={cn(
+                "rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider",
+                status === "accepted"
+                  ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300"
+                  : "bg-rose-500/15 text-rose-700 dark:text-rose-300",
+              )}
+            >
+              {status === "accepted" ? "Aceito" : "Rejeitado"}
+            </span>
+          ) : (
+            <>
+              <button
+                type="button"
+                data-diff-action="reject-hunk"
+                onClick={() => onDecide(block.id, "rejected")}
+                className="flex items-center gap-1 rounded border border-border bg-background px-1.5 py-0.5 text-[11px] text-rose-700 transition-colors hover:bg-rose-500/10 dark:text-rose-300"
+              >
+                <X className="size-3" />
+                Rejeitar
+              </button>
+              <button
+                type="button"
+                data-diff-action="accept-hunk"
+                onClick={() => onDecide(block.id, "accepted")}
+                className="flex items-center gap-1 rounded border border-emerald-500/40 bg-emerald-500/10 px-1.5 py-0.5 text-[11px] font-medium text-emerald-700 transition-colors hover:bg-emerald-500/20 dark:text-emerald-300"
+              >
+                <Check className="size-3" />
+                Aceitar
+              </button>
+            </>
+          )}
+        </div>
+      </div>
+      <div className="py-1">
+        {block.removed.map((line, i) => (
+          <DiffChangeLine key={`r-${i}`} sign="-" line={line} />
+        ))}
+        {block.added.map((line, i) => (
+          <DiffChangeLine key={`a-${i}`} sign="+" line={line} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function DiffReview({
+  plan,
+  statuses,
+  onAcceptAll,
+  onRejectAll,
+  onDecideHunk,
+}: {
+  plan: DiffPlan
+  statuses: Record<string, HunkStatus>
+  onAcceptAll: () => void
+  onRejectAll: () => void
+  onDecideHunk: (id: string, status: HunkStatus) => void
+}) {
+  const counts = countDiff(plan.blocks)
+  return (
+    <div data-diff="true" className="flex min-h-full flex-col bg-background">
+      {/* cabeçalho do diff */}
+      <div className="sticky top-0 z-10 flex flex-wrap items-center gap-x-3 gap-y-1.5 border-b border-border bg-card/80 px-3 py-2 backdrop-blur">
+        <span className="flex items-center gap-1.5 font-mono text-[12px] text-foreground">
+          <FileCode2 className="size-3.5 text-primary" />
+          {plan.filename}
+        </span>
+        <span className="flex items-center gap-1.5 font-mono text-[12px]">
+          <span className="text-emerald-700 dark:text-emerald-300">
+            +{counts.added}
+          </span>
+          <span className="text-rose-700 dark:text-rose-300">
+            −{counts.removed}
+          </span>
+        </span>
+        <span className="rounded-full border border-border bg-background px-2 py-0.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+          Revisão
+        </span>
+        <div className="ml-auto flex items-center gap-1.5">
+          <ButtonFluid
+            variant="secondary"
+            size="sm"
+            data-diff-action="reject-all"
+            onClick={onRejectAll}
+          >
+            <X className="size-3.5" />
+            Rejeitar tudo
+          </ButtonFluid>
+          <ButtonFluid
+            variant="primary"
+            size="sm"
+            data-diff-action="accept-all"
+            onClick={onAcceptAll}
+          >
+            <Check className="size-3.5" />
+            Aceitar tudo
+          </ButtonFluid>
+        </div>
+      </div>
+
+      {/* corpo do diff unificado */}
+      <div className="min-w-max px-3 py-2 font-mono text-[12px] leading-6">
+        {plan.blocks.map((block, i) =>
+          block.kind === "context" ? (
+            <div key={`c-${i}`}>
+              {block.lines.map((line, j) => (
+                <DiffContextLine key={j} line={line} />
+              ))}
+            </div>
+          ) : (
+            <DiffHunkBlock
+              key={block.id}
+              block={block}
+              status={statuses[block.id] ?? "pending"}
+              onDecide={onDecideHunk}
+            />
+          ),
+        )}
+      </div>
+    </div>
   )
 }
 
@@ -495,6 +712,10 @@ export function AiIde() {
   const [modified, setModified] = useState<Set<string>>(() => new Set())
   const [ghostAccepted, setGhostAccepted] = useState<Set<string>>(() => new Set())
 
+  // ── revisão de diff inline (aceitar/rejeitar por hunk) ─────────────────
+  const [diffPlan, setDiffPlan] = useState<DiffPlan | null>(null)
+  const [hunkStatus, setHunkStatus] = useState<Record<string, HunkStatus>>({})
+
   // ── painel IA ─────────────────────────────────────────────────────────
   const [thread, setThread] = useState<AiMessage[]>(INITIAL_THREAD)
   const [pending, setPending] = useState(false)
@@ -682,18 +903,70 @@ export function AiIde() {
     setModified((prev) => new Set(prev).add(activeFile.id))
   }, [activeFile, ghostAccepted, setFileCode])
 
-  const applyPatch = useCallback(
-    (code: AiCode) => {
-      setFileCode(code.targetId, code.code)
-      setModified((prev) => new Set(prev).add(code.targetId))
-      setOpenTabs((prev) =>
-        prev.includes(code.targetId) ? prev : [...prev, code.targetId],
+  // Aplica de fato uma revisão decidida: materializa o conteúdo final e, se
+  // houver ao menos um hunk aceito, escreve no editor e marca o arquivo como
+  // modificado (dot na tab + Source Control + status bar). Sempre encerra o
+  // modo diff. Reutilizável: recebe o plano e o mapa de decisões.
+  const finalizeReview = useCallback(
+    (plan: DiffPlan, statuses: Record<string, HunkStatus>) => {
+      const anyAccepted = plan.blocks.some(
+        (b) => b.kind === "hunk" && statuses[b.id] === "accepted",
       )
-      setActiveId(code.targetId)
-      setActivity("scm")
+      if (anyAccepted) {
+        setFileCode(plan.targetId, materializeDiff(plan.blocks, statuses))
+        setModified((prev) => new Set(prev).add(plan.targetId))
+        setActivity("scm")
+      }
+      setDiffPlan(null)
+      setHunkStatus({})
     },
     [setFileCode],
   )
+
+  // Entra no modo de revisão de diff inline para uma mudança proposta. Não troca
+  // o código direto: abre a aba do arquivo-alvo e mostra o diff por hunks.
+  // Reutilizável pela Task 4 (Cmd+K inline) — qualquer origem que monte um
+  // { targetId, filename, blocks } dispara o mesmo fluxo de revisão.
+  const startReview = useCallback((code: AiCode) => {
+    setOpenTabs((prev) =>
+      prev.includes(code.targetId) ? prev : [...prev, code.targetId],
+    )
+    setActiveId(code.targetId)
+    setDiffPlan({
+      targetId: code.targetId,
+      filename: code.filename,
+      blocks: code.blocks,
+    })
+    setHunkStatus({})
+  }, [])
+
+  // Decide um hunk; quando todos os hunks foram decididos, finaliza a revisão.
+  const decideHunk = useCallback(
+    (id: string, status: HunkStatus) => {
+      if (!diffPlan) return
+      const next: Record<string, HunkStatus> = { ...hunkStatus, [id]: status }
+      const allDecided = diffPlan.blocks.every(
+        (b) => b.kind !== "hunk" || next[b.id] !== undefined,
+      )
+      if (allDecided) finalizeReview(diffPlan, next)
+      else setHunkStatus(next)
+    },
+    [diffPlan, hunkStatus, finalizeReview],
+  )
+
+  const acceptAllHunks = useCallback(() => {
+    if (!diffPlan) return
+    const next: Record<string, HunkStatus> = {}
+    for (const b of diffPlan.blocks) {
+      if (b.kind === "hunk") next[b.id] = "accepted"
+    }
+    finalizeReview(diffPlan, next)
+  }, [diffPlan, finalizeReview])
+
+  const rejectAllHunks = useCallback(() => {
+    setDiffPlan(null)
+    setHunkStatus({})
+  }, [])
 
   // ── árvore: criar / renomear / excluir ───────────────────────────────
   const startCreate = useCallback((kind: "file" | "dir") => {
@@ -1228,10 +1501,10 @@ export function AiIde() {
                     <ButtonFluid
                       variant="primary"
                       size="sm"
-                      onClick={() => m.code && applyPatch(m.code)}
+                      onClick={() => m.code && startReview(m.code)}
                     >
-                      <Check className="size-3.5" />
-                      Aplicar
+                      <FileCode2 className="size-3.5" />
+                      Revisar mudança
                     </ButtonFluid>
                   </div>
                   <pre className="max-h-48 overflow-auto px-3 py-2 font-mono text-[12px] leading-5">
@@ -1697,7 +1970,15 @@ export function AiIde() {
 
           {/* área de código */}
           <div className="min-h-0 flex-1 overflow-auto bg-background">
-            {activeFile ? (
+            {diffPlan && diffPlan.targetId === activeId ? (
+              <DiffReview
+                plan={diffPlan}
+                statuses={hunkStatus}
+                onAcceptAll={acceptAllHunks}
+                onRejectAll={rejectAllHunks}
+                onDecideHunk={decideHunk}
+              />
+            ) : activeFile ? (
               <div className="flex min-w-max font-mono text-[13px] leading-6">
                 <div className="select-none border-r border-border bg-card/30 px-3 py-2 text-right tabular-nums text-muted-foreground">
                   {codeLines.map((_, i) => (

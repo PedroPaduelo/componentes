@@ -81,6 +81,39 @@ async function run() {
 
       await shot(page, `ai-ide-${theme}`, { sub: "ai-ide" })
 
+      if (theme === "dark") {
+        // ── F1 DIFF em DARK: dispara prompt → Revisar → mede realces do diff
+        const ta = page.locator("textarea[aria-label='Message']").first()
+        await ta.fill("Refatore o App.tsx")
+        await ta.press("Enter")
+        await page.waitForTimeout(5200)
+        const rev = page.locator("button:has-text('Revisar mudança')").first()
+        if ((await rev.count()) > 0) {
+          await rev.click()
+          await page.waitForTimeout(400)
+          const diffDark = await page.locator("[data-diff]").count()
+          const hunkDark = await page.locator("[data-hunk]").count()
+          // mede o background de uma linha adicionada (deve ter alpha visível)
+          const addBg = await page.evaluate(() => {
+            const diff = document.querySelector("[data-diff]")
+            if (!diff) return null
+            const hunk = diff.querySelector("[data-hunk]")
+            if (!hunk) return null
+            const rows = hunk.querySelectorAll("div")
+            for (const r of rows) {
+              const bg = getComputedStyle(r).backgroundColor
+              if (bg && bg !== "rgba(0, 0, 0, 0)" && bg !== "transparent") return bg
+            }
+            return null
+          })
+          report.interactions.diffDark = {
+            diffDark, hunkDark, addBg,
+            addBgVisible: addBg !== null && parseColorAlpha(addBg) > 0.02,
+          }
+          await shot(page, "ai-ide-diff-dark", { sub: "ai-ide" })
+        }
+      }
+
       if (theme === "light") {
         // ── LARGURA: container da IDE acompanha o layout wide (> teto antigo 1152)
         const ideWidth = await page.evaluate(() => {
@@ -194,18 +227,69 @@ async function run() {
           expandedDuring, activeDuring, expandedAfter, activeAfter, expandedReopen,
         }
 
-        // garante o streaming concluído e o botão Aplicar surgido
+        // garante o streaming concluído e o botão Revisar mudança surgido
         await page.waitForTimeout(1500)
-        const applyBtn = page.locator("button:has-text('Aplicar')").first()
-        const applyCount = await applyBtn.count()
-        report.interactions.ai = { applyCount }
+        const reviewBtn = page.locator("button:has-text('Revisar mudança')").first()
+        const reviewCount = await reviewBtn.count()
+        report.interactions.ai = { reviewCount }
 
-        // ── APLICAR: clica e confere App.tsx modificado (status bar)
-        if (applyCount > 0) {
-          await applyBtn.click()
+        // ── F1 DIFF INLINE: cenário 1 — Rejeitar tudo NÃO altera (volta ao original)
+        const modifiedBeforeAll = await page.locator("footer >> text=modificado").count()
+        if (reviewCount > 0) {
+          await reviewBtn.click()
           await page.waitForTimeout(400)
-          const modifiedStatus = await page.locator("footer >> text=modificado").count()
-          report.interactions.apply = { modifiedStatus }
+          const diffShown = await page.locator("[data-diff]").count()
+          const hunkCount = await page.locator("[data-hunk]").count()
+          const acceptHunkBtns = await page.locator("[data-diff-action='accept-hunk']").count()
+          const rejectHunkBtns = await page.locator("[data-diff-action='reject-hunk']").count()
+          const plusMinus = await page.locator("[data-diff] >> text=/\\+\\d+/").count()
+          report.interactions.diffEnter = {
+            diffShown, hunkCount, acceptHunkBtns, rejectHunkBtns, plusMinus,
+          }
+          await shot(page, "ai-ide-diff-light", { sub: "ai-ide" })
+
+          // Rejeitar tudo → sai do diff, NÃO marca modificado
+          await page.locator("[data-diff-action='reject-all']").first().click()
+          await page.waitForTimeout(400)
+          const diffAfterReject = await page.locator("[data-diff]").count()
+          const modifiedAfterReject = await page.locator("footer >> text=modificado").count()
+          report.interactions.diffRejectAll = {
+            diffAfterReject,
+            modifiedBeforeAll,
+            modifiedAfterReject,
+            noChange: diffAfterReject === 0 && modifiedAfterReject === modifiedBeforeAll,
+          }
+        }
+
+        // ── F1 DIFF INLINE: cenário 2 — decisão por hunk + Aceitar tudo aplica
+        const reviewBtn2 = page.locator("button:has-text('Revisar mudança')").first()
+        if ((await reviewBtn2.count()) > 0) {
+          await reviewBtn2.click()
+          await page.waitForTimeout(400)
+          const hunksInitial = await page.locator("[data-hunk][data-hunk-status='pending']").count()
+          // aceita o primeiro hunk individual
+          await page.locator("[data-diff-action='accept-hunk']").first().click()
+          await page.waitForTimeout(300)
+          const pendingAfterOne = await page.locator("[data-hunk][data-hunk-status='pending']").count()
+          const acceptedOne = await page.locator("[data-hunk][data-hunk-status='accepted']").count()
+          // rejeita o próximo hunk individual
+          await page.locator("[data-diff-action='reject-hunk']").first().click()
+          await page.waitForTimeout(300)
+          const rejectedOne = await page.locator("[data-hunk][data-hunk-status='rejected']").count()
+          // aceita tudo (decide os restantes + aplica)
+          const stillInDiff = await page.locator("[data-diff]").count()
+          if (stillInDiff > 0) {
+            await page.locator("[data-diff-action='accept-all']").first().click()
+            await page.waitForTimeout(400)
+          }
+          const diffAfterAccept = await page.locator("[data-diff]").count()
+          const modifiedAfterAccept = await page.locator("footer >> text=modificado").count()
+          const scmEntry = await page.locator("[data-slot='ai-ide'] aside button:has-text('App.tsx')").count()
+          report.interactions.diffHunks = {
+            hunksInitial, pendingAfterOne, acceptedOne, rejectedOne,
+            diffAfterAccept, modifiedAfterAccept, scmEntry,
+            appliedAndModified: diffAfterAccept === 0 && modifiedAfterAccept > 0,
+          }
         }
 
         await shot(page, "ai-ide-after-flow", { sub: "ai-ide" })

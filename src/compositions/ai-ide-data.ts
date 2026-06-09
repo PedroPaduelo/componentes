@@ -344,11 +344,69 @@ export function findPath(
 
 export type Role = "user" | "assistant"
 
+/* -------------------------------------------------------------------------- */
+/*                          revisão de diff por hunk                           */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Bloco de um diff unificado pré-computado (determinístico — sem algoritmo de
+ * diffing em runtime). Um `context` são linhas inalteradas; um `hunk` agrupa as
+ * linhas removidas (`removed`) e adicionadas (`added`) de um trecho decidível.
+ */
+export type DiffBlock =
+  | { kind: "context"; lines: string[] }
+  | { kind: "hunk"; id: string; removed: string[]; added: string[] }
+
+/** Decisão do usuário sobre um hunk durante a revisão. */
+export type HunkStatus = "pending" | "accepted" | "rejected"
+
+/** Plano de revisão de uma mudança: arquivo-alvo + blocos do diff. */
+export type DiffPlan = {
+  targetId: string
+  filename: string
+  blocks: DiffBlock[]
+}
+
+/** Soma agregada de linhas adicionadas/removidas de todos os hunks. */
+export function countDiff(blocks: DiffBlock[]): { added: number; removed: number } {
+  let added = 0
+  let removed = 0
+  for (const block of blocks) {
+    if (block.kind === "hunk") {
+      added += block.added.length
+      removed += block.removed.length
+    }
+  }
+  return { added, removed }
+}
+
+/**
+ * Reconstrói o conteúdo final do arquivo a partir das decisões: hunk aceito vira
+ * suas linhas `added`; hunk pendente ou rejeitado mantém as linhas `removed`
+ * (estado original). Contexto é sempre preservado.
+ */
+export function materializeDiff(
+  blocks: DiffBlock[],
+  statuses: Record<string, HunkStatus>,
+): string {
+  const out: string[] = []
+  for (const block of blocks) {
+    if (block.kind === "context") {
+      out.push(...block.lines)
+    } else {
+      out.push(...(statuses[block.id] === "accepted" ? block.added : block.removed))
+    }
+  }
+  return out.join("\n")
+}
+
 export type AiCode = {
   language: Lang
   filename: string
   code: string
   targetId: string
+  /** Diff segmentado em hunks para a revisão inline (aceitar/rejeitar). */
+  blocks: DiffBlock[]
 }
 
 export type ThinkStep = {
@@ -497,6 +555,51 @@ export function App() {
     </main>
   )
 }`,
+    blocks: [
+      {
+        kind: "context",
+        lines: [
+          `import { useMemo, useState } from "react"`,
+          `import { buildGreeting } from "@/lib/utils"`,
+          `import { fetchUser } from "@/lib/api"`,
+        ],
+      },
+      {
+        kind: "hunk",
+        id: "h-import-type",
+        removed: [],
+        added: [`import type { User } from "@/lib/api"`],
+      },
+      { kind: "context", lines: ["", "export function App() {"] },
+      {
+        kind: "hunk",
+        id: "h-state",
+        removed: ["  const [user, setUser] = useState(null)"],
+        added: [
+          "  const [user, setUser] = useState<User | null>(null)",
+          "  const greeting = useMemo(() => buildGreeting(user), [user])",
+        ],
+      },
+      {
+        kind: "context",
+        lines: ["", "  return (", `    <main className="app">`],
+      },
+      {
+        kind: "hunk",
+        id: "h-heading",
+        removed: ["      <h1>Olá, mundo</h1>"],
+        added: ["      <h1>{greeting}</h1>"],
+      },
+      {
+        kind: "context",
+        lines: [
+          `      <p>{user ? user.name : "Carregando…"}</p>`,
+          "    </main>",
+          "  )",
+          "}",
+        ],
+      },
+    ],
   },
 }
 
