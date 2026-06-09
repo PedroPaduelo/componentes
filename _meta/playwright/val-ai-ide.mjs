@@ -6,7 +6,7 @@ import { chromium } from "playwright"
 import { shot, saveJSON } from "./_shots.mjs"
 
 const URL = "http://localhost:5173/compositions/ai-ide"
-const report = { theme: {}, interactions: {}, borders: {}, responsive: {} }
+const report = { theme: {}, interactions: {}, borders: {}, responsive: {}, width: {} }
 
 function parseColorAlpha(c) {
   if (!c) return 0
@@ -57,7 +57,7 @@ async function run() {
   const browser = await chromium.launch()
   try {
     for (const theme of ["light", "dark"]) {
-      const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
+      const ctx = await browser.newContext({ viewport: { width: 1600, height: 950 } })
       const page = await ctx.newPage()
       const errors = []
       page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()) })
@@ -82,51 +82,111 @@ async function run() {
       await shot(page, `ai-ide-${theme}`, { sub: "ai-ide" })
 
       if (theme === "light") {
-        // ── ACTIVITY BAR: clica em Source Control e confere troca de painel
-        const beforeExplorer = await page.locator("text=Explorer").count()
-        await page.locator("nav[aria-label='Barra de atividades'] button[aria-current]").first().waitFor()
-        await page.locator("nav[aria-label='Barra de atividades'] button").nth(2).click() // scm
-        await page.waitForTimeout(300)
-        const scmVisible = await page.locator("text=Controle de origem").count()
-        report.interactions.activityBar = { beforeExplorer, scmVisible }
+        // ── LARGURA: container da IDE acompanha o layout wide (> teto antigo 1152)
+        const ideWidth = await page.evaluate(() => {
+          const el = document.querySelector("[data-slot='ai-ide']")
+          return el ? Math.round(el.getBoundingClientRect().width) : 0
+        })
+        report.width = { ideWidth, widerThanOld: ideWidth > 1152 }
 
-        // volta pro explorer
-        await page.locator("nav[aria-label='Barra de atividades'] button").first().click()
+        // ── EXPLORER PASTA: abre/fecha a pasta "lib" e confere variação de itens
+        const treeFileCount = () => page.locator("[data-slot='ai-ide'] aside button[aria-current], [data-slot='ai-ide'] aside .group").count()
+        const libToggle = page.locator("button[aria-label*='pasta lib']").first()
+        const apiBeforeCollapse = await page.locator("button:has-text('api.ts')").count()
+        await libToggle.click() // recolhe (estava aberta)
         await page.waitForTimeout(300)
-
-        // ── FILE TREE: abre api.ts e confere que vira tab + breadcrumb muda
-        await page.locator("button:has-text('api.ts')").first().click()
+        const apiAfterCollapse = await page.locator("button:has-text('api.ts')").count()
+        await libToggle.click() // expande de novo
         await page.waitForTimeout(300)
-        const breadcrumbApi = await page.locator("text=api.ts").count()
-        report.interactions.fileTree = { breadcrumbApi }
+        const apiAfterExpand = await page.locator("button:has-text('api.ts')").count()
+        report.interactions.folder = { apiBeforeCollapse, apiAfterCollapse, apiAfterExpand }
 
-        // ── IA: envia prompt e espera thinking + resposta com código
+        // ── EXPLORER NOVO ARQUIVO: cria um arquivo e confere que vira tab
+        const tabsBefore = await page.locator("[data-slot='ai-ide'] .group:has(button[aria-label^='Fechar'])").count()
+        await page.locator("button[aria-label='Novo arquivo']").first().click()
+        await page.waitForTimeout(200)
+        const createInput = page.locator("input[aria-label='Nome do novo arquivo']").first()
+        await createInput.fill("hello.tsx")
+        await createInput.press("Enter")
+        await page.waitForTimeout(300)
+        const tabsAfter = await page.locator("[data-slot='ai-ide'] .group:has(button[aria-label^='Fechar'])").count()
+        const helloTab = await page.locator("button[aria-label='Fechar hello.tsx']").count()
+        report.interactions.newFile = { tabsBefore, tabsAfter, helloTab }
+
+        // ── TITLE BAR: abre menu Ver e alterna painel inferior
+        await page.locator("button[data-menu='view']").first().click()
+        await page.waitForTimeout(300)
+        const viewMenuOpen = await page.locator("[aria-label='Alternar painel inferior']").count()
+        await page.locator("[aria-label='Alternar painel inferior']").first().click()
+        await page.waitForTimeout(300)
+        // depois de alternar, o terminal input some (painel recolhido)
+        const termAfterToggle = await page.locator("input[aria-label='Comando do terminal']").count()
+        report.interactions.titleBar = { viewMenuOpen, termAfterToggle }
+        // reabre o painel
+        await page.locator("button[aria-label='Expandir painel']").first().click().catch(() => {})
+        await page.waitForTimeout(200)
+
+        // ── ACTIVITY BAR: Settings abre Preferências com SwitchFluid
+        await page.locator("button[aria-label='Configurações']").first().click()
+        await page.waitForTimeout(300)
+        const prefsVisible = await page.locator("text=Preferências").count()
+        const switchCount = await page.locator("[data-slot='ai-ide'] aside [role='switch']").count()
+        report.interactions.settings = { prefsVisible, switchCount }
+        await page.locator("nav[aria-label='Barra de atividades'] button").first().click() // volta explorer
+        await page.waitForTimeout(200)
+
+        // ── IA: envia prompt → raciocínio EXPANDIDO durante o thinking
+        await page.locator("button:has-text('api.ts')").first().click().catch(() => {})
         const textarea = page.locator("textarea[aria-label='Message']").first()
         await textarea.fill("Refatore o App.tsx")
         await textarea.press("Enter")
+        await page.waitForTimeout(700)
+        const reasoning = page.locator("[data-reasoning]").last()
+        const expandedDuring = await reasoning.getAttribute("data-expanded")
+        const activeDuring = await reasoning.getAttribute("data-active")
+        // espera o thinking terminar (passos + folga)
+        await page.waitForTimeout(4200)
+        const expandedAfter = await reasoning.getAttribute("data-expanded")
+        const activeAfter = await reasoning.getAttribute("data-active")
+        // clica no cabeçalho para re-expandir
+        await reasoning.locator("button[aria-expanded]").first().click()
         await page.waitForTimeout(400)
-        const thinkingVisible = await page.locator("text=Raciocinando").count()
-        await page.waitForTimeout(1600)
+        const expandedReopen = await reasoning.getAttribute("data-expanded")
+        report.interactions.reasoning = {
+          expandedDuring, activeDuring, expandedAfter, activeAfter, expandedReopen,
+        }
+
+        // espera o streaming da resposta terminar e o botão Aplicar surgir
+        await page.waitForTimeout(2500)
         const applyBtn = page.locator("button:has-text('Aplicar')").first()
         const applyCount = await applyBtn.count()
-        report.interactions.ai = { thinkingVisible, applyCount }
+        report.interactions.ai = { applyCount }
 
-        // ── APLICAR: clica e confere que App.tsx fica modificado (status bar)
+        // ── APLICAR: clica e confere App.tsx modificado (status bar)
         if (applyCount > 0) {
           await applyBtn.click()
           await page.waitForTimeout(400)
           const modifiedStatus = await page.locator("footer >> text=modificado").count()
-          const scmCount = await page.locator("nav[aria-label='Barra de atividades'] button").nth(2).locator("span").count()
-          report.interactions.apply = { modifiedStatus, scmCount }
+          report.interactions.apply = { modifiedStatus }
         }
 
-        // ── TERMINAL: digita comando e confere saída
+        await shot(page, "ai-ide-after-flow", { sub: "ai-ide" })
+
+        // ── TERMINAL: garante o painel aberto na aba Terminal, digita comando
+        if ((await page.locator("input[aria-label='Comando do terminal']").count()) === 0) {
+          await page.locator("button:has-text('Terminal')").first().click().catch(() => {})
+          await page.waitForTimeout(300)
+        }
         const termInput = page.locator("input[aria-label='Comando do terminal']").first()
         await termInput.fill("npm run dev")
         await termInput.press("Enter")
         await page.waitForTimeout(300)
         const viteOut = await page.locator("text=VITE").count()
-        report.interactions.terminal = { viteOut }
+        await termInput.fill("clear")
+        await termInput.press("Enter")
+        await page.waitForTimeout(200)
+        const afterClear = await page.locator("text=VITE").count()
+        report.interactions.terminal = { viteOut, afterClear }
 
         // ── ⌘K: abre palette
         await page.keyboard.press("Meta+k")
@@ -153,7 +213,6 @@ async function run() {
     await pageM.waitForTimeout(600)
     const scrollW = await pageM.evaluate(() => document.documentElement.scrollWidth)
     const clientW = await pageM.evaluate(() => document.documentElement.clientWidth)
-    // painel IA desktop deve estar oculto; botão Ask AI visível
     const askAiBtn = await pageM.locator("button:has-text('Ask AI')").count()
     await pageM.locator("button:has-text('Ask AI')").first().click()
     await pageM.waitForTimeout(500)
