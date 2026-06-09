@@ -55,6 +55,10 @@ import {
   Slider,
   SwitchFluid,
   Table,
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
   TableBody,
   TableCell,
   TableHead,
@@ -289,6 +293,56 @@ const benefits: { icon: typeof Gauge; title: string; description: string }[] = [
 
 /** Selos de conformidade exibidos na faixa de segurança. */
 const compliance = ["SOC 2 Type II", "GDPR", "ISO 27001", "LGPD", "99,9% SLA"]
+
+/** Perfis de uso para o seletor guiado "Encontre seu plano". */
+const profiles: {
+  id: string
+  label: string
+  recommended: string
+  headline: string
+  description: string
+  points: string[]
+}[] = [
+  {
+    id: "indie",
+    label: "Solo / Indie",
+    recommended: "Starter",
+    headline: "Comece sem gastar nada",
+    description:
+      "Perfeito para validar uma ideia ou tocar projetos pessoais com calma.",
+    points: [
+      "1 projeto é suficiente para começar",
+      "Componentes da comunidade liberados",
+      "Faça upgrade só quando crescer",
+    ],
+  },
+  {
+    id: "startup",
+    label: "Startup / Time",
+    recommended: "Pro",
+    headline: "Escale com o time inteiro",
+    description:
+      "Colaboração sem limites e recursos premium para acelerar a entrega.",
+    points: [
+      "Projetos e colaboradores ilimitados",
+      "Analytics avançado e suporte prioritário",
+      "Cobrança por assento, justa e previsível",
+    ],
+  },
+  {
+    id: "enterprise",
+    label: "Empresa",
+    recommended: "Enterprise",
+    headline: "Governança e suporte dedicado",
+    description:
+      "Segurança avançada, SLA e onboarding sob medida para grandes operações.",
+    points: [
+      "SSO, SAML e auditoria avançada",
+      "SLA dedicado de 99,9% e gerente de conta",
+      "Contratos e faturamento personalizados",
+    ],
+  },
+]
 
 function formatPrice(value: number): string {
   return value.toLocaleString("pt-BR")
@@ -591,6 +645,69 @@ export function PricingPage() {
             </div>
           </CardContent>
         </Card>
+
+        {/* Seletor guiado por perfil */}
+        <div className="mt-16">
+          <div className="mx-auto max-w-2xl text-center">
+            <h2 className="text-2xl font-semibold tracking-tight text-foreground">
+              Não sabe qual escolher?
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Conte como você trabalha e recomendamos o plano ideal.
+            </p>
+          </div>
+
+          <Tabs defaultValue="indie" className="mx-auto mt-8 max-w-3xl">
+            <TabsList className="mx-auto">
+              {profiles.map((profile) => (
+                <TabsTrigger key={profile.id} value={profile.id}>
+                  {profile.label}
+                </TabsTrigger>
+              ))}
+            </TabsList>
+
+            {profiles.map((profile) => (
+              <TabsContent key={profile.id} value={profile.id} className="mt-6">
+                <Card className="bg-card/80 backdrop-blur-sm">
+                  <CardContent className="grid gap-6 py-6 md:grid-cols-[1fr_auto] md:items-center">
+                    <div>
+                      <h3 className="text-lg font-semibold text-foreground">
+                        {profile.headline}
+                      </h3>
+                      <p className="mt-1 text-sm text-muted-foreground">
+                        {profile.description}
+                      </p>
+                      <ul className="mt-4 flex flex-col gap-2 text-sm">
+                        {profile.points.map((point) => (
+                          <li
+                            key={point}
+                            className="flex items-start gap-2 text-foreground"
+                          >
+                            <Check
+                              className="mt-0.5 size-4 shrink-0 text-primary"
+                              aria-hidden="true"
+                            />
+                            <span>{point}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    <div className="rounded-lg border border-primary/30 bg-primary/5 px-6 py-5 text-center md:min-w-[200px]">
+                      <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                        Recomendado
+                      </p>
+                      <p className="mt-1 text-2xl font-bold text-foreground">
+                        {profile.recommended}
+                      </p>
+                      <Button className="mt-4 w-full">Escolher plano</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              </TabsContent>
+            ))}
+          </Tabs>
+        </div>
 
         {/* Tabela comparativa de recursos */}
         <div className="mt-16">
