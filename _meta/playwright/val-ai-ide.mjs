@@ -144,8 +144,46 @@ async function run() {
         const reasoning = page.locator("[data-reasoning]").last()
         const expandedDuring = await reasoning.getAttribute("data-expanded")
         const activeDuring = await reasoning.getAttribute("data-active")
-        // espera o thinking terminar (passos + folga)
-        await page.waitForTimeout(4200)
+
+        // ── ESTABILIDADE DO SCROLL: amostra scrollTop do container do chat ao longo
+        // de todo o ciclo (thinking → auto-contrair → streaming). Sem reversão brusca.
+        const samples = []
+        for (let i = 0; i < 45; i += 1) {
+          const top = await page.evaluate(() => {
+            const r = document.querySelector("[data-reasoning]")
+            let el = r ? r.parentElement : null
+            while (el) {
+              const oy = getComputedStyle(el).overflowY
+              if (oy === "auto" || oy === "scroll") return Math.round(el.scrollTop)
+              el = el.parentElement
+            }
+            return null
+          })
+          if (top !== null) samples.push(top)
+          await page.waitForTimeout(200)
+        }
+        // métricas: maior reversão pra cima (subir-descer-subir) e nº de reversões > tolerância
+        const REVERSAL_TOLERANCE = 24 // px — suavização/sub-pixel é aceitável
+        let maxUpwardReversal = 0
+        let bigReversals = 0
+        for (let i = 1; i < samples.length; i += 1) {
+          const delta = samples[i] - samples[i - 1]
+          if (delta < 0) {
+            const up = -delta
+            if (up > maxUpwardReversal) maxUpwardReversal = up
+            if (up > REVERSAL_TOLERANCE) bigReversals += 1
+          }
+        }
+        report.interactions.scrollStability = {
+          sampleCount: samples.length,
+          first: samples[0],
+          last: samples[samples.length - 1],
+          maxUpwardReversal,
+          bigReversals,
+          stable: bigReversals === 0,
+          samples,
+        }
+
         const expandedAfter = await reasoning.getAttribute("data-expanded")
         const activeAfter = await reasoning.getAttribute("data-active")
         // clica no cabeçalho para re-expandir
@@ -156,8 +194,8 @@ async function run() {
           expandedDuring, activeDuring, expandedAfter, activeAfter, expandedReopen,
         }
 
-        // espera o streaming da resposta terminar e o botão Aplicar surgir
-        await page.waitForTimeout(2500)
+        // garante o streaming concluído e o botão Aplicar surgido
+        await page.waitForTimeout(1500)
         const applyBtn = page.locator("button:has-text('Aplicar')").first()
         const applyCount = await applyBtn.count()
         report.interactions.ai = { applyCount }

@@ -466,6 +466,9 @@ function nextUid(prefix: string): string {
   return `${prefix}-${uidCounter}`
 }
 
+/** Distância (px) do fim a partir da qual o chat ainda "gruda" no fundo (stick-to-bottom). */
+const STICK_TO_BOTTOM_PX = 80
+
 export function AiIde() {
   const { setTheme, resolvedTheme } = useTheme()
 
@@ -529,6 +532,10 @@ export function AiIde() {
   const streamTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const chatScrollRef = useRef<HTMLDivElement>(null)
   const terminalScrollRef = useRef<HTMLDivElement>(null)
+  // Stick-to-bottom: true enquanto o usuário está perto do fim do chat.
+  const stickToBottomRef = useRef(true)
+  // rAF que coalesce os auto-scrolls (evita reescrever scrollTop em alta frequência).
+  const scrollRafRef = useRef<number | null>(null)
 
   const clearAiTimers = useCallback(() => {
     stepTimersRef.current.forEach((t) => clearTimeout(t))
@@ -541,16 +548,48 @@ export function AiIde() {
       clearInterval(streamTimerRef.current)
       streamTimerRef.current = null
     }
+    if (scrollRafRef.current !== null) {
+      cancelAnimationFrame(scrollRafRef.current)
+      scrollRafRef.current = null
+    }
   }, [])
 
   // Limpa todos os timers ao desmontar.
   useEffect(() => clearAiTimers, [clearAiTimers])
 
-  // Auto-scroll do chat ao mudar a thread ou o estado de "thinking".
-  useEffect(() => {
+  // Atualiza a flag stick-to-bottom conforme o usuário rola o chat.
+  const onChatScroll = useCallback(() => {
     const el = chatScrollRef.current
-    if (el) el.scrollTop = el.scrollHeight
+    if (!el) return
+    const distance = el.scrollHeight - el.scrollTop - el.clientHeight
+    stickToBottomRef.current = distance < STICK_TO_BOTTOM_PX
+  }, [])
+
+  // Auto-scroll suave e coalescido: só "gruda" no fundo se o usuário já estava lá.
+  // Coalesce via rAF para não brigar com a transição de altura (300ms) nem reescrever
+  // scrollTop a cada tick/palavra. Desacoplado dos incrementos de alta frequência —
+  // reage apenas a sinais "grossos" (nº de mensagens, passos revelados, fim do streaming).
+  const scrollSignal = useMemo(() => {
+    const last = thread[thread.length - 1]
+    const reasoning = last?.reasoning
+    return [
+      thread.length,
+      reasoning?.visibleSteps ?? 0,
+      reasoning?.expanded ? 1 : 0,
+      last?.shownText.length ?? 0,
+      pending ? 1 : 0,
+    ].join(":")
   }, [thread, pending])
+
+  useEffect(() => {
+    if (!stickToBottomRef.current) return
+    if (scrollRafRef.current !== null) cancelAnimationFrame(scrollRafRef.current)
+    scrollRafRef.current = requestAnimationFrame(() => {
+      scrollRafRef.current = null
+      const el = chatScrollRef.current
+      if (el) el.scrollTop = el.scrollHeight
+    })
+  }, [scrollSignal])
 
   // Auto-scroll do terminal ao adicionar linhas.
   useEffect(() => {
@@ -792,6 +831,8 @@ export function AiIde() {
       if (!trimmed || pending) return
 
       clearAiTimers()
+      // ao enviar um novo prompt, retomamos o acompanhamento do fim do chat.
+      stickToBottomRef.current = true
 
       const assistantId = Date.now()
       setThread((prev) => {
@@ -871,33 +912,39 @@ export function AiIde() {
           clearInterval(tickTimerRef.current)
           tickTimerRef.current = null
         }
+        // Auto-contrai SUAVE: dispara só a transição de altura/opacidade (grid-rows
+        // 1fr→0fr, 300ms). O streaming começa após o respiro para o conteúdo não "pular".
         patchReasoning({ active: false, expanded: false, done: true })
 
-        // streaming token-a-token da resposta final (por palavras).
-        const words = REPLY.text.split(" ")
-        let wi = 0
-        streamTimerRef.current = setInterval(() => {
-          wi += 1
-          const shown = words.slice(0, wi).join(" ")
-          const isDone = wi >= words.length
-          setThread((prev) =>
-            prev.map((m) =>
-              m.id === assistantId
-                ? {
-                    ...m,
-                    shownText: shown,
-                    streamed: isDone,
-                    code: isDone ? REPLY.code : m.code,
-                  }
-                : m,
-            ),
-          )
-          if (isDone && streamTimerRef.current) {
-            clearInterval(streamTimerRef.current)
-            streamTimerRef.current = null
-            setPending(false)
-          }
-        }, GEN_TIMING.streamMs)
+        // respiro ≈ duração da transição antes de começar a streamar a resposta.
+        const startStream = setTimeout(() => {
+          // streaming token-a-token da resposta final (por palavras).
+          const words = REPLY.text.split(" ")
+          let wi = 0
+          streamTimerRef.current = setInterval(() => {
+            wi += 1
+            const shown = words.slice(0, wi).join(" ")
+            const isDone = wi >= words.length
+            setThread((prev) =>
+              prev.map((m) =>
+                m.id === assistantId
+                  ? {
+                      ...m,
+                      shownText: shown,
+                      streamed: isDone,
+                      code: isDone ? REPLY.code : m.code,
+                    }
+                  : m,
+              ),
+            )
+            if (isDone && streamTimerRef.current) {
+              clearInterval(streamTimerRef.current)
+              streamTimerRef.current = null
+              setPending(false)
+            }
+          }, GEN_TIMING.streamMs)
+        }, GEN_TIMING.collapseRespiroMs)
+        stepTimersRef.current.push(startStream)
       }, totalThinkMs)
       stepTimersRef.current.push(finishThink)
     },
@@ -1045,7 +1092,12 @@ export function AiIde() {
             r.expanded ? "[grid-template-rows:1fr]" : "[grid-template-rows:0fr]",
           )}
         >
-          <div className="min-h-0 overflow-hidden">
+          <div
+            className={cn(
+              "min-h-0 overflow-hidden transition-opacity duration-300 ease-out",
+              r.expanded ? "opacity-100" : "opacity-0",
+            )}
+          >
             <div className="flex flex-col border-t border-border px-2 py-2">
               {r.steps.map((step, i) => {
                 if (i >= r.visibleSteps) return null
@@ -1147,6 +1199,7 @@ export function AiIde() {
       {/* thread */}
       <div
         ref={chatScrollRef}
+        onScroll={onChatScroll}
         className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto px-3 py-4"
       >
         {thread.map((m) =>

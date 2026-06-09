@@ -510,6 +510,8 @@ export const GEN_TIMING = {
   stepGapMs: 800,
   /** Folga após o último passo antes de contrair e streamar. */
   afterStepsMs: 450,
+  /** Respiro após o auto-contrair (≈ duração da transição de altura) antes de começar a streamar — evita o "pulo" de tela. */
+  collapseRespiroMs: 340,
   /** Intervalo de revelação de cada token no streaming da resposta. */
   streamMs: 38,
 }
