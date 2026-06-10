@@ -1,0 +1,68 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "react-flow",
+  "title": "React Flow",
+  "description": "Suite de diagramas baseada em @xyflow/react, tematizada com tokens shadcn (light/dark reativo). Inclui custom nodes no estilo Card, edges animadas/direcionais, Controls, MiniMap e Background pontilhado. Pronta para flowcharts, organogramas, pipelines e canvas drag-and-drop.",
+  "dependencies": [
+    "@xyflow/react@^12.11.0"
+  ],
+  "registryDependencies": [
+    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/react-flow.tsx",
+      "content": "import {\n  Background,\n  BackgroundVariant,\n  Controls,\n  MiniMap,\n  ReactFlow,\n  ReactFlowProvider,\n} from \"@xyflow/react\"\n\nimport \"@xyflow/react/dist/style.css\"\n\nimport { useTheme } from \"@/components/theme/use-theme\"\nimport { cn } from \"@/lib/utils\"\nimport { reactFlowNodeTypes } from \"@/components/ui/react-flow-node-types\"\nimport type { ReactFlowDiagramProps } from \"@/components/ui/react-flow-types\"\n\n/**\n * ReactFlowDiagram — suite de diagramas (React Flow / @xyflow/react)\n * padronizada para a vitrine shadcn.\n *\n * - Embrulha `ReactFlowProvider` + `ReactFlow` num container com altura fixa.\n * - `colorMode={resolvedTheme}` alterna a base clara/escura do React Flow;\n *   o ajuste fino vem dos overrides de token `--xy-*` em `src/index.css`.\n * - Background/Controls/MiniMap são opt-out via props booleanas.\n */\nfunction ReactFlowDiagram({\n  nodes,\n  edges,\n  onNodesChange,\n  onEdgesChange,\n  onConnect,\n  nodeTypes = reactFlowNodeTypes,\n  edgeTypes,\n  fitView = true,\n  showMiniMap = true,\n  showControls = true,\n  showBackground = true,\n  nodesDraggable = true,\n  nodesConnectable = true,\n  className,\n  ...rest\n}: ReactFlowDiagramProps) {\n  const { resolvedTheme } = useTheme()\n\n  return (\n    <div\n      data-slot=\"react-flow\"\n      className={cn(\n        \"h-[500px] w-full overflow-hidden rounded-lg border border-border bg-background\",\n        className,\n      )}\n      {...rest}\n    >\n      <ReactFlowProvider>\n        <ReactFlow\n          colorMode={resolvedTheme}\n          nodes={nodes}\n          edges={edges}\n          onNodesChange={onNodesChange}\n          onEdgesChange={onEdgesChange}\n          onConnect={onConnect}\n          nodeTypes={nodeTypes}\n          edgeTypes={edgeTypes}\n          fitView={fitView}\n          nodesDraggable={nodesDraggable}\n          nodesConnectable={nodesConnectable}\n          proOptions={{ hideAttribution: true }}\n        >\n          {showBackground ? (\n            <Background variant={BackgroundVariant.Dots} gap={16} size={1} />\n          ) : null}\n          {showControls ? <Controls /> : null}\n          {showMiniMap ? <MiniMap pannable zoomable /> : null}\n        </ReactFlow>\n      </ReactFlowProvider>\n    </div>\n  )\n}\n\nexport { ReactFlowDiagram }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/react-flow-node-types.ts",
+      "content": "import type { NodeTypes } from \"@xyflow/react\"\n\nimport { ShadcnCardNode } from \"@/components/ui/react-flow-nodes\"\n\n/** `nodeTypes` default — registra o node shadcn sob a chave `\"shadcn\"`. */\nexport const reactFlowNodeTypes: NodeTypes = {\n  shadcn: ShadcnCardNode,\n}\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/react-flow-nodes.tsx",
+      "content": "import { Handle, Position, type NodeProps } from \"@xyflow/react\"\n\nimport { cn } from \"@/lib/utils\"\nimport type { ShadcnNode } from \"@/components/ui/react-flow-types\"\n\n/**\n * Node customizado no estilo shadcn: um cartão com `bg-card`/`border-border`,\n * título, descrição e badge opcional. Handles tematizados com `bg-primary`.\n */\nfunction ShadcnCardNode({ data, selected }: NodeProps<ShadcnNode>) {\n  return (\n    <div\n      data-slot=\"react-flow-node\"\n      className={cn(\n        \"min-w-44 max-w-64 rounded-lg border border-border bg-card px-4 py-3 text-card-foreground shadow-sm transition-shadow\",\n        selected && \"ring-2 ring-ring\",\n      )}\n    >\n      <Handle\n        type=\"target\"\n        position={Position.Top}\n        className=\"!size-2.5 !border-2 !border-background !bg-primary\"\n      />\n      <div className=\"flex items-start justify-between gap-2\">\n        <p className=\"text-sm font-semibold leading-tight\">{data.label}</p>\n        {data.badge ? (\n          <span className=\"shrink-0 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-primary\">\n            {data.badge}\n          </span>\n        ) : null}\n      </div>\n      {data.description ? (\n        <p className=\"mt-1 text-xs leading-snug text-muted-foreground\">\n          {data.description}\n        </p>\n      ) : null}\n      <Handle\n        type=\"source\"\n        position={Position.Bottom}\n        className=\"!size-2.5 !border-2 !border-background !bg-primary\"\n      />\n    </div>\n  )\n}\n\nexport { ShadcnCardNode }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/react-flow-types.ts",
+      "content": "import type {\n  Edge,\n  EdgeTypes,\n  Node,\n  NodeTypes,\n  OnConnect,\n  OnEdgesChange,\n  OnNodesChange,\n} from \"@xyflow/react\"\n\n/**\n * Props do wrapper `ReactFlowDiagram` — suite de diagramas tematizada shadcn.\n *\n * Embrulha `ReactFlowProvider` + `ReactFlow`, expõe controles booleanos para\n * Background/Controls/MiniMap e repassa o restante das props ao container raiz.\n */\nexport type ReactFlowDiagramProps = Omit<\n  React.HTMLAttributes<HTMLDivElement>,\n  \"children\"\n> & {\n  /** Nós do grafo. */\n  nodes: Node[]\n  /** Arestas do grafo. */\n  edges: Edge[]\n  /** Handler de mudança de nós (drag, seleção, remoção). */\n  onNodesChange?: OnNodesChange\n  /** Handler de mudança de arestas. */\n  onEdgesChange?: OnEdgesChange\n  /** Handler de conexão (ao ligar dois handles). */\n  onConnect?: OnConnect\n  /** Mapa de tipos de nós customizados. */\n  nodeTypes?: NodeTypes\n  /** Mapa de tipos de arestas customizadas. */\n  edgeTypes?: EdgeTypes\n  /** Ajusta a viewport para enquadrar todo o grafo. Default: `true`. */\n  fitView?: boolean\n  /** Exibe o MiniMap (canto inferior direito). Default: `true`. */\n  showMiniMap?: boolean\n  /** Exibe os Controls (zoom/fit/lock). Default: `true`. */\n  showControls?: boolean\n  /** Exibe o Background pontilhado. Default: `true`. */\n  showBackground?: boolean\n  /** Permite arrastar nós. Default: `true`. */\n  nodesDraggable?: boolean\n  /** Permite criar conexões. Default: `true`. */\n  nodesConnectable?: boolean\n}\n\n/** Formato do `data` do nó shadcn customizado. */\nexport type ShadcnNodeData = {\n  /** Título em destaque do node. */\n  label: string\n  /** Subtítulo/descrição opcional. */\n  description?: string\n  /** Texto curto de badge opcional (canto superior). */\n  badge?: string\n}\n\nexport type ShadcnNode = Node<ShadcnNodeData, \"shadcn\">\n",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    "[data-slot=\"react-flow\"]": {
+      "--xy-node-background-color": "var(--card)",
+      "--xy-node-color": "var(--card-foreground)",
+      "--xy-node-border": "1px solid var(--border)",
+      "--xy-node-border-radius": "var(--radius)",
+      "--xy-node-boxshadow-hover": "0 1px 4px 1px color-mix(in oklab, var(--foreground) 10%, transparent)",
+      "--xy-node-boxshadow-selected": "0 0 0 1px var(--ring)",
+      "--xy-node-group-background-color": "color-mix(in oklab, var(--muted) 40%, transparent)",
+      "--xy-edge-stroke": "var(--muted-foreground)",
+      "--xy-edge-stroke-selected": "var(--primary)",
+      "--xy-edge-label-background-color": "var(--card)",
+      "--xy-edge-label-color": "var(--card-foreground)",
+      "--xy-connectionline-stroke": "var(--primary)",
+      "--xy-handle-background-color": "var(--primary)",
+      "--xy-handle-border-color": "var(--background)",
+      "--xy-controls-button-background-color": "var(--card)",
+      "--xy-controls-button-background-color-hover": "var(--accent)",
+      "--xy-controls-button-color": "var(--card-foreground)",
+      "--xy-controls-button-color-hover": "var(--accent-foreground)",
+      "--xy-controls-button-border-color": "var(--border)",
+      "--xy-controls-box-shadow": "0 0 2px 1px color-mix(in oklab, var(--foreground) 8%, transparent)",
+      "--xy-minimap-background-color": "var(--muted)",
+      "--xy-minimap-mask-background-color": "color-mix(in oklab, var(--background) 65%, transparent)",
+      "--xy-minimap-node-background-color": "var(--muted-foreground)",
+      "--xy-background-pattern-dots-color": "var(--border)",
+      "--xy-background-pattern-lines-color": "var(--border)",
+      "--xy-background-pattern-cross-color": "var(--border)",
+      "--xy-selection-background-color": "color-mix(in oklab, var(--primary) 10%, transparent)",
+      "--xy-selection-border": "1px dotted color-mix(in oklab, var(--primary) 70%, transparent)",
+      "--xy-attribution-background-color": "color-mix(in oklab, var(--background) 50%, transparent)"
+    }
+  },
+  "type": "registry:ui"
+}

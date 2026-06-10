@@ -2198,6 +2198,26 @@ export const components: ComponentMeta[] = [
       "aceternity",
     ],
   },
+  {
+    slug: "react-flow",
+    name: "React Flow",
+    category: "Layout",
+    description:
+      "Suite de diagramas baseada em @xyflow/react, tematizada com tokens shadcn (light/dark reativo). Inclui custom nodes no estilo Card, edges animadas/direcionais, Controls, MiniMap e Background pontilhado. Pronta para flowcharts, organogramas, pipelines e canvas drag-and-drop.",
+    usage:
+      "Use ReactFlowDiagram para renderizar grafos interativos. Controle nós/arestas com useNodesState/useEdgesState e conecte handles via onConnect + addEdge. Passe reactFlowNodeTypes para nós estilizados shadcn.",
+    tags: [
+      "react-flow",
+      "xyflow",
+      "diagram",
+      "flowchart",
+      "org-chart",
+      "node-editor",
+      "graph",
+      "drag-and-drop",
+      "layout",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

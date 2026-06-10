@@ -469,4 +469,43 @@ export const CSS_BLOCKS = [
   100% { opacity: 1; transform: translate(-50%, -40%) scale(1); }
 }`,
   },
+
+  // ── React Flow (@xyflow/react) — tema via tokens shadcn ─────────────
+  // Sobrescreve as CSS variables --xy-* com tokens do tema (light/dark
+  // reativo). Espelha o bloco [data-slot="react-flow"] de src/index.css.
+  {
+    slugs: ["react-flow"],
+    cssText: `
+[data-slot="react-flow"] {
+  --xy-node-background-color: var(--card);
+  --xy-node-color: var(--card-foreground);
+  --xy-node-border: 1px solid var(--border);
+  --xy-node-border-radius: var(--radius);
+  --xy-node-boxshadow-hover: 0 1px 4px 1px color-mix(in oklab, var(--foreground) 10%, transparent);
+  --xy-node-boxshadow-selected: 0 0 0 1px var(--ring);
+  --xy-node-group-background-color: color-mix(in oklab, var(--muted) 40%, transparent);
+  --xy-edge-stroke: var(--muted-foreground);
+  --xy-edge-stroke-selected: var(--primary);
+  --xy-edge-label-background-color: var(--card);
+  --xy-edge-label-color: var(--card-foreground);
+  --xy-connectionline-stroke: var(--primary);
+  --xy-handle-background-color: var(--primary);
+  --xy-handle-border-color: var(--background);
+  --xy-controls-button-background-color: var(--card);
+  --xy-controls-button-background-color-hover: var(--accent);
+  --xy-controls-button-color: var(--card-foreground);
+  --xy-controls-button-color-hover: var(--accent-foreground);
+  --xy-controls-button-border-color: var(--border);
+  --xy-controls-box-shadow: 0 0 2px 1px color-mix(in oklab, var(--foreground) 8%, transparent);
+  --xy-minimap-background-color: var(--muted);
+  --xy-minimap-mask-background-color: color-mix(in oklab, var(--background) 65%, transparent);
+  --xy-minimap-node-background-color: var(--muted-foreground);
+  --xy-background-pattern-dots-color: var(--border);
+  --xy-background-pattern-lines-color: var(--border);
+  --xy-background-pattern-cross-color: var(--border);
+  --xy-selection-background-color: color-mix(in oklab, var(--primary) 10%, transparent);
+  --xy-selection-border: 1px dotted color-mix(in oklab, var(--primary) 70%, transparent);
+  --xy-attribution-background-color: color-mix(in oklab, var(--background) 50%, transparent);
+}`,
+  },
 ]

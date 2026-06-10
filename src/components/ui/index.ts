@@ -726,5 +726,15 @@ export type {
   TeamMemberSocial,
 } from "./team-section-with-scales-types"
 
+// Lote React Flow
+export { ReactFlowDiagram } from "./react-flow"
+export type {
+  ReactFlowDiagramProps,
+  ShadcnNode,
+  ShadcnNodeData,
+} from "./react-flow-types"
+export { ShadcnCardNode } from "./react-flow-nodes"
+export { reactFlowNodeTypes } from "./react-flow-node-types"
+
 
 
