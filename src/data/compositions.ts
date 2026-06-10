@@ -315,6 +315,23 @@ export const compositions: Composition[] = [
     category: "Aplicação",
     wide: true,
   },
+  {
+    slug: "mind-map",
+    name: "Mind Map",
+    description:
+      "Mapa mental interativo no estilo Ameliorate / DoubleLoop / Miro, construído sobre o React Flow (@xyflow/react). O foco é a FLUIDEZ: cada nó é uma pílula arredondada tematizada e o realce varia por profundidade (a ideia central usa bg-primary; os ramos ganham um ponto de cor). DUPLO-CLIQUE num nó entra em edição inline (textarea autofocado — Enter/blur confirma, Escape cancela); o botão \"+\" cria um filho conectado já em edição e o \"×\" remove a sub-árvore. Tab cria filho do nó selecionado, DUPLO-CLIQUE no canvas vazio cria uma ideia solta e Delete/Backspace remove o ramo. Edges bezier suaves e não-direcionais. A toolbar enxuta adiciona ideias, auto-organiza em árvore determinística, ajusta à tela (fitView), alterna Grade/MiniMap e exporta o mapa como outline Markdown (o wow) ou JSON, num dialog com copiar. Inspetor leve à direita: renomear, escolher a cor do ramo e excluir. Background pontilhado, Controls e MiniMap colorido por ramo; tema light/dark reativo via tokens shadcn.",
+    tags: [
+      "react-flow",
+      "mindmap",
+      "brainstorm",
+      "diagram",
+      "tree",
+      "app",
+      "interativo",
+    ],
+    category: "Aplicação",
+    wide: true,
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
