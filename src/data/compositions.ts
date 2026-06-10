@@ -262,6 +262,23 @@ export const compositions: Composition[] = [
     category: "Aplicação",
     wide: true,
   },
+  {
+    slug: "workflow-builder",
+    name: "Workflow Builder",
+    description:
+      "Editor visual de automações no estilo n8n/Zapier construído sobre o React Flow (@xyflow/react). App de tela cheia com toolbar, paleta arrastável, canvas e inspetor: nós customizados tematizados (gatilho/ação/condição/saída) com ícones, Handles e estados; arraste da paleta cria nós (drag&drop → screenToFlowPosition), ligue Handles para conectar (edges animadas com seta), e edite título/subtítulo no inspetor. A toolbar adiciona nós, auto-organiza em camadas, ajusta à tela (fitView), alterna MiniMap/Grade e dispara a ▶ simulação, que percorre o grafo acendendo nós e destacando o caminho. Barra de status com contadores e export do grafo em JSON. MiniMap colorido por tipo, Background pontilhado e Controls; tema light/dark reativo via tokens shadcn.",
+    tags: [
+      "react-flow",
+      "workflow",
+      "automation",
+      "node-editor",
+      "diagram",
+      "app",
+      "interativo",
+    ],
+    category: "Aplicação",
+    wide: true,
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {

@@ -29,6 +29,7 @@ import { MusicPlayer } from "./music-player"
 import { ComingSoon } from "./coming-soon"
 import { TravelBooking } from "./travel-booking"
 import { AiIde } from "./ai-ide"
+import { WorkflowBuilder } from "./workflow-builder"
 
 /**
  * Mapa slug → componente de tela. Compartilhado entre a página de
@@ -65,4 +66,5 @@ export const compositionScreens: Record<string, ComponentType> = {
   "coming-soon": ComingSoon,
   "travel-booking": TravelBooking,
   "ai-ide": AiIde,
+  "workflow-builder": WorkflowBuilder,
 }
