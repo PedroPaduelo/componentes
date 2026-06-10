@@ -386,6 +386,24 @@ export const compositions: Composition[] = [
     category: "Aplicação",
     wide: true,
   },
+  {
+    slug: "data-pipeline",
+    name: "Data Pipeline",
+    description:
+      "Pipeline de transformação de dados no estilo Datablocks (editor.datablocks.pro), construído sobre o React Flow (@xyflow/react). O DIFERENCIAL: os dados fluem por blocos de transformação e o nó final renderiza uma TABELA + um MINI GRÁFICO DE BARRAS recalculado AO VIVO quando qualquer bloco muda (parâmetro, dataset ou topologia) — ver o gráfico atualizar conforme você edita é o destaque. App de tela cheia com toolbar, paleta de blocos arrastável, canvas e inspector: nós customizados tematizados — Dataset (escolhe entre 2 datasets embutidos, mostra nº de linhas/colunas), Filtrar (coluna + operador + valor), Agrupar & Agregar (agrupa por coluna e aplica soma/média/contagem/mín/máx), Ordenar (coluna asc/desc) e Gráfico (barras + tabela das primeiras linhas). O motor avalia o grafo em ordem topológica do source até o chart, encadeando o resultado de cada etapa com operações puras em JS; trata input vazio/coluna inexistente com aviso no nó. Pipeline inicial coeso (Dataset → Filtrar → Agrupar → Ordenar → Gráfico) já mostra um gráfico ao abrir. Arraste blocos da paleta (drag&drop → screenToFlowPosition), ligue Handles para encadear etapas e use o inspector (selects de coluna/operador/agregação, input de valor) para regular cada transformação. A toolbar adiciona blocos, auto-organiza em cadeia (esquerda→direita), ajusta à tela (fitView), alterna MiniMap/Grade e exporta o resultado final em CSV. Barra de status com contadores. MiniMap colorido por tipo, Background pontilhado e Controls; corpo dos nós em tokens shadcn com tema light/dark reativo; no mobile a paleta/inspector recolhem.",
+    tags: [
+      "react-flow",
+      "data",
+      "pipeline",
+      "etl",
+      "chart",
+      "datablocks",
+      "node-editor",
+      "app",
+    ],
+    category: "Aplicação",
+    wide: true,
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {

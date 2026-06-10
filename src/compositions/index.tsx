@@ -36,6 +36,7 @@ import { MindMap } from "./mind-map"
 import { CircuitSimulator } from "./circuit-simulator"
 import { ImagePipeline } from "./image-pipeline"
 import { JsonVisualizer } from "./json-visualizer"
+import { DataPipeline } from "./data-pipeline"
 
 /**
  * Mapa slug → componente de tela. Compartilhado entre a página de
@@ -79,4 +80,5 @@ export const compositionScreens: Record<string, ComponentType> = {
   "circuit-simulator": CircuitSimulator,
   "image-pipeline": ImagePipeline,
   "json-visualizer": JsonVisualizer,
+  "data-pipeline": DataPipeline,
 }
