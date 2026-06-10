@@ -404,6 +404,25 @@ export const compositions: Composition[] = [
     category: "Aplicação",
     wide: true,
   },
+  {
+    slug: "media-studio",
+    name: "Generative Media Studio",
+    description:
+      "Estúdio de mídia generativa no estilo Bleu AI (buildbleu.com), construído sobre o React Flow (@xyflow/react). O pipeline vai de INPUTS (texto/imagem do usuário) → GENERATION (texto/imagem/vídeo/áudio) → LAYOUT (mosaico de saída). Diferenciais: a paleta à esquerda é AGRUPADA POR CATEGORIA (Inputs · Generation · Layout) com headers e itens arrastáveis (drag&drop → screenToFlowPosition); cada nó de geração mostra o THUMBNAIL do asset (picsum, CORS-friendly) — imagem, vídeo (com play), áudio (waveform) e texto (preview), com badge do modelo (Flux/Runway/Suno/gpt-4o…); e o botão ▶ Gerar dispara a SIMULAÇÃO, que percorre o grafo dos inputs ao output marcando cada nó como `generating` (skeleton pulsando) e depois `done` (o asset aparece), destacando as edges do caminho até o Output montar o mosaico final (timers em ref, limpos no unmount). Inspetor à direita edita prompt (textarea), modelo (select por categoria), seed e proporção, e exclui o nó. Toolbar adiciona nós (dropdown por categoria), auto-organiza em camadas, ajusta à tela (fitView) e alterna MiniMap/Grade. Barra de status com contadores. MiniMap colorido por categoria, Background pontilhado e Controls; nós em tokens shadcn com tema light/dark reativo; paleta/inspetor recolhem no mobile.",
+    tags: [
+      "react-flow",
+      "ai",
+      "media",
+      "generative",
+      "image",
+      "video",
+      "bleu",
+      "node-editor",
+      "app",
+    ],
+    category: "Aplicação",
+    wide: true,
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
