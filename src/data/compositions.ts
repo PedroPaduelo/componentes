@@ -201,8 +201,8 @@ export const compositions: Composition[] = [
     slug: "docs-portal",
     name: "Portal de Documentação",
     description:
-      "Doc de produto navegável: sidebar troca a página exibida, command palette (⌘K) busca e navega, e cada doc tem breadcrumb, abas de exemplos, comando de instalação, callouts, tabela de props, FAQ e índice 'nesta página'.",
-    tags: ["docs", "documentação", "command palette", "navegável", "app"],
+      "Doc de produto navegável: sidebar troca a página exibida, command palette (⌘K) busca e navega, e cada doc tem breadcrumb, abas de exemplos, comando de instalação, callouts, tabela de props, FAQ e índice 'nesta página'. Inclui um Mapa da Documentação interativo em React Flow (raiz → seções → páginas) que serve de terceira forma de navegar: clicar num nó abre a doc correspondente, com a página atual destacada.",
+    tags: ["docs", "documentação", "command palette", "navegável", "react-flow", "mapa", "app"],
     category: "Aplicação",
   },
   {
