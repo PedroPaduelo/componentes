@@ -34,6 +34,7 @@ import { AiAgentFlow } from "./ai-agent-flow"
 import { DbSchemaDesigner } from "./db-schema-designer"
 import { MindMap } from "./mind-map"
 import { CircuitSimulator } from "./circuit-simulator"
+import { ImagePipeline } from "./image-pipeline"
 
 /**
  * Mapa slug → componente de tela. Compartilhado entre a página de
@@ -75,4 +76,5 @@ export const compositionScreens: Record<string, ComponentType> = {
   "db-schema-designer": DbSchemaDesigner,
   "mind-map": MindMap,
   "circuit-simulator": CircuitSimulator,
+  "image-pipeline": ImagePipeline,
 }

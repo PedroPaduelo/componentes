@@ -350,6 +350,24 @@ export const compositions: Composition[] = [
     category: "Aplicação",
     wide: true,
   },
+  {
+    slug: "image-pipeline",
+    name: "Image Processing Pipeline",
+    description:
+      "Pipeline visual de processamento de imagem no estilo chaiNNer, construído sobre o React Flow (@xyflow/react). O DIFERENCIAL: cada nó renderiza num <canvas> a imagem JÁ processada por aquela etapa, encadeada da origem (picsum, CORS-friendly) até a saída — o preview ao vivo é o destaque. App de tela cheia com toolbar, paleta de operações arrastável, canvas e inspector: nós customizados tematizados — origem (carrega a imagem, troca a seed), operações (tons de cinza, inverter, brilho, contraste, desfoque, limiar e sépia — sliders ajustam o parâmetro) e saída (preview ampliado + baixar PNG). O motor avalia o grafo em ordem topológica a partir do source e aplica cada filtro sobre o ImageData do nó anterior em Canvas 2D puro (operações por pixel e blur via ctx.filter), recomputando quando a imagem carrega, um parâmetro muda ou a topologia muda (coalescido num requestAnimationFrame). Arraste operações da paleta (drag&drop → screenToFlowPosition), ligue Handles para encadear etapas e use o inspector para regular o efeito. A toolbar adiciona operações, auto-organiza em cadeia (esquerda→direita), ajusta à tela (fitView), alterna MiniMap/Grade e baixa o resultado final. Barra de status com contadores e dimensões. MiniMap colorido por tipo, Background pontilhado e Controls; corpo dos nós em tokens shadcn com tema light/dark reativo.",
+    tags: [
+      "react-flow",
+      "image",
+      "pipeline",
+      "processing",
+      "canvas",
+      "chainner",
+      "node-editor",
+      "app",
+    ],
+    category: "Aplicação",
+    wide: true,
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
