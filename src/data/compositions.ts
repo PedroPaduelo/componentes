@@ -332,6 +332,24 @@ export const compositions: Composition[] = [
     category: "Aplicação",
     wide: true,
   },
+  {
+    slug: "circuit-simulator",
+    name: "Logic Circuit Simulator",
+    description:
+      "Simulador de circuitos lógicos digitais no estilo CircuLearn / Logic.ly, construído sobre o React Flow (@xyflow/react). O DIFERENCIAL: a lógica é computada de verdade e o sinal propaga AO VIVO pelo grafo — clicar numa entrada reacende portas, fios e lâmpadas instantaneamente. App de tela cheia com toolbar, paleta arrastável, canvas e painel: nós customizados tematizados — entradas (switch on/off clicável), portas AND/OR/NOT/XOR/NAND/NOR (1–2 inputs + output, símbolo e valor 0/1) e lâmpadas que acendem ao receber 1. Motor de avaliação iterativa com ponto-fixo (guarda de iterações para ciclos) propaga dos switches pelas portas até as saídas e energiza as edges (verde aceso = sinal 1). Arraste componentes da paleta (drag&drop → screenToFlowPosition), ligue Handles para criar fios, e use o painel direito para alternar entradas e ver o estado das lâmpadas. A toolbar adiciona componentes, auto-organiza em colunas (entradas | portas | lâmpadas), ajusta à tela (fitView), alterna MiniMap/Grade e gera a Tabela-verdade (o wow educacional: varia todas as entradas e tabula as saídas num dialog). Barra de status com contadores e lâmpadas acesas. MiniMap colorido por tipo, Background pontilhado e Controls; corpo dos nós em tokens shadcn com tema light/dark reativo.",
+    tags: [
+      "react-flow",
+      "logic",
+      "circuit",
+      "simulation",
+      "gates",
+      "node-editor",
+      "app",
+      "interativo",
+    ],
+    category: "Aplicação",
+    wide: true,
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
