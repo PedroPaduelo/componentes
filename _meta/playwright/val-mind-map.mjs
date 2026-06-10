@@ -8,7 +8,17 @@ import { chromium } from "playwright"
 import { shot, saveJSON } from "./_shots.mjs"
 
 const URL = "http://localhost:5173/compositions/mind-map"
-const report = { light: {}, dark: {}, responsive: {}, editing: {} }
+const report = { light: {}, dark: {}, responsive: {}, editing: {}, importing: {} }
+
+// JSON de import com 6 nós (1 raiz + 2 ramos + 3 folhas).
+const IMPORT_JSON = JSON.stringify({
+  label: "Raiz importada",
+  children: [
+    { label: "Ramo A", children: [{ label: "Folha A1" }, { text: "Folha A2" }] },
+    { label: "Ramo B", children: [{ label: "Folha B1" }] },
+  ],
+})
+const IMPORT_EXPECTED = 6
 
 async function setTheme(page, theme) {
   await page.addInitScript((t) => localStorage.setItem("vitrine-theme", t), theme)
@@ -106,6 +116,76 @@ async function run() {
       animations: "disabled",
     })
     await ed.close()
+
+    // Importar JSON: abrir diálogo, preencher textarea, importar e contar nós.
+    for (const theme of ["light", "dark"]) {
+      const im = await browser.newPage({ viewport: { width: 1440, height: 900 } })
+      await setTheme(im, theme)
+      await im.goto(URL, { waitUntil: "domcontentloaded" })
+      await im.waitForSelector(".react-flow__node", { timeout: 15000 })
+      await im.waitForTimeout(700)
+      const before = await im.evaluate(
+        () => document.querySelectorAll(".react-flow__node").length,
+      )
+      // abre o diálogo "Importar JSON"
+      await im.getByRole("button", { name: /Importar JSON/i }).click()
+      await im.waitForSelector("textarea[aria-label='JSON do mapa mental']", {
+        timeout: 10000,
+      })
+      // preenche o textarea com o JSON de teste
+      await im.fill("textarea[aria-label='JSON do mapa mental']", IMPORT_JSON)
+      // clica em "Importar" (botão dentro do footer do diálogo)
+      await im
+        .getByRole("button", { name: /^Importar$/ })
+        .click()
+      await im.waitForTimeout(900)
+      const after = await im.evaluate(
+        () => document.querySelectorAll(".react-flow__node").length,
+      )
+      const rootText = await im.evaluate(() => {
+        const r = document.querySelector(
+          "[data-slot='mind-node'][data-root='true']",
+        )
+        return r ? r.textContent.trim() : null
+      })
+      report.importing[theme] = {
+        before,
+        after,
+        expected: IMPORT_EXPECTED,
+        matched: after === IMPORT_EXPECTED,
+        changed: after !== before,
+        rootText,
+      }
+      await im.screenshot({
+        path: `/workspace/_meta/scratch/shots/mind-map/import-${theme}.png`,
+        animations: "disabled",
+      })
+      await im.close()
+    }
+
+    // Import inválido: erro inline aparece e o diálogo NÃO fecha.
+    const inv = await browser.newPage({ viewport: { width: 1440, height: 900 } })
+    await setTheme(inv, "light")
+    await inv.goto(URL, { waitUntil: "domcontentloaded" })
+    await inv.waitForSelector(".react-flow__node", { timeout: 15000 })
+    await inv.waitForTimeout(700)
+    await inv.getByRole("button", { name: /Importar JSON/i }).click()
+    await inv.waitForSelector("textarea[aria-label='JSON do mapa mental']", {
+      timeout: 10000,
+    })
+    await inv.fill("textarea[aria-label='JSON do mapa mental']", "{ not json ]")
+    await inv.getByRole("button", { name: /^Importar$/ }).click()
+    await inv.waitForTimeout(500)
+    const sawError = await inv.evaluate(
+      () => document.querySelectorAll("[role='alert']").length > 0,
+    )
+    const dialogStillOpen = await inv.evaluate(
+      () =>
+        document.querySelectorAll("textarea[aria-label='JSON do mapa mental']")
+          .length > 0,
+    )
+    report.importing.invalid = { sawError, dialogStillOpen }
+    await inv.close()
   } finally {
     await browser.close()
   }
@@ -134,6 +214,20 @@ async function run() {
     `${report.responsive.scrollW}/${report.responsive.clientW}`,
   )
   push("edição inline (duplo-clique → textarea)", report.editing.sawTextarea, report.editing.sawTextarea)
+  for (const theme of ["light", "dark"]) {
+    const im = report.importing[theme] ?? {}
+    push(
+      `[${theme}] import gera ${IMPORT_EXPECTED} nós`,
+      im.matched === true,
+      `before=${im.before} after=${im.after} root="${im.rootText}"`,
+    )
+  }
+  push(
+    "import inválido → erro inline + diálogo aberto",
+    report.importing.invalid?.sawError === true &&
+      report.importing.invalid?.dialogStillOpen === true,
+    JSON.stringify(report.importing.invalid),
+  )
 
   console.log("\n=== RESULTADO ===")
   for (const c of checks) console.log(`${c.ok ? "✓" : "✗"} ${c.name} (${c.detail})`)

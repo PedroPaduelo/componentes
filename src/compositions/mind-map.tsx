@@ -50,6 +50,9 @@ import {
   Check,
   MousePointer2,
   ListTree,
+  FileJson,
+  Upload,
+  AlertCircle,
 } from "lucide-react"
 
 import "@xyflow/react/dist/style.css"
@@ -64,6 +67,7 @@ import {
   DialogTitle,
   DialogDescription,
   DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog"
 import {
   MindNode,
@@ -266,6 +270,169 @@ function toJson(nodes: MindNodeType[], edges: Edge[]): string {
   )
 }
 
+/* -------------------------------------------------------------------------- */
+/*  Importar / exportar árvore JSON aninhada (schema de round-trip)           */
+/* -------------------------------------------------------------------------- */
+
+/** Nó da árvore aninhada aceita na importação (e produzida na exportação). */
+type ImportTreeNode = {
+  label?: string
+  text?: string
+  children?: ImportTreeNode[]
+}
+
+/** Guarda de profundidade — evita árvores absurdamente fundas / recursivas. */
+const MAX_IMPORT_DEPTH = 16
+
+/** JSON de exemplo exibido no diálogo de importação (10 nós). */
+const SAMPLE_IMPORT_JSON = `{
+  "label": "Plano de Produto",
+  "children": [
+    {
+      "label": "Pesquisa",
+      "children": [
+        { "label": "Entrevistas" },
+        { "label": "Análise de mercado" }
+      ]
+    },
+    {
+      "label": "Design",
+      "children": [
+        { "label": "Wireframes" },
+        { "label": "Protótipo" }
+      ]
+    },
+    {
+      "text": "Engenharia",
+      "children": [
+        { "label": "API" },
+        { "label": "Frontend" }
+      ]
+    }
+  ]
+}`
+
+/** Extrai o rótulo de um nó (aceita `label` ou `text` como sinônimos). */
+function readLabel(raw: ImportTreeNode): string {
+  const value =
+    typeof raw.label === "string"
+      ? raw.label
+      : typeof raw.text === "string"
+        ? raw.text
+        : ""
+  return value.trim()
+}
+
+/**
+ * Converte a árvore aninhada em `nodes` + `edges` e aplica o auto-layout em
+ * árvore já existente. IDs determinísticos (`imp-<contador>`). Lança `Error`
+ * com mensagem amigável quando o formato é inválido.
+ */
+function buildFromTree(root: ImportTreeNode): {
+  nodes: MindNodeType[]
+  edges: Edge[]
+} {
+  const nodes: MindNodeType[] = []
+  const edges: Edge[] = []
+  let counter = 0
+
+  const walk = (
+    raw: ImportTreeNode,
+    depth: number,
+    parentId: string | null,
+    parentColor: MindBranchColor,
+    siblingIndex: number,
+  ) => {
+    if (depth > MAX_IMPORT_DEPTH) {
+      throw new Error(
+        `Profundidade máxima de ${MAX_IMPORT_DEPTH} níveis excedida.`,
+      )
+    }
+    const label = readLabel(raw)
+    if (!label) {
+      throw new Error('Todo nó precisa de um "label" (ou "text") não vazio.')
+    }
+    counter += 1
+    const id = `imp-${counter}`
+    const color: MindBranchColor =
+      depth === 0
+        ? "sky"
+        : depth === 1
+          ? BRANCH_PALETTE[siblingIndex % BRANCH_PALETTE.length]
+          : parentColor
+    nodes.push({
+      id,
+      type: "mind",
+      position: { x: 0, y: 0 },
+      data: { label, depth, color },
+    })
+    if (parentId) {
+      edges.push({
+        id: `e-${parentId}-${id}`,
+        source: parentId,
+        target: id,
+        ...EDGE_BASE,
+      })
+    }
+    const kids = Array.isArray(raw.children) ? raw.children : []
+    kids.forEach((child, i) => {
+      if (child === null || typeof child !== "object" || Array.isArray(child)) {
+        throw new Error('Cada item de "children" precisa ser um objeto.')
+      }
+      walk(child, depth + 1, id, color, i)
+    })
+  }
+
+  walk(root, 0, null, "sky", 0)
+  return { nodes: tidyTreeLayout(nodes, edges), edges }
+}
+
+/** Faz o parse do texto colado e devolve o grafo já posicionado. */
+function parseImport(text: string): { nodes: MindNodeType[]; edges: Edge[] } {
+  if (text.trim().length === 0) {
+    throw new Error("Cole um JSON para importar.")
+  }
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(text)
+  } catch {
+    throw new Error("JSON inválido: verifique a sintaxe (aspas, vírgulas, chaves).")
+  }
+  if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new Error('O JSON deve ser um objeto raiz com "label" e "children".')
+  }
+  return buildFromTree(parsed as ImportTreeNode)
+}
+
+/**
+ * Serializa o mapa na MESMA árvore aninhada aceita na importação (round-trip).
+ * Quando há uma única raiz, ela vira o objeto raiz; com várias, são agrupadas
+ * sob um nó "Mapa".
+ */
+function toTreeJson(nodes: MindNodeType[], edges: Edge[]): string {
+  const children = childrenMap(edges)
+  const byId = new Map(nodes.map((n) => [n.id, n]))
+  const visited = new Set<string>()
+  const build = (id: string): ImportTreeNode | null => {
+    if (visited.has(id)) return null
+    visited.add(id)
+    const node = byId.get(id)
+    if (!node) return null
+    const kids = (children.get(id) ?? [])
+      .map(build)
+      .filter((c): c is ImportTreeNode => c !== null)
+    const obj: ImportTreeNode = { label: node.data.label }
+    if (kids.length > 0) obj.children = kids
+    return obj
+  }
+  const trees = rootIds(nodes, edges)
+    .map(build)
+    .filter((t): t is ImportTreeNode => t !== null)
+  const out: ImportTreeNode =
+    trees.length === 1 ? trees[0] : { label: "Mapa", children: trees }
+  return JSON.stringify(out, null, 2)
+}
+
 /** Constrói os nós iniciais com posições do layout em árvore. */
 function buildInitialNodes(): MindNodeType[] {
   const base: MindNodeType[] = RAW_NODES.map((r) => ({
@@ -293,10 +460,13 @@ function MindMapInner() {
   const [editingId, setEditingId] = React.useState<string | null>(null)
   const [showMiniMap, setShowMiniMap] = React.useState(true)
   const [showGrid, setShowGrid] = React.useState(true)
-  const [exportFormat, setExportFormat] = React.useState<"markdown" | "json">(
-    "markdown",
-  )
+  const [exportFormat, setExportFormat] = React.useState<
+    "markdown" | "json" | "tree"
+  >("markdown")
   const [copied, setCopied] = React.useState(false)
+  const [importOpen, setImportOpen] = React.useState(false)
+  const [importText, setImportText] = React.useState(SAMPLE_IMPORT_JSON)
+  const [importError, setImportError] = React.useState<string | null>(null)
 
   const idRef = React.useRef(RAW_NODES.length)
 
@@ -499,11 +669,34 @@ function MindMapInner() {
     [nodes, selectedId],
   )
 
-  const exportText = React.useMemo(
-    () =>
-      exportFormat === "markdown" ? toMarkdown(nodes, edges) : toJson(nodes, edges),
-    [exportFormat, nodes, edges],
-  )
+  const exportText = React.useMemo(() => {
+    if (exportFormat === "markdown") return toMarkdown(nodes, edges)
+    if (exportFormat === "tree") return toTreeJson(nodes, edges)
+    return toJson(nodes, edges)
+  }, [exportFormat, nodes, edges])
+
+  const applyImport = React.useCallback(() => {
+    try {
+      const built = parseImport(importText)
+      setNodes(built.nodes)
+      setEdges(built.edges)
+      idRef.current = built.nodes.length
+      setSelectedId(null)
+      setEditingId(null)
+      setImportError(null)
+      setImportOpen(false)
+      window.setTimeout(() => fitView({ duration: 400, padding: 0.2 }), 60)
+    } catch (err) {
+      setImportError(
+        err instanceof Error ? err.message : "Não foi possível importar o JSON.",
+      )
+    }
+  }, [importText, setNodes, setEdges, fitView])
+
+  const loadSampleImport = React.useCallback(() => {
+    setImportText(SAMPLE_IMPORT_JSON)
+    setImportError(null)
+  }, [])
 
   const copyExport = React.useCallback(() => {
     void navigator.clipboard?.writeText(exportText)
@@ -587,7 +780,82 @@ function MindMapInner() {
           <span className="hidden lg:inline">MiniMap</span>
         </Button>
 
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-2">
+          <Dialog
+            open={importOpen}
+            onOpenChange={(open) => {
+              setImportOpen(open)
+              if (open) setImportError(null)
+            }}
+          >
+            <DialogTrigger asChild>
+              <Button size="sm" variant="outline" className="gap-1.5">
+                <FileJson className="size-4" />
+                <span className="hidden sm:inline">Importar JSON</span>
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-xl">
+              <DialogHeader>
+                <DialogTitle>Importar JSON</DialogTitle>
+                <DialogDescription>
+                  Cole uma árvore aninhada{" "}
+                  <code className="rounded bg-muted px-1 py-0.5 text-[11px]">
+                    {'{ "label", "children": [...] }'}
+                  </code>{" "}
+                  para gerar o mapa mental. Aceita{" "}
+                  <code className="rounded bg-muted px-1 py-0.5 text-[11px]">
+                    text
+                  </code>{" "}
+                  como sinônimo de{" "}
+                  <code className="rounded bg-muted px-1 py-0.5 text-[11px]">
+                    label
+                  </code>
+                  ; sem <code className="rounded bg-muted px-1 py-0.5 text-[11px]">children</code> = folha.
+                </DialogDescription>
+              </DialogHeader>
+              <textarea
+                value={importText}
+                onChange={(e) => {
+                  setImportText(e.target.value)
+                  if (importError) setImportError(null)
+                }}
+                spellCheck={false}
+                rows={12}
+                aria-label="JSON do mapa mental"
+                className="max-h-80 w-full resize-y rounded-lg border border-border bg-muted/50 p-3 font-mono text-[11px] leading-relaxed outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              />
+              {importError ? (
+                <p
+                  role="alert"
+                  className="flex items-start gap-2 rounded-lg border border-destructive/40 bg-destructive/10 px-3 py-2 text-xs text-destructive"
+                >
+                  <AlertCircle className="mt-0.5 size-3.5 shrink-0" />
+                  <span>{importError}</span>
+                </p>
+              ) : null}
+              <DialogFooter>
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  className="gap-1.5 sm:mr-auto"
+                  onClick={loadSampleImport}
+                >
+                  <ListTree className="size-4" /> Carregar exemplo
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => setImportOpen(false)}
+                >
+                  Cancelar
+                </Button>
+                <Button size="sm" className="gap-1.5" onClick={applyImport}>
+                  <Upload className="size-4" /> Importar
+                </Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
           <Dialog>
             <DialogTrigger asChild>
               <Button size="sm" variant="secondary" className="gap-1.5">
@@ -599,11 +867,12 @@ function MindMapInner() {
               <DialogHeader>
                 <DialogTitle>Exportar mapa mental</DialogTitle>
                 <DialogDescription>
-                  Gere um outline em Markdown a partir da hierarquia, ou o JSON
-                  estruturado do mapa.
+                  Gere um outline em Markdown, o JSON estruturado (nós + arestas)
+                  ou a árvore aninhada — esta última pode ser colada de volta em
+                  "Importar JSON" (round-trip).
                 </DialogDescription>
               </DialogHeader>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <Button
                   size="sm"
                   variant={exportFormat === "markdown" ? "default" : "outline"}
@@ -614,10 +883,18 @@ function MindMapInner() {
                 </Button>
                 <Button
                   size="sm"
+                  variant={exportFormat === "tree" ? "default" : "outline"}
+                  className="gap-1.5"
+                  onClick={() => setExportFormat("tree")}
+                >
+                  <FileJson className="size-4" /> Árvore (JSON)
+                </Button>
+                <Button
+                  size="sm"
                   variant={exportFormat === "json" ? "default" : "outline"}
                   onClick={() => setExportFormat("json")}
                 >
-                  JSON
+                  JSON (nós/arestas)
                 </Button>
               </div>
               <div className="relative">
