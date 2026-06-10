@@ -7,7 +7,7 @@ import { chromium } from "playwright"
 import { shot, saveJSON } from "./_shots.mjs"
 
 const URL = "http://localhost:5173/compositions/workflow-builder"
-const report = { light: {}, dark: {}, responsive: {} }
+const report = { light: {}, dark: {}, responsive: {}, simulation: {} }
 
 async function setTheme(page, theme) {
   await page.addInitScript((t) => localStorage.setItem("vitrine-theme", t), theme)
@@ -54,6 +54,13 @@ async function run() {
       await page.waitForTimeout(1200)
       const info = await inspect(page)
       report[theme] = info
+      // mede borda do primeiro nó (deve ser visível nos 2 temas)
+      report[theme].nodeBorder = await page.evaluate(() => {
+        const n = document.querySelector("[data-slot='workflow-node']")
+        if (!n) return null
+        const s = getComputedStyle(n)
+        return { w: s.borderTopWidth, c: s.borderTopColor }
+      })
       await shot(page, `workflow-builder-${theme}`, {
         sub: "workflow-builder",
         // animações desabilitadas pra evitar travar no pulse da simulação
@@ -84,6 +91,30 @@ async function run() {
       animations: "disabled",
     })
     await mob.close()
+
+    // Simulação: clicar "Executar" e ver um nó com data-running="true"
+    const sim = await browser.newPage({ viewport: { width: 1440, height: 900 } })
+    await setTheme(sim, "light")
+    await sim.goto(URL, { waitUntil: "domcontentloaded" })
+    await sim.waitForSelector(".react-flow__node", { timeout: 15000 })
+    await sim.waitForTimeout(800)
+    await sim.getByRole("button", { name: /Executar/ }).click()
+    let sawRunning = false
+    for (let i = 0; i < 30; i++) {
+      const running = await sim.evaluate(
+        () => document.querySelectorAll("[data-running='true']").length,
+      )
+      if (running > 0) {
+        sawRunning = true
+        break
+      }
+      await sim.waitForTimeout(120)
+    }
+    const hasStopBtn = await sim
+      .getByRole("button", { name: /Parar/ })
+      .count()
+    report.simulation = { sawRunning, hasStopBtn: hasStopBtn > 0 }
+    await sim.close()
   } finally {
     await browser.close()
   }
@@ -101,11 +132,21 @@ async function run() {
     push(`[${theme}] Controls + MiniMap`, r.hasControls && r.hasMiniMap, `${r.hasControls}/${r.hasMiniMap}`)
     push(`[${theme}] paleta + inspetor`, r.hasPalette && r.hasInspector, `${r.hasPalette}/${r.hasInspector}`)
     push(`[${theme}] node bg presente`, !!r.nodeBg, r.nodeBg)
+    push(
+      `[${theme}] node borda visível`,
+      !!r.nodeBorder && parseFloat(r.nodeBorder.w) > 0,
+      r.nodeBorder ? `${r.nodeBorder.w} ${r.nodeBorder.c}` : "n/a",
+    )
   }
   push(
     "390px sem overflow horizontal",
     report.responsive.noHorizontalOverflow,
     `${report.responsive.scrollW}/${report.responsive.clientW}`,
+  )
+  push(
+    "simulação acende nó (data-running)",
+    report.simulation.sawRunning,
+    `running=${report.simulation.sawRunning} parar=${report.simulation.hasStopBtn}`,
   )
 
   console.log("\n=== RESULTADO ===")
