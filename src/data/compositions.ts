@@ -423,6 +423,28 @@ export const compositions: Composition[] = [
     category: "Aplicação",
     wide: true,
   },
+  {
+    slug: "observability-center",
+    name: "Observability Command Center",
+    description:
+      "Centro de comando de observabilidade VIVO no estilo Grafana/Datadog — só que reinventado: em vez do grid de gráficos estáticos, o protagonista é um service mesh em que os PACOTES de request fluem em tempo real pelas conexões (SVG + requestAnimationFrame), coloridos por severidade (ciano = tráfego, âmbar = degradado, rosa = erro). Toda a tela é dirigida por um relógio simulado determinístico (PRNG seedado pelo tick, zero Math.random), com play/pause do live e seletor de janela (Live/5m/1h). Clicar num serviço do mesh inspeciona seus Golden Signals (latência p95, throughput, taxa de erro e saturação CPU/memória em sparklines que rolam), reconstrói o heatmap de latência e o distributed trace waterfall. Painel de SLO com gauge radial de disponibilidade e error budget, log stream ao vivo com filtro por nível (debug/info/warn/error) e contadores, e alertas/incidentes com ack. O botão \"Injetar incidente\" degrada o serviço selecionado e propaga a falha em cascata aos dependentes — acendendo o mesh de vermelho, disparando alertas e enchendo o log de erros. Casco em tokens shadcn com tema light/dark reativo; status bar com agregados globais.",
+    tags: [
+      "observability",
+      "monitoring",
+      "grafana",
+      "datadog",
+      "service-mesh",
+      "métricas",
+      "tempo-real",
+      "slo",
+      "logs",
+      "tracing",
+      "app",
+      "interativo",
+    ],
+    category: "Aplicação",
+    wide: true,
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {

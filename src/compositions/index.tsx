@@ -38,6 +38,7 @@ import { ImagePipeline } from "./image-pipeline"
 import { JsonVisualizer } from "./json-visualizer"
 import { DataPipeline } from "./data-pipeline"
 import { MediaStudio } from "./media-studio"
+import { ObservabilityCenter } from "./observability-center"
 
 /**
  * Mapa slug → componente de tela. Compartilhado entre a página de
@@ -83,4 +84,5 @@ export const compositionScreens: Record<string, ComponentType> = {
   "json-visualizer": JsonVisualizer,
   "data-pipeline": DataPipeline,
   "media-studio": MediaStudio,
+  "observability-center": ObservabilityCenter,
 }
