@@ -30,6 +30,7 @@ import { ComingSoon } from "./coming-soon"
 import { TravelBooking } from "./travel-booking"
 import { AiIde } from "./ai-ide"
 import { WorkflowBuilder } from "./workflow-builder"
+import { AiAgentFlow } from "./ai-agent-flow"
 
 /**
  * Mapa slug → componente de tela. Compartilhado entre a página de
@@ -67,4 +68,5 @@ export const compositionScreens: Record<string, ComponentType> = {
   "travel-booking": TravelBooking,
   "ai-ide": AiIde,
   "workflow-builder": WorkflowBuilder,
+  "ai-agent-flow": AiAgentFlow,
 }

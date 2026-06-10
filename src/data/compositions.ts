@@ -279,6 +279,24 @@ export const compositions: Composition[] = [
     category: "Aplicação",
     wide: true,
   },
+  {
+    slug: "ai-agent-flow",
+    name: "AI Agent Pipeline",
+    description:
+      "Orquestrador visual de agentes de IA / LLMs no estilo Flowise/Dify, construído sobre o React Flow (@xyflow/react). App de tela cheia com toolbar, paleta arrastável, canvas e inspetor: 6 nós customizados tematizados (mensagem/system prompt/LLM/ferramenta/memória/resposta) com ícones, badges de modelo·temperatura·tokens e Handles. Arraste da paleta cria nós (drag&drop → screenToFlowPosition), ligue Handles para montar o fluxo de dados (edges animadas com seta), e edite no inspetor o título, o modelo (select), a temperatura (slider) e os tokens dos nós LLM. A toolbar adiciona nós, auto-organiza em camadas, ajusta à tela (fitView), alterna MiniMap/Grade e dispara a ▶ simulação, que percorre o grafo do input ao output acendendo nós, destacando o caminho e \"streamando\" a resposta token a token no nó de saída. Barra de status com contadores e export do grafo em JSON. MiniMap colorido por tipo, Background pontilhado e Controls; tema light/dark reativo via tokens shadcn.",
+    tags: [
+      "react-flow",
+      "ai",
+      "llm",
+      "agents",
+      "pipeline",
+      "node-editor",
+      "app",
+      "interativo",
+    ],
+    category: "Aplicação",
+    wide: true,
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
