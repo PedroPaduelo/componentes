@@ -1,20 +1,22 @@
 /**
  * Composição "Observability Command Center" (Pulse).
  *
- * Um centro de comando de observabilidade VIVO — não o grid de gráficos
- * estáticos do Grafana. O destaque é um service mesh em que os pacotes de
- * request FLUEM em tempo real pelas conexões (SVG + requestAnimationFrame),
- * com golden signals em sparklines rolando, heatmap de latência, log stream
- * ao vivo, trace waterfall, alertas e SLO. Tudo dirigido por um relógio
- * simulado determinístico (PRNG seedado pelo tick — zero Math.random).
+ * Um centro de comando de observabilidade VIVO e CINEMATOGRÁFICO — longe do
+ * grid de gráficos estáticos do Grafana. Camadas de "dopamina" sem perder a
+ * densidade de gestão:
+ *  - Boot sequence (scanline) ao montar;
+ *  - ECG hero strip: o "batimento" do sistema varrendo o topo com glow neon,
+ *    acelerando/arritmando sob stress (faz jus ao nome Pulse);
+ *  - Service mesh turbinado: nós com glow, radar pings, arestas com fluxo
+ *    tracejado e PACOTES de request fluindo em tempo real (SVG + rAF) com
+ *    cauda de cometa, coloridos por severidade;
+ *  - War Room takeover no incidente: vinheta vermelha pulsante + onda de
+ *    choque irradiando do nó com falha aos dependentes;
+ *  - Golden signals, heatmap, trace waterfall, SLO, log stream e alertas.
  *
- * Interações: play/pause do live, seletor de janela de tempo, clique num
- * serviço do mesh (atualiza signals + trace + heatmap), injeção de incidente
- * (degrada o serviço e propaga em cascata, disparando alertas e logs de erro)
- * e filtro do log por nível.
- *
- * Casco em tokens shadcn (bg-card/border-border/foreground) → tema reativo.
- * Cores verde/âmbar/rosa e a escala do heatmap são severidade/data-viz.
+ * Tudo dirigido por um relógio simulado determinístico (PRNG seedado pelo
+ * tick — zero Math.random). Casco em tokens shadcn (tema light/dark reativo);
+ * cores de status/heatmap são severidade/data-viz.
  */
 
 import * as React from "react"
@@ -29,6 +31,7 @@ import {
   Database,
   Gauge,
   Globe,
+  HeartPulse,
   Layers,
   Pause,
   Play,
@@ -44,6 +47,7 @@ import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { AnimatedNumber } from "@/components/ui/animated-number"
+import { GlowingEffect } from "@/components/ui/glowing-effect"
 import {
   CONSUMERS_OF,
   DOWNSTREAM_OF,
@@ -89,7 +93,7 @@ const HEAT_COLS = 34
 const LOG_CAP = 70
 const ALERT_CAP = 16
 const TICK_MS = 1100
-const PARTICLE_COUNT = 72
+const PARTICLE_COUNT = 76
 const BASE_SEED = 0x5eed
 
 type TimeWindow = "live" | "5m" | "1h"
@@ -482,6 +486,86 @@ function trendOf(hist: number[]): number {
 }
 
 /* ------------------------------------------------------------------ */
+/*  ECG hero strip (batimento do sistema, via rAF)                     */
+/* ------------------------------------------------------------------ */
+
+const ECG_W = 1200
+const ECG_H = 84
+const ECG_CYCLE = 150
+const ECG_CYCLES = ECG_W / ECG_CYCLE
+
+function ecgPath(midY: number, amp: number): string {
+  const pts: string[] = []
+  for (let i = 0; i < ECG_CYCLES; i++) {
+    const x = i * ECG_CYCLE
+    pts.push(
+      `${x} ${midY}`,
+      `${x + ECG_CYCLE * 0.42} ${midY}`,
+      `${x + ECG_CYCLE * 0.48} ${midY - amp * 0.16}`,
+      `${x + ECG_CYCLE * 0.53} ${midY}`,
+      `${x + ECG_CYCLE * 0.57} ${midY + amp * 0.14}`,
+      `${x + ECG_CYCLE * 0.61} ${midY - amp}`,
+      `${x + ECG_CYCLE * 0.65} ${midY + amp * 0.4}`,
+      `${x + ECG_CYCLE * 0.69} ${midY}`,
+      `${x + ECG_CYCLE * 0.8} ${midY - amp * 0.26}`,
+      `${x + ECG_CYCLE * 0.9} ${midY}`,
+      `${x + ECG_CYCLE} ${midY}`,
+    )
+  }
+  return `M ${pts.join(" L ")}`
+}
+
+function EcgStrip({ status, stress, running }: { status: ServiceStatus; stress: number; running: boolean }) {
+  const gRef = React.useRef<SVGGElement>(null)
+  const offsetRef = React.useRef(0)
+  const stressRef = React.useRef(stress)
+  const runningRef = React.useRef(running)
+  stressRef.current = stress
+  runningRef.current = running
+
+  const amp = 24 + stress * 12
+  const path = React.useMemo(() => ecgPath(ECG_H / 2, amp), [amp])
+  const color = STATUS_HEX[status]
+
+  React.useEffect(() => {
+    let raf = 0
+    let last = performance.now()
+    const loop = (now: number) => {
+      const dt = Math.min(48, now - last) / 1000
+      last = now
+      if (runningRef.current) {
+        const beat = 0.92 - stressRef.current * 0.5 // s por batida (mais rápido sob stress)
+        const pxPerSec = ECG_CYCLE / Math.max(0.32, beat)
+        let o = offsetRef.current - pxPerSec * dt
+        if (o <= -ECG_W) o += ECG_W
+        offsetRef.current = o
+        if (gRef.current) gRef.current.setAttribute("transform", `translate(${o.toFixed(1)} 0)`)
+      }
+      raf = requestAnimationFrame(loop)
+    }
+    raf = requestAnimationFrame(loop)
+    return () => cancelAnimationFrame(raf)
+  }, [])
+
+  return (
+    <svg
+      viewBox={`0 0 ${ECG_W} ${ECG_H}`}
+      preserveAspectRatio="none"
+      className="h-full w-full"
+      style={{ filter: `drop-shadow(0 0 6px ${color})` }}
+    >
+      <line x1={0} y1={ECG_H / 2} x2={ECG_W} y2={ECG_H / 2} stroke="var(--border)" strokeWidth={1} />
+      <g ref={gRef}>
+        <path d={path} fill="none" stroke={color} strokeWidth={2.2} strokeLinejoin="round" strokeLinecap="round" />
+        <g transform={`translate(${ECG_W} 0)`}>
+          <path d={path} fill="none" stroke={color} strokeWidth={2.2} strokeLinejoin="round" strokeLinecap="round" />
+        </g>
+      </g>
+    </svg>
+  )
+}
+
+/* ------------------------------------------------------------------ */
 /*  Sparkline (SVG)                                                    */
 /* ------------------------------------------------------------------ */
 
@@ -511,7 +595,7 @@ function Sparkline({ values, color }: { values: number[]; color: string }) {
     <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="h-10 w-full">
       <path d={area} fill={color} opacity={0.12} />
       <path d={line} fill="none" stroke={color} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx={lastX} cy={lastY} r={2.4} fill={color} />
+      <circle cx={lastX} cy={lastY} r={2.4} fill={color} style={{ filter: `drop-shadow(0 0 3px ${color})` }} />
     </svg>
   )
 }
@@ -561,13 +645,11 @@ function RadialGauge({
             strokeWidth={stroke}
             strokeDasharray={dashVal}
             strokeLinecap="round"
-            style={{ transition: "stroke-dasharray 0.6s ease" }}
+            style={{ transition: "stroke-dasharray 0.6s ease", filter: `drop-shadow(0 0 5px ${color})` }}
           />
         </g>
       </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-        {children}
-      </div>
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">{children}</div>
     </div>
   )
 }
@@ -582,6 +664,7 @@ function Panel({
   right,
   className,
   bodyClassName,
+  glow,
   children,
 }: {
   title: string
@@ -589,18 +672,27 @@ function Panel({
   right?: React.ReactNode
   className?: string
   bodyClassName?: string
+  glow?: boolean
   children: React.ReactNode
 }) {
   return (
-    <section className={cn("flex min-w-0 flex-col overflow-hidden rounded-xl border border-border bg-card", className)}>
-      <header className="flex items-center justify-between gap-2 border-b border-border px-4 py-2.5">
+    <section
+      className={cn(
+        "relative flex min-w-0 flex-col overflow-hidden rounded-xl border border-border bg-card",
+        className,
+      )}
+    >
+      {glow && (
+        <GlowingEffect disabled={false} glow={false} blur={0} spread={42} proximity={72} borderWidth={2} />
+      )}
+      <header className="relative flex items-center justify-between gap-2 border-b border-border px-4 py-2.5">
         <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
           <span className="text-muted-foreground">{icon}</span>
           {title}
         </div>
         {right}
       </header>
-      <div className={cn("min-w-0 flex-1", bodyClassName)}>{children}</div>
+      <div className={cn("relative min-w-0 flex-1", bodyClassName)}>{children}</div>
     </section>
   )
 }
@@ -617,6 +709,7 @@ function MeshNode({
   status,
   rps,
   p95,
+  pinging,
   onSelect,
 }: {
   id: string
@@ -624,6 +717,7 @@ function MeshNode({
   status: ServiceStatus
   rps: number
   p95: number
+  pinging: boolean
   onSelect: (id: string) => void
 }) {
   const def = SERVICE_MAP[id]
@@ -638,6 +732,13 @@ function MeshNode({
       role="button"
       aria-label={`${def.name} — ${STATUS_LABEL[status]}`}
     >
+      {/* radar pings (atenção: selecionado ou em alarme) */}
+      {pinging && (
+        <>
+          <circle r={26} fill="none" stroke={color} strokeWidth={2} className="obs-radar-ring" />
+          <circle r={26} fill="none" stroke={color} strokeWidth={2} className="obs-radar-ring" style={{ animationDelay: "1.3s" }} />
+        </>
+      )}
       {selected && (
         <rect
           x={-w / 2 - 6}
@@ -652,12 +753,19 @@ function MeshNode({
           opacity={0.9}
         />
       )}
-      <rect x={-w / 2} y={-h / 2} width={w} height={h} rx={11} fill="var(--card)" stroke="var(--border)" strokeWidth={1} />
+      <rect
+        x={-w / 2}
+        y={-h / 2}
+        width={w}
+        height={h}
+        rx={11}
+        fill="var(--card)"
+        stroke={status === "healthy" ? "var(--border)" : color}
+        strokeWidth={status === "healthy" ? 1 : 1.5}
+        style={status === "healthy" ? undefined : { filter: `drop-shadow(0 0 5px ${color})` }}
+      />
       <rect x={-w / 2} y={-h / 2} width={4} height={h} rx={2} fill={color} />
-      {status !== "healthy" && (
-        <circle cx={w / 2 - 12} cy={-h / 2 + 12} r={5} fill={color} className="origin-center animate-ping" opacity={0.7} />
-      )}
-      <circle cx={w / 2 - 12} cy={-h / 2 + 12} r={3.4} fill={color} />
+      <circle cx={w / 2 - 12} cy={-h / 2 + 12} r={3.4} fill={color} filter="url(#obs-glow)" />
       <text x={-w / 2 + 14} y={-3} fill="var(--foreground)" fontSize={13} fontWeight={600}>
         {def.name}
       </text>
@@ -692,7 +800,7 @@ function ServiceMesh({
   )
 
   const particlesRef = React.useRef<{ e: number; t: number; sp: number }[]>([])
-  const circleRefs = React.useRef<(SVGCircleElement | null)[]>([])
+  const lineRefs = React.useRef<(SVGLineElement | null)[]>([])
   const simRef = React.useRef(services)
   const runningRef = React.useRef(running)
 
@@ -736,14 +844,17 @@ function ServiceMesh({
             p.sp = 0.16 + rng() * 0.26
           }
           const g = geo[p.e]
-          const pos = quadAt(g.from, g.c, g.to, p.t)
-          const el = circleRefs.current[i]
+          const head = quadAt(g.from, g.c, g.to, p.t)
+          const tail = quadAt(g.from, g.c, g.to, Math.max(0, p.t - 0.05))
+          const el = lineRefs.current[i]
           if (el) {
             const sev = worse(svc[EDGES[p.e].from]?.status ?? "healthy", svc[EDGES[p.e].to]?.status ?? "healthy")
-            el.setAttribute("cx", pos.x.toFixed(1))
-            el.setAttribute("cy", pos.y.toFixed(1))
-            el.setAttribute("fill", PACKET_HEX[sev])
-            el.setAttribute("r", sev === "healthy" ? "2.6" : "3.4")
+            el.setAttribute("x1", tail.x.toFixed(1))
+            el.setAttribute("y1", tail.y.toFixed(1))
+            el.setAttribute("x2", head.x.toFixed(1))
+            el.setAttribute("y2", head.y.toFixed(1))
+            el.setAttribute("stroke", PACKET_HEX[sev])
+            el.setAttribute("stroke-width", sev === "healthy" ? "3" : "4")
           }
         }
       }
@@ -760,13 +871,41 @@ function ServiceMesh({
       className="block w-full"
       style={{ aspectRatio: `${MESH_VIEWBOX.w} / ${MESH_VIEWBOX.h}` }}
     >
-      {/* arestas base + tinta de severidade */}
+      <defs>
+        <filter id="obs-glow" x="-60%" y="-60%" width="220%" height="220%">
+          <feGaussianBlur stdDeviation="2.4" result="b" />
+          <feMerge>
+            <feMergeNode in="b" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+        <pattern id="obs-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--border)" strokeWidth="0.6" opacity="0.5" />
+        </pattern>
+        <radialGradient id="obs-scope" cx="50%" cy="46%" r="65%">
+          <stop offset="55%" stopColor="transparent" />
+          <stop offset="100%" stopColor="var(--background)" stopOpacity="0.65" />
+        </radialGradient>
+      </defs>
+
+      <rect x={0} y={0} width={MESH_VIEWBOX.w} height={MESH_VIEWBOX.h} fill="url(#obs-grid)" />
+
+      {/* arestas: base + fluxo tracejado + tinta de severidade */}
       {EDGES.map((e, i) => {
         const sev = worse(services[e.from]?.status ?? "healthy", services[e.to]?.status ?? "healthy")
         const d = edgePathD(geo[i].from, geo[i].c, geo[i].to)
         return (
           <g key={e.id}>
             <path d={d} fill="none" stroke="var(--border)" strokeWidth={2.4} strokeLinecap="round" />
+            <path
+              d={d}
+              fill="none"
+              stroke={sev === "healthy" ? PACKET_HEX.healthy : STATUS_HEX[sev]}
+              strokeWidth={1.4}
+              strokeLinecap="round"
+              opacity={0.5}
+              className={running ? "obs-flow-edge" : undefined}
+            />
             {sev !== "healthy" && (
               <path d={d} fill="none" stroke={STATUS_HEX[sev]} strokeWidth={3} strokeLinecap="round" opacity={0.28} />
             )}
@@ -774,35 +913,44 @@ function ServiceMesh({
         )
       })}
 
-      {/* pacotes de tráfego */}
-      <g>
+      {/* pacotes de tráfego (com cauda de cometa) */}
+      <g filter="url(#obs-glow)">
         {Array.from({ length: PARTICLE_COUNT }, (_, i) => (
-          <circle
+          <line
             key={i}
             ref={(el) => {
-              circleRefs.current[i] = el
+              lineRefs.current[i] = el
             }}
-            cx={-10}
-            cy={-10}
-            r={2.6}
-            fill={PACKET_HEX.healthy}
-            opacity={incidentId ? 0.95 : 0.9}
+            x1={-10}
+            y1={-10}
+            x2={-10}
+            y2={-10}
+            stroke={PACKET_HEX.healthy}
+            strokeWidth={3}
+            strokeLinecap="round"
           />
         ))}
       </g>
 
       {/* nós */}
-      {SERVICES.map((s) => (
-        <MeshNode
-          key={s.id}
-          id={s.id}
-          selected={selectedId === s.id}
-          status={services[s.id].status}
-          rps={services[s.id].rps}
-          p95={services[s.id].p95}
-          onSelect={onSelect}
-        />
-      ))}
+      {SERVICES.map((s) => {
+        const st = services[s.id].status
+        return (
+          <MeshNode
+            key={s.id}
+            id={s.id}
+            selected={selectedId === s.id}
+            status={st}
+            rps={services[s.id].rps}
+            p95={services[s.id].p95}
+            pinging={selectedId === s.id || st === "critical" || incidentId === s.id}
+            onSelect={onSelect}
+          />
+        )
+      })}
+
+      {/* vinheta de escopo */}
+      <rect x={0} y={0} width={MESH_VIEWBOX.w} height={MESH_VIEWBOX.h} fill="url(#obs-scope)" pointerEvents="none" />
     </svg>
   )
 }
@@ -873,6 +1021,18 @@ export function ObservabilityCenter() {
     tick,
   } = state
 
+  const [booting, setBooting] = React.useState(true)
+  const [bootFill, setBootFill] = React.useState(false)
+
+  React.useEffect(() => {
+    const raf = requestAnimationFrame(() => setBootFill(true))
+    const id = setTimeout(() => setBooting(false), 2100)
+    return () => {
+      cancelAnimationFrame(raf)
+      clearTimeout(id)
+    }
+  }, [])
+
   React.useEffect(() => {
     if (!running) return
     const id = setInterval(() => dispatch({ type: "TICK" }), TICK_MS)
@@ -918,8 +1078,8 @@ export function ObservabilityCenter() {
 
   const globalStatus: ServiceStatus = totals.critical > 0 ? "critical" : totals.degraded > 0 ? "degraded" : "healthy"
   const scoreColor = STATUS_HEX[globalStatus]
+  const stress = clamp((100 - totals.score) / 100 + totals.errRate * 4, 0, 1)
   const firingCount = alerts.filter((a) => a.firing).length
-
   const visibleLogs = logs.filter((l) => levels[l.level])
 
   const logCounts = React.useMemo(() => {
@@ -929,19 +1089,29 @@ export function ObservabilityCenter() {
   }, [logs])
 
   return (
-    <div className="relative isolate flex flex-col bg-background text-foreground">
-      {/* fundo decorativo sutil */}
+    <div className="relative isolate flex flex-col overflow-hidden bg-background text-foreground">
+      {/* fundo cinematográfico reativo ao status */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 opacity-[0.5]"
+        className="pointer-events-none absolute inset-0 -z-10"
         style={{
-          backgroundImage:
-            "radial-gradient(circle at 18% 0%, color-mix(in oklab, var(--primary) 14%, transparent), transparent 45%), radial-gradient(circle at 85% 8%, color-mix(in oklab, var(--primary) 9%, transparent), transparent 40%)",
+          backgroundImage: `radial-gradient(circle at 20% -10%, color-mix(in oklab, ${scoreColor} 16%, transparent), transparent 45%), radial-gradient(circle at 88% 0%, color-mix(in oklab, var(--primary) 10%, transparent), transparent 42%), linear-gradient(color-mix(in oklab, var(--foreground) 4%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--foreground) 4%, transparent) 1px, transparent 1px)`,
+          backgroundSize: "100% 100%, 100% 100%, 46px 46px, 46px 46px",
+          transition: "background-image 0.8s ease",
         }}
       />
 
+      {/* war room: vinheta vermelha pulsante */}
+      {incidentId && (
+        <div
+          aria-hidden
+          className="obs-vignette pointer-events-none absolute inset-0 z-20"
+          style={{ boxShadow: "inset 0 0 130px 10px color-mix(in oklab, #f43f5e 55%, transparent)" }}
+        />
+      )}
+
       {/* ============================ TOPBAR ============================ */}
-      <header className="flex flex-col gap-3 border-b border-border px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
+      <header className="relative z-10 flex flex-col gap-3 border-b border-border px-4 py-3 lg:flex-row lg:items-center lg:justify-between">
         <div className="flex items-center gap-3">
           <span className="relative flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Radio className="size-5" />
@@ -964,16 +1134,14 @@ export function ObservabilityCenter() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          {/* health chip */}
           <div className="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5">
-            <span className="size-2 rounded-full" style={{ backgroundColor: scoreColor }} />
+            <span className="size-2 rounded-full" style={{ backgroundColor: scoreColor, boxShadow: `0 0 8px ${scoreColor}` }} />
             <span className="text-xs text-muted-foreground">Saúde</span>
             <span className="text-sm font-semibold tabular-nums" style={{ color: scoreColor }}>
               {totals.score}
             </span>
           </div>
 
-          {/* window selector */}
           <div className="flex items-center rounded-lg border border-border bg-card p-0.5">
             {(["live", "5m", "1h"] as TimeWindow[]).map((w) => (
               <button
@@ -982,9 +1150,7 @@ export function ObservabilityCenter() {
                 onClick={() => dispatch({ type: "SET_WINDOW", window: w })}
                 className={cn(
                   "rounded-md px-2.5 py-1 text-xs font-medium transition-colors",
-                  timeWindow === w
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground",
+                  timeWindow === w ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {w === "live" ? "Live" : w}
@@ -992,12 +1158,7 @@ export function ObservabilityCenter() {
             ))}
           </div>
 
-          <Button
-            type="button"
-            variant={running ? "outline" : "default"}
-            size="sm"
-            onClick={() => dispatch({ type: "TOGGLE_RUN" })}
-          >
+          <Button type="button" variant={running ? "outline" : "default"} size="sm" onClick={() => dispatch({ type: "TOGGLE_RUN" })}>
             {running ? <Pause className="size-4" /> : <Play className="size-4" />}
             {running ? "Pausar" : "Retomar"}
           </Button>
@@ -1015,9 +1176,31 @@ export function ObservabilityCenter() {
         </div>
       </header>
 
+      {/* ============================ ECG HERO ============================ */}
+      <div className="relative z-10 flex items-center gap-4 border-b border-border bg-card/40 px-4 py-2">
+        <div className="flex shrink-0 items-center gap-2">
+          <HeartPulse className="size-5" style={{ color: scoreColor }} />
+          <div className="leading-tight">
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Sinal do sistema</div>
+            <div className="text-sm font-semibold tabular-nums" style={{ color: scoreColor }}>
+              {STATUS_LABEL[globalStatus]}
+            </div>
+          </div>
+        </div>
+        <div className="h-12 min-w-0 flex-1">
+          <EcgStrip status={globalStatus} stress={stress} running={running} />
+        </div>
+        <div className="hidden shrink-0 flex-col items-end leading-tight sm:flex">
+          <div className="text-base font-bold tabular-nums text-foreground">
+            <AnimatedNumber value={Math.round(totals.rps)} />
+          </div>
+          <div className="text-[10px] uppercase tracking-wider text-muted-foreground">requests / s</div>
+        </div>
+      </div>
+
       {/* incident banner */}
       {incidentId && (
-        <div className="flex items-center gap-2 border-b border-rose-500/30 bg-rose-500/10 px-4 py-2 text-sm text-rose-500">
+        <div className="relative z-10 flex items-center gap-2 border-b border-rose-500/30 bg-rose-500/10 px-4 py-2 text-sm text-rose-500">
           <Siren className="size-4 shrink-0 animate-pulse" />
           <span className="font-medium">Incidente ativo em {SERVICE_MAP[incidentId].name}</span>
           <span className="text-rose-500/80">— degradação se propagando aos serviços dependentes.</span>
@@ -1025,12 +1208,13 @@ export function ObservabilityCenter() {
       )}
 
       {/* ============================ GRID ============================ */}
-      <div className="grid grid-cols-1 gap-3 p-3 lg:grid-cols-12">
+      <div className="relative z-10 grid grid-cols-1 gap-3 p-3 lg:grid-cols-12">
         {/* ---- Mesh ---- */}
         <Panel
           title="Topologia de serviços"
           icon={<Workflow className="size-4" />}
           className="lg:col-span-8"
+          glow
           right={
             <div className="hidden items-center gap-3 text-[11px] text-muted-foreground sm:flex">
               {(Object.keys(KIND_META) as (keyof typeof KIND_META)[]).map((k) => {
@@ -1075,10 +1259,11 @@ export function ObservabilityCenter() {
           title="SLO & saúde"
           icon={<Gauge className="size-4" />}
           className="lg:col-span-4"
+          glow
           bodyClassName="flex flex-col gap-4 p-4"
         >
           <div className="flex items-center gap-4">
-            <RadialGauge value={totals.availability} size={104} stroke={10} color={scoreColor}>
+            <RadialGauge value={totals.availability} size={108} stroke={11} color={scoreColor}>
               <span className="text-lg font-bold tabular-nums" style={{ color: scoreColor }}>
                 {formatPct(totals.availability, 2)}
               </span>
@@ -1152,91 +1337,46 @@ export function ObservabilityCenter() {
           }
           bodyClassName="grid grid-cols-2 gap-3 p-3 lg:grid-cols-4"
         >
-          <SignalCard
-            label="Latência p95"
-            icon={<Clock className="size-3.5" />}
-            value={formatMs(sel.p95)}
-            hist={sel.histP95}
-            color="#fb923c"
-            invert
-            window={timeWindow}
-          />
-          <SignalCard
-            label="Throughput"
-            icon={<Zap className="size-3.5" />}
-            value={`${formatCompact(sel.rps)} rps`}
-            hist={sel.histRps}
-            color="#38bdf8"
-            invert={false}
-            window={timeWindow}
-          />
-          <SignalCard
-            label="Taxa de erro"
-            icon={<AlertTriangle className="size-3.5" />}
-            value={formatPct(sel.err, 2)}
-            hist={sel.histErr}
-            color="#f43f5e"
-            invert
-            window={timeWindow}
-          />
+          <SignalCard label="Latência p95" icon={<Clock className="size-3.5" />} value={formatMs(sel.p95)} hist={sel.histP95} color="#fb923c" invert window={timeWindow} />
+          <SignalCard label="Throughput" icon={<Zap className="size-3.5" />} value={`${formatCompact(sel.rps)} rps`} hist={sel.histRps} color="#38bdf8" invert={false} window={timeWindow} />
+          <SignalCard label="Taxa de erro" icon={<AlertTriangle className="size-3.5" />} value={formatPct(sel.err, 2)} hist={sel.histErr} color="#f43f5e" invert window={timeWindow} />
           <div className="flex flex-col gap-2 rounded-lg border border-border bg-background/40 p-3">
             <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
               <span className="flex items-center gap-1.5">
                 <Cpu className="size-3.5 text-violet-400" /> Saturação
               </span>
             </div>
-            <div className="flex items-end gap-3">
-              <div className="flex-1">
-                <div className="mb-1 flex items-center justify-between text-[11px] text-muted-foreground">
-                  <span>CPU</span>
-                  <span className="tabular-nums">{formatPct(sel.cpu, 0)}</span>
-                </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-muted">
-                  <div
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{ width: `${(sel.cpu * 100).toFixed(0)}%`, backgroundColor: sel.cpu > 0.85 ? STATUS_HEX.critical : sel.cpu > 0.65 ? STATUS_HEX.degraded : "#a78bfa" }}
-                  />
-                </div>
-                <div className="mb-1 mt-2 flex items-center justify-between text-[11px] text-muted-foreground">
-                  <span>Memória</span>
-                  <span className="tabular-nums">{formatPct(sel.mem, 0)}</span>
-                </div>
-                <div className="h-1.5 overflow-hidden rounded-full bg-muted">
-                  <div
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{ width: `${(sel.mem * 100).toFixed(0)}%`, backgroundColor: sel.mem > 0.85 ? STATUS_HEX.critical : sel.mem > 0.65 ? STATUS_HEX.degraded : "#818cf8" }}
-                  />
-                </div>
+            <div className="flex-1">
+              <div className="mb-1 flex items-center justify-between text-[11px] text-muted-foreground">
+                <span>CPU</span>
+                <span className="tabular-nums">{formatPct(sel.cpu, 0)}</span>
+              </div>
+              <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+                <div className="h-full rounded-full transition-all duration-500" style={{ width: `${(sel.cpu * 100).toFixed(0)}%`, backgroundColor: sel.cpu > 0.85 ? STATUS_HEX.critical : sel.cpu > 0.65 ? STATUS_HEX.degraded : "#a78bfa" }} />
+              </div>
+              <div className="mb-1 mt-2 flex items-center justify-between text-[11px] text-muted-foreground">
+                <span>Memória</span>
+                <span className="tabular-nums">{formatPct(sel.mem, 0)}</span>
+              </div>
+              <div className="h-1.5 overflow-hidden rounded-full bg-muted">
+                <div className="h-full rounded-full transition-all duration-500" style={{ width: `${(sel.mem * 100).toFixed(0)}%`, backgroundColor: sel.mem > 0.85 ? STATUS_HEX.critical : sel.mem > 0.65 ? STATUS_HEX.degraded : "#818cf8" }} />
               </div>
             </div>
           </div>
         </Panel>
 
         {/* ---- Heatmap ---- */}
-        <Panel
-          title="Heatmap de latência"
-          icon={<Layers className="size-4" />}
-          className="lg:col-span-7"
-          right={<span className="text-[11px] text-muted-foreground">{selDef.name} · p95</span>}
-          bodyClassName="p-4"
-        >
+        <Panel title="Heatmap de latência" icon={<Layers className="size-4" />} className="lg:col-span-7" right={<span className="text-[11px] text-muted-foreground">{selDef.name} · p95</span>} bodyClassName="p-4">
           <div className="flex gap-2">
             <div className="flex flex-col justify-between py-0.5 text-[10px] text-muted-foreground">
               <span>lento</span>
               <span>rápido</span>
             </div>
             <div className="flex-1">
-              <div
-                className="grid gap-0.5"
-                style={{ gridTemplateColumns: `repeat(${HEAT_COLS}, minmax(0, 1fr))` }}
-              >
+              <div className="grid gap-0.5" style={{ gridTemplateColumns: `repeat(${HEAT_COLS}, minmax(0, 1fr))` }}>
                 {Array.from({ length: HEAT_ROWS }, (_, row) =>
                   heatCols.map((col, c) => (
-                    <div
-                      key={`${row}-${c}`}
-                      className="aspect-square rounded-[2px]"
-                      style={{ backgroundColor: heatColor(col[row]) }}
-                    />
+                    <div key={`${row}-${c}`} className="aspect-square rounded-[2px]" style={{ backgroundColor: heatColor(col[row]) }} />
                   )),
                 )}
               </div>
@@ -1249,13 +1389,7 @@ export function ObservabilityCenter() {
         </Panel>
 
         {/* ---- Trace waterfall ---- */}
-        <Panel
-          title="Distributed trace"
-          icon={<Workflow className="size-4" />}
-          className="lg:col-span-5"
-          right={<span className="font-mono text-[11px] text-muted-foreground">#{(tick % 9000) + 1000}</span>}
-          bodyClassName="flex flex-col gap-1.5 p-4"
-        >
+        <Panel title="Distributed trace" icon={<Workflow className="size-4" />} className="lg:col-span-5" right={<span className="font-mono text-[11px] text-muted-foreground">#{(tick % 9000) + 1000}</span>} bodyClassName="flex flex-col gap-1.5 p-4">
           {trace.map((span) => (
             <div key={span.id} className="flex items-center gap-2">
               <div className="w-24 shrink-0 truncate text-[11px] text-muted-foreground" style={{ paddingLeft: span.depth * 8 }}>
@@ -1264,24 +1398,13 @@ export function ObservabilityCenter() {
               <div className="relative h-4 flex-1 overflow-hidden rounded bg-muted/50">
                 <div
                   className="absolute inset-y-0 rounded transition-all duration-500"
-                  style={{
-                    left: `${span.startPct}%`,
-                    width: `${clamp(span.widthPct, 2, 100)}%`,
-                    backgroundColor: STATUS_HEX[span.status],
-                    opacity: 0.85,
-                  }}
+                  style={{ left: `${span.startPct}%`, width: `${clamp(span.widthPct, 2, 100)}%`, backgroundColor: STATUS_HEX[span.status], opacity: 0.85, boxShadow: `0 0 6px ${STATUS_HEX[span.status]}` }}
                 />
               </div>
-              <div className="w-12 shrink-0 text-right font-mono text-[10px] tabular-nums text-muted-foreground">
-                {formatMs(span.ms)}
-              </div>
+              <div className="w-12 shrink-0 text-right font-mono text-[10px] tabular-nums text-muted-foreground">{formatMs(span.ms)}</div>
             </div>
           ))}
-          {trace.length <= 1 && (
-            <p className="py-3 text-center text-xs text-muted-foreground">
-              Serviço folha — sem dependências downstream.
-            </p>
-          )}
+          {trace.length <= 1 && <p className="py-3 text-center text-xs text-muted-foreground">Serviço folha — sem dependências downstream.</p>}
         </Panel>
 
         {/* ---- Log stream ---- */}
@@ -1296,11 +1419,7 @@ export function ObservabilityCenter() {
                   key={lvl}
                   type="button"
                   onClick={() => dispatch({ type: "TOGGLE_LEVEL", level: lvl })}
-                  className={cn(
-                    "rounded border px-1.5 py-0.5 text-[10px] font-medium uppercase tabular-nums transition-opacity",
-                    LOG_LEVEL_CLASSES[lvl].chip,
-                    !levels[lvl] && "opacity-35",
-                  )}
+                  className={cn("rounded border px-1.5 py-0.5 text-[10px] font-medium uppercase tabular-nums transition-opacity", LOG_LEVEL_CLASSES[lvl].chip, !levels[lvl] && "opacity-35")}
                 >
                   {lvl} {logCounts[lvl]}
                 </button>
@@ -1316,16 +1435,11 @@ export function ObservabilityCenter() {
               visibleLogs.map((log) => (
                 <div key={log.id} className="flex items-start gap-2 rounded px-2 py-0.5 hover:bg-muted/40">
                   <span className="shrink-0 text-muted-foreground">{formatClock(log.t)}</span>
-                  <span className={cn("w-10 shrink-0 font-semibold uppercase", LOG_LEVEL_CLASSES[log.level].text)}>
-                    {log.level}
-                  </span>
+                  <span className={cn("w-10 shrink-0 font-semibold uppercase", LOG_LEVEL_CLASSES[log.level].text)}>{log.level}</span>
                   <span className="shrink-0 text-foreground/70">{SERVICE_MAP[log.service].short}</span>
                   <span className="min-w-0 flex-1 truncate text-muted-foreground">
                     <span className="text-foreground/80">{log.method}</span> {log.path}{" "}
-                    <span className={log.status >= 500 ? "text-rose-400" : log.status >= 400 ? "text-amber-400" : "text-emerald-400"}>
-                      {log.status}
-                    </span>{" "}
-                    · {log.ms}ms · {log.message}
+                    <span className={log.status >= 500 ? "text-rose-400" : log.status >= 400 ? "text-amber-400" : "text-emerald-400"}>{log.status}</span> · {log.ms}ms · {log.message}
                   </span>
                 </div>
               ))
@@ -1363,35 +1477,19 @@ export function ObservabilityCenter() {
                 {alerts.map((a) => {
                   const sc = STATUS_CLASSES[a.severity === "critical" ? "critical" : "degraded"]
                   return (
-                    <div
-                      key={a.id}
-                      className={cn(
-                        "flex items-center gap-2 rounded-lg border bg-background/40 px-3 py-2",
-                        a.firing ? "border-border" : "border-border/60 opacity-70",
-                      )}
-                    >
+                    <div key={a.id} className={cn("obs-rise flex items-center gap-2 rounded-lg border bg-background/40 px-3 py-2", a.firing ? "border-border" : "border-border/60 opacity-70")}>
                       <span className={cn("flex size-6 shrink-0 items-center justify-center rounded-full", sc.soft)}>
                         {a.firing ? <AlertTriangle className="size-3.5" /> : <CheckCircle2 className="size-3.5" />}
                       </span>
                       <div className="min-w-0 flex-1">
                         <p className="truncate text-xs font-medium text-foreground">{a.title}</p>
-                        <p className="text-[10px] text-muted-foreground">
-                          {a.firing ? `disparado ${formatClock(a.t)}` : `resolvido ${formatClock(a.resolvedT ?? a.t)}`}
-                        </p>
+                        <p className="text-[10px] text-muted-foreground">{a.firing ? `disparado ${formatClock(a.t)}` : `resolvido ${formatClock(a.resolvedT ?? a.t)}`}</p>
                       </div>
                       {a.firing &&
                         (a.acked ? (
-                          <Badge variant="outline" className="text-[10px]">
-                            reconhecido
-                          </Badge>
+                          <Badge variant="outline" className="text-[10px]">reconhecido</Badge>
                         ) : (
-                          <Button
-                            type="button"
-                            variant="ghost"
-                            size="sm"
-                            className="h-6 px-2 text-[11px]"
-                            onClick={() => dispatch({ type: "ACK", id: a.id })}
-                          >
+                          <Button type="button" variant="ghost" size="sm" className="h-6 px-2 text-[11px]" onClick={() => dispatch({ type: "ACK", id: a.id })}>
                             Ack
                           </Button>
                         ))}
@@ -1405,7 +1503,7 @@ export function ObservabilityCenter() {
       </div>
 
       {/* ============================ STATUS BAR ============================ */}
-      <footer className="flex flex-wrap items-center justify-between gap-2 border-t border-border bg-card px-4 py-2 text-[11px] text-muted-foreground">
+      <footer className="relative z-10 flex flex-wrap items-center justify-between gap-2 border-t border-border bg-card px-4 py-2 text-[11px] text-muted-foreground">
         <div className="flex flex-wrap items-center gap-4">
           <span className="flex items-center gap-1.5">
             <Server className="size-3.5" /> {SERVICES.length} serviços
@@ -1427,6 +1525,33 @@ export function ObservabilityCenter() {
           {running ? "ingestão ativa" : "pausado"} · {formatClock(tick)}
         </div>
       </footer>
+
+      {/* ============================ BOOT SEQUENCE ============================ */}
+      {booting && (
+        <div className="obs-boot-fade absolute inset-0 z-40 flex flex-col items-center justify-center overflow-hidden bg-background">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px obs-scanline" style={{ background: "linear-gradient(90deg, transparent, color-mix(in oklab, var(--primary) 80%, transparent), transparent)", boxShadow: "0 0 12px 2px color-mix(in oklab, var(--primary) 60%, transparent)" }} />
+          <div className="flex items-center gap-3">
+            <span className="relative flex size-10 items-center justify-center rounded-lg bg-primary/10 text-primary">
+              <Radio className="size-6 animate-pulse" />
+            </span>
+            <div className="leading-tight">
+              <div className="text-lg font-bold tracking-[0.3em] text-foreground">PULSE</div>
+              <div className="font-mono text-[11px] text-muted-foreground">inicializando telemetria…</div>
+            </div>
+          </div>
+          <div className="mt-5 h-1 w-56 overflow-hidden rounded-full bg-muted">
+            <div
+              className="h-full w-full rounded-full bg-primary"
+              style={{
+                transformOrigin: "left",
+                transform: bootFill ? "scaleX(1)" : "scaleX(0)",
+                transition: "transform 1.4s ease",
+                boxShadow: "0 0 10px var(--primary)",
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   )
 }

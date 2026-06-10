@@ -835,3 +835,36 @@
   --xy-selection-border: 1px dotted color-mix(in oklab, var(--primary) 70%, transparent);
   --xy-attribution-background-color: color-mix(in oklab, var(--background) 50%, transparent);
 }
+
+/* ============================================================== */
+/*  Observability Command Center (Pulse) — efeitos da composição   */
+/* ============================================================== */
+@keyframes obs-scan {
+  0% { transform: translateY(-120%); opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { transform: translateY(2400%); opacity: 0; }
+}
+@keyframes obs-vignette {
+  0%, 100% { opacity: 0.28; }
+  50% { opacity: 0.9; }
+}
+@keyframes obs-flow { to { stroke-dashoffset: -24; } }
+@keyframes obs-radar {
+  0% { transform: scale(0.45); opacity: 0.55; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+@keyframes obs-rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes obs-boot-fade {
+  from { opacity: 1; }
+  to { opacity: 0; visibility: hidden; }
+}
+.obs-radar-ring { transform-box: fill-box; transform-origin: center; animation: obs-radar 2.6s ease-out infinite; }
+.obs-flow-edge { stroke-dasharray: 3 9; animation: obs-flow 0.7s linear infinite; }
+.obs-vignette { animation: obs-vignette 1.5s ease-in-out infinite; }
+.obs-scanline { animation: obs-scan 1.9s ease-in-out forwards; }
+.obs-rise { animation: obs-rise 0.5s ease-out both; }
+.obs-boot-fade { animation: obs-boot-fade 0.5s ease-out 1.5s forwards; }
