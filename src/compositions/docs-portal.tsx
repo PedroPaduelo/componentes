@@ -14,14 +14,25 @@
  */
 import { useCallback, useEffect, useMemo, useState } from "react"
 import {
+  ReactFlow,
+  Background,
+  BackgroundVariant,
+  Controls,
+  MiniMap,
+  type Edge,
+  type NodeTypes,
+} from "@xyflow/react"
+import {
   Book,
   Boxes,
   Component,
   FileCode2,
+  FileText,
   Hash,
   Info,
   Lightbulb,
   Menu,
+  Network,
   PanelsTopLeft,
   Rocket,
   Search,
@@ -29,6 +40,17 @@ import {
   TriangleAlert,
 } from "lucide-react"
 import type { LucideIcon } from "lucide-react"
+
+import "@xyflow/react/dist/style.css"
+
+import { useTheme } from "@/components/theme/use-theme"
+import {
+  DocGroupNode,
+  DocPageNode,
+  DocRootNode,
+  type DocMapGroupColor,
+  type DocMapNodeType,
+} from "@/compositions/docs-portal-map-nodes"
 
 import {
   Alert,
@@ -665,6 +687,178 @@ function buildGroups(): SidebarGroup[] {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                          mapa da documentação                              */
+/* -------------------------------------------------------------------------- */
+
+/** Cor de ramo atribuída a cada seção, na ordem em que aparecem. */
+const GROUP_COLOR_ORDER: DocMapGroupColor[] = [
+  "sky",
+  "violet",
+  "emerald",
+  "amber",
+  "rose",
+  "teal",
+]
+
+/** Cor decorativa do MiniMap por ramo (hex — não são tokens de tema). */
+const GROUP_HEX: Record<DocMapGroupColor, string> = {
+  sky: "#0ea5e9",
+  violet: "#8b5cf6",
+  emerald: "#10b981",
+  amber: "#f59e0b",
+  rose: "#f43f5e",
+  teal: "#14b8a6",
+}
+
+const MAP_COL_GAP = 300
+const MAP_ROW_GAP = 86
+const MAP_GROUP_Y = 150
+const MAP_PAGE_Y0 = 286
+
+const MAP_ROOT_ID = "root"
+
+const MAP_EDGE: Partial<Edge> = {
+  type: "smoothstep",
+  style: { stroke: "var(--muted-foreground)", strokeWidth: 1.5 },
+}
+
+/** ID determinístico do nó de uma página. */
+function pageNodeId(pageId: string): string {
+  return `page:${pageId}`
+}
+
+/** Auto-layout em árvore determinístico: raiz → seções (colunas) → páginas. */
+function buildMapGraph(
+  groups: SidebarGroup[],
+  activeId: string,
+): { nodes: DocMapNodeType[]; edges: Edge[] } {
+  const nodes: DocMapNodeType[] = []
+  const edges: Edge[] = []
+  const centerX = ((groups.length - 1) * MAP_COL_GAP) / 2
+
+  nodes.push({
+    id: MAP_ROOT_ID,
+    type: "docRoot",
+    position: { x: centerX, y: 0 },
+    data: { label: "Acme UI Docs" },
+  })
+
+  groups.forEach((group, gi) => {
+    const color = GROUP_COLOR_ORDER[gi % GROUP_COLOR_ORDER.length]
+    const x = gi * MAP_COL_GAP
+    const groupId = `group:${group.group}`
+
+    nodes.push({
+      id: groupId,
+      type: "docGroup",
+      position: { x, y: MAP_GROUP_Y },
+      data: {
+        label: group.group,
+        color,
+        icon: group.icon,
+        count: group.pages.length,
+      },
+    })
+    edges.push({
+      id: `e-${MAP_ROOT_ID}-${groupId}`,
+      source: MAP_ROOT_ID,
+      target: groupId,
+      ...MAP_EDGE,
+    })
+
+    group.pages.forEach((page, pi) => {
+      const id = pageNodeId(page.id)
+      nodes.push({
+        id,
+        type: "docPage",
+        position: { x, y: MAP_PAGE_Y0 + pi * MAP_ROW_GAP },
+        data: {
+          label: page.title,
+          badge: page.badge,
+          color,
+          active: page.id === activeId,
+        },
+      })
+      edges.push({
+        id: `e-${groupId}-${id}`,
+        source: groupId,
+        target: id,
+        ...MAP_EDGE,
+      })
+    })
+  })
+
+  return { nodes, edges }
+}
+
+const MAP_NODE_TYPES: NodeTypes = {
+  docRoot: DocRootNode,
+  docGroup: DocGroupNode,
+  docPage: DocPageNode,
+}
+
+function DocsMap({
+  groups,
+  activeId,
+  onNavigate,
+}: {
+  groups: SidebarGroup[]
+  activeId: string
+  onNavigate: (id: string) => void
+}) {
+  const { resolvedTheme } = useTheme()
+  const { nodes, edges } = useMemo(
+    () => buildMapGraph(groups, activeId),
+    [groups, activeId],
+  )
+
+  const handleNodeClick = useCallback(
+    (_event: React.MouseEvent, node: DocMapNodeType) => {
+      if (node.type === "docPage" && node.id.startsWith("page:")) {
+        onNavigate(node.id.slice("page:".length))
+      }
+    },
+    [onNavigate],
+  )
+
+  return (
+    <section
+      aria-label="Mapa da documentação"
+      className="h-[70vh] min-h-[480px] w-full overflow-hidden rounded-xl border border-border bg-card/30"
+    >
+      <div data-slot="react-flow" className="h-full w-full">
+        <ReactFlow<DocMapNodeType, Edge>
+          colorMode={resolvedTheme}
+          nodes={nodes}
+          edges={edges}
+          nodeTypes={MAP_NODE_TYPES}
+          onNodeClick={handleNodeClick}
+          fitView
+          fitViewOptions={{ padding: 0.2 }}
+          minZoom={0.2}
+          nodesDraggable={false}
+          nodesConnectable={false}
+          deleteKeyCode={null}
+          proOptions={{ hideAttribution: true }}
+        >
+          <Background variant={BackgroundVariant.Dots} gap={20} size={1} />
+          <Controls showInteractive={false} />
+          <MiniMap
+            pannable
+            zoomable
+            nodeColor={(n) => {
+              if (n.type === "docRoot") return "var(--primary)"
+              const data = n.data as { color?: DocMapGroupColor }
+              return data.color ? GROUP_HEX[data.color] : "var(--muted-foreground)"
+            }}
+          />
+        </ReactFlow>
+      </div>
+    </section>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                sidebar nav                                  */
 /* -------------------------------------------------------------------------- */
 
@@ -986,6 +1180,7 @@ export function DocsPortal() {
   const [activeId, setActiveId] = useState<string>(DOCS[0].id)
   const [paletteOpen, setPaletteOpen] = useState(false)
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [view, setView] = useState<"doc" | "map">("doc")
 
   const activePage = useMemo(
     () => DOCS.find((page) => page.id === activeId) ?? DOCS[0],
@@ -1016,6 +1211,15 @@ export function DocsPortal() {
     (id: string) => {
       goTo(id)
       setPaletteOpen(false)
+    },
+    [goTo],
+  )
+
+  // Clicar num nó de página no mapa navega e volta para a vista de documento.
+  const navigateFromMap = useCallback(
+    (id: string) => {
+      goTo(id)
+      setView("doc")
     },
     [goTo],
   )
@@ -1066,6 +1270,52 @@ export function DocsPortal() {
         </div>
 
         <div className="ml-auto flex items-center gap-2">
+          <div
+            role="tablist"
+            aria-label="Alternar vista"
+            className="hidden items-center gap-0.5 rounded-md border border-border bg-muted/40 p-0.5 sm:flex"
+          >
+            <button
+              type="button"
+              role="tab"
+              aria-selected={view === "doc"}
+              onClick={() => setView("doc")}
+              className={cn(
+                "flex h-7 items-center gap-1.5 rounded px-2.5 text-xs font-medium transition-colors",
+                view === "doc"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              <FileText className="size-3.5" />
+              Doc
+            </button>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={view === "map"}
+              onClick={() => setView("map")}
+              className={cn(
+                "flex h-7 items-center gap-1.5 rounded px-2.5 text-xs font-medium transition-colors",
+                view === "map"
+                  ? "bg-background text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground",
+              )}
+            >
+              <Network className="size-3.5" />
+              Mapa
+            </button>
+          </div>
+          <Button
+            variant={view === "map" ? "secondary" : "ghost"}
+            size="icon"
+            className="sm:hidden"
+            aria-label={view === "map" ? "Ver documentação" : "Ver mapa da documentação"}
+            aria-pressed={view === "map"}
+            onClick={() => setView((v) => (v === "map" ? "doc" : "map"))}
+          >
+            {view === "map" ? <FileText /> : <Network />}
+          </Button>
           <button
             type="button"
             onClick={() => setPaletteOpen(true)}
@@ -1092,11 +1342,44 @@ export function DocsPortal() {
           </div>
         </aside>
 
-        {/* Conteúdo central */}
-        <DocContent page={activePage} />
+        {view === "doc" ? (
+          <>
+            {/* Conteúdo central */}
+            <DocContent page={activePage} />
 
-        {/* Nesta página */}
-        <OnThisPage pageId={activePage.id} />
+            {/* Nesta página */}
+            <OnThisPage pageId={activePage.id} />
+          </>
+        ) : (
+          /* Mapa da documentação */
+          <div className="min-w-0 flex-1 space-y-4">
+            <div className="space-y-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <h1 className="text-2xl font-bold tracking-tight">
+                  Mapa da documentação
+                </h1>
+                <Badge variant="secondary" className="gap-1">
+                  <Network className="size-3" />
+                  Visão geral
+                </Badge>
+              </div>
+              <p className="max-w-2xl text-sm text-muted-foreground">
+                Navegue pela estrutura completa do design system. Clique em
+                qualquer página para abri-la — é a terceira forma de navegar,
+                junto da barra lateral e do{" "}
+                <kbd className="rounded border border-border bg-muted px-1 font-mono text-[10px]">
+                  ⌘K
+                </kbd>
+                .
+              </p>
+            </div>
+            <DocsMap
+              groups={groups}
+              activeId={activeId}
+              onNavigate={navigateFromMap}
+            />
+          </div>
+        )}
       </div>
 
       {/* Command palette */}
