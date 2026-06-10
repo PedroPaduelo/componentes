@@ -297,6 +297,24 @@ export const compositions: Composition[] = [
     category: "Aplicação",
     wide: true,
   },
+  {
+    slug: "db-schema-designer",
+    name: "Database Schema Designer",
+    description:
+      "Editor visual de diagramas de banco de dados (ER) no estilo ChartDB / DBDraw / Hubql, construído sobre o React Flow (@xyflow/react). O diferencial: cada nó é uma TABELA com múltiplos Handles — um por coluna — e as relações ligam o handle de uma coluna FK ao handle da coluna PK de outra tabela (1—N). App de tela cheia com toolbar, lista de tabelas à esquerda, canvas e inspetor: o TableNode mostra header com nome + ícone e a lista de colunas com ícone PK (chave) / FK (link), nome e badge do tipo (uuid/int/varchar/timestamp/bool…). Arraste \"Nova tabela\" para o canvas (drag&drop → screenToFlowPosition), ligue os pontos das linhas para criar relações (edges smoothstep com seta e rótulo de cardinalidade), e no inspetor renomeie a tabela, adicione coluna (nome + tipo via select + flag PK), remova colunas ou exclua a tabela. A toolbar auto-organiza em grade, ajusta à tela (fitView), alterna MiniMap/Grade e gera o schema completo em \"Exportar SQL\" (CREATE TABLE com FOREIGN KEY num dialog com copiar). Barra de status com contagem de tabelas, colunas e relações. MiniMap, Background pontilhado e Controls; tema light/dark reativo via tokens shadcn.",
+    tags: [
+      "react-flow",
+      "database",
+      "er-diagram",
+      "schema",
+      "sql",
+      "node-editor",
+      "app",
+      "interativo",
+    ],
+    category: "Aplicação",
+    wide: true,
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {

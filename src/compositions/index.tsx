@@ -31,6 +31,7 @@ import { TravelBooking } from "./travel-booking"
 import { AiIde } from "./ai-ide"
 import { WorkflowBuilder } from "./workflow-builder"
 import { AiAgentFlow } from "./ai-agent-flow"
+import { DbSchemaDesigner } from "./db-schema-designer"
 
 /**
  * Mapa slug → componente de tela. Compartilhado entre a página de
@@ -69,4 +70,5 @@ export const compositionScreens: Record<string, ComponentType> = {
   "ai-ide": AiIde,
   "workflow-builder": WorkflowBuilder,
   "ai-agent-flow": AiAgentFlow,
+  "db-schema-designer": DbSchemaDesigner,
 }
