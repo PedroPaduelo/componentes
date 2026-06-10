@@ -368,6 +368,24 @@ export const compositions: Composition[] = [
     category: "Aplicação",
     wide: true,
   },
+  {
+    slug: "json-visualizer",
+    name: "JSON Visualizer",
+    description:
+      "Visualizador de JSON como grafo de nós no estilo json-sea (altenull/json-sea), construído sobre o React Flow (@xyflow/react). O DIFERENCIAL: cole ou edite um JSON no editor à esquerda e o grafo é RECONSTRUÍDO ao vivo — entender a estrutura visualmente é o destaque. O parser percorre o JSON recursivamente: cada objeto vira um nó listando suas chaves (valores primitivos inline, coloridos por tipo — string, number, boolean, null) e cada chave cujo valor é objeto/array vira uma aresta com Handle próprio para o nó filho; cada array vira um nó com seus índices, ligando os itens aninhados. IDs estáveis derivados do caminho (ex.: $.user.address) e auto-layout em árvore esquerda→direita determinístico a partir da raiz, com fitView ao reconstruir. Editor com botões Visualizar e Formatar (valida o JSON e mostra erro na UI sem quebrar o grafo anterior) e Carregar exemplo (2 JSONs prontos). Canvas com Background pontilhado, Controls, MiniMap colorido por tipo, pan/zoom e edges smoothstep. Nós tematizados em tokens shadcn (bg-card/border-border) com tema light/dark reativo; no mobile o editor vira um painel no topo. Barra de status com contagem de nós, arestas e profundidade.",
+    tags: [
+      "react-flow",
+      "json",
+      "visualizer",
+      "tree",
+      "graph",
+      "json-sea",
+      "node-editor",
+      "app",
+    ],
+    category: "Aplicação",
+    wide: true,
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {

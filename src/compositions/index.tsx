@@ -35,6 +35,7 @@ import { DbSchemaDesigner } from "./db-schema-designer"
 import { MindMap } from "./mind-map"
 import { CircuitSimulator } from "./circuit-simulator"
 import { ImagePipeline } from "./image-pipeline"
+import { JsonVisualizer } from "./json-visualizer"
 
 /**
  * Mapa slug → componente de tela. Compartilhado entre a página de
@@ -77,4 +78,5 @@ export const compositionScreens: Record<string, ComponentType> = {
   "mind-map": MindMap,
   "circuit-simulator": CircuitSimulator,
   "image-pipeline": ImagePipeline,
+  "json-visualizer": JsonVisualizer,
 }
