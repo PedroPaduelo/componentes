@@ -825,10 +825,10 @@
   --xy-minimap-mask-background-color: color-mix(in oklab, var(--background) 65%, transparent);
   --xy-minimap-node-background-color: var(--muted-foreground);
 
-  /* Background pattern */
-  --xy-background-pattern-dots-color: var(--border);
-  --xy-background-pattern-lines-color: var(--border);
-  --xy-background-pattern-cross-color: var(--border);
+  /* Background pattern (dots/lines/cross) — o React Flow lê a var genérica
+     `--xy-background-pattern-color` (com fallback para as `*-color-default`),
+     então é ESSA que precisa ser sobrescrita para tematizar o fundo. */
+  --xy-background-pattern-color: var(--border);
 
   /* Seleção / atribuição */
   --xy-selection-background-color: color-mix(in oklab, var(--primary) 10%, transparent);

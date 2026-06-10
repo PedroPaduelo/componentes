@@ -31,6 +31,16 @@ async function inspect(page, theme) {
     const node = document.querySelector(".react-flow__node [data-slot=react-flow-node]")
       || document.querySelector(".react-flow__node")
     const nodeBg = node ? getComputedStyle(node).backgroundColor : null
+    const edgePath = document.querySelector(".react-flow__edge-path")
+    const edgeStroke = edgePath ? getComputedStyle(edgePath).stroke : null
+    const ctrlBtn = document.querySelector(".react-flow__controls-button")
+    const ctrlBg = ctrlBtn ? getComputedStyle(ctrlBtn).backgroundColor : null
+    const ctrlColor = ctrlBtn ? getComputedStyle(ctrlBtn).color : null
+    const bgDot =
+      document.querySelector("circle.react-flow__background-pattern") ||
+      document.querySelector(".react-flow__background circle") ||
+      document.querySelector(".react-flow__background path.react-flow__background-pattern")
+    const bgFill = bgDot ? getComputedStyle(bgDot).fill : null
     return {
       wrapperCount: wraps.length,
       firstHeight: rect ? Math.round(rect.height) : 0,
@@ -39,6 +49,10 @@ async function inspect(page, theme) {
       controls: !!document.querySelector(".react-flow__controls"),
       minimap: !!document.querySelector(".react-flow__minimap"),
       nodeBg,
+      edgeStroke,
+      ctrlBg,
+      ctrlColor,
+      bgFill,
     }
   })
 
@@ -72,6 +86,15 @@ for (const theme of ["light", "dark"]) {
   checks.push([`[${theme}] controls visíveis`, r.controls === true])
   checks.push([`[${theme}] minimap visível`, r.minimap === true])
   checks.push([`[${theme}] node tem bg`, !!r.nodeBg && r.nodeBg !== "rgba(0, 0, 0, 0)"])
+  checks.push([`[${theme}] edge stroke visível`, !!r.edgeStroke && r.edgeStroke !== "none" && r.edgeStroke !== "rgba(0, 0, 0, 0)"])
+  checks.push([`[${theme}] controls button bg tematizado`, !!r.ctrlBg && r.ctrlBg !== "rgba(0, 0, 0, 0)"])
+  checks.push([`[${theme}] controls button cor tematizada`, !!r.ctrlColor && r.ctrlColor !== "rgba(0, 0, 0, 0)"])
+  // Background pattern dot deve seguir var(--border), não o default hardcoded
+  // do React Flow (#91919a light / #777 dark).
+  checks.push([
+    `[${theme}] background dot tematizado (≠ default xyflow)`,
+    !!r.bgFill && r.bgFill !== "rgb(145, 145, 154)" && r.bgFill !== "rgb(119, 119, 119)",
+  ])
 }
 
 saveJSON("react-flow/inspect", results)

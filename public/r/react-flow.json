@@ -56,12 +56,10 @@
       "--xy-minimap-background-color": "var(--muted)",
       "--xy-minimap-mask-background-color": "color-mix(in oklab, var(--background) 65%, transparent)",
       "--xy-minimap-node-background-color": "var(--muted-foreground)",
-      "--xy-background-pattern-dots-color": "var(--border)",
-      "--xy-background-pattern-lines-color": "var(--border)",
-      "--xy-background-pattern-cross-color": "var(--border)",
       "--xy-selection-background-color": "color-mix(in oklab, var(--primary) 10%, transparent)",
       "--xy-selection-border": "1px dotted color-mix(in oklab, var(--primary) 70%, transparent)",
-      "--xy-attribution-background-color": "color-mix(in oklab, var(--background) 50%, transparent)"
+      "--xy-attribution-background-color": "color-mix(in oklab, var(--background) 50%, transparent)",
+      "--xy-background-pattern-color": "var(--border)"
     }
   },
   "type": "registry:ui"

@@ -145,6 +145,8 @@ const EXPORT_OVERRIDES: Record<string, string> = {
   "container-scroll-animation": "ContainerScroll",
   "hero-parallax": "HeroParallax",
   "sparkles": "SparklesCore",
+  // React Flow (@xyflow/react) — wrapper tematizado da vitrine
+  "react-flow": "ReactFlowDiagram",
 }
 
 /** Converte um slug kebab-case em PascalCase (heurística de export). */
