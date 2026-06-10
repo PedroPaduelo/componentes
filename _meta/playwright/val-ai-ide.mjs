@@ -8,6 +8,20 @@ import { shot, saveJSON } from "./_shots.mjs"
 const URL = "http://localhost:5173/compositions/ai-ide"
 const report = { theme: {}, interactions: {}, borders: {}, responsive: {}, width: {} }
 
+// Coletor focado no bug do SVG path "d=undefined" durante a animação da IA.
+const pathErrors = []
+function isPathError(text) {
+  return /Expected moveto path command|attribute d:.*undefined/i.test(text || "")
+}
+function watchPathErrors(page) {
+  page.on("console", (m) => {
+    if (m.type() === "error" && isPathError(m.text())) pathErrors.push(m.text())
+  })
+  page.on("pageerror", (e) => {
+    if (isPathError(e.message)) pathErrors.push(e.message)
+  })
+}
+
 function parseColorAlpha(c) {
   if (!c) return 0
   if (c === "transparent") return 0
@@ -61,6 +75,7 @@ async function run() {
       const page = await ctx.newPage()
       const errors = []
       page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()) })
+      watchPathErrors(page)
       await setTheme(page, theme)
       await page.goto(URL, { waitUntil: "domcontentloaded", timeout: 30000 })
       await page.waitForSelector("[data-slot='ai-ide']", { timeout: 15000 })
@@ -852,6 +867,7 @@ async function run() {
     // ── RESPONSIVO 390px
     const ctxM = await browser.newContext({ viewport: { width: 390, height: 800 } })
     const pageM = await ctxM.newPage()
+    watchPathErrors(pageM)
     await setTheme(pageM, "light")
     await pageM.goto(URL, { waitUntil: "domcontentloaded", timeout: 30000 })
     await pageM.waitForSelector("[data-slot='ai-ide']", { timeout: 15000 })
@@ -866,9 +882,21 @@ async function run() {
     await shot(pageM, "ai-ide-mobile", { sub: "ai-ide" })
     await ctxM.close()
 
+    report.svgPathBug = {
+      pathErrorCount: pathErrors.length,
+      pass: pathErrors.length === 0,
+      sample: pathErrors.slice(0, 3),
+    }
+
     saveJSON("ai-ide/report", report)
     console.log("\n=== REPORT ===")
     console.log(JSON.stringify(report, null, 2))
+    console.log("\n=== SVG PATH BUG ===")
+    console.log(
+      pathErrors.length === 0
+        ? "PASS: 0 erros 'Expected moveto path command'"
+        : `FAIL: ${pathErrors.length} erros de path SVG`,
+    )
   } finally {
     await browser.close()
   }

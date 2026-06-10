@@ -50,6 +50,8 @@ const ThinkingIndicatorFluid = forwardRef<
         className="text-muted-foreground shrink-0"
       >
         <motion.path
+          d={circleA}
+          initial={{ d: circleA }}
           animate={{
             d: [circleA, infinity, circleB, infinity, circleA],
           }}
