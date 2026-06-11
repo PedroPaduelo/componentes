@@ -6,6 +6,10 @@ import {
   Puzzle,
   ArrowRight,
   Lightbulb,
+  Bot,
+  Sparkles,
+  FileText,
+  ExternalLink,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
@@ -16,6 +20,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion"
 import { CodeBlock } from "@/components/showcase/CodeBlock"
+import { CopyFetchButton } from "@/components/showcase/CopyFetchButton"
+import { aiSkills } from "@/data/ai-skills"
+import { LLMS_TXT_PATH } from "@/data/ai-index"
 import { cn } from "@/lib/utils"
 
 /** Base pública do registry shadcn servido por esta vitrine. */
@@ -330,8 +337,100 @@ export function InstallGuide() {
         </Accordion>
       </section>
 
+      {/* Skills para IA */}
+      <section id="skills" className="mt-16 scroll-mt-24">
+        <span className="inline-flex items-center gap-1.5 rounded-full border border-border bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
+          <Bot className="h-3.5 w-3.5" />
+          Para IAs
+        </span>
+        <h2 className="mt-4 text-2xl font-semibold tracking-tight">
+          Skills para IA
+        </h2>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+          Quer que uma IA (Claude, Cursor, etc.) instale e use os componentes e
+          composições sozinha? Forneça a ela uma destas{" "}
+          <strong className="font-medium text-foreground">skills</strong> — são
+          arquivos markdown prontos (com frontmatter) que ensinam o passo a
+          passo: descobrir o slug, instalar pelo registry e consumir. Cole o
+          conteúdo como uma Skill/Regra do seu agente, ou aponte-o para a URL.
+        </p>
+
+        {/* llms.txt — índice machine-readable */}
+        <div className="mt-5 flex flex-wrap items-center gap-2 rounded-lg border border-border bg-muted/40 p-4">
+          <FileText className="h-4 w-4 shrink-0 text-primary" />
+          <p className="min-w-0 flex-1 text-sm text-muted-foreground">
+            Índice completo legível por máquina —{" "}
+            <code className="font-mono text-foreground">llms.txt</code> com todos
+            os componentes e composições + comandos de instalação. Veja também o{" "}
+            <Link
+              to="/ai"
+              className="font-medium text-foreground underline underline-offset-4 hover:text-primary"
+            >
+              Índice para IA
+            </Link>
+            .
+          </p>
+          <div className="flex shrink-0 items-center gap-2">
+            <CopyFetchButton url={LLMS_TXT_PATH} label="Copiar llms.txt" />
+            <Button asChild variant="outline" size="sm">
+              <a href={LLMS_TXT_PATH} target="_blank" rel="noreferrer">
+                Abrir
+                <ExternalLink className="size-3.5 opacity-60" />
+              </a>
+            </Button>
+          </div>
+        </div>
+
+        {/* Cards de skill */}
+        <div className="mt-4 grid gap-4 sm:grid-cols-2">
+          {aiSkills.map((skill) => (
+            <div
+              key={skill.slug}
+              className="flex flex-col gap-3 rounded-xl border border-border bg-card p-5"
+            >
+              <div className="flex items-start gap-2">
+                <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
+                <div className="min-w-0">
+                  <h3 className="font-semibold tracking-tight">{skill.title}</h3>
+                  <p className="mt-0.5 font-mono text-xs text-muted-foreground">
+                    {skill.slug}.md
+                  </p>
+                </div>
+              </div>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {skill.description}
+              </p>
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                <strong className="font-medium text-foreground">
+                  Quando usar:
+                </strong>{" "}
+                {skill.whenToUse}
+              </p>
+              <div className="mt-auto flex flex-wrap items-center gap-2 pt-1">
+                <CopyFetchButton
+                  url={skill.path}
+                  label="Copiar skill"
+                  copiedLabel="Skill copiada!"
+                />
+                <Button asChild variant="outline" size="sm">
+                  <a href={skill.path} download={`${skill.slug}.md`}>
+                    Baixar .md
+                  </a>
+                </Button>
+                <Button asChild variant="ghost" size="sm">
+                  <a href={skill.path} target="_blank" rel="noreferrer">
+                    Abrir
+                    <ExternalLink className="size-3.5 opacity-60" />
+                  </a>
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* CTA */}
-      <section className="mt-12 rounded-xl border border-border bg-muted/30 p-6 text-center sm:p-8">
+      <section className="mt-16 rounded-xl border border-border bg-muted/30 p-6 text-center sm:p-8">
         <h2 className="text-lg font-semibold tracking-tight">
           Pronto para começar?
         </h2>

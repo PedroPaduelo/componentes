@@ -9,7 +9,10 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "node scripts/test-families.mjs",
-    "registry:build": "node _meta/scripts/lote/build-registry.mjs"
+    "registry:build": "node _meta/scripts/lote/build-registry.mjs",
+    "registry:compositions": "node _meta/scripts/lote/build-compositions-registry.mjs",
+    "ai:assets": "node _meta/scripts/lote/build-ai-assets.mjs",
+    "ai:build": "node _meta/scripts/lote/build-compositions-registry.mjs && node _meta/scripts/lote/build-ai-assets.mjs"
   },
   "dependencies": {
     "@ncdai/react-wheel-picker": "^1.2.2",
