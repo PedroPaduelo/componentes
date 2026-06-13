@@ -29,6 +29,27 @@ Ex.: `node _meta/playwright/val-button.mjs`, `node _meta/playwright/val-glow-car
 Os artefatos (`_meta/scratch/shots/`) são gerados localmente e **não** vão pro
 repo (ver `_meta/scratch/.gitignore`).
 
+## `npm test` → `val-families.mjs`
+
+O `npm test` do projeto roda este validador de famílias através de um runner
+com guard de pré-requisitos (`scripts/test.mjs` na raiz):
+
+```bash
+npm test            # runner com guard (checa dev server + chromium)
+npm run test:families   # atalho direto: node _meta/playwright/val-families.mjs
+```
+
+O runner **não duplica** a lógica de validação — `val-families.mjs` continua
+sendo a fonte única dos 8 cenários. Ele apenas:
+
+1. faz `fetch` em `http://localhost:5173` (dev server precisa estar no ar);
+2. confere se o chromium do Playwright está instalado;
+3. se faltar qualquer um, imprime instruções (`npm run dev` +
+   `npx playwright install chromium`) e sai com código **2** (pré-requisitos
+   ausentes), em vez de estourar um `Cannot find module`;
+4. com tudo OK, delega para `val-families.mjs` e propaga o exit code dele
+   (`0` = tudo passou, `1` = houve falhas).
+
 ## Convenção: só `val-*.mjs` versionados
 
 - **Só `val-*.mjs` (+ `_shots.mjs` + este `README.md`) são versionados.** São os

@@ -43,6 +43,39 @@ npm run preview
 npm run lint
 ```
 
+## Como testar
+
+A suíte de teste valida o catálogo por família (8 cenários) via Playwright,
+rodando contra o dev server. O comando entra por um *runner* com guard de
+pré-requisitos:
+
+```bash
+npm test
+```
+
+**Pré-requisitos** (o runner verifica e, se faltar algum, imprime instruções e
+sai com código `2` — sem stack trace):
+
+```bash
+# 1. Dev server no ar (porta 5173)
+npm run dev
+
+# 2. Browser chromium do Playwright (não vem por postinstall)
+npx playwright install chromium
+```
+
+Com os dois prontos, `npm test` executa os cenários e reflete pass/fail no exit
+code (`0` = tudo passou, `1` = houve falhas). Para rodar o validador direto, sem
+o guard:
+
+```bash
+npm run test:families   # node _meta/playwright/val-families.mjs
+```
+
+A lógica dos cenários vive num único arquivo (`_meta/playwright/val-families.mjs`);
+o runner (`scripts/test.mjs`) apenas delega a ele. Veja
+`_meta/playwright/README.md` para os demais validadores `val-*.mjs`.
+
 ## Funcionalidades
 
 - **Catálogo** (`/`): grid de componentes com busca por nome/tags e filtro por categoria.
