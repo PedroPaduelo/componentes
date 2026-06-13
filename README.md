@@ -86,6 +86,19 @@ o runner (`scripts/test.mjs`) apenas delega a ele. Veja
 
 ## Componentes documentados
 
+O catálogo tem **204 componentes** registrados em `src/data/components.ts`,
+distribuídos em 4 categorias: **Feedback** (82), **Layout** (67), **Forms** (29)
+e **Actions** (26). Variantes do mesmo componente são agrupadas em **famílias**
+(ex.: `button` + `button-fluid`), e há ainda **40 composições** (telas/blocos
+completos) em `src/data/compositions.ts`.
+
+A fonte da verdade completa é o próprio catálogo (`/`) e o índice gerado para IA
+em [`/llms.txt`](https://componentes-fe-cmq0d9kr.cloud.serendiped.com/llms.txt).
+Componentes são distribuídos como um registry shadcn auto-hospedado
+(`public/r/*.json`), instaláveis com `npx shadcn@latest add <url>/r/<slug>.json`.
+
+A tabela abaixo é só uma **amostra** — não a lista inteira:
+
 | Componente | Categoria | Slug | Fonte |
 |---|---|---|---|
 | Button | Actions | `button` | shadcn/ui |
@@ -126,26 +139,38 @@ src/
 │   ├── layout/
 │   │   ├── Header.tsx         # Nav desktop + Sheet mobile
 │   │   ├── Footer.tsx         # Rodapé
-│   │   └── Layout.tsx         # Outlet + Header/Footer
+│   │   ├── Layout.tsx         # Outlet + Header/Footer
+│   │   ├── DocsLayout.tsx     # Layout das páginas de componentes (sidebar)
+│   │   └── DocsSidebar.tsx    # Sidebar de navegação por categoria
 │   ├── catalog/
 │   │   ├── ComponentCard.tsx  # Card no grid
 │   │   ├── SearchInput.tsx    # Campo de busca
 │   │   ├── CategoryFilter.tsx # Filtro por categoria
+│   │   ├── OriginBadge.tsx    # Badge de origem (shadcn/Fluid/...)
 │   │   └── EmptyState.tsx     # Estado vazio da busca
 │   ├── showcase/
 │   │   ├── ExampleBlock.tsx   # Tabs Preview/Código
 │   │   ├── CodeBlock.tsx      # Bloco de código + CopyButton
-│   │   └── CopyButton.tsx     # Botão copiar com feedback
+│   │   ├── CopyButton.tsx     # Botão copiar com feedback
+│   │   └── OnThisPage.tsx     # TOC com scroll-spy
 │   ├── theme/
 │   │   ├── theme-provider.tsx # Context/Provider (dark/light/system)
 │   │   └── theme-toggle.tsx   # Botão toggle Sun/Moon
-│   └── ui/                    # Componentes shadcn (button, card, ...)
+│   └── ui/                    # ~204 componentes (button, card, ...)
+├── compositions/              # Telas/blocos completos (40 composições)
 ├── data/
-│   ├── components.ts          # Registry de componentes
+│   ├── components.ts          # Registry de componentes (204 slugs)
+│   ├── compositions.ts        # Registry de composições (40 blocos)
+│   ├── families.ts            # Agrupamento de variantes em famílias
 │   └── examples.tsx           # Exemplos por slug
 └── pages/
     ├── Home.tsx               # Catálogo + hero
-    ├── ComponentDetail.tsx    # Detalhe /components/:slug
+    ├── ComponentsIndex.tsx    # Redirect para a primeira família
+    ├── FamilyDetail.tsx       # Detalhe /components/:slug (família + variantes)
+    ├── Compositions.tsx       # Galeria de composições
+    ├── CompositionDetail.tsx  # Detalhe /compositions/:slug
+    ├── InstallGuide.tsx       # Guia de instalação
+    ├── AiIndex.tsx            # Página /ai (llms.txt + skills)
     └── NotFound.tsx           # 404 (variant component | page)
 ```
 
