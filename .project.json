@@ -1,34 +1,14 @@
 {
   "$schema": "project-config-v1",
-  "projectId": "cmq0d9glf0079pg0inzo6lm20",
+  "projectId": "cmqcdl7az0023pl0iho62ucuk",
   "services": [
     {
-      "name": "fe",
+      "name": "ui-componets",
       "port": 5173,
       "framework": "Vite",
       "startCommand": "npm run dev",
       "isPrimary": true,
-      "domain": "componentes-fe-cmq0d9kr.cloud.serendiped.com",
-      "path": "/",
-      "protocol": "http"
-    },
-    {
-      "name": "be",
-      "port": 4000,
-      "framework": "Fastify",
-      "startCommand": "npm run dev",
-      "isPrimary": false,
-      "domain": "componentes-be-cmq0d9kr.cloud.serendiped.com",
-      "path": "/",
-      "protocol": "http"
-    },
-    {
-      "name": "fe-preview",
-      "port": 4173,
-      "framework": null,
-      "startCommand": null,
-      "isPrimary": false,
-      "domain": "componentes-fe-preview-cmq0d9kr.cloud.serendiped.com",
+      "domain": "ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com",
       "path": "/",
       "protocol": "http"
     }
