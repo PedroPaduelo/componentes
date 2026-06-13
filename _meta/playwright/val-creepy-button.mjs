@@ -5,8 +5,7 @@
 
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
-
-mkdirSync("shots", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const URL = "http://localhost:5173/components/creepy-button"
 
@@ -127,7 +126,7 @@ async function validate(theme) {
   }
 
   await page.screenshot({
-    path: `shots/vitrine-creepy-button-${theme}.png`,
+    path: outPath(`vitrine-creepy-button-${theme}.png`),
     fullPage: false,
   })
 

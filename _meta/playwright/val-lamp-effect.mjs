@@ -1,4 +1,5 @@
 import { chromium } from "playwright"
+import { outPath } from "./_shots.mjs"
 // Validação do LampEffect: render isolado (inject no DOM) pra inspecionar DOM e conic-gradients.
 // 2 conic-gradients = 2 cones (esquerda/direita). height >= 512px = min-h-[32rem] OK.
 const browser = await chromium.launch()
@@ -39,5 +40,5 @@ const info = await page.evaluate(() => {
 })
 console.log("INFO:", JSON.stringify(info, null, 2))
 console.log("ERRORS:", errors.length, errors)
-await page.screenshot({ path: "shots/lamp-isolated.png", fullPage: false })
+await page.screenshot({ path: outPath("lamp-isolated.png"), fullPage: false })
 await browser.close()

@@ -9,7 +9,7 @@
 //
 // Uso: node _meta/playwright/val-docs-portal.mjs  (dev server em :5173)
 import { chromium } from "playwright"
-import { shot, saveJSON } from "./_shots.mjs"
+import { shot, saveJSON, outPath } from "./_shots.mjs"
 
 const URL = "http://localhost:5173/compositions/docs-portal"
 const report = { light: {}, dark: {}, responsive: {}, navigation: {} }
@@ -100,7 +100,7 @@ async function run() {
       noHorizontalOverflow: overflow.scrollW <= overflow.clientW + 1,
     }
     await mob.screenshot({
-      path: "/workspace/_meta/scratch/shots/docs-portal/mobile-390.png",
+      path: outPath("docs-portal/mobile-390.png"),
       animations: "disabled",
     })
     await mob.close()
@@ -145,7 +145,7 @@ async function run() {
       matched: afterClick.docTitle === target.title,
     }
     await nav.screenshot({
-      path: "/workspace/_meta/scratch/shots/docs-portal/after-nav.png",
+      path: outPath("docs-portal/after-nav.png"),
       animations: "disabled",
     })
     await nav.close()

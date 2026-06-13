@@ -4,8 +4,9 @@
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync, readFileSync } from "node:fs"
 import { createHash } from "node:crypto"
+import { outPath } from "./_shots.mjs"
 
-const SHOTS = "shots/mobius-loop-icon"
+const SHOTS = outPath("mobius-loop-icon")
 mkdirSync(SHOTS, { recursive: true })
 
 const URL_ORIGINAL = "https://chanhdai.com/components/mobius-loop-icon"

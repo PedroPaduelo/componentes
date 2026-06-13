@@ -1,10 +1,12 @@
 // scripts/val-hover-diagnose.mjs
 // Refaz hovers com locator.hover() + testa hover no link (que TEM CSS :hover)
 import { chromium } from "playwright"
-import { statSync, readFileSync } from "node:fs"
+import { mkdirSync, statSync, readFileSync } from "node:fs"
 import { createHash } from "node:crypto"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/work-experience-component"
+const OUT = outPath("work-experience-component")
+mkdirSync(OUT, { recursive: true })
 
 function md5(p) {
   return createHash("md5").update(readFileSync(p)).digest("hex")

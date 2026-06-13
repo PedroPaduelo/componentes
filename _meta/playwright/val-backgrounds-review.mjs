@@ -1,7 +1,8 @@
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
+import { SHOTS_DIR } from "./_shots.mjs"
 
-const OUT = "/workspace/_meta/scratch/shots"
+const OUT = SHOTS_DIR
 mkdirSync(OUT, { recursive: true })
 
 const browser = await chromium.launch()

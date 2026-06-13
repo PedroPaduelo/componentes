@@ -1,8 +1,7 @@
 // scripts/val-shooting-stars.mjs
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
-
-mkdirSync("shots", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
@@ -28,7 +27,7 @@ if (linkCount > 0) {
     }
   })
   console.log("INFO:", JSON.stringify(info, null, 2))
-  await page.screenshot({ path: "shots/shooting-stars.png", animations: "disabled", timeout: 15000 }).catch((e) => console.warn("screenshot:", e.message))
+  await page.screenshot({ path: outPath("shooting-stars.png"), animations: "disabled", timeout: 15000 }).catch((e) => console.warn("screenshot:", e.message))
 }
 await browser.close()
 console.log("done")

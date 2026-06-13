@@ -3,6 +3,7 @@
 // Compara: https://chanhdai.com/components/copy-button vs http://localhost:5173/components/copy-button
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
 // Hoisted state (used across multiple blocks for the report)
 let clipboardWorks = null
@@ -10,7 +11,7 @@ let clipboardAfter = null
 let stateAfterClick = null
 let revertInfo = null
 
-const OUT = "shots/copy-button"
+const OUT = outPath("copy-button")
 mkdirSync(OUT, { recursive: true })
 
 const VIEWPORT = { width: 1440, height: 900 }

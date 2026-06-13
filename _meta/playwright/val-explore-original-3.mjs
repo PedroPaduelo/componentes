@@ -1,6 +1,7 @@
 // scripts/val-explore-original-3.mjs
 // Tenta achar e abrir o consent-manager
 import { chromium } from "playwright"
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
@@ -53,7 +54,7 @@ console.log(`\nLocator found: ${possible}`)
 if (possible > 0) {
   await page.locator("text=/manage.*cookie|accept.*all|reject.*all/i").first().click()
   await page.waitForTimeout(1500)
-  await page.screenshot({ path: "shots/consent-manager/original-dialog-attempt.png" })
+  await page.screenshot({ path: outPath("consent-manager/original-dialog-attempt.png") })
   console.log("Clicked & screenshotted")
 }
 

@@ -1,8 +1,6 @@
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
-
-mkdirSync("shots", { recursive: true })
-mkdirSync("shots/aurora-background", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 
@@ -50,7 +48,7 @@ async function probe(theme) {
 
   try {
     await page.screenshot({
-      path: `shots/aurora-background/aurora-${theme}.png`,
+      path: outPath(`aurora-background/aurora-${theme}.png`),
       animations: "disabled",
       timeout: 15000,
     })

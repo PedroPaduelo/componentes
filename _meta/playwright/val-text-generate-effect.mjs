@@ -3,8 +3,7 @@
 // presença de data-slot, renderização dos 3 examples, e cor text-foreground.
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
-
-mkdirSync("shots", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
@@ -77,7 +76,7 @@ page.on("console", (msg) => {
 })
 
 await page
-  .screenshot({ path: "shots/text-generate-effect-light.png", fullPage: true })
+  .screenshot({ path: outPath("text-generate-effect-light.png"), fullPage: true })
   .catch(() => {})
 
 console.log(JSON.stringify(result, null, 2))

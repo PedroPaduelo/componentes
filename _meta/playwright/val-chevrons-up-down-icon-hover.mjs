@@ -7,8 +7,9 @@
 // Uso: node scripts/val-chevrons-up-down-icon-hover.mjs
 import { chromium } from "playwright"
 import { writeFileSync, mkdirSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/chevrons-up-down-icon"
+const OUT = outPath("chevrons-up-down-icon")
 mkdirSync(OUT, { recursive: true })
 
 const VITRINE = "http://localhost:5173/components/chevrons-up-down-icon"

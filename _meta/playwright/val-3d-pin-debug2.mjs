@@ -1,5 +1,6 @@
 // scripts/val-3d-pin-debug2.mjs
 import { chromium } from "playwright"
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
@@ -36,5 +37,5 @@ console.log("\nLOGS:")
 if (logs.length === 0) console.log("(nenhum)")
 else logs.forEach(l => console.log("  " + l))
 
-await page.screenshot({ path: "shots/3d-pin-debug2.png", fullPage: false })
+await page.screenshot({ path: outPath("3d-pin-debug2.png"), fullPage: false })
 await browser.close()

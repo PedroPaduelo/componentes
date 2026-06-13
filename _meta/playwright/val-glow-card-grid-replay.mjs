@@ -2,8 +2,9 @@
 // Re-do ONLY the glow interaction screenshots, WITHOUT clip, so the full view shows the glow
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/glow-card-grid"
+const OUT = outPath("glow-card-grid")
 mkdirSync(OUT, { recursive: true })
 const VP = { width: 1440, height: 900 }
 const ORIG_URL = "https://chanhdai.com/components/glow-card-grid"

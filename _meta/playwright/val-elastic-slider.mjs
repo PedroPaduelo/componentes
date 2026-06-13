@@ -28,8 +28,9 @@
  */
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "/workspace/.elastic-shots"  // sandbox-owned; copied to shots/elastic-slider/ at end
+const OUT = outPath("elastic-slider")  // resolve sob _meta/scratch/shots/elastic-slider
 mkdirSync(OUT, { recursive: true })
 
 const VIEWPORT = { width: 1440, height: 900 }

@@ -4,7 +4,7 @@
 //
 // Uso: node _meta/playwright/val-workflow-builder.mjs  (dev server em :5173)
 import { chromium } from "playwright"
-import { shot, saveJSON } from "./_shots.mjs"
+import { shot, saveJSON, outPath } from "./_shots.mjs"
 
 const URL = "http://localhost:5173/compositions/workflow-builder"
 const report = { light: {}, dark: {}, responsive: {}, simulation: {} }
@@ -66,7 +66,7 @@ async function run() {
         // animações desabilitadas pra evitar travar no pulse da simulação
       })
       await page.screenshot({
-        path: `/workspace/_meta/scratch/shots/workflow-builder/full-${theme}.png`,
+        path: outPath(`workflow-builder/full-${theme}.png`),
         animations: "disabled",
       })
       await page.close()
@@ -87,7 +87,7 @@ async function run() {
       noHorizontalOverflow: overflow.scrollW <= overflow.clientW + 1,
     }
     await mob.screenshot({
-      path: "/workspace/_meta/scratch/shots/workflow-builder/mobile-390.png",
+      path: outPath("workflow-builder/mobile-390.png"),
       animations: "disabled",
     })
     await mob.close()

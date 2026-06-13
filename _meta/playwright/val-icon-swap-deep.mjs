@@ -2,9 +2,11 @@
 // Comparação profunda: medir timing exato do crossfade no original vs vitrine
 
 import { chromium } from "playwright"
-import { writeFileSync } from "node:fs"
+import { mkdirSync, writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/icon-swap"
+const OUT = outPath("icon-swap")
+mkdirSync(OUT, { recursive: true })
 
 const browser = await chromium.launch()
 

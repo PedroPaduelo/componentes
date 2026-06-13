@@ -9,8 +9,9 @@
  */
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/dot-grid-spotlight"
+const OUT = outPath("dot-grid-spotlight")
 mkdirSync(OUT, { recursive: true })
 
 const VP = { width: 1440, height: 900 }

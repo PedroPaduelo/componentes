@@ -6,8 +6,7 @@
 //  4. body tem transform 3D aplicado (scale/rotateX/translateY inicial)
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
-
-mkdirSync("shots/animated-modal", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const url = "http://localhost:5173/components/animated-modal"
 
@@ -57,7 +56,7 @@ async function inspect(theme) {
   }
 
   await page.screenshot({
-    path: `shots/animated-modal/${theme}.png`,
+    path: outPath(`animated-modal/${theme}.png`),
     fullPage: false,
   })
 

@@ -6,7 +6,7 @@
 //
 // Uso: node _meta/playwright/val-data-pipeline.mjs  (dev server em :5173)
 import { chromium } from "playwright"
-import { shot, saveJSON } from "./_shots.mjs"
+import { shot, saveJSON, outPath } from "./_shots.mjs"
 
 const URL = "http://localhost:5173/compositions/data-pipeline"
 const report = { light: {}, dark: {}, responsive: {}, reactivity: {} }
@@ -61,7 +61,7 @@ async function run() {
       report[theme] = await inspect(page)
       await shot(page, `data-pipeline-${theme}`, { sub: "data-pipeline" })
       await page.screenshot({
-        path: `/workspace/_meta/scratch/shots/data-pipeline/full-${theme}.png`,
+        path: outPath(`data-pipeline/full-${theme}.png`),
         animations: "disabled",
       })
       await page.close()
@@ -82,7 +82,7 @@ async function run() {
       noHorizontalOverflow: overflow.scrollW <= overflow.clientW + 1,
     }
     await mob.screenshot({
-      path: "/workspace/_meta/scratch/shots/data-pipeline/mobile-390.png",
+      path: outPath("data-pipeline/mobile-390.png"),
       animations: "disabled",
     })
     await mob.close()
@@ -112,7 +112,7 @@ async function run() {
       changed: barsBefore !== barsAfter,
     }
     await rx.screenshot({
-      path: "/workspace/_meta/scratch/shots/data-pipeline/reactivity-after.png",
+      path: outPath("data-pipeline/reactivity-after.png"),
       animations: "disabled",
     })
     await rx.close()

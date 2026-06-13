@@ -1,6 +1,7 @@
 // scripts/val-explore-original-5.mjs
 // Captura full page e mostra se o dialog está visível em algum lugar
 import { chromium } from "playwright"
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
@@ -18,7 +19,7 @@ for (let i = 0; i < 8; i++) {
 await page.evaluate(() => window.scrollTo(0, 0))
 await page.waitForTimeout(1000)
 
-await page.screenshot({ path: "shots/consent-manager/original-fullpage.png", fullPage: true })
+await page.screenshot({ path: outPath("consent-manager/original-fullpage.png"), fullPage: true })
 console.log("Full page saved")
 
 // Verifica se existe dialog

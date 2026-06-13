@@ -3,8 +3,7 @@
 
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
-
-mkdirSync("shots/toc-minimap", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const VIEWPORT = { width: 1440, height: 900 }
 
@@ -29,7 +28,7 @@ async function forcedPrint(url, name, theme) {
     cls: document.documentElement.classList.contains("dark") ? "dark" : "light",
     bg: getComputedStyle(document.body).backgroundColor,
   }))
-  await page.screenshot({ path: `shots/toc-minimap/${name}.png`, fullPage: false })
+  await page.screenshot({ path: outPath(`toc-minimap/${name}.png`), fullPage: false })
   await browser.close()
   console.log(`✓ ${name} — tema efetivo: ${actualTheme.cls} bg=${actualTheme.bg}`)
   return actualTheme

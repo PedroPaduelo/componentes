@@ -1,6 +1,7 @@
 // scripts/val-explore-original-2.mjs
 // Tenta achar o trigger do dialog
 import { chromium } from "playwright"
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
@@ -13,7 +14,7 @@ await page.evaluate(() => window.scrollTo(0, 1500))
 await page.waitForTimeout(1000)
 
 // Screenshot da página inteira
-await page.screenshot({ path: "shots/consent-manager/original-full.png", fullPage: true })
+await page.screenshot({ path: outPath("consent-manager/original-full.png"), fullPage: true })
 
 // Tenta procurar a demo
 const demoButton = await page.evaluate(() => {

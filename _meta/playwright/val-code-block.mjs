@@ -7,6 +7,7 @@
 //
 // Uso: node scripts/val-code-block.mjs
 import { chromium } from "playwright"
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 try {
@@ -68,13 +69,13 @@ try {
     () => document.querySelector("[data-slot=code-block-copy]")?.getAttribute("data-copied"),
   )
 
-  await page.screenshot({ path: "shots/code-block-light.png", fullPage: true })
+  await page.screenshot({ path: outPath("code-block-light.png"), fullPage: true })
 
   // Dark mode (após reload com localStorage pré-populado)
   await page.addInitScript(() => localStorage.setItem("vitrine-theme", "dark"))
   await page.reload({ waitUntil: "domcontentloaded" })
   await page.waitForTimeout(2000)
-  await page.screenshot({ path: "shots/code-block-dark.png", fullPage: true })
+  await page.screenshot({ path: outPath("code-block-dark.png"), fullPage: true })
   const darkBg = await page.evaluate(() => {
     const root = document.querySelector("[data-slot=code-block]")
     return root ? getComputedStyle(root).backgroundColor : "MISSING"

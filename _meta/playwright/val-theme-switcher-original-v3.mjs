@@ -1,12 +1,14 @@
 // scripts/val-theme-switcher-original-v3.mjs
 // Tenta abrir popover do original com wait explícito
 import { chromium } from "playwright"
-import { writeFileSync } from "node:fs"
+import { mkdirSync, writeFileSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import { dirname, join } from "node:path"
+import { outPath } from "./_shots.mjs"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const SHOTS_DIR = join(__dirname, "..", "shots", "theme-switcher")
+const SHOTS_DIR = outPath("theme-switcher")
+mkdirSync(SHOTS_DIR, { recursive: true })
 
 const log = (msg) => console.log(`[v3] ${msg}`)
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms))

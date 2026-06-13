@@ -1,6 +1,7 @@
 // scripts/val-3d-pin-debug.mjs
 // Debug simples: vê o que está no DOM e no console.
 import { chromium } from "playwright"
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
@@ -27,5 +28,5 @@ const info = await page.evaluate(() => {
 console.log("INFO:", JSON.stringify(info, null, 2))
 console.log("\nLOGS:", logs.length === 0 ? "(nenhum)" : logs.join("\n"))
 
-await page.screenshot({ path: "shots/3d-pin-debug.png", fullPage: false })
+await page.screenshot({ path: outPath("3d-pin-debug.png"), fullPage: false })
 await browser.close()

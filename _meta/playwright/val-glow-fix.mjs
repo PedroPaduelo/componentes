@@ -10,10 +10,10 @@
 // Saídas: shots/vitrine-glow-{hover-state}-{theme}.png
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
 const VIEWPORT = { width: 1440, height: 900 }
 const URL = "http://localhost:5173/components/glow-card-grid"
-mkdirSync("shots", { recursive: true })
 
 const browser = await chromium.launch()
 
@@ -41,7 +41,7 @@ async function capture(opts) {
   }
 
   // take screenshot
-  const path = `shots/vitrine-glow-${label}.png`
+  const path = outPath(`vitrine-glow-${label}.png`)
   await page.screenshot({ path, fullPage: false })
   console.log(`✓ ${path}`)
 

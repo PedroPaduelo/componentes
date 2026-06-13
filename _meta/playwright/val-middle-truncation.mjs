@@ -2,8 +2,9 @@
 // Validação visual do componente middle-truncation: chanhdai.com vs vitrine local.
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/middle-truncation"
+const OUT = outPath("middle-truncation")
 mkdirSync(OUT, { recursive: true })
 
 const ORIGINAL = "https://chanhdai.com/components/middle-truncation"

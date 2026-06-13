@@ -8,8 +8,7 @@
 
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
-
-mkdirSync("shots/animated-testimonials", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const URL = "http://localhost:5173/components/animated-testimonials"
 const errors = []
@@ -82,7 +81,7 @@ async function probe(theme) {
     .count()
 
   await page.screenshot({
-    path: `shots/animated-testimonials/animated-testimonials-${theme}.png`,
+    path: outPath(`animated-testimonials/animated-testimonials-${theme}.png`),
     fullPage: true,
     animations: "disabled",
     timeout: 15000,

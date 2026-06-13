@@ -1,8 +1,7 @@
 // scripts/val-flip-words.mjs (v2)
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
-
-mkdirSync("shots", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
@@ -37,14 +36,14 @@ const after = await page.locator("[data-slot=flip-words]").first().innerText().c
 console.log(`[after] innerText: "${after.trim().slice(0, 80)}"`)
 console.log(`[cycle] changed: ${first !== after}`)
 
-await page.screenshot({ path: "shots/flip-words.png", fullPage: false })
+await page.screenshot({ path: outPath("flip-words.png"), fullPage: false })
 console.log("✓ shots/flip-words.png")
 
 // Dark
 await page.evaluate(() => localStorage.setItem("vitrine-theme", "dark"))
 await page.reload({ waitUntil: "domcontentloaded" })
 await page.waitForTimeout(3000)
-await page.screenshot({ path: "shots/flip-words-dark.png", fullPage: false })
+await page.screenshot({ path: outPath("flip-words-dark.png"), fullPage: false })
 console.log("✓ shots/flip-words-dark.png")
 
 // Light: segundo example

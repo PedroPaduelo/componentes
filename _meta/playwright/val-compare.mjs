@@ -2,9 +2,11 @@
 // Comparação pixel-a-pixel: extrai cores de pixels específicos dos prints
 // pra verificar se o "item central" tem destaque visual (mask/gradient)
 import { chromium } from "playwright"
-import { writeFileSync } from "node:fs"
+import { writeFileSync, mkdirSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/react-wheel-picker"
+const OUT = outPath("react-wheel-picker")
+mkdirSync(OUT, { recursive: true })
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })

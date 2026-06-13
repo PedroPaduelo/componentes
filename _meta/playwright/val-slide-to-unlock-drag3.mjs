@@ -1,9 +1,11 @@
 // scripts/val-slide-to-unlock-drag3.mjs
 // Tenta drag usando API do Playwright + instrumentação adicional via console listener
 import { chromium } from "playwright"
-import { writeFileSync } from "node:fs"
+import { mkdirSync, writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/slide-to-unlock"
+const OUT = outPath("slide-to-unlock")
+mkdirSync(OUT, { recursive: true })
 const VITRINE_URL = "http://localhost:5173/components/slide-to-unlock"
 
 const browser = await chromium.launch()

@@ -2,6 +2,7 @@
 // Deep probe: verify data-dragging, transform, SVG path, callback fires
 import { chromium } from "playwright"
 import { writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
 const VIEWPORT = { width: 1440, height: 900 }
 const URL = "http://localhost:5173/components/slide-to-unlock"
@@ -115,7 +116,7 @@ console.log("Mid-drag data-dragging=true:", midDrag.textDataDragging === "true")
 console.log("Post-mouseup data-dragging=false:", after.textDataDragging === "false")
 console.log("Post-mouseup label changed (Unlocked):", after.bodyText?.includes("Unlocked"))
 
-writeFileSync("shots/slide-to-unlock/deep-probe.json", JSON.stringify({ initial, midDrag, after, targetInfo }, null, 2))
+writeFileSync(outPath("slide-to-unlock/deep-probe.json"), JSON.stringify({ initial, midDrag, after, targetInfo }, null, 2))
 
 await page.close()
 await browser.close()

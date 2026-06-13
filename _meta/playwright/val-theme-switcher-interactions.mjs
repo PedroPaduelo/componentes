@@ -4,9 +4,10 @@ import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import { dirname, join } from "node:path"
+import { outPath } from "./_shots.mjs"
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const SHOTS_DIR = join(__dirname, "..", "shots", "theme-switcher")
+const SHOTS_DIR = outPath("theme-switcher")
 mkdirSync(SHOTS_DIR, { recursive: true })
 
 const log = (msg) => console.log(`[inter] ${msg}`)

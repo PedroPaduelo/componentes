@@ -4,8 +4,9 @@
 
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/icon-swap"
+const OUT = outPath("icon-swap")
 mkdirSync(OUT, { recursive: true })
 
 const VIEWPORT = { width: 1440, height: 900 }

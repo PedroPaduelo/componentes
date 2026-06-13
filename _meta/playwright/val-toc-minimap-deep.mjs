@@ -4,6 +4,7 @@
 
 import { chromium } from "playwright"
 import { writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({
@@ -49,7 +50,7 @@ const deep = await page.evaluate(() => {
   })
 })
 
-writeFileSync("shots/toc-minimap/dom-tree-vitrine.json", JSON.stringify(deep, null, 2), "utf8")
+writeFileSync(outPath("toc-minimap/dom-tree-vitrine.json"), JSON.stringify(deep, null, 2), "utf8")
 console.log(`✓ dom-tree-vitrine.json — ${deep.length} instância(s)`)
 deep.forEach((d, i) => console.log(`  [${i}] ${d.root.rect.w}×${d.root.rect.h} px em (${d.root.rect.x},${d.root.rect.y})`))
 

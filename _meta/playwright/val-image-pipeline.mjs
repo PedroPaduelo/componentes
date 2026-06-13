@@ -10,7 +10,7 @@
 //
 // Uso: node _meta/playwright/val-image-pipeline.mjs   (dev server na :5173)
 import { chromium } from "playwright"
-import { shot, saveJSON } from "./_shots.mjs"
+import { shot, saveJSON, outPath } from "./_shots.mjs"
 
 const URL = "http://localhost:5173/compositions/image-pipeline"
 const SUB = "image-pipeline"
@@ -103,7 +103,7 @@ async function base(theme, width, tag) {
   report[tag] = data
   await shot(page, tag, { sub: SUB, animations: "disabled" }).catch(() =>
     page.screenshot({
-      path: `_meta/scratch/shots/${SUB}/${tag}.png`,
+      path: outPath(`${SUB}/${tag}.png`),
       animations: "disabled",
     }),
   )

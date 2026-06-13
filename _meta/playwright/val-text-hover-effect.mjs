@@ -4,8 +4,7 @@
 // aparecem no DOM.
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
-
-mkdirSync("shots", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1280, height: 800 } })
@@ -48,7 +47,7 @@ const info = await page.evaluate(() => {
 
 console.log(JSON.stringify(info, null, 2))
 await page.screenshot({
-  path: "shots/text-hover-effect-light.png",
+  path: outPath("text-hover-effect-light.png"),
   animations: "disabled",
   timeout: 15000,
 })
@@ -66,7 +65,7 @@ const hoverStops = await page.evaluate(() =>
 )
 console.log("hoverStops:", JSON.stringify(hoverStops))
 await page.screenshot({
-  path: "shots/text-hover-effect-hover.png",
+  path: outPath("text-hover-effect-hover.png"),
   animations: "disabled",
   timeout: 15000,
 })
@@ -76,7 +75,7 @@ await page.evaluate(() => localStorage.setItem("vitrine-theme", "dark"))
 await page.reload({ waitUntil: "domcontentloaded" })
 await page.waitForTimeout(1500)
 await page.screenshot({
-  path: "shots/text-hover-effect-dark.png",
+  path: outPath("text-hover-effect-dark.png"),
   animations: "disabled",
   timeout: 15000,
 })

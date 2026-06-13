@@ -6,7 +6,7 @@
 //
 // Uso: node _meta/playwright/val-json-visualizer.mjs  (dev server em :5173)
 import { chromium } from "playwright"
-import { shot, saveJSON } from "./_shots.mjs"
+import { shot, saveJSON, outPath } from "./_shots.mjs"
 
 const URL = "http://localhost:5173/compositions/json-visualizer"
 const report = { light: {}, dark: {}, responsive: {}, reactivity: {} }
@@ -55,7 +55,7 @@ async function run() {
       report[theme] = await inspect(page)
       await shot(page, `json-visualizer-${theme}`, { sub: "json-visualizer" })
       await page.screenshot({
-        path: `/workspace/_meta/scratch/shots/json-visualizer/full-${theme}.png`,
+        path: outPath(`json-visualizer/full-${theme}.png`),
         animations: "disabled",
       })
       await page.close()
@@ -76,7 +76,7 @@ async function run() {
       noHorizontalOverflow: overflow.scrollW <= overflow.clientW + 1,
     }
     await mob.screenshot({
-      path: "/workspace/_meta/scratch/shots/json-visualizer/mobile-390.png",
+      path: outPath("json-visualizer/mobile-390.png"),
       animations: "disabled",
     })
     await mob.close()
@@ -108,7 +108,7 @@ async function run() {
     )
     report.reactivity = { before, after, changed: before !== after }
     await rx.screenshot({
-      path: "/workspace/_meta/scratch/shots/json-visualizer/reactivity-after.png",
+      path: outPath("json-visualizer/reactivity-after.png"),
       animations: "disabled",
     })
     await rx.close()

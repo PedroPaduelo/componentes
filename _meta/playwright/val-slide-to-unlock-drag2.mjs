@@ -1,9 +1,11 @@
 // scripts/val-slide-to-unlock-drag2.mjs
 // Re-faz o drag com mais instrumentação: pega transform do handle, opacity do text, data-dragging
 import { chromium } from "playwright"
-import { writeFileSync } from "node:fs"
+import { mkdirSync, writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/slide-to-unlock"
+const OUT = outPath("slide-to-unlock")
+mkdirSync(OUT, { recursive: true })
 const VITRINE_URL = "http://localhost:5173/components/slide-to-unlock"
 
 const browser = await chromium.launch()

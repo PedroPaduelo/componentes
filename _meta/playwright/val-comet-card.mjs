@@ -6,8 +6,7 @@
 //  4. hover no card: glare visível (com a classe mix-blend-overlay) e o card escala
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
-
-mkdirSync("shots/comet-card", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const url = "http://localhost:5173/components/comet-card"
 
@@ -73,7 +72,7 @@ async function inspect(theme) {
     }))
 
   await page.screenshot({
-    path: `shots/comet-card/vitrine-${theme}.png`,
+    path: outPath(`comet-card/vitrine-${theme}.png`),
     fullPage: false,
   })
 

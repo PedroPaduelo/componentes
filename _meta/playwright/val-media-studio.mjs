@@ -6,7 +6,7 @@
 //
 // Uso: node _meta/playwright/val-media-studio.mjs  (dev server em :5173)
 import { chromium } from "playwright"
-import { shot, saveJSON } from "./_shots.mjs"
+import { shot, saveJSON, outPath } from "./_shots.mjs"
 
 const URL = "http://localhost:5173/compositions/media-studio"
 const report = { light: {}, dark: {}, responsive: {}, simulation: {} }
@@ -70,7 +70,7 @@ async function run() {
       })
       await shot(page, `media-studio-${theme}`, { sub: "media-studio" })
       await page.screenshot({
-        path: `/workspace/_meta/scratch/shots/media-studio/full-${theme}.png`,
+        path: outPath(`media-studio/full-${theme}.png`),
         animations: "disabled",
       })
       await page.close()
@@ -91,7 +91,7 @@ async function run() {
       noHorizontalOverflow: overflow.scrollW <= overflow.clientW + 1,
     }
     await mob.screenshot({
-      path: "/workspace/_meta/scratch/shots/media-studio/mobile-390.png",
+      path: outPath("media-studio/mobile-390.png"),
       animations: "disabled",
     })
     await mob.close()
@@ -117,7 +117,7 @@ async function run() {
     const hasStopBtn = await sim.getByRole("button", { name: /Parar/ }).count()
     report.simulation = { sawGenerating, hasStopBtn: hasStopBtn > 0 }
     await sim.screenshot({
-      path: "/workspace/_meta/scratch/shots/media-studio/generating.png",
+      path: outPath("media-studio/generating.png"),
       animations: "disabled",
     })
     await sim.close()

@@ -2,8 +2,9 @@
 // Validação visual Playwright: compara chanhdai.com/components/slide-to-unlock vs vitrine
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/slide-to-unlock"
+const OUT = outPath("slide-to-unlock")
 mkdirSync(OUT, { recursive: true })
 
 const VIEWPORT = { width: 1440, height: 900 }

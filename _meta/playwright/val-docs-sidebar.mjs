@@ -5,8 +5,7 @@
 // rail (border-l border-border), badge "New", item ativo + auto-expand, busca.
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
-
-mkdirSync("shots/docs-sidebar", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const BASE = "http://localhost:5173"
 const SLUG = "3d-card-effect" // família "3d-card" (lote Aceternity → badge New, categoria Layout)
@@ -77,7 +76,7 @@ async function run(theme) {
   )
   ok(newBadges.includes("New"), `badge "New" presente nas famílias recentes (got ${newBadges.length} badges)`)
 
-  await page.screenshot({ path: `shots/docs-sidebar/${theme}-initial.png`, fullPage: false })
+  await page.screenshot({ path: outPath(`docs-sidebar/${theme}-initial.png`), fullPage: false })
 
   // 6. Toggle: colapsar o grupo Layout e checar aria-expanded vira false + ul some
   const layoutBtn = page.locator('aside nav button[aria-controls="docs-group-layout"]')
@@ -129,7 +128,7 @@ console.log("\n=== DRAWER MOBILE (375px) ===")
   )
   ok(drawerHeaders.length === 4, `drawer tem 4 grupos colapsáveis (got ${drawerHeaders.length})`)
   ok(drawerHeaders.every((h) => h.hasIcon), "grupos do drawer têm ícone")
-  await page.screenshot({ path: "shots/docs-sidebar/drawer-mobile.png", fullPage: false })
+  await page.screenshot({ path: outPath("docs-sidebar/drawer-mobile.png"), fullPage: false })
   // navegar fecha o drawer
   await page.click('[role="dialog"] nav a[aria-current="page"]')
   await page.waitForTimeout(500)

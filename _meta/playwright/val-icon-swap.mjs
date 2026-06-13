@@ -5,8 +5,9 @@
 
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/icon-swap"
+const OUT = outPath("icon-swap")
 mkdirSync(OUT, { recursive: true })
 
 const VIEWPORT = { width: 1440, height: 900 }
@@ -261,4 +262,4 @@ console.log("\n=== VITRINE (localhost:5173/components/icon-swap) ===")
 }
 
 await browser.close()
-console.log("\n✅ All screenshots saved to shots/icon-swap/")
+console.log("\n✅ All screenshots saved to icon-swap/")

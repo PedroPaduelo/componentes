@@ -5,7 +5,7 @@
 //
 // Uso: node _meta/playwright/val-mind-map.mjs  (dev server em :5173)
 import { chromium } from "playwright"
-import { shot, saveJSON } from "./_shots.mjs"
+import { shot, saveJSON, outPath } from "./_shots.mjs"
 
 const URL = "http://localhost:5173/compositions/mind-map"
 const report = { light: {}, dark: {}, responsive: {}, editing: {}, importing: {} }
@@ -66,7 +66,7 @@ async function run() {
       report[theme] = await inspect(page)
       await shot(page, `mind-map-${theme}`, { sub: "mind-map" })
       await page.screenshot({
-        path: `/workspace/_meta/scratch/shots/mind-map/full-${theme}.png`,
+        path: outPath(`mind-map/full-${theme}.png`),
         animations: "disabled",
       })
       await page.close()
@@ -87,7 +87,7 @@ async function run() {
       noHorizontalOverflow: overflow.scrollW <= overflow.clientW + 1,
     }
     await mob.screenshot({
-      path: "/workspace/_meta/scratch/shots/mind-map/mobile-390.png",
+      path: outPath("mind-map/mobile-390.png"),
       animations: "disabled",
     })
     await mob.close()
@@ -112,7 +112,7 @@ async function run() {
     }
     report.editing = { sawTextarea }
     await ed.screenshot({
-      path: "/workspace/_meta/scratch/shots/mind-map/editing.png",
+      path: outPath("mind-map/editing.png"),
       animations: "disabled",
     })
     await ed.close()
@@ -157,7 +157,7 @@ async function run() {
         rootText,
       }
       await im.screenshot({
-        path: `/workspace/_meta/scratch/shots/mind-map/import-${theme}.png`,
+        path: outPath(`mind-map/import-${theme}.png`),
         animations: "disabled",
       })
       await im.close()

@@ -7,8 +7,9 @@
 
 import { chromium } from "playwright"
 import { writeFileSync, mkdirSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/consent-manager"
+const OUT = outPath("consent-manager")
 mkdirSync(OUT, { recursive: true })
 
 const ORIGINAL = "https://chanhdai.com/components/consent-manager"

@@ -7,8 +7,7 @@
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync, readFileSync } from "node:fs"
 import { createHash } from "node:crypto"
-
-mkdirSync("shots/shimmering-text", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const VIEWPORT = { width: 1440, height: 900 }
 const URL_ORIGINAL = "https://chanhdai.com/components/shimmering-text"
@@ -37,7 +36,7 @@ console.log("=== 1) PRINTS (4) ===")
     await page.goto(URL_ORIGINAL, { waitUntil: "networkidle", timeout: 45000 })
   } catch (e) { console.warn("warn original-light:", e.message) }
   await page.waitForTimeout(4000)
-  await shoot(page, "shots/shimmering-text/original-light.png")
+  await shoot(page, outPath("shimmering-text/original-light.png"))
   console.log("✓ original-light.png")
   await page.close()
 }
@@ -49,7 +48,7 @@ console.log("=== 1) PRINTS (4) ===")
     await page.goto(URL_VITRINE, { waitUntil: "networkidle", timeout: 30000 })
   } catch (e) { console.warn("warn vitrine-light:", e.message) }
   await page.waitForTimeout(2000)
-  await shoot(page, "shots/shimmering-text/vitrine-light.png")
+  await shoot(page, outPath("shimmering-text/vitrine-light.png"))
   console.log("✓ vitrine-light.png")
   await page.close()
 }
@@ -64,7 +63,7 @@ console.log("=== 1) PRINTS (4) ===")
     await page.goto(URL_VITRINE, { waitUntil: "networkidle", timeout: 30000 })
   } catch (e) { console.warn("warn vitrine-dark:", e.message) }
   await page.waitForTimeout(2000)
-  await shoot(page, "shots/shimmering-text/vitrine-dark.png")
+  await shoot(page, outPath("shimmering-text/vitrine-dark.png"))
   console.log("✓ vitrine-dark.png")
   await page.close()
 }
@@ -78,7 +77,7 @@ console.log("=== 1) PRINTS (4) ===")
     await page.goto(URL_ORIGINAL, { waitUntil: "networkidle", timeout: 45000 })
   } catch (e) { console.warn("warn original-dark:", e.message) }
   await page.waitForTimeout(4000)
-  await shoot(page, "shots/shimmering-text/original-dark.png")
+  await shoot(page, outPath("shimmering-text/original-dark.png"))
   console.log("✓ original-dark.png")
   await page.close()
 }
@@ -222,7 +221,7 @@ async function inspect(url, label, isOriginal = false, forceDark = false) {
   })
 
   const result = { url, label, dom: info, css: cssInfo }
-  const file = `shots/shimmering-text/inspect-${label}.json`
+  const file = outPath(`shimmering-text/inspect-${label}.json`)
   writeFileSync(file, JSON.stringify(result, null, 2))
   console.log(`✓ ${file}`)
   await page.close()
@@ -251,7 +250,7 @@ console.log("\n=== 3) FRAMES DE ANIMAÇÃO (8 frames, 100ms entre cada) ===")
 
   const frameFiles = []
   for (let i = 1; i <= 8; i++) {
-    const file = `shots/shimmering-text/vitrine-light-frame-${i}.png`
+    const file = outPath(`shimmering-text/vitrine-light-frame-${i}.png`)
     // crop pequeno em volta do componente para isolar movimento
     await page.screenshot({ path: file, fullPage: false, clip: { x: 0, y: 0, width: 1440, height: 900 } })
     frameFiles.push(file)
@@ -266,7 +265,7 @@ console.log("\n=== 3) FRAMES DE ANIMAÇÃO (8 frames, 100ms entre cada) ===")
   hashes.forEach((h) => console.log(`  ${h.file}: ${h.md5}`))
   console.log(`\nHashes únicos: ${uniqueHashes.size} / 8`)
 
-  writeFileSync("shots/shimmering-text/frame-hashes.json", JSON.stringify({ hashes, uniqueCount: uniqueHashes.size }, null, 2))
+  writeFileSync(outPath("shimmering-text/frame-hashes.json"), JSON.stringify({ hashes, uniqueCount: uniqueHashes.size }, null, 2))
   await page.close()
 }
 
@@ -284,7 +283,7 @@ console.log("\n=== 4) FRAMES DO ORIGINAL (8 frames) ===")
   await page.waitForTimeout(500)
 
   for (let i = 1; i <= 8; i++) {
-    const file = `shots/shimmering-text/original-light-frame-${i}.png`
+    const file = outPath(`shimmering-text/original-light-frame-${i}.png`)
     await page.screenshot({ path: file, fullPage: false, clip: { x: 0, y: 0, width: 1440, height: 900 } })
     if (i < 8) await page.waitForTimeout(100)
   }

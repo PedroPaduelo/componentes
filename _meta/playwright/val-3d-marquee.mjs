@@ -2,8 +2,7 @@
 // Valida render do 3D Marquee (Aceternity).
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
-
-mkdirSync("shots", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 
@@ -34,7 +33,7 @@ async function probe(theme) {
       picsumImgs: first ? Array.from(first.querySelectorAll("img[src*='picsum']")).length : 0,
     }
   })
-  await page.screenshot({ path: `shots/3d-marquee-${theme}.png`, fullPage: false, animations: "disabled" })
+  await page.screenshot({ path: outPath(`3d-marquee-${theme}.png`), fullPage: false, animations: "disabled" })
   await ctx.close()
   return { theme, info, errors }
 }

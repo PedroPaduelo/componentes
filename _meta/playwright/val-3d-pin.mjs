@@ -2,8 +2,7 @@
 // Valida render + hover do 3D Pin (Aceternity).
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
-
-mkdirSync("shots", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 
@@ -30,7 +29,7 @@ async function probe(theme, hoverTimeout = 8000) {
       motionDivCount: document.querySelectorAll("[data-slot='3d-pin'] [class*='rounded-[50%]']").length,
     }
   })
-  await page.screenshot({ path: `shots/3d-pin-${theme}-rest.png`, fullPage: false, animations: "disabled" })
+  await page.screenshot({ path: outPath(`3d-pin-${theme}-rest.png`), fullPage: false, animations: "disabled" })
   let hoverOk = false
   let hoverTransform = null
   try {
@@ -44,7 +43,7 @@ async function probe(theme, hoverTimeout = 8000) {
   } catch (e) {
     errors.push(`hover: ${e.message.slice(0, 200)}`)
   }
-  await page.screenshot({ path: `shots/3d-pin-${theme}-hover.png`, fullPage: false, animations: "disabled" })
+  await page.screenshot({ path: outPath(`3d-pin-${theme}-hover.png`), fullPage: false, animations: "disabled" })
   await ctx.close()
   return { theme, info, hoverOk, hoverTransform, errors }
 }

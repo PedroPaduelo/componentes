@@ -2,6 +2,7 @@
 // Confirma que o componente está sendo renderizado na página de detalhe
 // e que o data-slot="file-upload" está presente (estado vazio padrão).
 import { chromium } from "playwright"
+import { outPath } from "./_shots.mjs"
 
 const url = "http://localhost:5173/components/file-upload"
 const browser = await chromium.launch()
@@ -31,6 +32,6 @@ const info = await page.evaluate(() => {
 })
 
 console.log("RESULT", JSON.stringify(info, null, 2))
-await page.screenshot({ path: "shots/val-file-upload.png", fullPage: false })
+await page.screenshot({ path: outPath("val-file-upload.png"), fullPage: false })
 await browser.close()
 console.log("OK")

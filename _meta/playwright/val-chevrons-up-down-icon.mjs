@@ -2,8 +2,9 @@
 // Compara chanhdai.com vs vitrine (localhost:5173)
 import { chromium } from "playwright"
 import { writeFileSync, mkdirSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/chevrons-up-down-icon"
+const OUT = outPath("chevrons-up-down-icon")
 mkdirSync(OUT, { recursive: true })
 
 const ORIGINAL = "https://chanhdai.com/components/chevrons-up-down-icon"

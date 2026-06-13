@@ -8,8 +8,7 @@
 //   - Sem erros de console / page errors
 import { chromium } from "playwright"
 import { mkdirSync } from "node:fs"
-
-mkdirSync("shots", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
@@ -53,6 +52,6 @@ console.log("[after 3.5s]", JSON.stringify(slots2, null, 2))
 console.log("errs", errs.length)
 errs.slice(0, 5).forEach((e) => console.log("  -", e.slice(0, 250)))
 
-await page.screenshot({ path: "shots/container-text-flip.png", fullPage: true })
+await page.screenshot({ path: outPath("container-text-flip.png"), fullPage: true })
 await browser.close()
 console.log("done")

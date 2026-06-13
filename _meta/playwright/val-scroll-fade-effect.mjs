@@ -7,8 +7,7 @@
 
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
-
-mkdirSync("shots/scroll-fade-effect", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const URL_ORIGINAL = "https://chanhdai.com/components/scroll-fade-effect"
 const URL_VITRINE  = "http://localhost:5173/components/scroll-fade-effect"
@@ -44,7 +43,7 @@ async function printStatic({ ctx, url, label, origin }) {
   // Tempo extra para chanhdai (server externo) e para IntersectionObserver disparar
   const wait = url.startsWith("https") ? 3500 : 2500
   await page.waitForTimeout(wait)
-  const out = `shots/scroll-fade-effect/${label}.png`
+  const out = outPath(`scroll-fade-effect/${label}.png`)
   await page.screenshot({ path: out, fullPage: false })
   console.log(`✓ ${out}`)
   await page.close()
@@ -184,7 +183,7 @@ async function inspect({ ctx, url, label, origin }) {
     return result
   }, { origin })
 
-  const out = `shots/scroll-fade-effect/inspect-${label}.json`
+  const out = outPath(`scroll-fade-effect/inspect-${label}.json`)
   writeFileSync(out, JSON.stringify(data, null, 2))
   console.log(`✓ ${out}`)
   await page.close()
@@ -321,7 +320,7 @@ async function scrollStates({ ctx, url, prefix, origin }) {
   // Estado 1: TOPO
   await scrollTo(0)
   const stateTop = await getState()
-  const outTop = `shots/scroll-fade-effect/${prefix}-scroll-top.png`
+  const outTop = outPath(`scroll-fade-effect/${prefix}-scroll-top.png`)
   await page.screenshot({ path: outTop, fullPage: false })
   const topInfo = origin === "vitrine"
     ? `overlays=${stateTop.overlays.map(o => o.opacity).join(",")}`
@@ -332,7 +331,7 @@ async function scrollStates({ ctx, url, prefix, origin }) {
   const midTop = Math.floor((setup.scrollHeight - setup.clientHeight) / 2)
   await scrollTo(midTop)
   const stateMid = await getState()
-  const outMid = `shots/scroll-fade-effect/${prefix}-scroll-middle.png`
+  const outMid = outPath(`scroll-fade-effect/${prefix}-scroll-middle.png`)
   await page.screenshot({ path: outMid, fullPage: false })
   const midInfo = origin === "vitrine"
     ? `overlays=${stateMid.overlays.map(o => o.opacity).join(",")}`
@@ -343,14 +342,14 @@ async function scrollStates({ ctx, url, prefix, origin }) {
   const maxTop = setup.scrollHeight - setup.clientHeight
   await scrollTo(maxTop)
   const stateBot = await getState()
-  const outBot = `shots/scroll-fade-effect/${prefix}-scroll-bottom.png`
+  const outBot = outPath(`scroll-fade-effect/${prefix}-scroll-bottom.png`)
   await page.screenshot({ path: outBot, fullPage: false })
   const botInfo = origin === "vitrine"
     ? `overlays=${stateBot.overlays.map(o => o.opacity).join(",")}`
     : `before=${stateBot.before?.opacity} after=${stateBot.after?.opacity}`
   console.log(`  ✓ ${outBot}  scrollTop=${stateBot.scrollTop}  ${botInfo}`)
 
-  writeFileSync(`shots/scroll-fade-effect/scroll-states-${prefix}.json`, JSON.stringify({
+  writeFileSync(outPath(`scroll-fade-effect/scroll-states-${prefix}.json`), JSON.stringify({
     setup,
     stateTop,
     stateMid,

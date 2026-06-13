@@ -5,8 +5,7 @@
 
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
-
-mkdirSync("shots/toc-minimap", { recursive: true })
+import { outPath } from "./_shots.mjs"
 
 const ORIGINAL = "https://chanhdai.com/components/toc-minimap"
 const VITRINE  = "http://localhost:5173/components/toc-minimap"
@@ -14,7 +13,7 @@ const VIEWPORT = { width: 1440, height: 900 }
 
 const log = (...a) => console.log("•", ...a)
 const out = (path, data) =>
-  writeFileSync(`shots/toc-minimap/${path}`, JSON.stringify(data, null, 2), "utf8")
+  writeFileSync(outPath(`toc-minimap/${path}`), JSON.stringify(data, null, 2), "utf8")
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: VIEWPORT })
@@ -37,7 +36,7 @@ async function shoot(url, name, theme) {
     console.warn(`warn ${name}: ${e.message}`)
   }
   await page.waitForTimeout(3000)
-  await page.screenshot({ path: `shots/toc-minimap/${name}.png`, fullPage: false })
+  await page.screenshot({ path: outPath(`toc-minimap/${name}.png`), fullPage: false })
   log("✓", name)
   return page
 }
@@ -276,7 +275,7 @@ async function scrollVitrine(theme) {
     })
 
     const fname = `vitrine-${theme}-${t.name}.png`
-    await page.screenshot({ path: `shots/toc-minimap/${fname}`, fullPage: false })
+    await page.screenshot({ path: outPath(`toc-minimap/${fname}`), fullPage: false })
     states.push({ pct: t.pct, targetY, ...state, screenshot: fname })
     log(`  ✓ ${t.pct}% → scrollY=${state.scrollY} active="${state.activeLinkText || "?"}" progress=${state.progress.toFixed(1)}%`)
   }
@@ -320,7 +319,7 @@ const hoverResult = await hoverPage.evaluate(() => {
 if (hoverResult.x != null) {
   await hoverPage.mouse.move(hoverResult.x, hoverResult.y)
   await hoverPage.waitForTimeout(500)
-  await hoverPage.screenshot({ path: "shots/toc-minimap/vitrine-light-hover-toc.png" })
+  await hoverPage.screenshot({ path: outPath("toc-minimap/vitrine-light-hover-toc.png") })
   log("  ✓ hover screenshot — link:", hoverResult.text.slice(0, 40))
 } else {
   log("  ⚠ hover skipped:", hoverResult.error || "sem link visível")
@@ -340,7 +339,7 @@ if (clickResult.x != null) {
   await hoverPage.mouse.click(clickResult.x, clickResult.y)
   await hoverPage.waitForTimeout(1500) // smooth scroll
   const afterY = await hoverPage.evaluate(() => window.scrollY)
-  await hoverPage.screenshot({ path: "shots/toc-minimap/vitrine-light-click-toc.png" })
+  await hoverPage.screenshot({ path: outPath("toc-minimap/vitrine-light-click-toc.png") })
   log(`  ✓ click "${clickResult.text.slice(0, 40)}" → scrollY ${beforeY}→${afterY}`)
 }
 await hoverPage.close()
@@ -355,13 +354,13 @@ const detailPage = await ctx.newPage()
 await detailPage.goto(ORIGINAL, { waitUntil: "networkidle", timeout: 45000 })
 await detailPage.waitForTimeout(3000)
 // Screenshot fullPage para ver a sidebar completa
-await detailPage.screenshot({ path: "shots/toc-minimap/original-fullpage.png", fullPage: false })
+await detailPage.screenshot({ path: outPath("toc-minimap/original-fullpage.png"), fullPage: false })
 log("  ✓ original fullpage")
 
 const detailVitrine = await ctx.newPage()
 await detailVitrine.goto(VITRINE, { waitUntil: "networkidle", timeout: 45000 })
 await detailVitrine.waitForTimeout(3000)
-await detailVitrine.screenshot({ path: "shots/toc-minimap/vitrine-light-fullpage.png", fullPage: false })
+await detailVitrine.screenshot({ path: outPath("toc-minimap/vitrine-light-fullpage.png"), fullPage: false })
 log("  ✓ vitrine fullpage")
 
 // Try to find the minimap element specifically — common patterns

@@ -18,10 +18,11 @@
 //    (assimetria light/dark = "solto no ar").
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
 const PHASE = (process.argv[2] || "before").toLowerCase()
 const BASE = "http://localhost:5173"
-const OUT = `shots/theme-audit/${PHASE}`
+const OUT = outPath(`theme-audit/${PHASE}`)
 mkdirSync(OUT, { recursive: true })
 
 const VIEWPORT = { width: 1440, height: 1200 }
@@ -329,7 +330,7 @@ if (offenders.length === 0) {
 }
 lines.push("")
 
-const reportPath = `shots/theme-audit/REPORT-${PHASE}.md`
+const reportPath = outPath(`theme-audit/REPORT-${PHASE}.md`)
 writeFileSync(reportPath, lines.join("\n"))
 console.log(`\n✓ ${reportPath}`)
 console.log(`\nOffenders: ${offenders.length}`)

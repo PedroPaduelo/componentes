@@ -1,6 +1,7 @@
 // scripts/val-explore-original-4.mjs
 // Tenta abrir o consent manager e checar
 import { chromium } from "playwright"
+import { outPath } from "./_shots.mjs"
 
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } })
@@ -41,7 +42,7 @@ if (matchCount > 0) {
   await page.waitForTimeout(500)
   await match.click()
   await page.waitForTimeout(2000)
-  await page.screenshot({ path: "shots/consent-manager/original-click-manage.png" })
+  await page.screenshot({ path: outPath("consent-manager/original-click-manage.png") })
   console.log("Clicked 'Manage your cookies'")
 
   // Check dialog

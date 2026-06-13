@@ -2,8 +2,9 @@
 // Inspeção profunda do original: chanhdai.com
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/react-wheel-picker"
+const OUT = outPath("react-wheel-picker")
 mkdirSync(OUT, { recursive: true })
 
 const browser = await chromium.launch()

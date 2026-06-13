@@ -10,8 +10,9 @@
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
 import { setTimeout as sleep } from "node:timers/promises"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/github-contributions"
+const OUT = outPath("github-contributions")
 mkdirSync(OUT, { recursive: true })
 
 const ORIGINAL = "https://chanhdai.com/components/github-contributions"

@@ -2,8 +2,9 @@
 // Validação visual completa: react-wheel-picker (chanhdai.com vs vitrine)
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/react-wheel-picker"
+const OUT = outPath("react-wheel-picker")
 mkdirSync(OUT, { recursive: true })
 
 const VIEWPORT = { width: 1440, height: 900 }

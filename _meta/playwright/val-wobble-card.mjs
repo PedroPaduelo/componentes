@@ -3,6 +3,7 @@
 // (translate3d com translateX/Y não-zero). O conteúdo interno deve
 // receber o movimento inverso + scale3d(1.03).
 import { chromium } from "playwright"
+import { outPath } from "./_shots.mjs"
 
 const url = "http://localhost:5173/components/wobble-card"
 const browser = await chromium.launch()
@@ -84,7 +85,7 @@ console.log(`console errors: ${consoleErrors.length}`)
 for (const e of consoleErrors) console.log(`  ${e}`)
 console.log(`ALL OK: ${allOk}`)
 
-await page.screenshot({ path: "shots/val-wobble-card.png", fullPage: false })
+await page.screenshot({ path: outPath("val-wobble-card.png"), fullPage: false })
 console.log("✓ shots/val-wobble-card.png")
 
 await browser.close()

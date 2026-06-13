@@ -12,8 +12,9 @@
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
 import { createHash } from "node:crypto"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/theme-toggle-effect"
+const OUT = outPath("theme-toggle-effect")
 mkdirSync(OUT, { recursive: true })
 
 const VIEWPORT = { width: 1440, height: 900 }

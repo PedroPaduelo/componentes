@@ -2,8 +2,9 @@
 // Testa a truncação com textos de diferentes tamanhos + valida o title (native tooltip).
 import { chromium } from "playwright"
 import { mkdirSync, writeFileSync } from "node:fs"
+import { outPath } from "./_shots.mjs"
 
-const OUT = "shots/middle-truncation"
+const OUT = outPath("middle-truncation")
 mkdirSync(OUT, { recursive: true })
 
 const VITRINE = "http://localhost:5173/components/middle-truncation"
