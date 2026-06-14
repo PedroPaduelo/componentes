@@ -1,6 +1,7 @@
 import { Routes, Route } from "react-router-dom"
 import { Layout } from "@/components/layout/Layout"
 import { DocsLayout } from "@/components/layout/DocsLayout"
+import { CompositionsLayout } from "@/components/layout/CompositionsLayout"
 import { Home } from "@/pages/Home"
 import { ComponentsIndex } from "@/pages/ComponentsIndex"
 import { FamilyDetail } from "@/pages/FamilyDetail"
@@ -28,8 +29,14 @@ function App() {
         </Route>
         <Route path="/instalacao" element={<InstallGuide />} />
         <Route path="/ai" element={<AiIndex />} />
-        <Route path="/compositions" element={<Compositions />} />
-        <Route path="/compositions/:slug" element={<CompositionDetail />} />
+        {/*
+          Área de composições: mesma estrutura de docs (sidebar + conteúdo
+          central), agrupando as telas por categoria.
+        */}
+        <Route element={<CompositionsLayout />}>
+          <Route path="/compositions" element={<Compositions />} />
+          <Route path="/compositions/:slug" element={<CompositionDetail />} />
+        </Route>
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
