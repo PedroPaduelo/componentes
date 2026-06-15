@@ -229,6 +229,7 @@ import { examplesContainerResourcePanel } from "./examples-container-resource-pa
 import { examplesDbSchemaExplorer } from "./examples-db-schema-explorer"
 import { examplesSlowQueryList } from "./examples-slow-query-list"
 import { examplesUserActivityStream } from "./examples-user-activity-stream"
+import { examplesIncidentTimeline } from "./examples-incident-timeline"
 
 export type Example = {
   title: string
@@ -1522,6 +1523,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesUserActivityStream,
   // Lote Observabilidade
   ...examplesDbOverviewGrid,
+  ...examplesIncidentTimeline,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

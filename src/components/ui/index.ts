@@ -816,8 +816,6 @@ export type {
   SuggestionType,
 } from "./slow-query-list-types"
 
-
-// Lote Observabilidade
 export { UserActivityStream } from "./user-activity-stream"
 export type { UserActivityStreamProps } from "./user-activity-stream-types"
 
@@ -831,6 +829,16 @@ export type {
   DbTableSummary,
   DbOverviewGridSortBy,
 } from "./db-overview-grid-types"
+
+export { IncidentTimeline } from "./incident-timeline"
+export type {
+  IncidentActor,
+  IncidentEventType,
+  IncidentSeverity,
+  IncidentStatus,
+  IncidentTimelineEvent,
+  IncidentTimelineProps,
+} from "./incident-timeline-types"
 
 
 

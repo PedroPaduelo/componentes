@@ -2281,7 +2281,8 @@ export const components: ComponentMeta[] = [
       "sparkline",
       "infra",
       "observability",
-      // Lote Observabilidade
+    ],
+  },
   {
     slug: "server-overview-card",
     name: "Server Overview Card",
@@ -2328,7 +2329,23 @@ export const components: ComponentMeta[] = [
       "portainer",
     ],
   },
-  // Lote Observabilidade
+  {
+    slug: "error-tracker-feed",
+    name: "Error Tracker Feed",
+    category: "Feedback",
+    description:
+      "Feed de erros/exception events em tempo real no estilo Sentry: cada item mostra tipo, mensagem, contagem de ocorrências, primeiro/último avistamento, ambiente (dev/staging/prod), usuário afetado e status (novo/resolvido/ignorado). Inclui filtros por ambiente/status/tipo, sparkline de tendência e agrupamento por tipo/serviço/usuário.",
+    tags: [
+      "error",
+      "exception",
+      "sentry",
+      "tracker",
+      "feed",
+      "errors",
+      "production",
+      "observability",
+    ],
+  },
   {
     slug: "db-schema-explorer",
     name: "DB Schema Explorer",
@@ -2414,6 +2431,29 @@ export const components: ComponentMeta[] = [
       "feedback",
       "grid",
     ],
+  },
+  {
+    slug: "incident-timeline",
+    name: "Incident Timeline",
+    category: "Feedback",
+    description:
+      "Timeline vertical de eventos de um incidente (detect → page → escalate → mitigate → resolve, etc.) com sticky header de status/severidade, nós circulares coloridos por severidade, chips por tipo de evento, timestamps relativo e absoluto, autor opcional e modo live que re-renderiza tempos a cada 30s. Inspirado no ObservabilityCenter, reutilizável para qualquer fluxo de incident response.",
+    tags: [
+      "timeline",
+      "incidente",
+      "incident",
+      "observabilidade",
+      "observability",
+      "eventos",
+      "events",
+      "sre",
+      "alert",
+      "pager",
+      "postmortem",
+      "feedback",
+    ],
+    usage:
+      "Use em painéis de incident response, status pages e postmortem. Passe `events` ordenados cronologicamente, `status` para o badge do header (ongoing/mitigated/resolved) e `severity` para a cor global. Ative `live` para re-renderizar tempos relativos a cada 30s em incidentes em andamento. `onEventClick` recebe o evento clicado para abrir detalhes, side-panel ou navegar para a página do alerta.",
   },
 ]
 
