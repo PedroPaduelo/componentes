@@ -736,5 +736,18 @@ export type {
 export { ShadcnCardNode } from "./react-flow-nodes"
 export { reactFlowNodeTypes } from "./react-flow-node-types"
 
+// Lote Observabilidade
+export { DbSchemaExplorer } from "./db-schema-explorer"
+export type {
+  ColumnDef,
+  DatabaseSchema,
+  DbEngine,
+  DbSchemaExplorerProps,
+  ForeignKeyDef,
+  IndexDef,
+  SchemaDef,
+  TableDef,
+} from "./db-schema-explorer-types"
+
 
 
