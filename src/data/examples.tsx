@@ -219,6 +219,7 @@ import { examplesTeamSectionWithScales } from "./examples-team-section-with-scal
 import { examplesCalendar } from "./examples-calendar"
 import { examplesDatePicker } from "./examples-date-picker"
 import { examplesReactFlow } from "./examples-react-flow"
+import { examplesErrorTrackerFeed } from "./examples-error-tracker-feed"
 
 export type Example = {
   title: string
@@ -1501,6 +1502,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesResizableNavbar,
   ...examplesCalendar,
   ...examplesDatePicker,
+  ...examplesErrorTrackerFeed,
   ...examplesReactFlow,
 }
 
