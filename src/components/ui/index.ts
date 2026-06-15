@@ -736,5 +736,16 @@ export type {
 export { ShadcnCardNode } from "./react-flow-nodes"
 export { reactFlowNodeTypes } from "./react-flow-node-types"
 
+// Lote Observabilidade
+export { IncidentTimeline } from "./incident-timeline"
+export type {
+  IncidentActor,
+  IncidentEventType,
+  IncidentSeverity,
+  IncidentStatus,
+  IncidentTimelineEvent,
+  IncidentTimelineProps,
+} from "./incident-timeline-types"
+
 
 

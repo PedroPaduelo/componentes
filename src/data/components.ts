@@ -2218,6 +2218,29 @@ export const components: ComponentMeta[] = [
       "layout",
     ],
   },
+  {
+    slug: "incident-timeline",
+    name: "Incident Timeline",
+    category: "Feedback",
+    description:
+      "Timeline vertical de eventos de um incidente (detect → page → escalate → mitigate → resolve, etc.) com sticky header de status/severidade, nós circulares coloridos por severidade, chips por tipo de evento, timestamps relativo e absoluto, autor opcional e modo live que re-renderiza tempos a cada 30s. Inspirado no ObservabilityCenter, reutilizável para qualquer fluxo de incident response.",
+    tags: [
+      "timeline",
+      "incidente",
+      "incident",
+      "observabilidade",
+      "observability",
+      "eventos",
+      "events",
+      "sre",
+      "alert",
+      "pager",
+      "postmortem",
+      "feedback",
+    ],
+    usage:
+      "Use em painéis de incident response, status pages e postmortem. Passe `events` ordenados cronologicamente, `status` para o badge do header (ongoing/mitigated/resolved) e `severity` para a cor global. Ative `live` para re-renderizar tempos relativos a cada 30s em incidentes em andamento. `onEventClick` recebe o evento clicado para abrir detalhes, side-panel ou navegar para a página do alerta.",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
