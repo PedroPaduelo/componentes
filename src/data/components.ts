@@ -2240,6 +2240,7 @@ export const components: ComponentMeta[] = [
       "layout",
     ],
   },
+  // Lote Observabilidade
   {
     slug: "request-flow-inspector",
     name: "Request Flow Inspector",
@@ -2279,6 +2280,51 @@ export const components: ComponentMeta[] = [
       "sparkline",
       "infra",
       "observability",
+      // Lote Observabilidade
+  {
+    slug: "server-overview-card",
+    name: "Server Overview Card",
+    category: "Feedback",
+    description:
+      "Card denso de overview de UM servidor/container (estilo New Relic / Datadog Host Summary): status, uptime, host, gauges radiais de CPU + memória (270°), lista de discos com throughput, rede + conexões, top 5 processos e último incidente. Cores semânticas por status e sparklines opcionais. Determinístico, sem dependências novas.",
+    tags: [
+      "server",
+      "overview",
+      "host",
+      "infra",
+      "observabilidade",
+      "metricas",
+      "cpu",
+      "memoria",
+      "disco",
+      "rede",
+      "processos",
+      "sre",
+      "monitoramento",
+      "gauge",
+      "sparkline",
+    ],
+  },
+  {
+    slug: "container-resource-panel",
+    name: "Container Resource Panel",
+    category: "Feedback",
+    description:
+      "Painel read-only dos recursos de um container Docker: status (running/exited/restarting/paused/dead/created), health, CPU/MEM com limites e barras, network rx/tx, block I/O read/write, restart count com cor, portas publicadas, env vars (com masked) e mounts. Inspirado em Portainer / Docker Desktop.",
+    usage:
+      "Passe um ContainerMetrics e o painel renderiza header, mini-cards, barras, portas, env (com botão ver mais) e mounts. Cores reagem a data-status (emerald/sky/amber/rose/gray) e o restart count colore 0=emerald, 1-3=amber, >3=rose. Sem dependências novas, sem PRNG.",
+    tags: [
+      "container",
+      "docker",
+      "resources",
+      "metrics",
+      "cpu",
+      "memory",
+      "ports",
+      "env",
+      "mounts",
+      "observability",
+      "portainer",
     ],
   },
 ]

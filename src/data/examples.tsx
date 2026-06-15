@@ -222,6 +222,8 @@ import { examplesDatePicker } from "./examples-date-picker"
 import { examplesReactFlow } from "./examples-react-flow"
 import { examplesRequestFlowInspector } from "./examples-request-flow-inspector"
 import { examplesErrorTrackerFeed } from "./examples-error-tracker-feed"
+import { examplesServerOverviewCard } from "./examples-server-overview-card"
+import { examplesContainerResourcePanel } from "./examples-container-resource-panel"
 
 export type Example = {
   title: string
@@ -1508,6 +1510,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesErrorTrackerFeed,
   ...examplesReactFlow,
   ...examplesRequestFlowInspector,
+  ...examplesServerOverviewCard,
+  ...examplesContainerResourcePanel,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
