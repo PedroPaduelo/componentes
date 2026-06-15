@@ -30,13 +30,18 @@ import {
   AlertTriangle,
   Bug,
   CheckCircle2,
+  Copy,
   EyeOff,
+  ExternalLink,
   Filter,
   Inbox,
+  ListTree,
+  MessageSquareText,
   RefreshCw,
   Search,
   ServerCrash,
   ShieldOff,
+  Tag,
   Users,
 } from "lucide-react"
 
@@ -45,10 +50,27 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
+import {
+  type ErrorAction,
+  type ErrorBreadcrumb,
   type ErrorCategory,
   type ErrorEnvironment,
   type ErrorEventItem,
   type ErrorGroupBy,
+  type ErrorStackFrame,
   type ErrorStatus,
   type ErrorTrackerFeedProps,
   type ErrorTrendPoint,
@@ -375,6 +397,7 @@ function ErrorTrackerFeed({
   groupBy = "type",
   filterable = true,
   onErrorClick,
+  onErrorAction,
   className,
   ...hostProps
 }: ErrorTrackerFeedProps) {
@@ -386,6 +409,12 @@ function ErrorTrackerFeed({
     groupBy,
     makeInitialState,
   )
+  // Erro selecionado para o detail dialog built-in. Null quando nenhum.
+  // Só é usado se `onErrorClick` for undefined (caso contrário, o consumidor
+  // é dono da ação de click).
+  const [selectedError, setSelectedError] = React.useState<
+    ErrorEventItem | null
+  >(null)
 
   // Totalizadores (antes do filtro — refletem o universo total)
   const totalEnvs = React.useMemo(
@@ -657,7 +686,9 @@ function ErrorTrackerFeed({
                     key={err.id}
                     error={err}
                     nowMs={nowRef.current}
-                    onClick={onErrorClick}
+                    onClick={
+                      onErrorClick ?? ((e) => setSelectedError(e))
+                    }
                   />
                 ))}
               </li>
@@ -665,6 +696,22 @@ function ErrorTrackerFeed({
           </ul>
         )}
       </div>
+
+      {/*
+       * Detail dialog built-in. Só é renderizado/controlado pelo
+       * componente quando o consumidor NÃO passou `onErrorClick`.
+       * Se passou, a prop é dona da ação de click e o dialog fica
+       * permanentemente fechado.
+       */}
+      {!onErrorClick && (
+        <ErrorDetailDialog
+          error={selectedError}
+          onOpenChange={(open) => {
+            if (!open) setSelectedError(null)
+          }}
+          onAction={onErrorAction}
+        />
+      )}
     </div>
   )
 }
@@ -861,3 +908,581 @@ function EmptyState() {
 }
 
 export { ErrorTrackerFeed }
+
+/* ------------------------------------------------------------------ */
+/*  Detail dialog (built-in)                                          */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Cores semânticas por status, reutilizadas no detail dialog.
+ * Mantidas em sync com STATUS_CLASSES do feed (literal — sem interpolação
+ * Tailwind).
+ */
+const DIALOG_STATUS_TONE: Record<
+  ErrorStatus,
+  { ring: string; chip: string; dot: string; text: string }
+> = {
+  new: {
+    ring: "ring-rose-500/40",
+    chip: "bg-rose-500/15 text-rose-500 border-rose-500/30",
+    dot: "bg-rose-500",
+    text: "text-rose-500",
+  },
+  resolved: {
+    ring: "ring-emerald-500/40",
+    chip: "bg-emerald-500/15 text-emerald-500 border-emerald-500/30",
+    dot: "bg-emerald-500",
+    text: "text-emerald-500",
+  },
+  ignored: {
+    ring: "ring-gray-500/40",
+    chip: "bg-gray-500/15 text-gray-500 border-gray-500/30",
+    dot: "bg-gray-500",
+    text: "text-gray-500",
+  },
+  suppressed: {
+    ring: "ring-amber-500/40",
+    chip: "bg-amber-500/15 text-amber-500 border-amber-500/30",
+    dot: "bg-amber-500",
+    text: "text-amber-500",
+  },
+}
+
+const DIALOG_ENV_TONE: Record<ErrorEnvironment, string> = {
+  dev: "bg-sky-500/15 text-sky-500 border-sky-500/30",
+  staging: "bg-amber-500/15 text-amber-500 border-amber-500/30",
+  prod: "bg-rose-500/15 text-rose-500 border-rose-500/30",
+}
+
+function formatBreadcrumbTime(iso: string): string {
+  // Formato HH:mm:ss estável (não depende de Date.now() nem locale do host).
+  const m = /^.*T(\d{2}:\d{2}:\d{2})/.exec(iso)
+  return m ? m[1] : iso
+}
+
+function trendToSvgPath(
+  trend: ErrorTrendPoint[],
+  width: number,
+  height: number,
+): string {
+  if (trend.length < 2) return ""
+  let min = Infinity
+  let max = -Infinity
+  for (const p of trend) {
+    if (p.count < min) min = p.count
+    if (p.count > max) max = p.count
+  }
+  const span = max - min || 1
+  const step = width / (trend.length - 1)
+  return trend
+    .map((p, i) => {
+      const x = i * step
+      const y = height - ((p.count - min) / span) * height
+      return `${i === 0 ? "M" : "L"} ${x.toFixed(1)} ${y.toFixed(1)}`
+    })
+    .join(" ")
+}
+
+function CopyableButton({ value, label }: { value: string; label: string }) {
+  const [copied, setCopied] = React.useState(false)
+  const onClick = () => {
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(value).then(
+        () => {
+          setCopied(true)
+          setTimeout(() => setCopied(false), 1500)
+        },
+        () => {
+          /* clipboard falhou — mantém estado neutro */
+        },
+      )
+    }
+  }
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className="inline-flex items-center gap-1 rounded border border-border bg-background/60 px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground transition-colors hover:bg-muted/40 hover:text-foreground"
+      aria-label={`Copiar ${label}`}
+    >
+      <Copy className="size-3" />
+      {copied ? "Copiado!" : label}
+    </button>
+  )
+}
+
+function StackTab({ stack }: { stack?: ErrorStackFrame[] }) {
+  if (!stack || stack.length === 0) {
+    return (
+      <p className="rounded-md border border-dashed border-border bg-muted/20 px-3 py-6 text-center text-xs text-muted-foreground">
+        Stack trace não disponível para este erro.
+      </p>
+    )
+  }
+  return (
+    <ol
+      data-slot="etf-detail-stack"
+      className="flex flex-col gap-0.5 rounded-md border border-border bg-background/60 p-2 font-mono text-[11px]"
+    >
+      {stack.map((frame, i) => (
+        <li
+          key={i}
+          data-slot="etf-detail-stack-frame"
+          data-in-app={frame.inApp === false ? "false" : "true"}
+          className={cn(
+            "flex flex-col gap-0.5 rounded px-2 py-1",
+            frame.inApp === false
+              ? "text-muted-foreground/70"
+              : "bg-rose-500/5 text-foreground",
+          )}
+        >
+          <span className="flex items-baseline gap-2">
+            <span className="w-5 shrink-0 text-right text-[10px] text-muted-foreground">
+              {i}
+            </span>
+            <span className="font-semibold">{frame.function || "<anonymous>"}</span>
+          </span>
+          {(frame.file || frame.line) && (
+            <span className="ml-7 flex items-baseline gap-2 text-[10px] text-muted-foreground">
+              <span className="truncate">{frame.file ?? "<inline>"}</span>
+              {frame.line != null && (
+                <span>
+                  :{frame.line}
+                  {frame.column != null ? `:${frame.column}` : ""}
+                </span>
+              )}
+            </span>
+          )}
+        </li>
+      ))}
+    </ol>
+  )
+}
+
+function BreadcrumbsTab({
+  breadcrumbs,
+}: {
+  breadcrumbs?: ErrorBreadcrumb[]
+}) {
+  if (!breadcrumbs || breadcrumbs.length === 0) {
+    return (
+      <p className="rounded-md border border-dashed border-border bg-muted/20 px-3 py-6 text-center text-xs text-muted-foreground">
+        Nenhum breadcrumb registrado.
+      </p>
+    )
+  }
+  const iconFor: Record<ErrorBreadcrumb["type"], React.ComponentType<{ className?: string }>> = {
+    navigation: ExternalLink,
+    http: ServerCrash,
+    ui: Users,
+    console: MessageSquareText,
+    info: Tag,
+    error: AlertOctagon,
+  }
+  return (
+    <ol
+      data-slot="etf-detail-breadcrumbs"
+      className="flex flex-col gap-1 rounded-md border border-border bg-background/60 p-2"
+    >
+      {breadcrumbs.map((b, i) => {
+        const Icon = iconFor[b.type]
+        const tone =
+          b.level === "error"
+            ? "text-rose-500"
+            : b.level === "warning"
+              ? "text-amber-500"
+              : "text-muted-foreground"
+        return (
+          <li
+            key={i}
+            data-slot="etf-detail-breadcrumb"
+            data-type={b.type}
+            className="flex items-start gap-2 rounded px-2 py-1 text-[11px] hover:bg-muted/30"
+          >
+            <span className="mt-0.5 shrink-0">
+              <Icon className={cn("size-3.5", tone)} />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="text-muted-foreground">
+                {formatBreadcrumbTime(b.t)}
+              </span>
+              <span className="ml-2 text-foreground">{b.message}</span>
+            </span>
+          </li>
+        )
+      })}
+    </ol>
+  )
+}
+
+function ContextTab({ error }: { error: ErrorEventItem }) {
+  const rows: Array<[string, React.ReactNode]> = [
+    ["Serviço", error.service],
+    ["Ambiente", error.environment],
+    ["Release", error.release ?? "—"],
+    ["Categoria", error.category],
+    ["Status", error.status],
+    ["Ocorrências", String(error.count)],
+    ["Primeira vez", error.firstSeen],
+    ["Última vez", error.lastSeen],
+  ]
+  return (
+    <dl
+      data-slot="etf-detail-context"
+      className="grid grid-cols-1 gap-x-4 gap-y-2 rounded-md border border-border bg-background/60 p-3 text-[11px] sm:grid-cols-2"
+    >
+      {rows.map(([k, v]) => (
+        <div key={k} className="flex items-baseline gap-2">
+          <dt className="shrink-0 text-muted-foreground">{k}</dt>
+          <dd className="min-w-0 truncate font-mono text-foreground">{v}</dd>
+        </div>
+      ))}
+    </dl>
+  )
+}
+
+function HistoryTab({ trend }: { trend?: ErrorTrendPoint[] }) {
+  if (!trend || trend.length === 0) {
+    return (
+      <p className="rounded-md border border-dashed border-border bg-muted/20 px-3 py-6 text-center text-xs text-muted-foreground">
+        Sem histórico de ocorrências.
+      </p>
+    )
+  }
+  const W = 560
+  const H = 120
+  const path = trendToSvgPath(trend, W, H)
+  const total = trend.reduce((a, p) => a + p.count, 0)
+  return (
+    <div
+      data-slot="etf-detail-history"
+      className="flex flex-col gap-2 rounded-md border border-border bg-background/60 p-3"
+    >
+      <div className="flex items-center justify-between text-[11px]">
+        <span className="text-muted-foreground">
+          {trend.length} pontos · total{" "}
+          <span className="font-mono font-semibold text-foreground">
+            {total}
+          </span>{" "}
+          ocorrências
+        </span>
+        <span className="text-muted-foreground">
+          pico{" "}
+          <span className="font-mono font-semibold text-foreground">
+            {Math.max(...trend.map((p) => p.count))}
+          </span>
+        </span>
+      </div>
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        preserveAspectRatio="none"
+        className="h-32 w-full"
+      >
+        <line
+          x1={0}
+          y1={H - 1}
+          x2={W}
+          y2={H - 1}
+          stroke="var(--border)"
+          strokeWidth={1}
+        />
+        <path
+          d={path}
+          fill="none"
+          stroke="var(--primary)"
+          strokeWidth={1.6}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </svg>
+    </div>
+  )
+}
+
+function UsersTab({
+  users,
+}: {
+  users: NonNullable<ErrorEventItem["affectedUsers"]>
+}) {
+  if (users.length === 0) {
+    return (
+      <p className="rounded-md border border-dashed border-border bg-muted/20 px-3 py-6 text-center text-xs text-muted-foreground">
+        Nenhum usuário afetado registrado.
+      </p>
+    )
+  }
+  return (
+    <ul
+      data-slot="etf-detail-users"
+      className="flex flex-col gap-1.5 rounded-md border border-border bg-background/60 p-2"
+    >
+      {users.map((u) => (
+        <li
+          key={u.id}
+          data-slot="etf-detail-user"
+          className="flex items-center gap-3 rounded px-2 py-1.5 text-[11px] hover:bg-muted/30"
+        >
+          {u.avatar ? (
+            <img
+              src={u.avatar}
+              alt=""
+              className="size-7 shrink-0 rounded-full border border-border object-cover"
+            />
+          ) : (
+            <span className="flex size-7 shrink-0 items-center justify-center rounded-full border border-border bg-muted text-[10px] font-semibold text-muted-foreground">
+              {u.name.slice(0, 2).toUpperCase()}
+            </span>
+          )}
+          <span className="min-w-0 flex-1 truncate text-foreground">{u.name}</span>
+          <span className="shrink-0 font-mono text-muted-foreground">
+            {u.count}×
+          </span>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function ErrorDetailDialog({
+  error,
+  onOpenChange,
+  onAction,
+}: {
+  error: ErrorEventItem | null
+  onOpenChange: (open: boolean) => void
+  onAction?: ErrorAction
+}) {
+  const open = error !== null
+  // String completa do stack para o botão "Copiar stack".
+  const stackText = React.useMemo(() => {
+    if (!error?.stack) return ""
+    return error.stack
+      .map(
+        (f) =>
+          `  at ${f.function || "<anonymous>"} (${f.file ?? "<inline>"}${
+            f.line != null ? `:${f.line}:${f.column ?? 0}` : ""
+          })`,
+      )
+      .join("\n")
+  }, [error?.stack])
+
+  const handleAction = (action: "resolve" | "ignore" | "copy-stack") => {
+    if (!error) return
+    if (action === "copy-stack") {
+      if (typeof navigator !== "undefined" && navigator.clipboard) {
+        navigator.clipboard.writeText(
+          `${error.type}\n${error.message}\n\n${stackText}`,
+        )
+      }
+    }
+    onAction?.(error, action)
+    // "copy-stack" mantém o dialog aberto (ação puramente local);
+    // "resolve"/"ignore" fecham o dialog (assume mudança de status).
+    if (action !== "copy-stack") onOpenChange(false)
+  }
+
+  // Reset estável: o Dialog controla o open via prop, e o conteúdo
+  // é derivado do `error`. Quando o pai zera `error`, o Dialog fecha
+  // e o conteúdo do próximo mount começa do zero.
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
+        data-slot="etf-detail-dialog"
+        className="max-h-[90vh] overflow-y-auto sm:max-w-2xl"
+      >
+        {error && (
+          <>
+            <DialogHeader>
+              <div className="flex items-start gap-2">
+                <span
+                  className={cn(
+                    "mt-0.5 size-2.5 shrink-0 rounded-full",
+                    DIALOG_STATUS_TONE[error.status].dot,
+                  )}
+                  aria-hidden
+                />
+                <div className="min-w-0 flex-1">
+                  <DialogTitle className="break-all font-mono text-sm">
+                    {error.type}
+                  </DialogTitle>
+                  <DialogDescription className="mt-1.5 text-xs">
+                    {error.message}
+                  </DialogDescription>
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5 pt-2">
+                <span
+                  className={cn(
+                    "inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[10px] font-medium uppercase",
+                    DIALOG_STATUS_TONE[error.status].chip,
+                  )}
+                >
+                  {STATUS_LABEL[error.status]}
+                </span>
+                <span
+                  className={cn(
+                    "inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[10px] font-medium uppercase",
+                    DIALOG_ENV_TONE[error.environment],
+                  )}
+                >
+                  {error.environment}
+                </span>
+                {error.release && (
+                  <span className="inline-flex items-center gap-1 rounded-md border border-border bg-background/60 px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+                    {error.release}
+                  </span>
+                )}
+                <span className="inline-flex items-center gap-1 rounded-md border border-border bg-background/60 px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+                  <Bug className="size-3" />
+                  {error.count.toLocaleString("pt-BR")} ocorrências
+                </span>
+              </div>
+            </DialogHeader>
+
+            <Tabs defaultValue="stack" className="mt-3">
+              <TabsList className="w-full justify-start overflow-x-auto">
+                <TabsTrigger value="stack" className="gap-1.5">
+                  <ListTree className="size-3.5" /> Stack
+                </TabsTrigger>
+                <TabsTrigger value="breadcrumbs" className="gap-1.5">
+                  <MessageSquareText className="size-3.5" /> Breadcrumbs
+                </TabsTrigger>
+                <TabsTrigger value="context" className="gap-1.5">
+                  <Tag className="size-3.5" /> Contexto
+                </TabsTrigger>
+                <TabsTrigger value="history" className="gap-1.5">
+                  <ActivityIcon /> Histórico
+                </TabsTrigger>
+                <TabsTrigger value="users" className="gap-1.5">
+                  <Users className="size-3.5" /> Usuários
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="stack" className="mt-3">
+                <div className="mb-1.5 flex items-center justify-between">
+                  <span className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                    Stack trace
+                  </span>
+                  {stackText && (
+                    <CopyableButton
+                      value={stackText}
+                      label="Copiar stack"
+                    />
+                  )}
+                </div>
+                <StackTab stack={error.stack ?? parsePreviewFrames(error.stackPreview)} />
+              </TabsContent>
+
+              <TabsContent value="breadcrumbs" className="mt-3">
+                <div className="mb-1.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+                  Eventos que precederam o erro
+                </div>
+                <BreadcrumbsTab breadcrumbs={error.breadcrumbs} />
+              </TabsContent>
+
+              <TabsContent value="context" className="mt-3">
+                <div className="mb-1.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+                  Metadados do erro
+                </div>
+                <ContextTab error={error} />
+              </TabsContent>
+
+              <TabsContent value="history" className="mt-3">
+                <div className="mb-1.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+                  Tendência de ocorrências
+                </div>
+                <HistoryTab trend={error.trend} />
+              </TabsContent>
+
+              <TabsContent value="users" className="mt-3">
+                <div className="mb-1.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+                  Usuários afetados ({error.affectedUsers?.length ?? 0})
+                </div>
+                <UsersTab users={error.affectedUsers ?? []} />
+              </TabsContent>
+            </Tabs>
+
+            <DialogFooter className="mt-4 flex-wrap gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => handleAction("ignore")}
+                disabled={error.status === "ignored"}
+                data-slot="etf-detail-ignore"
+              >
+                <EyeOff className="size-3.5" />
+                {error.status === "ignored" ? "Já ignorado" : "Marcar como ignorado"}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => handleAction("resolve")}
+                disabled={error.status === "resolved"}
+                data-slot="etf-detail-resolve"
+              >
+                <CheckCircle2 className="size-3.5" />
+                {error.status === "resolved"
+                  ? "Já resolvido"
+                  : "Marcar como resolvido"}
+              </Button>
+              {stackText && (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleAction("copy-stack")}
+                  data-slot="etf-detail-copy"
+                >
+                  <Copy className="size-3.5" />
+                  Copiar stack
+                </Button>
+              )}
+              <Button
+                type="button"
+                variant="default"
+                size="sm"
+                onClick={() => onOpenChange(false)}
+                data-slot="etf-detail-close"
+              >
+                Fechar
+              </Button>
+            </DialogFooter>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
+  )
+}
+
+/**
+ * Pequeno ícone inline (sem import extra) para a tab "Histórico".
+ * Mantido local pra evitar drag-in de mais um ícone do lucide.
+ */
+function ActivityIcon() {
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      className="size-3.5"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={1.5}
+      aria-hidden
+    >
+      <path d="M2 8h2l2-5 3 10 2-5h3" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+/**
+ * Se a prop `stack` não vier mas `stackPreview` vier (string única),
+ * convertemos num único frame "sintético" para a tab Stack não ficar
+ * vazia. Útil para examples com dados minimalistas.
+ */
+function parsePreviewFrames(
+  preview?: string,
+): ErrorStackFrame[] | undefined {
+  if (!preview) return undefined
+  return [{ function: preview, inApp: true }]
+}

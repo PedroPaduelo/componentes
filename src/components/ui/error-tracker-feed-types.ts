@@ -22,6 +22,31 @@ export type ErrorAffectedUser = {
   count: number
 }
 
+/**
+ * Um frame de stack trace.
+ * Inspirado em V8 stack frames: function/file/line/col/type.
+ */
+export type ErrorStackFrame = {
+  function: string
+  file?: string
+  line?: number
+  column?: number
+  /** Frame de aplicação (true) vs frame de runtime/biblioteca (false). */
+  inApp?: boolean
+}
+
+/**
+ * Um breadcrumb (evento que precedeu o erro) — padrão Sentry.
+ * Pode ser navegação, requisição HTTP, log de console, etc.
+ */
+export type ErrorBreadcrumb = {
+  t: string
+  type: "navigation" | "http" | "ui" | "console" | "info" | "error"
+  message: string
+  level?: "info" | "warning" | "error"
+  data?: Record<string, string | number | boolean>
+}
+
 /** Um evento/issue de erro. */
 export type ErrorEventItem = {
   /** Identificador único do issue/grupo. */
@@ -43,8 +68,12 @@ export type ErrorEventItem = {
   affectedUsers?: ErrorAffectedUser[]
   /** Mini-sparkline das últimas horas (opcional). */
   trend?: ErrorTrendPoint[]
-  /** Preview de stack trace (opcional). */
+  /** Preview de stack trace (opcional — usado na lista). */
   stackPreview?: string
+  /** Stack trace completo (frames) — exibido na tab "Stack" do detail dialog. */
+  stack?: ErrorStackFrame[]
+  /** Breadcrumbs que precederam o erro — exibidos na tab "Breadcrumbs". */
+  breadcrumbs?: ErrorBreadcrumb[]
   /** Versão / release (opcional). Ex.: "v2024.05.01-rc.1" */
   release?: string
   /** Serviço de origem. */
@@ -53,6 +82,12 @@ export type ErrorEventItem = {
 
 /** Modos de agrupamento dos erros na lista. */
 export type ErrorGroupBy = "type" | "service" | "user"
+
+/** Callback para uma ação sobre um erro a partir do detail dialog. */
+export type ErrorAction = (
+  error: ErrorEventItem,
+  action: "resolve" | "ignore" | "copy-stack",
+) => void
 
 export type ErrorTrackerFeedProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
@@ -64,6 +99,21 @@ export type ErrorTrackerFeedProps = Omit<
   groupBy?: ErrorGroupBy
   /** Quando true (default), mostra a barra de filtros. */
   filterable?: boolean
-  /** Callback ao clicar em um item de erro. */
+  /**
+   * Callback opcional ao clicar em um item. Quando fornecido, o detail
+   * dialog built-in NÃO abre — o consumidor fica responsável por
+   * mostrar os detalhes como preferir (window.alert, navegação,
+   * outro dialog customizado, etc.).
+   *
+   * Quando omitido, o componente abre seu próprio Dialog com tabs
+   * Stack/Breadcrumbs/Contexto/Histórico/Usuários.
+   */
   onErrorClick?: (error: ErrorEventItem) => void
+  /**
+   * Callback opcional para ações de "Marcar como resolvido",
+   * "Marcar como ignorado" e "Copiar stack" no detail dialog.
+   * Se omitido, os botões continuam visíveis (UI não muda) mas a
+   * ação é apenas local (fecha o dialog sem efeito colateral).
+   */
+  onErrorAction?: ErrorAction
 }

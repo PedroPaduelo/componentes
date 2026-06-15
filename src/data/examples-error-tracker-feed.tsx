@@ -86,6 +86,19 @@ const fullFeed: ErrorEventItem[] = [
     ],
     trend: trendPoints(seedTrend(120, 12, 0x51a1)),
     stackPreview: "at CheckoutPage.useEffect (checkout.tsx:142)",
+    stack: [
+      { function: "CheckoutPage.useEffect", file: "src/pages/checkout.tsx", line: 142, column: 18, inApp: true },
+      { function: "executeEffect", file: "node_modules/react-dom/cjs/react-dom.production.min.js", line: 14945, column: 6, inApp: false },
+      { function: "runEffects", file: "node_modules/react-dom/cjs/react-dom.production.min.js", line: 15104, column: 8, inApp: false },
+      { function: "commitHookEffectListMount", file: "node_modules/react-dom/cjs/react-dom.production.min.js", line: 23189, column: 4, inApp: false },
+    ],
+    breadcrumbs: [
+      { t: "2024-05-12T13:48:02.115Z", type: "navigation", message: "navigate /cart → /checkout" },
+      { t: "2024-05-12T13:48:02.190Z", type: "http", message: "GET /api/me 200", level: "info" },
+      { t: "2024-05-12T13:48:02.318Z", type: "ui", message: "click #checkout-submit" },
+      { t: "2024-05-12T13:48:02.421Z", type: "http", message: "POST /api/orders 500", level: "error" },
+      { t: "2024-05-12T13:48:02.430Z", type: "error", message: "Cannot read 'cart' of undefined", level: "error" },
+    ],
   },
   {
     id: "e-2",
@@ -266,7 +279,8 @@ const errorTrackerFeedFullExample: Example = {
   errors={errors}
   groupBy="type"
   filterable
-  onErrorClick={(e) => console.log(e.id)}
+  // Sem onErrorClick: o componente abre seu próprio Dialog built-in
+  // com tabs Stack/Breadcrumbs/Contexto/Histórico/Usuários.
 />`,
   render: (
     <div className="w-full">
@@ -274,11 +288,9 @@ const errorTrackerFeedFullExample: Example = {
         errors={fullFeed}
         groupBy="type"
         filterable
-        onErrorClick={(e) => {
-          if (typeof window !== "undefined") {
-            window.alert(`Selecionado: ${e.id} — ${e.type}`)
-          }
-        }}
+        onErrorAction={(e, action) =>
+          console.log("Action:", action, "on", e.id)
+        }
       />
     </div>
   ),
