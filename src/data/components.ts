@@ -2218,6 +2218,28 @@ export const components: ComponentMeta[] = [
       "layout",
     ],
   },
+  {
+    slug: "user-activity-stream",
+    name: "User Activity Stream",
+    category: "Feedback",
+    description:
+      "Feed de atividades de usuários em tempo real (estilo Hotjar/FullStory/Mixpanel Live). Cada item é uma ação observada (login, page_view, form_submit, error, abuse_flag etc.) com avatar, timestamp relativo, geo e IP. Suporta filtros (ação, usuário, período), agrupamento por usuário/ação/página e auto-scroll com botão 'pular para o mais recente' quando o usuário rola pra cima.",
+    tags: [
+      "activity",
+      "stream",
+      "live",
+      "tempo real",
+      "feed",
+      "usuário",
+      "log",
+      "observabilidade",
+      "analytics",
+      "eventos",
+      "hotjar",
+      "fullstory",
+      "mixpanel",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

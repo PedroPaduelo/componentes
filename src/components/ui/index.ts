@@ -737,4 +737,9 @@ export { ShadcnCardNode } from "./react-flow-nodes"
 export { reactFlowNodeTypes } from "./react-flow-node-types"
 
 
+// Lote Observabilidade
+export { UserActivityStream } from "./user-activity-stream"
+export type { UserActivityStreamProps } from "./user-activity-stream-types"
+
+
 
