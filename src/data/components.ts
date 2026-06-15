@@ -2240,6 +2240,7 @@ export const components: ComponentMeta[] = [
       "layout",
     ],
   },
+<<<<<<< HEAD
   // Lote Observabilidade
   {
     slug: "request-flow-inspector",
@@ -2349,6 +2350,25 @@ export const components: ComponentMeta[] = [
     ],
     usage:
       "Passe `database: DatabaseSchema` com id, name, engine, host:port, version, sizeMB, tables e schemas (cada um com tables, columns, primaryKey, indexes, foreignKeys, rowCount?, sizeMB?). Suporta busca por nome de tabela/coluna/referência e toggle 'Só com FK'. Clique em uma referência FK na aba 'Foreign keys' para saltar para a tabela alvo. Use as abas Columns/Indexes/FKs/DDL para inspecionar.",
+  },
+  {
+    slug: "slow-query-list",
+    name: "Slow Query List",
+    category: "Feedback",
+    description:
+      "Listagem de queries SQL lentas com diagnóstico: tempo, query SQL com syntax highlight, plano do EXPLAIN em árvore, locks ativos e sugestões automáticas (índice faltante, rewrite, vacuum, stats, lock). Filtros por threshold, severidade e banco; agrupamento por tabela/database/user.",
+    usage:
+      "Use para dashboards de observabilidade de banco (estilo pgAdmin, DataDog DBM, pganalyze). Filtro threshold esmaece queries abaixo do limite; chips de severidade (warning/critical) e banco permitem drill-down. Sugestões com DDL têm botão de copiar para clipboard.",
+    tags: [
+      "slow-query",
+      "sql",
+      "database",
+      "observability",
+      "explain",
+      "performance",
+      "monitoring",
+      "db",
+    ],
   },
 ]
 

@@ -220,11 +220,13 @@ import { examplesTeamSectionWithScales } from "./examples-team-section-with-scal
 import { examplesCalendar } from "./examples-calendar"
 import { examplesDatePicker } from "./examples-date-picker"
 import { examplesReactFlow } from "./examples-react-flow"
+<<<<<<< HEAD
 import { examplesRequestFlowInspector } from "./examples-request-flow-inspector"
 import { examplesErrorTrackerFeed } from "./examples-error-tracker-feed"
 import { examplesServerOverviewCard } from "./examples-server-overview-card"
 import { examplesContainerResourcePanel } from "./examples-container-resource-panel"
 import { examplesDbSchemaExplorer } from "./examples-db-schema-explorer"
+import { examplesSlowQueryList } from "./examples-slow-query-list"
 
 export type Example = {
   title: string
@@ -1510,10 +1512,12 @@ export const examples: Record<string, Example[]> = {
   ...examplesDatePicker,
   ...examplesErrorTrackerFeed,
   ...examplesReactFlow,
+<<<<<<< HEAD
   ...examplesRequestFlowInspector,
   ...examplesServerOverviewCard,
   ...examplesContainerResourcePanel,
   ...examplesDbSchemaExplorer,
+  ...examplesSlowQueryList,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

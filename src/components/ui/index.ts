@@ -761,6 +761,7 @@ export { ShadcnCardNode } from "./react-flow-nodes"
 export { reactFlowNodeTypes } from "./react-flow-node-types"
 
 // Lote Observabilidade
+<<<<<<< HEAD
 export { RequestFlowInspector } from "./request-flow-inspector"
 export type { RequestFlowInspectorProps } from "./request-flow-inspector-types"
 export { ErrorTrackerFeed } from "./error-tracker-feed"
@@ -804,6 +805,17 @@ export type {
   SchemaDef,
   TableDef,
 } from "./db-schema-explorer-types"
+// v2
+export { SlowQueryList } from "./slow-query-list"
+export type {
+  PlanNode,
+  QuerySuggestion,
+  SlowQuery,
+  SlowQueryGroupBy,
+  SlowQueryListProps,
+  SlowQuerySeverity,
+  SuggestionType,
+} from "./slow-query-list-types"
 
 
 
