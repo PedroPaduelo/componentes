@@ -2218,6 +2218,25 @@ export const components: ComponentMeta[] = [
       "layout",
     ],
   },
+  {
+    slug: "slow-query-list",
+    name: "Slow Query List",
+    category: "Feedback",
+    description:
+      "Listagem de queries SQL lentas com diagnóstico: tempo, query SQL com syntax highlight, plano do EXPLAIN em árvore, locks ativos e sugestões automáticas (índice faltante, rewrite, vacuum, stats, lock). Filtros por threshold, severidade e banco; agrupamento por tabela/database/user.",
+    usage:
+      "Use para dashboards de observabilidade de banco (estilo pgAdmin, DataDog DBM, pganalyze). Filtro threshold esmaece queries abaixo do limite; chips de severidade (warning/critical) e banco permitem drill-down. Sugestões com DDL têm botão de copiar para clipboard.",
+    tags: [
+      "slow-query",
+      "sql",
+      "database",
+      "observability",
+      "explain",
+      "performance",
+      "monitoring",
+      "db",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

@@ -736,5 +736,18 @@ export type {
 export { ShadcnCardNode } from "./react-flow-nodes"
 export { reactFlowNodeTypes } from "./react-flow-node-types"
 
+// Lote Observabilidade
+// v2
+export { SlowQueryList } from "./slow-query-list"
+export type {
+  PlanNode,
+  QuerySuggestion,
+  SlowQuery,
+  SlowQueryGroupBy,
+  SlowQueryListProps,
+  SlowQuerySeverity,
+  SuggestionType,
+} from "./slow-query-list-types"
+
 
 
