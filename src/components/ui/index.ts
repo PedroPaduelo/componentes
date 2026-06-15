@@ -736,5 +736,21 @@ export type {
 export { ShadcnCardNode } from "./react-flow-nodes"
 export { reactFlowNodeTypes } from "./react-flow-node-types"
 
+// Lote Observability
+export { ContainerResourcePanel } from "./container-resource-panel"
+export type {
+  ContainerStatus,
+  ContainerHealth,
+  ContainerPort,
+  ContainerCpu,
+  ContainerMemory,
+  ContainerNet,
+  ContainerBlockIO,
+  ContainerEnvVar,
+  ContainerMount,
+  ContainerMetrics,
+} from "./container-resource-panel-types"
+export type { ContainerResourcePanelProps } from "./container-resource-panel"
+
 
 

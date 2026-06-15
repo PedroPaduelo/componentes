@@ -2218,6 +2218,28 @@ export const components: ComponentMeta[] = [
       "layout",
     ],
   },
+  {
+    slug: "container-resource-panel",
+    name: "Container Resource Panel",
+    category: "Feedback",
+    description:
+      "Painel read-only dos recursos de um container Docker: status (running/exited/restarting/paused/dead/created), health, CPU/MEM com limites e barras, network rx/tx, block I/O read/write, restart count com cor, portas publicadas, env vars (com masked) e mounts. Inspirado em Portainer / Docker Desktop.",
+    usage:
+      "Passe um ContainerMetrics e o painel renderiza header, mini-cards, barras, portas, env (com botão ver mais) e mounts. Cores reagem a data-status (emerald/sky/amber/rose/gray) e o restart count colore 0=emerald, 1-3=amber, >3=rose. Sem dependências novas, sem PRNG.",
+    tags: [
+      "container",
+      "docker",
+      "resources",
+      "metrics",
+      "cpu",
+      "memory",
+      "ports",
+      "env",
+      "mounts",
+      "observability",
+      "portainer",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
