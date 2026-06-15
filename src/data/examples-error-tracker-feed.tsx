@@ -68,7 +68,7 @@ function trendPoints(values: number[]): { t: string; count: number }[] {
 const fullFeed: ErrorEventItem[] = [
   {
     id: "e-1",
-    type: "TypeError: Cannot read properties of undefined",
+    type: "TypeError: Cannot read 'cart' of undefined",
     message:
       "Tentativa de acessar 'cart.items.length' quando o carrinho ainda não foi hidratado pelo carrinho-context após login silencioso.",
     category: "exception",
