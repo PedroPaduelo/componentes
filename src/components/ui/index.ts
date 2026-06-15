@@ -761,7 +761,6 @@ export { ShadcnCardNode } from "./react-flow-nodes"
 export { reactFlowNodeTypes } from "./react-flow-node-types"
 
 // Lote Observabilidade
-
 export { RequestFlowInspector } from "./request-flow-inspector"
 export type { RequestFlowInspectorProps } from "./request-flow-inspector-types"
 export { ErrorTrackerFeed } from "./error-tracker-feed"
@@ -821,6 +820,17 @@ export type {
 // Lote Observabilidade
 export { UserActivityStream } from "./user-activity-stream"
 export type { UserActivityStreamProps } from "./user-activity-stream-types"
+
+export { DbOverviewGrid } from "./db-overview-grid"
+export type {
+  DbOverviewGridProps,
+  DatabaseInstance,
+  DbEnvironment,
+  DbStatus,
+  DbEngine,
+  DbTableSummary,
+  DbOverviewGridSortBy,
+} from "./db-overview-grid-types"
 
 
 

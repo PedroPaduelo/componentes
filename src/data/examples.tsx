@@ -220,6 +220,7 @@ import { examplesTeamSectionWithScales } from "./examples-team-section-with-scal
 import { examplesCalendar } from "./examples-calendar"
 import { examplesDatePicker } from "./examples-date-picker"
 import { examplesReactFlow } from "./examples-react-flow"
+import { examplesDbOverviewGrid } from "./examples-db-overview-grid"
 
 import { examplesRequestFlowInspector } from "./examples-request-flow-inspector"
 import { examplesErrorTrackerFeed } from "./examples-error-tracker-feed"
@@ -1519,6 +1520,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesDbSchemaExplorer,
   ...examplesSlowQueryList,
   ...examplesUserActivityStream,
+  // Lote Observabilidade
+  ...examplesDbOverviewGrid,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
