@@ -219,6 +219,7 @@ import { examplesTeamSectionWithScales } from "./examples-team-section-with-scal
 import { examplesCalendar } from "./examples-calendar"
 import { examplesDatePicker } from "./examples-date-picker"
 import { examplesReactFlow } from "./examples-react-flow"
+import { examplesRequestFlowInspector } from "./examples-request-flow-inspector"
 
 export type Example = {
   title: string
@@ -1502,6 +1503,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesCalendar,
   ...examplesDatePicker,
   ...examplesReactFlow,
+  ...examplesRequestFlowInspector,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

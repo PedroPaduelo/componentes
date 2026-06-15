@@ -736,5 +736,9 @@ export type {
 export { ShadcnCardNode } from "./react-flow-nodes"
 export { reactFlowNodeTypes } from "./react-flow-node-types"
 
+// Lote Observabilidade
+export { RequestFlowInspector } from "./request-flow-inspector"
+export type { RequestFlowInspectorProps } from "./request-flow-inspector-types"
+
 
 

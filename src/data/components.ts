@@ -2218,6 +2218,28 @@ export const components: ComponentMeta[] = [
       "layout",
     ],
   },
+  {
+    slug: "request-flow-inspector",
+    name: "Request Flow Inspector",
+    category: "Feedback",
+    description:
+      "Inspetor detalhado de UMA request HTTP no estilo DevTools Network / Datadog APM: método, URL, status com cor semântica, waterfall de timing (DNS/TCP/TLS/Server/Transfer), request/response headers, body com syntax highlight de JSON, cookies com badges secure/httpOnly, IDs de trace e card lateral com IP, geo (bandeira/ASN/user-agent) e ambiente.",
+    usage:
+      "Passe um objeto InspectedRequest com todos os campos do ciclo (timing, headers, cookies, geo, trace). Use em painéis de APM, dashboards de erro, debugging de latência e timelines de incidentes. Cores do status seguem faixa HTTP (2xx emerald, 3xx sky, 4xx amber, 5xx rose).",
+    tags: [
+      "request",
+      "http",
+      "network",
+      "devtools",
+      "apm",
+      "performance",
+      "timing",
+      "waterfall",
+      "trace",
+      "observability",
+      "debug",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
