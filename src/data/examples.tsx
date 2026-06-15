@@ -1510,7 +1510,6 @@ export const examples: Record<string, Example[]> = {
   ...examplesDatePicker,
   ...examplesErrorTrackerFeed,
   ...examplesReactFlow,
-<<<<<<< HEAD
   ...examplesRequestFlowInspector,
   ...examplesServerOverviewCard,
   ...examplesContainerResourcePanel,
