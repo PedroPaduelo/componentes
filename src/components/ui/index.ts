@@ -726,7 +726,7 @@ export type {
   TeamMemberSocial,
 } from "./team-section-with-scales-types"
 
-// Lote Observability
+// Lote Observabilidade
 export { FleetServerGrid } from "./fleet-server-grid"
 export type {
   FleetServerGridProps,
@@ -738,6 +738,17 @@ export type {
   ServerDisk,
   ServerNetwork,
 } from "./fleet-server-grid-types"
+export { ErrorTrackerFeed } from "./error-tracker-feed"
+export type {
+  ErrorTrackerFeedProps,
+  ErrorEventItem,
+  ErrorEnvironment,
+  ErrorStatus,
+  ErrorCategory,
+  ErrorTrendPoint,
+  ErrorAffectedUser,
+  ErrorGroupBy,
+} from "./error-tracker-feed-types"
 
 // Lote React Flow
 export { ReactFlowDiagram } from "./react-flow"

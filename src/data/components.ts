@@ -2198,6 +2198,28 @@ export const components: ComponentMeta[] = [
       "aceternity",
     ],
   },
+  // Lote Observabilidade
+  {
+    slug: "error-tracker-feed",
+    name: "Error Tracker Feed",
+    category: "Feedback",
+    description:
+      "Feed de erros/exception events estilo Sentry: lista de issues com tipo, mensagem, count, ambiente (prod/staging/dev), status (new/resolved/ignored/suppressed), usuários afetados e mini-sparkline de tendência. Filtros funcionais (ambiente, status, busca por tipo) e agrupamento configurável por tipo, serviço ou usuário.",
+    tags: [
+      "error",
+      "erro",
+      "exception",
+      "sentry",
+      "observability",
+      "incident",
+      "log",
+      "feed",
+      "feedback",
+    ],
+    usage:
+      "Use como bloco principal da tela de 'Issues' de um painel de observabilidade. Recebe uma lista de ErrorEventItem (formato Sentry-like) e cuida de filtragem (ambiente/status/busca), agrupamento (type/service/user) e render. Cada item pode disparar onErrorClick para abrir um drawer com o stack trace completo. Cores de ambiente são fixas (prod=rose, staging=amber, dev=sky) — alinhadas com o padrão visual do Pulse (Observability Center).",
+  },
+  // Lote React Flow
   {
     slug: "react-flow",
     name: "React Flow",

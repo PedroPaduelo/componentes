@@ -221,6 +221,7 @@ import { examplesCalendar } from "./examples-calendar"
 import { examplesDatePicker } from "./examples-date-picker"
 import { examplesReactFlow } from "./examples-react-flow"
 import { examplesRequestFlowInspector } from "./examples-request-flow-inspector"
+import { examplesErrorTrackerFeed } from "./examples-error-tracker-feed"
 
 export type Example = {
   title: string
@@ -1504,6 +1505,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesFleetServerGrid,
   ...examplesCalendar,
   ...examplesDatePicker,
+  ...examplesErrorTrackerFeed,
   ...examplesReactFlow,
   ...examplesRequestFlowInspector,
 }
