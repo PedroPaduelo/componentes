@@ -736,5 +736,17 @@ export type {
 export { ShadcnCardNode } from "./react-flow-nodes"
 export { reactFlowNodeTypes } from "./react-flow-node-types"
 
+// Lote Observabilidade
+export { DbOverviewGrid } from "./db-overview-grid"
+export type {
+  DbOverviewGridProps,
+  DatabaseInstance,
+  DbEnvironment,
+  DbStatus,
+  DbEngine,
+  DbTableSummary,
+  DbOverviewGridSortBy,
+} from "./db-overview-grid-types"
+
 
 

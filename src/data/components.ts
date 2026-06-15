@@ -2218,6 +2218,29 @@ export const components: ComponentMeta[] = [
       "layout",
     ],
   },
+  {
+    slug: "db-overview-grid",
+    name: "Db Overview Grid",
+    category: "Feedback",
+    description:
+      "Visão geral em grid de uma frota de bancos de dados (Postgres, MySQL, SQL Server, Oracle, SQLite). " +
+      "Cada tile mostra env, engine, host:port, status, conexões, tamanho, cache hit, QPS, slow queries, TPS, replication lag, top 3 tabelas e último backup. " +
+      "Inclui busca, ordenação e Dialog de detalhe via render prop (integra com `db-schema-explorer`).",
+    tags: [
+      "database",
+      "banco",
+      "postgresql",
+      "mysql",
+      "sqlserver",
+      "oracle",
+      "sqlite",
+      "fleet",
+      "infra",
+      "observabilidade",
+      "feedback",
+      "grid",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
