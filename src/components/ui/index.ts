@@ -736,6 +736,20 @@ export type {
 export { ShadcnCardNode } from "./react-flow-nodes"
 export { reactFlowNodeTypes } from "./react-flow-node-types"
 
+// Lote Observabilidade
+export { ServerOverviewCard } from "./server-overview-card"
+export type {
+  ServerOverviewCardProps,
+  ServerMetrics,
+  ServerStatus,
+  CpuMetric,
+  MemoryMetric,
+  DiskMetric,
+  NetworkMetric,
+  ProcessMetric,
+  SparklinePoint,
+} from "./server-overview-card-types"
+
 
 // Lote Observabilidade
 export { UserActivityStream } from "./user-activity-stream"

@@ -10,7 +10,7 @@
 //   - 390px sem overflow horizontal
 //
 // Uso: `node _meta/playwright/val-user-activity-stream.mjs`
-// Pré-req: `npm run dev` no ar em http://localhost:5175
+// Pré-req: `npm run dev` no ar em http://localhost:5173
 
 import { chromium } from "playwright"
 
@@ -29,7 +29,7 @@ async function probe(theme) {
     )
   }
   await page.goto(
-    "http://localhost:5175/components/user-activity-stream",
+    "http://localhost:5173/components/user-activity-stream",
     { waitUntil: "domcontentloaded", timeout: 30000 }
   )
 

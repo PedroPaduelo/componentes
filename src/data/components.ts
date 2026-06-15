@@ -2218,6 +2218,31 @@ export const components: ComponentMeta[] = [
       "layout",
     ],
   },
+  // Lote Observabilidade
+  {
+    slug: "server-overview-card",
+    name: "Server Overview Card",
+    category: "Feedback",
+    description:
+      "Card denso de overview de UM servidor/container (estilo New Relic / Datadog Host Summary): status, uptime, host, gauges radiais de CPU + memória (270°), lista de discos com throughput, rede + conexões, top 5 processos e último incidente. Cores semânticas por status e sparklines opcionais. Determinístico, sem dependências novas.",
+    tags: [
+      "server",
+      "overview",
+      "host",
+      "infra",
+      "observabilidade",
+      "metricas",
+      "cpu",
+      "memoria",
+      "disco",
+      "rede",
+      "processos",
+      "sre",
+      "monitoramento",
+      "gauge",
+      "sparkline",
+    ],
+  },
   {
     slug: "user-activity-stream",
     name: "User Activity Stream",

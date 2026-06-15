@@ -219,6 +219,7 @@ import { examplesTeamSectionWithScales } from "./examples-team-section-with-scal
 import { examplesCalendar } from "./examples-calendar"
 import { examplesDatePicker } from "./examples-date-picker"
 import { examplesReactFlow } from "./examples-react-flow"
+import { examplesServerOverviewCard } from "./examples-server-overview-card"
 import { examplesUserActivityStream } from "./examples-user-activity-stream"
 
 export type Example = {
@@ -1503,6 +1504,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesCalendar,
   ...examplesDatePicker,
   ...examplesReactFlow,
+  ...examplesServerOverviewCard,
   ...examplesUserActivityStream,
 }
 
