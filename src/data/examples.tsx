@@ -220,7 +220,7 @@ import { examplesTeamSectionWithScales } from "./examples-team-section-with-scal
 import { examplesCalendar } from "./examples-calendar"
 import { examplesDatePicker } from "./examples-date-picker"
 import { examplesReactFlow } from "./examples-react-flow"
-<<<<<<< HEAD
+
 import { examplesRequestFlowInspector } from "./examples-request-flow-inspector"
 import { examplesErrorTrackerFeed } from "./examples-error-tracker-feed"
 import { examplesServerOverviewCard } from "./examples-server-overview-card"
@@ -1512,7 +1512,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesDatePicker,
   ...examplesErrorTrackerFeed,
   ...examplesReactFlow,
-<<<<<<< HEAD
+
   ...examplesRequestFlowInspector,
   ...examplesServerOverviewCard,
   ...examplesContainerResourcePanel,

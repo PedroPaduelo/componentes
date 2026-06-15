@@ -2240,7 +2240,7 @@ export const components: ComponentMeta[] = [
       "layout",
     ],
   },
-<<<<<<< HEAD
+
   // Lote Observabilidade
   {
     slug: "request-flow-inspector",
