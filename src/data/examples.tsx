@@ -227,6 +227,7 @@ import { examplesServerOverviewCard } from "./examples-server-overview-card"
 import { examplesContainerResourcePanel } from "./examples-container-resource-panel"
 import { examplesDbSchemaExplorer } from "./examples-db-schema-explorer"
 import { examplesSlowQueryList } from "./examples-slow-query-list"
+import { examplesUserActivityStream } from "./examples-user-activity-stream"
 
 export type Example = {
   title: string
@@ -1512,12 +1513,12 @@ export const examples: Record<string, Example[]> = {
   ...examplesDatePicker,
   ...examplesErrorTrackerFeed,
   ...examplesReactFlow,
-
   ...examplesRequestFlowInspector,
   ...examplesServerOverviewCard,
   ...examplesContainerResourcePanel,
   ...examplesDbSchemaExplorer,
   ...examplesSlowQueryList,
+  ...examplesUserActivityStream,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

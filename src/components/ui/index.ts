@@ -818,4 +818,9 @@ export type {
 } from "./slow-query-list-types"
 
 
+// Lote Observabilidade
+export { UserActivityStream } from "./user-activity-stream"
+export type { UserActivityStreamProps } from "./user-activity-stream-types"
+
+
 
