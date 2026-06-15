@@ -793,5 +793,17 @@ export type {
 } from "./container-resource-panel-types"
 export type { ContainerResourcePanelProps } from "./container-resource-panel"
 
+export { DbSchemaExplorer } from "./db-schema-explorer"
+export type {
+  ColumnDef,
+  DatabaseSchema,
+  DbEngine,
+  DbSchemaExplorerProps,
+  ForeignKeyDef,
+  IndexDef,
+  SchemaDef,
+  TableDef,
+} from "./db-schema-explorer-types"
+
 
 

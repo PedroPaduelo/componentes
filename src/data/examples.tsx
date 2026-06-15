@@ -224,6 +224,7 @@ import { examplesRequestFlowInspector } from "./examples-request-flow-inspector"
 import { examplesErrorTrackerFeed } from "./examples-error-tracker-feed"
 import { examplesServerOverviewCard } from "./examples-server-overview-card"
 import { examplesContainerResourcePanel } from "./examples-container-resource-panel"
+import { examplesDbSchemaExplorer } from "./examples-db-schema-explorer"
 
 export type Example = {
   title: string
@@ -1509,9 +1510,11 @@ export const examples: Record<string, Example[]> = {
   ...examplesDatePicker,
   ...examplesErrorTrackerFeed,
   ...examplesReactFlow,
+<<<<<<< HEAD
   ...examplesRequestFlowInspector,
   ...examplesServerOverviewCard,
   ...examplesContainerResourcePanel,
+  ...examplesDbSchemaExplorer,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

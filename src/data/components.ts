@@ -2326,6 +2326,29 @@ export const components: ComponentMeta[] = [
       "observability",
       "portainer",
     ],
+
+  // Lote Observabilidade
+  {
+    slug: "db-schema-explorer",
+    name: "DB Schema Explorer",
+    category: "Feedback",
+    description:
+      "Explorador de schema de banco no estilo DBeaver/Navicat: árvore lateral (banco → schemas → tabelas) com busca em tempo real, painel de detalhe com 4 abas (Columns / Indexes / Foreign keys / DDL) e referência FK clicável que pula para a tabela alvo.",
+    tags: [
+      "database",
+      "schema",
+      "postgres",
+      "mysql",
+      "sqlserver",
+      "oracle",
+      "sqlite",
+      "tree",
+      "ddl",
+      "foreign-key",
+      "observability",
+    ],
+    usage:
+      "Passe `database: DatabaseSchema` com id, name, engine, host:port, version, sizeMB, tables e schemas (cada um com tables, columns, primaryKey, indexes, foreignKeys, rowCount?, sizeMB?). Suporta busca por nome de tabela/coluna/referência e toggle 'Só com FK'. Clique em uma referência FK na aba 'Foreign keys' para saltar para a tabela alvo. Use as abas Columns/Indexes/FKs/DDL para inspecionar.",
   },
 ]
 
