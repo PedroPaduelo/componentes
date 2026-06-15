@@ -219,6 +219,7 @@ import { examplesTeamSectionWithScales } from "./examples-team-section-with-scal
 import { examplesCalendar } from "./examples-calendar"
 import { examplesDatePicker } from "./examples-date-picker"
 import { examplesReactFlow } from "./examples-react-flow"
+import { examplesServerOverviewCard } from "./examples-server-overview-card"
 import { examplesContainerResourcePanel } from "./examples-container-resource-panel"
 
 export type Example = {
@@ -1503,6 +1504,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesCalendar,
   ...examplesDatePicker,
   ...examplesReactFlow,
+  // Lote Observabilidade
+  ...examplesServerOverviewCard,
   ...examplesContainerResourcePanel,
 }
 
