@@ -215,6 +215,7 @@ import { examplesForm } from "./examples-form"
 import { examplesMenubar } from "./examples-menubar"
 import { examplesPopover } from "./examples-popover"
 import { examplesResizableNavbar } from "./examples-resizable-navbar"
+import { examplesFleetServerGrid } from "./examples-fleet-server-grid"
 import { examplesTeamSectionWithScales } from "./examples-team-section-with-scales"
 import { examplesCalendar } from "./examples-calendar"
 import { examplesDatePicker } from "./examples-date-picker"
@@ -1500,6 +1501,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesHoverCard,
   ...examplesPopover,
   ...examplesResizableNavbar,
+  ...examplesFleetServerGrid,
   ...examplesCalendar,
   ...examplesDatePicker,
   ...examplesReactFlow,

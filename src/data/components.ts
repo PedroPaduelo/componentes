@@ -2240,6 +2240,25 @@ export const components: ComponentMeta[] = [
       "debug",
     ],
   },
+  {
+    slug: "fleet-server-grid",
+    name: "Fleet Server Grid",
+    category: "Feedback",
+    description:
+      "Grid responsivo de tiles compactos para visualizar uma frota de servidores de uma vez. Cada tile mostra nome, host, status dot (verde/âmbar/vermelho), 3 mini-barras (CPU/MEM/DISK com cor reativa ao percentual), sparkline determinística de CPU (12 pontos), uptime formatado, função e região. Suporta busca em tempo real (nome/host/função/região), sort por status/nome/CPU/memória, e agrupamento por status/função/região. Click no tile abre um modal de detalhe (Dialog do shadcn) com tabela de discos e top processos — ou render prop customizável via renderDetail.",
+    tags: [
+      "fleet",
+      "server",
+      "grid",
+      "monitoring",
+      "status",
+      "cpu",
+      "memory",
+      "sparkline",
+      "infra",
+      "observability",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

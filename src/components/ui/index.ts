@@ -726,6 +726,19 @@ export type {
   TeamMemberSocial,
 } from "./team-section-with-scales-types"
 
+// Lote Observability
+export { FleetServerGrid } from "./fleet-server-grid"
+export type {
+  FleetServerGridProps,
+  FleetServerGridSortBy,
+  FleetServerGridGroupBy,
+  ServerMetrics,
+  ServerStatus,
+  ServerProcess,
+  ServerDisk,
+  ServerNetwork,
+} from "./fleet-server-grid-types"
+
 // Lote React Flow
 export { ReactFlowDiagram } from "./react-flow"
 export type {
