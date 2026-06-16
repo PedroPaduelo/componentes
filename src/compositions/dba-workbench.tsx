@@ -711,7 +711,7 @@ export function DbaWorkbench() {
                           (fk: {
                             name: string
                             columns?: string[]
-                            references?: {
+                            references: {
                               schema: string
                               table: string
                               column: string
