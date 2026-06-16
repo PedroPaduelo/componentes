@@ -198,11 +198,13 @@ export function DbaWorkbench() {
   const [activeDbId, setActiveDbId] = useState<string>(auditDb.id)
   const activeDb = databases.find((d) => d.id === activeDbId) ?? databases[0]
 
-  // Tabela selecionada (atualizada pelo DbSchemaExplorer via callback).
-  // Não temos callback direto no DbSchemaExplorer hoje; usamos um
-  // workaround: deixamos o usuário clicar no botão "Ver info" da
-  // sidebar pra popular a seleção manual. Quando o componente expuser
-  // onTableSelect, ligamos direto.
+  // Tabela selecionada. É atualizada por 2 fontes:
+  //  1. Click numa tabela na árvore central (via `onTableClick`
+  //     do <DbSchemaExplorer>) — fonte primária.
+  //  2. Click num favorito da sidebar (atalho rápido).
+  // O estado é "owned" pela composição, não pelo componente, pra que
+  // o painel direito sempre reflita a tabela ativa independente de
+  // qual caminho o usuário usou pra chegar nela.
   const [selectedTableRef, setSelectedTableRef] = useState<{
     schema: string
     table: string
@@ -271,13 +273,13 @@ export function DbaWorkbench() {
       {/* ============================================================ */}
       <header
         data-slot="dba-workbench-topbar"
-        className="flex shrink-0 items-center gap-3 border-b border-border bg-card px-3 py-2"
+        className="flex shrink-0 items-center gap-2 border-b border-border bg-card px-3 py-2 lg:gap-3"
       >
-        <div className="flex items-center gap-2">
-          <span className="flex size-7 items-center justify-center rounded-md bg-primary/10 text-primary">
+        <div className="flex shrink-0 items-center gap-2">
+          <span className="flex size-7 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
             <DatabaseIcon className="size-4" />
           </span>
-          <div className="leading-tight">
+          <div className="hidden leading-tight sm:block">
             <p className="text-sm font-bold tracking-tight">DBA Workbench</p>
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
               {activeDb.schemas.length} schemas · {activeDb.tables} tabelas
@@ -285,33 +287,45 @@ export function DbaWorkbench() {
           </div>
         </div>
 
-        <div className="mx-2 h-6 w-px bg-border" />
+        <div className="mx-1 hidden h-6 w-px shrink-0 bg-border lg:mx-2 lg:block" />
 
         <Badge
           variant="outline"
-          className={`gap-1.5 border ${ENGINE_TONE[activeDb.engine]}`}
+          className={`hidden gap-1.5 border ${ENGINE_TONE[activeDb.engine]} sm:inline-flex`}
         >
-          <DatabaseIcon className="size-3" />
-          {ENGINE_LABEL[activeDb.engine]} {activeDb.version}
+          <DatabaseIcon className="size-3 shrink-0" />
+          <span className="whitespace-nowrap">
+            {ENGINE_LABEL[activeDb.engine]} {activeDb.version}
+          </span>
         </Badge>
-        <span className="hidden font-mono text-xs text-muted-foreground md:inline">
+        <span className="hidden font-mono text-xs text-muted-foreground xl:inline">
           {activeDb.host}:{activeDb.port ?? 5432}
         </span>
 
-        <div className="ml-auto flex items-center gap-1.5">
-          <Button variant="outline" size="sm" onClick={() => setLastActionMs(Math.floor(20 + Math.random() * 80))}>
+        <div className="ml-auto flex shrink-0 items-center gap-1">
+          <Button
+            variant="outline"
+            size="sm"
+            className="hidden md:inline-flex"
+            onClick={() => setLastActionMs(Math.floor(20 + Math.random() * 80))}
+          >
             <RefreshCw className="size-3.5" />
             Refresh
           </Button>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="hidden lg:inline-flex">
             <FileCode2 className="size-3.5" />
             Export DDL
           </Button>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="hidden lg:inline-flex">
             <Terminal className="size-3.5" />
             Query
           </Button>
-          <Button variant="outline" size="sm">
+          <Button
+            variant="outline"
+            size="icon"
+            aria-label="Configurações"
+            className="size-8"
+          >
             <Settings className="size-3.5" />
           </Button>
         </div>
@@ -337,21 +351,23 @@ export function DbaWorkbench() {
                 setSelectedTableRef(null)
                 setLastActionMs(null)
               }}
-              className={`group inline-flex items-center gap-2 rounded-t-md border-x border-t px-3 py-1.5 text-xs font-medium transition-colors ${
+              className={`group inline-flex items-center gap-1.5 rounded-t-md border-x border-t px-2.5 py-1.5 text-xs font-medium transition-colors sm:gap-2 sm:px-3 ${
                 isActive
                   ? "border-border bg-background text-foreground"
                   : "border-transparent text-muted-foreground hover:bg-background/60 hover:text-foreground"
               }`}
             >
-              <DatabaseIcon className="size-3" />
-              <span className="max-w-[160px] truncate">{db.name}</span>
+              <DatabaseIcon className="size-3 shrink-0" />
+              <span className="max-w-[120px] truncate sm:max-w-[160px]">
+                {db.name}
+              </span>
               <span
-                className={`rounded px-1 py-0 text-[9px] font-semibold uppercase ${ENGINE_TONE[db.engine].split(" ")[0]}`}
+                className={`hidden rounded px-1 py-0 text-[9px] font-semibold uppercase sm:inline ${ENGINE_TONE[db.engine].split(" ")[0]}`}
               >
                 {db.engine.slice(0, 4)}
               </span>
               <X
-                className={`size-3 opacity-0 transition-opacity group-hover:opacity-60 ${
+                className={`size-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-60 ${
                   isActive ? "opacity-60" : ""
                 }`}
                 aria-hidden
@@ -371,11 +387,11 @@ export function DbaWorkbench() {
       {/* ============================================================ */}
       {/*  MAIN: Sidebar | Centro (DbSchemaExplorer) | Painel direito  */}
       {/* ============================================================ */}
-      <div className="flex min-h-0 flex-1">
+      <div className="flex min-h-0 min-w-0 flex-1">
         {/* ============== SIDEBAR ESQUERDA ============== */}
         <aside
           data-slot="dba-workbench-sidebar"
-          className="flex w-[260px] shrink-0 flex-col border-r border-border bg-card/40"
+          className="flex w-[220px] shrink-0 flex-col border-r border-border bg-card/40 md:w-[240px] xl:w-[260px]"
         >
           <ScrollArea className="flex-1">
             {/* --- CONEXÕES --- */}
@@ -501,30 +517,37 @@ export function DbaWorkbench() {
           data-slot="dba-workbench-main"
           className="flex min-w-0 flex-1 flex-col overflow-hidden"
         >
-          <DbSchemaExplorer database={activeDb} embedded />
+          <DbSchemaExplorer
+            database={activeDb}
+            embedded
+            onTableClick={(ref) => setSelectedTableRef(ref)}
+          />
         </main>
 
         {/* ============== PAINEL DIREITO (info da tabela) ============== */}
         <aside
           data-slot="dba-workbench-info"
-          className="hidden w-[320px] shrink-0 flex-col border-l border-border bg-card/40 lg:flex"
+          className="hidden w-[280px] shrink-0 flex-col border-l border-border bg-card/40 xl:flex"
         >
           <ScrollArea className="flex-1">
             <div className="flex flex-col gap-3 p-3">
               {selectedTable ? (
                 <>
-                  <div>
+                  <div className="min-w-0">
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
                       Tabela selecionada
                     </p>
-                    <div className="mt-1 flex items-center gap-1.5">
-                      <TableIcon className="size-3.5 text-primary" />
-                      <code className="text-sm font-semibold">
+                    <div className="mt-1 flex min-w-0 items-center gap-1.5">
+                      <TableIcon className="size-3.5 shrink-0 text-primary" />
+                      <code
+                        className="truncate text-sm font-semibold"
+                        title={`${selectedTableRef?.schema}.${selectedTable.name}`}
+                      >
                         {selectedTableRef?.schema}.{selectedTable.name}
                       </code>
                     </div>
                     {selectedTable.description && (
-                      <p className="mt-1 text-[11px] text-muted-foreground">
+                      <p className="mt-1 line-clamp-2 text-[11px] text-muted-foreground">
                         {selectedTable.description}
                       </p>
                     )}
@@ -541,53 +564,61 @@ export function DbaWorkbench() {
                     />
                   </div>
 
-                  <div>
+                  <div className="min-w-0">
                     <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">
                       Colunas ({selectedTable.columns.length})
                     </p>
-                    <ul className="flex flex-col gap-0.5">
-                      {selectedTable.columns.slice(0, 6).map((c) => (
+                    <ul className="flex max-h-[180px] flex-col gap-0.5 overflow-y-auto rounded border border-border/40 bg-background/30 p-1">
+                      {selectedTable.columns.map((c) => (
                         <li
                           key={c.name}
                           className="flex items-center justify-between gap-2 rounded px-1.5 py-0.5 text-[11px] hover:bg-muted/30"
                         >
-                          <span className="flex items-center gap-1 truncate">
+                          <span className="flex min-w-0 items-center gap-1">
                             {c.isPrimary && (
-                              <span className="rounded bg-amber-500/15 px-1 text-[9px] font-bold text-amber-500">
+                              <span className="shrink-0 rounded bg-amber-500/15 px-1 text-[9px] font-bold text-amber-500">
                                 PK
                               </span>
                             )}
                             {c.isForeign && (
-                              <span className="rounded bg-sky-500/15 px-1 text-[9px] font-bold text-sky-500">
+                              <span className="shrink-0 rounded bg-sky-500/15 px-1 text-[9px] font-bold text-sky-500">
                                 FK
                               </span>
                             )}
-                            <span className="truncate font-mono">{c.name}</span>
+                            <span
+                              className="truncate font-mono"
+                              title={c.name}
+                            >
+                              {c.name}
+                            </span>
                           </span>
-                          <span className="shrink-0 text-[10px] text-muted-foreground">
+                          <span
+                            className="shrink-0 truncate text-[10px] text-muted-foreground"
+                            title={c.type}
+                          >
                             {c.type}
                           </span>
                         </li>
                       ))}
-                      {selectedTable.columns.length > 6 && (
-                        <li className="px-1.5 text-[10px] text-muted-foreground/60">
-                          + {selectedTable.columns.length - 6} colunas
-                        </li>
-                      )}
                     </ul>
                   </div>
 
-                  <div>
+                  <div className="min-w-0">
                     <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">
                       Índices ({selectedTable.indexes.length})
                     </p>
-                    <ul className="flex flex-col gap-0.5">
+                    <ul className="flex max-h-[140px] flex-col gap-0.5 overflow-y-auto rounded border border-border/40 bg-background/30 p-1">
                       {selectedTable.indexes.map((idx) => (
                         <li
                           key={idx.name}
                           className="flex items-center justify-between gap-2 rounded px-1.5 py-0.5 text-[11px] hover:bg-muted/30"
                         >
-                          <span className="truncate font-mono">{idx.name}</span>
+                          <span
+                            className="truncate font-mono"
+                            title={idx.name}
+                          >
+                            {idx.name}
+                          </span>
                           <span className="shrink-0 text-[10px] text-muted-foreground">
                             {idx.type} · {idx.columns.length}col
                           </span>
@@ -597,18 +628,20 @@ export function DbaWorkbench() {
                   </div>
 
                   {selectedTable.foreignKeys.length > 0 && (
-                    <div>
+                    <div className="min-w-0">
                       <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">
                         Foreign keys ({selectedTable.foreignKeys.length})
                       </p>
-                      <ul className="flex flex-col gap-0.5">
+                      <ul className="flex max-h-[140px] flex-col gap-1 overflow-y-auto rounded border border-border/40 bg-background/30 p-1">
                         {selectedTable.foreignKeys.map((fk) => (
                           <li
                             key={fk.name}
                             className="rounded border border-sky-500/20 bg-sky-500/5 px-1.5 py-1 text-[11px]"
                           >
-                            <p className="font-mono text-foreground">{fk.name}</p>
-                            <p className="text-[10px] text-muted-foreground">
+                            <p className="truncate font-mono text-foreground" title={fk.name}>
+                              {fk.name}
+                            </p>
+                            <p className="truncate text-[10px] text-muted-foreground">
                               → {fk.references.schema}.{fk.references.table}.
                               {fk.references.column}
                             </p>
@@ -621,6 +654,7 @@ export function DbaWorkbench() {
                   <Button
                     variant="outline"
                     size="sm"
+                    className="w-full"
                     onClick={() => onClickFavorite(selectedTableRef!.schema, selectedTableRef!.table)}
                   >
                     {favorites.has(
@@ -639,13 +673,19 @@ export function DbaWorkbench() {
                   </Button>
                 </>
               ) : (
-                <div className="flex flex-col items-center justify-center gap-2 py-12 text-center text-muted-foreground">
-                  <TableIcon className="size-8 opacity-30" />
-                  <p className="text-xs">Selecione uma tabela na árvore</p>
-                  <p className="text-[10px] text-muted-foreground/70">
-                    Os detalhes (linhas, tamanho, colunas, índices, FKs)
-                    aparecem aqui.
-                  </p>
+                <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
+                  <div className="flex size-12 items-center justify-center rounded-full border border-dashed border-border bg-background/40">
+                    <TableIcon className="size-5 text-muted-foreground/40" />
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <p className="text-xs font-medium text-foreground">
+                      Nenhuma tabela selecionada
+                    </p>
+                    <p className="max-w-[200px] text-[10px] text-muted-foreground/70">
+                      Clique numa tabela na árvore ao lado para ver
+                      linhas, tamanho, colunas, índices e foreign keys.
+                    </p>
+                  </div>
                 </div>
               )}
             </div>
@@ -658,36 +698,45 @@ export function DbaWorkbench() {
       {/* ============================================================ */}
       <footer
         data-slot="dba-workbench-statusbar"
-        className="flex shrink-0 items-center gap-4 border-t border-border bg-card px-3 py-1 text-[10px] tabular-nums text-muted-foreground"
+        className="flex shrink-0 items-center gap-2 overflow-x-auto border-t border-border bg-card px-3 py-1 text-[10px] tabular-nums text-muted-foreground md:gap-4"
       >
-        <span className="flex items-center gap-1">
+        <span className="flex shrink-0 items-center gap-1">
           <span
             className="size-1.5 rounded-full bg-emerald-500"
             aria-hidden
           />
           conectado
         </span>
-        <span className="flex items-center gap-1">
+        <span className="hidden shrink-0 items-center gap-1 sm:flex">
           <DatabaseIcon className="size-3" />
-          {activeDb.name}
+          <span className="max-w-[140px] truncate" title={activeDb.name}>
+            {activeDb.name}
+          </span>
         </span>
-        <span>encoding: UTF8</span>
-        <span>read-only: off</span>
-        <span className="ml-auto flex items-center gap-3">
+        <span className="hidden shrink-0 md:inline">encoding: UTF8</span>
+        <span className="hidden shrink-0 lg:inline">read-only: off</span>
+        <span className="ml-auto flex shrink-0 items-center gap-2 md:gap-3">
           {lastActionMs !== null ? (
             <span className="flex items-center gap-1">
               <Loader2 className="size-3 animate-spin" />
-              última query: {lastActionMs}ms
+              <span className="hidden sm:inline">última query: </span>
+              {lastActionMs}ms
             </span>
           ) : (
             <span className="flex items-center gap-1">
               <Activity className="size-3" />
-              idle
+              <span className="hidden sm:inline">idle</span>
             </span>
           )}
           <span className="flex items-center gap-1">
             <Clock className="size-3" />
-            {activeDb.schemas.reduce((a, s) => a + s.tables.length, 0)} tabelas visíveis
+            <span className="hidden sm:inline">
+              {activeDb.schemas.reduce((a, s) => a + s.tables.length, 0)}{" "}
+              tabelas visíveis
+            </span>
+            <span className="sm:hidden">
+              {activeDb.schemas.reduce((a, s) => a + s.tables.length, 0)} tab
+            </span>
           </span>
         </span>
       </footer>
@@ -722,14 +771,14 @@ function Section({
         className="flex w-full items-center gap-1.5 px-3 py-1.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:bg-muted/30 hover:text-foreground"
       >
         {open ? (
-          <ChevronDown className="size-3" />
+          <ChevronDown className="size-3 shrink-0" />
         ) : (
-          <ChevronRight className="size-3" />
+          <ChevronRight className="size-3 shrink-0" />
         )}
-        {icon}
-        <span className="flex-1">{title}</span>
+        <span className="shrink-0">{icon}</span>
+        <span className="flex-1 truncate">{title}</span>
         {count !== undefined && (
-          <span className="rounded bg-muted/60 px-1 text-[9px] tabular-nums">
+          <span className="shrink-0 rounded bg-muted/60 px-1 text-[9px] tabular-nums">
             {count}
           </span>
         )}
@@ -741,11 +790,16 @@ function Section({
 
 function StatTile({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-md border border-border bg-background/60 p-2">
-      <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+    <div className="min-w-0 rounded-md border border-border bg-background/60 p-2">
+      <p className="truncate text-[10px] uppercase tracking-wider text-muted-foreground">
         {label}
       </p>
-      <p className="font-mono text-sm font-semibold tabular-nums">{value}</p>
+      <p
+        className="truncate font-mono text-sm font-semibold tabular-nums"
+        title={value}
+      >
+        {value}
+      </p>
     </div>
   )
 }
