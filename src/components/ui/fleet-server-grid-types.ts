@@ -33,6 +33,70 @@ export type ServerNetwork = {
   establishedCount: number
 }
 
+/** Severidade de um incidente de servidor. */
+export type ServerIncidentSeverity = "low" | "medium" | "high" | "critical"
+
+/** Tipo do evento dentro da timeline de um incidente. */
+export type ServerIncidentEventType =
+  | "detect"
+  | "page"
+  | "escalate"
+  | "note"
+  | "deploy"
+  | "mitigate"
+  | "resolve"
+  | "postmortem"
+  | "rollback"
+
+/** Um evento dentro da timeline de um incidente. */
+export type ServerIncidentEvent = {
+  id: string
+  /** ISO 8601 do momento do evento. */
+  t: string
+  type: ServerIncidentEventType
+  /** Texto curto do evento. */
+  title: string
+  /** Descrição opcional. */
+  description?: string
+  /** Ator/owner (opcional) — quem fez a ação. */
+  actor?: string
+}
+
+/** Métricas do servidor NO MOMENTO do incidente (snapshot). */
+export type ServerIncidentMetrics = {
+  cpuPct: number
+  memPct: number
+  netInMBs: number
+  netOutMBs: number
+  activeConnections: number
+}
+
+/**
+ * Detalhes completos de um incidente recente de um servidor.
+ * Aparece como `recentIncident` no `ServerMetrics` (opcional) e é
+ * mostrado no `IncidentDetailDialog` quando o consumidor clica no
+ * badge "Incidente recente" do tile do servidor.
+ */
+export type ServerIncident = {
+  id: string
+  title: string
+  severity: ServerIncidentSeverity
+  /** ISO 8601 do início. */
+  startedAt: string
+  /** ISO 8601 da resolução (opcional — null significa incidente aberto). */
+  resolvedAt?: string
+  /** Resumo legível do que aconteceu. */
+  summary: string
+  /** Causa provável diagnosticada (opcional). */
+  suspectedCause?: string
+  /** Tipo do incidente — ex.: "outage", "degradation", "high-cpu", "disk-full". */
+  type: string
+  /** Eventos cronológicos da timeline. */
+  events: ServerIncidentEvent[]
+  /** Snapshot de métricas no momento do pico. */
+  metricsAtIncident: ServerIncidentMetrics
+}
+
 export type ServerMetrics = {
   id: string
   name: string
@@ -46,7 +110,10 @@ export type ServerMetrics = {
   uptimeSeconds: number
   processes: ServerProcess[]
   cpuHistory?: number[]
+  /** ISO 8601 do último incidente (opcional). Mantido p/ compat — use `recentIncident` para detalhes. */
   lastIncidentAt?: string
+  /** Detalhes do último incidente (opcional). Quando presente, o badge "Incidente recente" vira clicável. */
+  recentIncident?: ServerIncident
   region?: string
   zone?: string
 }
@@ -59,17 +126,19 @@ export type FleetServerGridProps = Omit<
   React.HTMLAttributes<HTMLDivElement>,
   "children"
 > & {
-  /** Lista de servidores exibidos. */
   servers: ServerMetrics[]
-  /** Callback disparado ao clicar em um tile (antes do modal). */
   onServerClick?: (id: string) => void
-  /** Critério de ordenação dos tiles. Default: "status". */
   sortBy?: FleetServerGridSortBy
-  /** Critério de agrupamento em seções. Default: "none". */
   groupBy?: FleetServerGridGroupBy
   /**
-   * Render prop opcional para o detalhe expandido.
-   * Quando omitido, o modal mostra um card "Detalhes" simples.
+   * Callback opcional ao clicar no badge "Incidente recente" de um
+   * tile. Quando fornecido, o detail dialog built-in NÃO abre —
+   * o consumidor fica responsável por mostrar os detalhes como
+   * preferir (navegação, modal customizado, etc.).
+   *
+   * Quando omitido, o componente abre seu próprio Dialog com 4 tabs
+   * (Resumo / Causa / Timeline / Métricas).
    */
+  onIncidentClick?: (server: ServerMetrics, incident: ServerIncident) => void
   renderDetail?: (server: ServerMetrics) => React.ReactNode
 }

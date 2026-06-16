@@ -1,17 +1,36 @@
 import * as React from "react"
-import { SearchIcon, AlertTriangleIcon, ActivityIcon, MapPinIcon, ServerIcon } from "lucide-react"
+import {
+  SearchIcon,
+  AlertTriangleIcon,
+  ActivityIcon,
+  MapPinIcon,
+  ServerIcon,
+  SirenIcon,
+  WrenchIcon,
+  CheckCircle2Icon,
+  FileTextIcon,
+  ClockIcon,
+  TagIcon,
+  TrendingUpIcon,
+} from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
 import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@/components/ui/tabs"
 import {
   Select,
   SelectContent,
@@ -21,6 +40,10 @@ import {
 } from "@/components/ui/select"
 import type {
   FleetServerGridProps,
+  ServerIncident,
+  ServerIncidentEvent,
+  ServerIncidentEventType,
+  ServerIncidentSeverity,
   ServerMetrics,
   ServerStatus,
 } from "@/components/ui/fleet-server-grid-types"
@@ -119,6 +142,11 @@ function hasRecentIncident(at: string | undefined, now: number): boolean {
 type ServerTileProps = {
   server: ServerMetrics
   onSelect: (server: ServerMetrics) => void
+  /**
+   * Callback opcional ao clicar no badge "Incidente recente".
+   * Quando fornecido, o detail dialog built-in NÃO abre.
+   */
+  onIncidentClick?: (server: ServerMetrics, incident: ServerIncident) => void
 }
 
 const SPARK_W = 80
@@ -148,7 +176,11 @@ function buildSparkPoints(server: ServerMetrics): number[] {
   return pts
 }
 
-function ServerTile({ server, onSelect }: ServerTileProps) {
+function ServerTile({
+  server,
+  onSelect,
+  onIncidentClick,
+}: ServerTileProps) {
   const sparkPoints = React.useMemo(() => buildSparkPoints(server), [server])
   const max = Math.max(...sparkPoints, 1)
   const min = Math.min(...sparkPoints, 0)
@@ -164,7 +196,13 @@ function ServerTile({ server, onSelect }: ServerTileProps) {
         )
       : 0
 
-  const incident = hasRecentIncident(server.lastIncidentAt, Date.now())
+  // Considera incidente recente se:
+  //  - tem `recentIncident` com `startedAt` nas últimas 24h, OU
+  //  - tem `lastIncidentAt` legacy nas últimas 24h
+  const recentIncident = server.recentIncident
+  const incidentFlag =
+    !!recentIncident ||
+    hasRecentIncident(server.lastIncidentAt, Date.now())
 
   // Constrói o path da sparkline. Comprime no espaço SPARK_W × SPARK_H.
   const path = sparkPoints
@@ -289,15 +327,45 @@ function ServerTile({ server, onSelect }: ServerTileProps) {
         </div>
       </div>
 
-      {incident ? (
-        <Badge
-          variant="destructive"
-          className="self-start"
+      {incidentFlag ? (
+        <button
+          type="button"
+          onClick={(ev) => {
+            // Impede que o click propague para o tile (que abre o
+            // detail dialog de métricas do servidor inteiro).
+            ev.stopPropagation()
+            onIncidentClick?.(server, recentIncident ?? {
+              id: "legacy",
+              title: "Incidente recente",
+              severity: "medium",
+              startedAt: server.lastIncidentAt!,
+              summary: "Detalhes do incidente não disponíveis.",
+              type: "unknown",
+              events: [],
+              metricsAtIncident: {
+                cpuPct: server.cpu.usagePct,
+                memPct: server.memory.usedPct,
+                netInMBs: server.network.inMBs,
+                netOutMBs: server.network.outMBs,
+                activeConnections: server.network.establishedCount,
+              },
+            })
+          }}
+          className="group/incident inline-flex items-center gap-1 self-start rounded-full border border-rose-500/30 bg-rose-500/15 px-1.5 py-0.5 text-[10px] font-medium text-rose-500 transition-colors hover:bg-rose-500/25 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-rose-500/50"
           data-slot="fleet-server-incident-badge"
+          aria-label={`Ver detalhes do incidente recente de ${server.name}`}
         >
-          <AlertTriangleIcon className="mr-1 size-3" aria-hidden="true" />
+          <AlertTriangleIcon className="size-3" aria-hidden="true" />
           Incidente recente
-        </Badge>
+          {recentIncident && (
+            <span
+              aria-hidden="true"
+              className="ml-0.5 text-rose-500/70 group-hover/incident:text-rose-500"
+            >
+              ›
+            </span>
+          )}
+        </button>
       ) : null}
     </button>
   )
@@ -507,6 +575,7 @@ function DetailField({ label, value }: { label: string; value: string }) {
 function FleetServerGrid({
   servers,
   onServerClick,
+  onIncidentClick,
   sortBy = "status",
   groupBy = "none",
   renderDetail,
@@ -518,6 +587,23 @@ function FleetServerGrid({
   const [open, setOpen] = React.useState(false)
   const [activeSort, setActiveSort] = React.useState(sortBy)
   const [activeGroup, setActiveGroup] = React.useState(groupBy)
+  // Incidente selecionado para o detail dialog built-in. Null quando
+  // nenhum. Só é controlado pelo componente se `onIncidentClick` for
+  // omitido (caso contrário, o consumidor é dono da ação de click).
+  const [selectedIncident, setSelectedIncident] = React.useState<{
+    server: ServerMetrics
+    incident: ServerIncident
+  } | null>(null)
+
+  // Handler padrão para o badge "Incidente recente" — abre o detail
+  // dialog built-in. Se o consumidor passar `onIncidentClick`, esse
+  // handler é sobrescrito (vide prop drilling no ServerTile).
+  const handleIncident = React.useCallback(
+    (server: ServerMetrics, incident: ServerIncident) => {
+      setSelectedIncident({ server, incident })
+    },
+    [],
+  )
 
   // Reflete mudanças de prop em estado interno (controlado → uncontrolled).
   React.useEffect(() => setActiveSort(sortBy), [sortBy])
@@ -716,6 +802,7 @@ function FleetServerGrid({
                     key={server.id}
                     server={server}
                     onSelect={handleSelect}
+                    onIncidentClick={onIncidentClick ?? handleIncident}
                   />
                 ))}
               </div>
@@ -766,7 +853,485 @@ function FleetServerGrid({
           ) : null}
         </DialogContent>
       </Dialog>
+
+      {/*
+       * Incident detail dialog built-in. Só é renderizado/controlado
+       * pelo componente quando o consumidor NÃO passou `onIncidentClick`.
+       * Se passou, o consumidor é dono da ação e o dialog fica
+       * permanentemente fechado.
+       */}
+      {!onIncidentClick && (
+        <IncidentDetailDialog
+          server={selectedIncident?.server ?? null}
+          incident={selectedIncident?.incident ?? null}
+          onOpenChange={(open) => {
+            if (!open) setSelectedIncident(null)
+          }}
+        />
+      )}
     </div>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+/*                          IncidentDetailDialog                              */
+/* -------------------------------------------------------------------------- */
+
+const SEVERITY_TONE: Record<
+  ServerIncidentSeverity,
+  { chip: string; dot: string; text: string; ring: string }
+> = {
+  low: {
+    chip: "bg-sky-500/15 text-sky-500 border-sky-500/30",
+    dot: "bg-sky-500",
+    text: "text-sky-500",
+    ring: "ring-sky-500/40",
+  },
+  medium: {
+    chip: "bg-amber-500/15 text-amber-500 border-amber-500/30",
+    dot: "bg-amber-500",
+    text: "text-amber-500",
+    ring: "ring-amber-500/40",
+  },
+  high: {
+    chip: "bg-orange-500/15 text-orange-500 border-orange-500/30",
+    dot: "bg-orange-500",
+    text: "text-orange-500",
+    ring: "ring-orange-500/40",
+  },
+  critical: {
+    chip: "bg-rose-500/15 text-rose-500 border-rose-500/30",
+    dot: "bg-rose-500",
+    text: "text-rose-500",
+    ring: "ring-rose-500/40",
+  },
+}
+
+const SEVERITY_LABEL: Record<ServerIncidentSeverity, string> = {
+  low: "Baixa",
+  medium: "Média",
+  high: "Alta",
+  critical: "Crítica",
+}
+
+const EVENT_TYPE_ICON: Record<
+  ServerIncidentEventType,
+  React.ComponentType<{ className?: string }>
+> = {
+  detect: SirenIcon,
+  page: AlertTriangleIcon,
+  escalate: TrendingUpIcon,
+  note: FileTextIcon,
+  deploy: WrenchIcon,
+  mitigate: WrenchIcon,
+  resolve: CheckCircle2Icon,
+  postmortem: FileTextIcon,
+  rollback: WrenchIcon,
+}
+
+const EVENT_TYPE_TONE: Record<
+  ServerIncidentEventType,
+  string
+> = {
+  detect: "text-rose-500",
+  page: "text-rose-500",
+  escalate: "text-amber-500",
+  note: "text-muted-foreground",
+  deploy: "text-violet-500",
+  mitigate: "text-amber-500",
+  resolve: "text-emerald-500",
+  postmortem: "text-sky-500",
+  rollback: "text-violet-500",
+}
+
+/** Diferença legível entre duas datas ISO (ex.: "1h 23min"). */
+function durationLabel(startIso: string, endIso?: string): string {
+  const start = Date.parse(startIso)
+  const end = endIso ? Date.parse(endIso) : Date.now()
+  if (Number.isNaN(start) || Number.isNaN(end)) return "—"
+  const totalMin = Math.max(0, Math.round((end - start) / 60000))
+  if (totalMin < 1) return "<1min"
+  if (totalMin < 60) return `${totalMin}min`
+  const h = Math.floor(totalMin / 60)
+  const m = totalMin % 60
+  return m > 0 ? `${h}h ${m}min` : `${h}h`
+}
+
+/** HH:mm:ss estável a partir de ISO (não depende de locale do host). */
+function hhMmSs(iso: string): string {
+  const m = /^.*T(\d{2}:\d{2}:\d{2})/.exec(iso)
+  return m ? m[1] : iso
+}
+
+/** Tempo relativo estável (sem Date.now, em minutos). Usa a data de início
+ * como referência para o "agora" fictício. */
+function relativeLabel(iso: string, refIso: string): string {
+  const t = Date.parse(iso)
+  const r = Date.parse(refIso)
+  if (Number.isNaN(t) || Number.isNaN(r)) return iso
+  const min = Math.round((t - r) / 60000)
+  if (min < 0) return `em ${Math.abs(min)}min`
+  if (min === 0) return "agora"
+  if (min < 60) return `+${min}min`
+  const h = Math.floor(min / 60)
+  return `+${h}h ${min % 60}min`
+}
+
+function IncidentSummaryTab({
+  server,
+  incident,
+}: {
+  server: ServerMetrics
+  incident: ServerIncident
+}) {
+  const tone = SEVERITY_TONE[incident.severity]
+  return (
+    <div
+      data-slot="fsg-incident-summary"
+      className="flex flex-col gap-3 rounded-md border border-border bg-background/60 p-3"
+    >
+      <div className="flex items-baseline gap-3">
+        <span className={cn("size-2.5 shrink-0 rounded-full", tone.dot)} aria-hidden />
+        <span className={cn("text-[10px] font-semibold uppercase tracking-wider", tone.text)}>
+          {SEVERITY_LABEL[incident.severity]} · {incident.type}
+        </span>
+      </div>
+      <p className="text-sm font-medium text-foreground">{incident.title}</p>
+      <p className="text-xs text-muted-foreground">{incident.summary}</p>
+      <dl className="mt-1 grid grid-cols-1 gap-x-4 gap-y-2 text-[11px] sm:grid-cols-2">
+        <div className="flex items-baseline gap-2">
+          <dt className="text-muted-foreground">Servidor</dt>
+          <dd className="font-mono text-foreground">{server.name} ({server.host})</dd>
+        </div>
+        <div className="flex items-baseline gap-2">
+          <dt className="text-muted-foreground">Início</dt>
+          <dd className="font-mono text-foreground">
+            {hhMmSs(incident.startedAt)}
+            {incident.resolvedAt && (
+              <span className="ml-1.5 text-muted-foreground">
+                · durou {durationLabel(incident.startedAt, incident.resolvedAt)}
+              </span>
+            )}
+          </dd>
+        </div>
+        {incident.resolvedAt && (
+          <div className="flex items-baseline gap-2">
+            <dt className="text-muted-foreground">Resolvido</dt>
+            <dd className="font-mono text-foreground">{hhMmSs(incident.resolvedAt)}</dd>
+          </div>
+        )}
+        <div className="flex items-baseline gap-2">
+          <dt className="text-muted-foreground">Status</dt>
+          <dd className="text-foreground">
+            {incident.resolvedAt ? "Resolvido" : "Em andamento"}
+          </dd>
+        </div>
+      </dl>
+    </div>
+  )
+}
+
+function IncidentCauseTab({
+  server,
+  incident,
+}: {
+  server: ServerMetrics
+  incident: ServerIncident
+}) {
+  return (
+    <div
+      data-slot="fsg-incident-cause"
+      className="flex flex-col gap-3 rounded-md border border-border bg-background/60 p-3"
+    >
+      <div>
+        <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">
+          Causa provável
+        </p>
+        <p className="text-sm text-foreground">
+          {incident.suspectedCause ?? "Não identificada."}
+        </p>
+      </div>
+      <div>
+        <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">
+          Métricas no pico do incidente
+        </p>
+        <dl className="grid grid-cols-2 gap-2 sm:grid-cols-5">
+          <SnapshotTile
+            label="CPU"
+            value={`${Math.round(incident.metricsAtIncident.cpuPct)}%`}
+            danger={incident.metricsAtIncident.cpuPct > 85}
+          />
+          <SnapshotTile
+            label="Memória"
+            value={`${Math.round(incident.metricsAtIncident.memPct)}%`}
+            danger={incident.metricsAtIncident.memPct > 90}
+          />
+          <SnapshotTile
+            label="Net in"
+            value={`${incident.metricsAtIncident.netInMBs}MB/s`}
+            danger={false}
+          />
+          <SnapshotTile
+            label="Net out"
+            value={`${incident.metricsAtIncident.netOutMBs}MB/s`}
+            danger={false}
+          />
+          <SnapshotTile
+            label="Conexões"
+            value={String(incident.metricsAtIncident.activeConnections)}
+            danger={false}
+          />
+        </dl>
+      </div>
+      <div>
+        <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">
+          Snapshot do servidor no momento
+        </p>
+        <p className="text-[11px] text-muted-foreground">
+          {server.name} estava com {Math.round(server.cpu.usagePct)}% de CPU
+          e {Math.round(server.memory.usedPct)}% de memória. Status atual: {" "}
+          <span className="font-mono text-foreground">{server.status}</span>.
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function SnapshotTile({
+  label,
+  value,
+  danger,
+}: {
+  label: string
+  value: string
+  danger: boolean
+}) {
+  return (
+    <div
+      className={cn(
+        "rounded-md border p-2 text-center",
+        danger
+          ? "border-rose-500/30 bg-rose-500/5"
+          : "border-border bg-muted/30",
+      )}
+    >
+      <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+        {label}
+      </p>
+      <p
+        className={cn(
+          "font-mono text-sm font-semibold tabular-nums",
+          danger ? "text-rose-500" : "text-foreground",
+        )}
+      >
+        {value}
+      </p>
+    </div>
+  )
+}
+
+function IncidentTimelineTab({
+  events,
+  startedAt,
+}: {
+  events: ServerIncidentEvent[]
+  startedAt: string
+}) {
+  if (events.length === 0) {
+    return (
+      <p className="rounded-md border border-dashed border-border bg-muted/20 px-3 py-6 text-center text-xs text-muted-foreground">
+        Sem eventos registrados na timeline deste incidente.
+      </p>
+    )
+  }
+  return (
+    <ol
+      data-slot="fsg-incident-timeline"
+      className="flex flex-col gap-0.5 rounded-md border border-border bg-background/60 p-2"
+    >
+      {events.map((ev) => {
+        const Icon = EVENT_TYPE_ICON[ev.type] ?? AlertTriangleIcon
+        const tone = EVENT_TYPE_TONE[ev.type] ?? "text-muted-foreground"
+        return (
+          <li
+            key={ev.id}
+            data-slot="fsg-incident-event"
+            data-type={ev.type}
+            className="flex items-start gap-2 rounded px-2 py-1.5 text-[11px] hover:bg-muted/30"
+          >
+            <span className={cn("mt-0.5 shrink-0", tone)}>
+              <Icon className="size-3.5" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="flex items-baseline gap-2">
+                <span className="text-muted-foreground tabular-nums">
+                  {hhMmSs(ev.t)}
+                </span>
+                <span className={cn("font-semibold uppercase tracking-wider text-[10px]", tone)}>
+                  {ev.type}
+                </span>
+                {ev.actor && (
+                  <span className="text-muted-foreground">por {ev.actor}</span>
+                )}
+                <span className="ml-auto text-[10px] text-muted-foreground">
+                  {relativeLabel(ev.t, startedAt)}
+                </span>
+              </div>
+              <p className="mt-0.5 text-foreground">{ev.title}</p>
+              {ev.description && (
+                <p className="text-muted-foreground">{ev.description}</p>
+              )}
+            </div>
+          </li>
+        )
+      })}
+    </ol>
+  )
+}
+
+function IncidentDetailDialog({
+  server,
+  incident,
+  onOpenChange,
+}: {
+  server: ServerMetrics | null
+  incident: ServerIncident | null
+  onOpenChange: (open: boolean) => void
+}) {
+  const open = server !== null && incident !== null
+
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent
+        data-slot="fsg-incident-dialog"
+        className="max-h-[90vh] overflow-y-auto sm:max-w-2xl"
+      >
+        {server && incident && (
+          <>
+            <DialogHeader>
+              <div className="flex items-start gap-2">
+                <span
+                  className={cn(
+                    "mt-1 size-2.5 shrink-0 rounded-full",
+                    SEVERITY_TONE[incident.severity].dot,
+                  )}
+                  aria-hidden
+                />
+                <div className="min-w-0 flex-1">
+                  <DialogTitle className="text-sm">
+                    Incidente em {server.name}
+                  </DialogTitle>
+                  <DialogDescription className="mt-1 text-xs">
+                    {server.host} · {server.role} · {SEVERITY_LABEL[incident.severity]}
+                  </DialogDescription>
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-1.5 pt-2">
+                <span
+                  className={cn(
+                    "inline-flex items-center gap-1 rounded-md border px-1.5 py-0.5 text-[10px] font-medium uppercase",
+                    SEVERITY_TONE[incident.severity].chip,
+                  )}
+                >
+                  <TagIcon className="size-3" />
+                  {incident.type}
+                </span>
+                {!incident.resolvedAt && (
+                  <span className="inline-flex items-center gap-1 rounded-md border border-rose-500/30 bg-rose-500/15 px-1.5 py-0.5 text-[10px] font-medium uppercase text-rose-500">
+                    <span className="size-1.5 rounded-full bg-rose-500" />
+                    Em andamento
+                  </span>
+                )}
+                <span className="inline-flex items-center gap-1 rounded-md border border-border bg-background/60 px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                  <ClockIcon className="size-3" />
+                  Início {hhMmSs(incident.startedAt)}
+                </span>
+              </div>
+            </DialogHeader>
+
+            <Tabs defaultValue="summary" className="mt-3">
+              <TabsList className="w-full justify-start overflow-x-auto">
+                <TabsTrigger value="summary" className="gap-1.5">
+                  <FileTextIcon className="size-3.5" /> Resumo
+                </TabsTrigger>
+                <TabsTrigger value="cause" className="gap-1.5">
+                  <WrenchIcon className="size-3.5" /> Causa
+                </TabsTrigger>
+                <TabsTrigger value="timeline" className="gap-1.5">
+                  <ActivityIcon className="size-3.5" /> Timeline
+                </TabsTrigger>
+                <TabsTrigger value="metrics" className="gap-1.5">
+                  <TrendingUpIcon className="size-3.5" /> Métricas
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="summary" className="mt-3">
+                <IncidentSummaryTab server={server} incident={incident} />
+              </TabsContent>
+
+              <TabsContent value="cause" className="mt-3">
+                <IncidentCauseTab server={server} incident={incident} />
+              </TabsContent>
+
+              <TabsContent value="timeline" className="mt-3">
+                <div className="mb-1.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+                  Eventos cronológicos ({incident.events.length})
+                </div>
+                <IncidentTimelineTab
+                  events={incident.events}
+                  startedAt={incident.startedAt}
+                />
+              </TabsContent>
+
+              <TabsContent value="metrics" className="mt-3">
+                <div className="mb-1.5 text-[10px] uppercase tracking-wider text-muted-foreground">
+                  Métricas atuais do servidor
+                </div>
+                <dl className="grid grid-cols-2 gap-2 rounded-md border border-border bg-background/60 p-3 text-[11px] sm:grid-cols-4">
+                  <SnapshotTile
+                    label="CPU"
+                    value={`${Math.round(server.cpu.usagePct)}%`}
+                    danger={server.cpu.usagePct > 85}
+                  />
+                  <SnapshotTile
+                    label="Memória"
+                    value={`${Math.round(server.memory.usedGB)}/${Math.round(server.memory.totalGB)}GB`}
+                    danger={server.memory.usedPct > 90}
+                  />
+                  <SnapshotTile
+                    label="Disco"
+                    value={`${server.disks[0]?.usedPct ?? 0}%`}
+                    danger={(server.disks[0]?.usedPct ?? 0) > 90}
+                  />
+                  <SnapshotTile
+                    label="Conexões"
+                    value={String(server.network.establishedCount)}
+                    danger={false}
+                  />
+                </dl>
+                <p className="mt-2 text-[10px] text-muted-foreground">
+                  Comparação: no pico do incidente, CPU estava em{" "}
+                  {Math.round(incident.metricsAtIncident.cpuPct)}%, memória em{" "}
+                  {Math.round(incident.metricsAtIncident.memPct)}%.
+                </p>
+              </TabsContent>
+            </Tabs>
+
+            <DialogFooter className="mt-4">
+              <Button
+                type="button"
+                variant="default"
+                size="sm"
+                onClick={() => onOpenChange(false)}
+                data-slot="fsg-incident-close"
+              >
+                Fechar
+              </Button>
+            </DialogFooter>
+          </>
+        )}
+      </DialogContent>
+    </Dialog>
   )
 }
 

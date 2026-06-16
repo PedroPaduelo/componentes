@@ -39,6 +39,141 @@ function buildHistory(rnd: () => number, base: number): number[] {
   return out
 }
 
+/**
+ * Constrói um incidente recente "rico" (com timeline + métricas no pico)
+ * para servidores em status degraded. Determinístico via PRNG seedado.
+ */
+function buildRecentIncident(
+  rnd: () => number,
+  r: { name: string; role: string },
+  cpuBase: number,
+  memBase: number,
+) {
+  // Início: 4h atrás. Duração: ~73min.
+  const startTs = Date.now() - 4 * 3600 * 1000
+
+  const incidentTypes = [
+    {
+      type: "high-cpu",
+      title: "CPU sustentada acima de 90% por 15min",
+      summary:
+        "O processo de ingest começou a consumir 92% de CPU de forma sustentada, causando degradação geral do serviço. Após o restart, o uso voltou a 30%.",
+      cause: "Bug no job de compaction que gerava loop infinito em batches grandes. Patch já deployado em v2024.05.15.",
+      cpuAtPeak: Math.min(98, cpuBase + 25),
+      memAtPeak: Math.min(96, memBase + 18),
+    },
+    {
+      type: "memory-leak",
+      title: "Memory leak detectado após deploy",
+      summary:
+        "Consumo de memória cresceu linearmente após o deploy v2024.05.14, atingindo 94% e forçando OOM kills. Rollback automático restaurou o serviço.",
+      cause: "Cache de sessão não estava sendo invalidado em logout. Patch de cleanup no auth-middleware.",
+      cpuAtPeak: Math.min(85, cpuBase + 15),
+      memAtPeak: 94,
+    },
+    {
+      type: "disk-full",
+      title: "Disco /var/log atingiu 98% de uso",
+      summary:
+        "Logs do collector estavam em modo debug desde 3 dias atrás, enchendo o disco. Compressão + rotação automática.",
+      cause: "Feature flag DEBUG_COLLECTOR não foi desativada no deploy de prod.",
+      cpuAtPeak: Math.min(70, cpuBase + 10),
+      memAtPeak: Math.min(80, memBase + 5),
+    },
+    {
+      type: "db-slowdown",
+      title: "Queries lentas após vacuum automático",
+      summary:
+        "O vacuum automático travou várias queries por 8min (autovacuum em tabela de 200GB). Lock contention generalizada.",
+      cause: "Tabela de audit_logs sem índices parciais + vacuum_scale_factor inadequado.",
+      cpuAtPeak: Math.min(60, cpuBase + 8),
+      memAtPeak: Math.min(88, memBase + 12),
+    },
+  ]
+  const choice = incidentTypes[Math.floor(rnd() * incidentTypes.length)]
+
+  const tIso = (offsetMin: number) =>
+    new Date(startTs + offsetMin * 60 * 1000).toISOString()
+  const peakMin = 15 // minuto do pico (em relação ao início)
+
+  return {
+    id: `inc-${r.role}-${r.name}`.toLowerCase().replace(/[^a-z0-9-]/g, "-"),
+    title: choice.title,
+    severity: (rnd() < 0.4 ? "critical" : "high") as
+      | "critical"
+      | "high"
+      | "medium"
+      | "low",
+    startedAt: tIso(0),
+    resolvedAt: tIso(73),
+    summary: choice.summary,
+    suspectedCause: choice.cause,
+    type: choice.type,
+    events: [
+      {
+        id: "ev-1",
+        t: tIso(0),
+        type: "detect" as const,
+        title: "Alerta aberto por métrica anômala",
+        description: `P99 latência subiu para ${(800 + Math.floor(rnd() * 400)).toFixed(0)}ms`,
+        actor: "prometheus",
+      },
+      {
+        id: "ev-2",
+        t: tIso(3),
+        type: "page" as const,
+        title: "On-call notificado via PagerDuty",
+        actor: "pagerduty",
+      },
+      {
+        id: "ev-3",
+        t: tIso(8),
+        type: "escalate" as const,
+        title: "Escalado para SRE sênior",
+        description: "On-call primário não respondeu em 5min",
+        actor: "ana.souza",
+      },
+      {
+        id: "ev-4",
+        t: tIso(peakMin),
+        type: "note" as const,
+        title: "Pico de impacto confirmado",
+        description: `${Math.round(choice.cpuAtPeak)}% CPU, ${Math.round(choice.memAtPeak)}% memória`,
+      },
+      {
+        id: "ev-5",
+        t: tIso(28),
+        type: "deploy" as const,
+        title: "Patch aplicado em produção",
+        description: "v2024.05.15-rollback-1",
+        actor: "carlos.dev",
+      },
+      {
+        id: "ev-6",
+        t: tIso(45),
+        type: "mitigate" as const,
+        title: "Métricas voltaram ao normal",
+        description: "CPU abaixo de 40%, memória estável",
+      },
+      {
+        id: "ev-7",
+        t: tIso(73),
+        type: "resolve" as const,
+        title: "Incidente resolvido",
+        description: "Postmortem agendado para próxima sprint",
+        actor: "ana.souza",
+      },
+    ],
+    metricsAtIncident: {
+      cpuPct: choice.cpuAtPeak,
+      memPct: choice.memAtPeak,
+      netInMBs: Math.floor(120 + rnd() * 80),
+      netOutMBs: Math.floor(80 + rnd() * 60),
+      activeConnections: Math.floor(800 + rnd() * 400),
+    },
+  }
+}
+
 /* -------------------------------------------------------------------------- */
 /*                              Example 1                                     */
 /* -------------------------------------------------------------------------- */
@@ -133,6 +268,15 @@ const serversByStatus: ServerMetrics[] = []
         lastIncidentAt:
           bucket.status === "degraded"
             ? new Date(Date.now() - Math.floor(rnd() * 12) * 3600 * 1000).toISOString()
+            : undefined,
+        recentIncident:
+          bucket.status === "degraded"
+            ? buildRecentIncident(
+                rnd,
+                { name: `${role}-${idx.toString().padStart(2, "0")}`, role },
+                cpuBase,
+                memBase,
+              )
             : undefined,
         region,
       })
@@ -233,6 +377,9 @@ const serversByRole: ServerMetrics[] = (() => {
         cpuHistory: buildHistory(rnd, cpuBase),
         lastIncidentAt: isDegraded
           ? new Date(Date.now() - 4 * 3600 * 1000).toISOString()
+          : undefined,
+        recentIncident: isDegraded
+          ? buildRecentIncident(rnd, { name: id, role: r.role }, cpuBase, memBase)
           : undefined,
         region: r.region,
       })
