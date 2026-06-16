@@ -31,13 +31,15 @@
  * composição é a versão "completa, com workbench".
  */
 
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import {
   Activity,
   Bookmark,
+  Check,
   ChevronDown,
   ChevronRight,
   Clock,
+  Copy,
   Database as DatabaseIcon,
   FileCode2,
   History,
@@ -55,6 +57,14 @@ import {
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { DbSchemaExplorer } from "@/components/ui/db-schema-explorer"
 import {
@@ -99,6 +109,28 @@ function formatCount(n: number): string {
   if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
   if (n >= 1_000) return `${(n / 1_000).toFixed(1)}k`
   return String(n)
+}
+
+function formatRelativeTime(iso: string): string {
+  const diffMs = Date.now() - Date.parse(iso)
+  if (Number.isNaN(diffMs)) return "—"
+  const min = Math.floor(diffMs / 60_000)
+  if (min < 1) return "agora há pouco"
+  if (min < 60) return `há ${min} min`
+  const hr = Math.floor(min / 60)
+  if (hr < 24) return `há ${hr}h`
+  const day = Math.floor(hr / 24)
+  return `há ${day}d`
+}
+
+function formatIsoShort(iso: string): string {
+  const d = new Date(iso)
+  if (Number.isNaN(d.getTime())) return iso
+  const dd = String(d.getDate()).padStart(2, "0")
+  const mm = String(d.getMonth() + 1).padStart(2, "0")
+  const hh = String(d.getHours()).padStart(2, "0")
+  const min = String(d.getMinutes()).padStart(2, "0")
+  return `${dd}/${mm} ${hh}:${min}`
 }
 
 /* -------------------------------------------------------------------------- */
@@ -233,6 +265,39 @@ export function DbaWorkbench() {
   // Status bar — "query time" simulado
   const [lastActionMs, setLastActionMs] = useState<number | null>(null)
 
+  // Dialog de detalhes da query (aberto pelo histórico lateral)
+  const [selectedQuery, setSelectedQuery] = useState<RecentQuery | null>(null)
+  const [copied, setCopied] = useState(false)
+  const copyTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  // Cleanup do timer de "copied" ao desmontar
+  useEffect(
+    () => () => {
+      if (copyTimeoutRef.current !== null) {
+        clearTimeout(copyTimeoutRef.current)
+      }
+    },
+    [],
+  )
+
+  const copySql = async (sql: string) => {
+    try {
+      if (typeof navigator !== "undefined" && navigator.clipboard) {
+        await navigator.clipboard.writeText(sql)
+      }
+    } catch {
+      /* clipboard indisponível — silencioso */
+    }
+    setCopied(true)
+    if (copyTimeoutRef.current !== null) {
+      clearTimeout(copyTimeoutRef.current)
+    }
+    copyTimeoutRef.current = setTimeout(() => {
+      setCopied(false)
+      copyTimeoutRef.current = null
+    }, 2000)
+  }
+
   // Histórico de queries (mock determinístico)
   const recentQueries = buildRecentQueries(activeDb.id, 6)
 
@@ -260,6 +325,7 @@ export function DbaWorkbench() {
   }
 
   const onClickRecentQuery = (q: RecentQuery) => {
+    setSelectedQuery(q)
     setLastActionMs(q.durationMs)
   }
 
@@ -502,7 +568,7 @@ export function DbaWorkbench() {
                           <Clock className="size-2.5" /> {q.durationMs}ms
                         </span>
                         <span>·</span>
-                        <span>{Math.round((Date.now() - Date.parse(q.t)) / 60000)}min atrás</span>
+                        <span>{formatRelativeTime(q.t)}</span>
                       </div>
                     </button>
                   </li>
@@ -740,6 +806,118 @@ export function DbaWorkbench() {
           </span>
         </span>
       </footer>
+
+      {/* ============================================================ */}
+      {/*  DIALOG — detalhes da query selecionada no histórico        */}
+      {/* ============================================================ */}
+      <Dialog
+        open={selectedQuery !== null}
+        onOpenChange={(open) => {
+          if (!open) {
+            setSelectedQuery(null)
+            setCopied(false)
+          }
+        }}
+      >
+        <DialogContent
+          data-slot="query-history-dialog"
+          className="max-w-2xl"
+        >
+          {selectedQuery && (
+            <>
+              <DialogHeader>
+                <div className="flex items-center gap-2">
+                  <DatabaseIcon className="size-4 text-primary" />
+                  <DialogTitle>Detalhes da query</DialogTitle>
+                  <Badge
+                    variant="outline"
+                    className={`ml-auto gap-1 border ${ENGINE_TONE[activeDb.engine]}`}
+                  >
+                    <DatabaseIcon className="size-3" />
+                    {ENGINE_LABEL[activeDb.engine]} · {activeDb.name}
+                  </Badge>
+                </div>
+                <DialogDescription>
+                  Query executada em {formatRelativeTime(selectedQuery.t)} ·
+                  ID {selectedQuery.id}
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="space-y-3">
+                {/* SQL completo formatado */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between">
+                    <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                      SQL
+                    </p>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => copySql(selectedQuery.sql)}
+                      className="h-6 px-2 text-[10px]"
+                    >
+                      {copied ? (
+                        <Check className="size-3" />
+                      ) : (
+                        <Copy className="size-3" />
+                      )}
+                      {copied ? "Copiado" : "Copiar"}
+                    </Button>
+                  </div>
+                  <pre className="max-h-[300px] overflow-auto rounded-md border border-border bg-muted/30 p-3 text-xs">
+                    <code className="font-mono whitespace-pre-wrap break-words">
+                      {selectedQuery.sql}
+                    </code>
+                  </pre>
+                </div>
+
+                {/* Metadata em grid */}
+                <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+                  <div className="rounded-md border border-border bg-background/60 p-2">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                      Duração
+                    </p>
+                    <p className="font-mono text-sm font-semibold tabular-nums">
+                      {selectedQuery.durationMs}ms
+                    </p>
+                  </div>
+                  <div className="rounded-md border border-border bg-background/60 p-2">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                      Executada
+                    </p>
+                    <p
+                      className="font-mono text-xs"
+                      title={selectedQuery.t}
+                    >
+                      {formatRelativeTime(selectedQuery.t)}
+                    </p>
+                  </div>
+                  <div className="rounded-md border border-border bg-background/60 p-2">
+                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                      Timestamp
+                    </p>
+                    <p className="font-mono text-[10px]">
+                      {formatIsoShort(selectedQuery.t)}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <DialogFooter>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setSelectedQuery(null)
+                    setCopied(false)
+                  }}
+                >
+                  Fechar
+                </Button>
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
