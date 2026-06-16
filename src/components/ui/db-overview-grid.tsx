@@ -237,7 +237,7 @@ function DatabaseTile({
       data-env={database.env}
       onClick={() => onClick(database)}
       className={cn(
-        "group flex w-full flex-col gap-3 rounded-xl border border-border bg-card p-4 text-left",
+        "group flex w-full min-w-0 flex-col gap-3.5 rounded-xl border border-border bg-card p-5 text-left",
         "transition-colors hover:border-foreground/30 hover:bg-card/80",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
       )}
@@ -383,7 +383,7 @@ function DefaultDetailView({ database }: { database: DatabaseInstance }) {
   const env = ENV_STYLES[database.env]
   const status = STATUS_STYLES[database.status]
   return (
-    <div className="space-y-4">
+    <div className="min-w-0 space-y-4">
       <div className="flex flex-wrap items-center gap-2">
         <Badge
           variant="outline"
@@ -403,7 +403,7 @@ function DefaultDetailView({ database }: { database: DatabaseInstance }) {
         </Badge>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid min-w-0 gap-4 sm:grid-cols-2">
         <div className="rounded-lg border border-border bg-card p-3">
           <h4 className="mb-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             Conexão
@@ -676,7 +676,7 @@ function DbOverviewGrid({
       ) : (
         <div
           data-slot="db-overview-grid-list"
-          className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          className="grid min-w-0 gap-3 [grid-template-columns:repeat(auto-fit,minmax(280px,1fr))]"
         >
           {filtered.map((db) => (
             <DatabaseTile
@@ -698,11 +698,11 @@ function DbOverviewGrid({
       >
         <DialogContent
           data-slot="db-overview-detail"
-          className="max-w-2xl"
+          className="max-w-3xl overflow-hidden p-0"
         >
           {selected ? (
-            <>
-              <DialogHeader>
+            <div className="flex max-h-[min(80vh,720px)] min-w-0 flex-col">
+              <DialogHeader className="border-b border-border/60 px-6 py-4">
                 <DialogTitle className="flex items-center gap-2">
                   <Database className="size-4" aria-hidden="true" />
                   {selected.name}
@@ -712,12 +712,14 @@ function DbOverviewGrid({
                   {selected.host}:{selected.port}
                 </DialogDescription>
               </DialogHeader>
-              {renderDetail ? (
-                renderDetail(selected)
-              ) : (
-                <DefaultDetailView database={selected} />
-              )}
-            </>
+              <div className="min-w-0 flex-1 overflow-y-auto px-6 py-5">
+                {renderDetail ? (
+                  renderDetail(selected)
+                ) : (
+                  <DefaultDetailView database={selected} />
+                )}
+              </div>
+            </div>
           ) : null}
         </DialogContent>
       </Dialog>
