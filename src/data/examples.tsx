@@ -215,10 +215,21 @@ import { examplesForm } from "./examples-form"
 import { examplesMenubar } from "./examples-menubar"
 import { examplesPopover } from "./examples-popover"
 import { examplesResizableNavbar } from "./examples-resizable-navbar"
+import { examplesFleetServerGrid } from "./examples-fleet-server-grid"
 import { examplesTeamSectionWithScales } from "./examples-team-section-with-scales"
 import { examplesCalendar } from "./examples-calendar"
 import { examplesDatePicker } from "./examples-date-picker"
 import { examplesReactFlow } from "./examples-react-flow"
+import { examplesDbOverviewGrid } from "./examples-db-overview-grid"
+
+import { examplesRequestFlowInspector } from "./examples-request-flow-inspector"
+import { examplesErrorTrackerFeed } from "./examples-error-tracker-feed"
+import { examplesServerOverviewCard } from "./examples-server-overview-card"
+import { examplesContainerResourcePanel } from "./examples-container-resource-panel"
+import { examplesDbSchemaExplorer } from "./examples-db-schema-explorer"
+import { examplesSlowQueryList } from "./examples-slow-query-list"
+import { examplesUserActivityStream } from "./examples-user-activity-stream"
+import { examplesIncidentTimeline } from "./examples-incident-timeline"
 
 export type Example = {
   title: string
@@ -1499,9 +1510,20 @@ export const examples: Record<string, Example[]> = {
   ...examplesHoverCard,
   ...examplesPopover,
   ...examplesResizableNavbar,
+  ...examplesFleetServerGrid,
   ...examplesCalendar,
   ...examplesDatePicker,
+  ...examplesErrorTrackerFeed,
   ...examplesReactFlow,
+  ...examplesRequestFlowInspector,
+  ...examplesServerOverviewCard,
+  ...examplesContainerResourcePanel,
+  ...examplesDbSchemaExplorer,
+  ...examplesSlowQueryList,
+  ...examplesUserActivityStream,
+  // Lote Observabilidade
+  ...examplesDbOverviewGrid,
+  ...examplesIncidentTimeline,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
