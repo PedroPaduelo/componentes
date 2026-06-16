@@ -529,6 +529,7 @@ function DdlPanel({ ddl }: { ddl: string }) {
 function DbSchemaExplorer({
   database,
   onTableClick,
+  embedded = false,
   className,
   ...props
 }: DbSchemaExplorerProps) {
@@ -655,17 +656,23 @@ function DbSchemaExplorer({
       data-slot="db-schema-explorer"
       data-engine={database.engine}
       data-search-active={searchActive ? "true" : undefined}
+      data-embedded={embedded ? "true" : undefined}
       className={cn(
-        "flex w-full min-w-0 flex-col overflow-hidden rounded-xl border border-border bg-card text-card-foreground shadow-sm",
+        "flex w-full min-w-0 flex-col overflow-hidden text-card-foreground",
+        embedded
+          ? "bg-transparent"
+          : "rounded-xl border border-border bg-card shadow-sm",
         className,
       )}
       {...props}
     >
-      {/* Header */}
-      <header
-        data-slot="db-schema-explorer-header"
-        className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-border bg-muted/30 px-4 py-3"
-      >
+      {!embedded && (
+        <>
+          {/* Header */}
+          <header
+            data-slot="db-schema-explorer-header"
+            className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-border bg-muted/30 px-4 py-3"
+          >
         <div className="flex min-w-0 items-center gap-2">
           <Database className={cn("size-5 shrink-0", accent.icon)} />
           <div className="min-w-0">
@@ -699,6 +706,8 @@ function DbSchemaExplorer({
           </div>
         </div>
       </header>
+        </>
+      )}
 
       {/* Toolbar */}
       <div

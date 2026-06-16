@@ -501,7 +501,7 @@ export function DbaWorkbench() {
           data-slot="dba-workbench-main"
           className="flex min-w-0 flex-1 flex-col overflow-hidden"
         >
-          <DbSchemaExplorer database={activeDb} />
+          <DbSchemaExplorer database={activeDb} embedded />
         </main>
 
         {/* ============== PAINEL DIREITO (info da tabela) ============== */}

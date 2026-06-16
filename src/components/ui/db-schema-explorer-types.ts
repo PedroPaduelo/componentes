@@ -80,4 +80,15 @@ export type DbSchemaExplorerProps = Omit<
 > & {
   database: DatabaseSchema
   onTableClick?: (tableRef: { schema: string; table: string }) => void
+  /**
+   * Quando `true`, renderiza o componente SEM o wrapper externo
+   * (rounded/border/shadow) e SEM o header interno (que mostra nome
+   * do banco, engine, host, port, version, size e total tables).
+   * Usado quando o componente é embarcado dentro de uma composição
+   * (ex: `DBA Workbench`) que já provê esse chrome. O conteúdo
+   * interno (toolbar de busca + layout 2-painel) é preservado.
+   *
+   * @default false
+   */
+  embedded?: boolean
 }
