@@ -2330,23 +2330,6 @@ export const components: ComponentMeta[] = [
     ],
   },
   {
-    slug: "error-tracker-feed",
-    name: "Error Tracker Feed",
-    category: "Feedback",
-    description:
-      "Feed de erros/exception events em tempo real no estilo Sentry: cada item mostra tipo, mensagem, contagem de ocorrências, primeiro/último avistamento, ambiente (dev/staging/prod), usuário afetado e status (novo/resolvido/ignorado). Inclui filtros por ambiente/status/tipo, sparkline de tendência e agrupamento por tipo/serviço/usuário.",
-    tags: [
-      "error",
-      "exception",
-      "sentry",
-      "tracker",
-      "feed",
-      "errors",
-      "production",
-      "observability",
-    ],
-  },
-  {
     slug: "db-schema-explorer",
     name: "DB Schema Explorer",
     category: "Feedback",
