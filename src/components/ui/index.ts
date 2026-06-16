@@ -736,5 +736,84 @@ export type {
 export { ShadcnCardNode } from "./react-flow-nodes"
 export { reactFlowNodeTypes } from "./react-flow-node-types"
 
+// Lote Observabilidade
+export { RequestFlowInspector } from "./request-flow-inspector"
+export type { RequestFlowInspectorProps } from "./request-flow-inspector-types"
+export { ErrorTrackerFeed } from "./error-tracker-feed"
+export type { ErrorTrackerFeedProps } from "./error-tracker-feed-types"
+export { ServerOverviewCard } from "./server-overview-card"
+export type {
+  ServerOverviewCardProps,
+  ServerMetrics,
+  ServerStatus,
+  CpuMetric,
+  MemoryMetric,
+  DiskMetric,
+  NetworkMetric,
+  ProcessMetric,
+  SparklinePoint,
+} from "./server-overview-card-types"
+
+export { ContainerResourcePanel } from "./container-resource-panel"
+export type {
+  ContainerStatus,
+  ContainerHealth,
+  ContainerPort,
+  ContainerCpu,
+  ContainerMemory,
+  ContainerNet,
+  ContainerBlockIO,
+  ContainerEnvVar,
+  ContainerMount,
+  ContainerMetrics,
+} from "./container-resource-panel-types"
+export type { ContainerResourcePanelProps } from "./container-resource-panel"
+
+export { DbSchemaExplorer } from "./db-schema-explorer"
+export type {
+  ColumnDef,
+  DatabaseSchema,
+  DbEngine,
+  DbSchemaExplorerProps,
+  ForeignKeyDef,
+  IndexDef,
+  SchemaDef,
+  TableDef,
+} from "./db-schema-explorer-types"
+// v2
+export { SlowQueryList } from "./slow-query-list"
+export type {
+  PlanNode,
+  QuerySuggestion,
+  SlowQuery,
+  SlowQueryGroupBy,
+  SlowQueryListProps,
+  SlowQuerySeverity,
+  SuggestionType,
+} from "./slow-query-list-types"
+
+export { UserActivityStream } from "./user-activity-stream"
+export type { UserActivityStreamProps } from "./user-activity-stream-types"
+
+export { DbOverviewGrid } from "./db-overview-grid"
+export type {
+  DbOverviewGridProps,
+  DatabaseInstance,
+  DbEnvironment,
+  DbStatus,
+  DbTableSummary,
+  DbOverviewGridSortBy,
+} from "./db-overview-grid-types"
+
+export { IncidentTimeline } from "./incident-timeline"
+export type {
+  IncidentActor,
+  IncidentEventType,
+  IncidentSeverity,
+  IncidentStatus,
+  IncidentTimelineEvent,
+  IncidentTimelineProps,
+} from "./incident-timeline-types"
+
 
 

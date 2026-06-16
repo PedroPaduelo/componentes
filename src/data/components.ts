@@ -2198,6 +2198,28 @@ export const components: ComponentMeta[] = [
       "aceternity",
     ],
   },
+  // Lote Observabilidade
+  {
+    slug: "error-tracker-feed",
+    name: "Error Tracker Feed",
+    category: "Feedback",
+    description:
+      "Feed de erros/exception events estilo Sentry: lista de issues com tipo, mensagem, count, ambiente (prod/staging/dev), status (new/resolved/ignored/suppressed), usuários afetados e mini-sparkline de tendência. Filtros funcionais (ambiente, status, busca por tipo) e agrupamento configurável por tipo, serviço ou usuário.",
+    tags: [
+      "error",
+      "erro",
+      "exception",
+      "sentry",
+      "observability",
+      "incident",
+      "log",
+      "feed",
+      "feedback",
+    ],
+    usage:
+      "Use como bloco principal da tela de 'Issues' de um painel de observabilidade. Recebe uma lista de ErrorEventItem (formato Sentry-like) e cuida de filtragem (ambiente/status/busca), agrupamento (type/service/user) e render. Cada item pode disparar onErrorClick para abrir um drawer com o stack trace completo. Cores de ambiente são fixas (prod=rose, staging=amber, dev=sky) — alinhadas com o padrão visual do Pulse (Observability Center).",
+  },
+  // Lote React Flow
   {
     slug: "react-flow",
     name: "React Flow",
@@ -2217,6 +2239,221 @@ export const components: ComponentMeta[] = [
       "drag-and-drop",
       "layout",
     ],
+  },
+
+  // Lote Observabilidade
+  {
+    slug: "request-flow-inspector",
+    name: "Request Flow Inspector",
+    category: "Feedback",
+    description:
+      "Inspetor detalhado de UMA request HTTP no estilo DevTools Network / Datadog APM: método, URL, status com cor semântica, waterfall de timing (DNS/TCP/TLS/Server/Transfer), request/response headers, body com syntax highlight de JSON, cookies com badges secure/httpOnly, IDs de trace e card lateral com IP, geo (bandeira/ASN/user-agent) e ambiente.",
+    usage:
+      "Passe um objeto InspectedRequest com todos os campos do ciclo (timing, headers, cookies, geo, trace). Use em painéis de APM, dashboards de erro, debugging de latência e timelines de incidentes. Cores do status seguem faixa HTTP (2xx emerald, 3xx sky, 4xx amber, 5xx rose).",
+    tags: [
+      "request",
+      "http",
+      "network",
+      "devtools",
+      "apm",
+      "performance",
+      "timing",
+      "waterfall",
+      "trace",
+      "observability",
+      "debug",
+    ],
+  },
+  {
+    slug: "fleet-server-grid",
+    name: "Fleet Server Grid",
+    category: "Feedback",
+    description:
+      "Grid responsivo de tiles compactos para visualizar uma frota de servidores de uma vez. Cada tile mostra nome, host, status dot (verde/âmbar/vermelho), 3 mini-barras (CPU/MEM/DISK com cor reativa ao percentual), sparkline determinística de CPU (12 pontos), uptime formatado, função e região. Suporta busca em tempo real (nome/host/função/região), sort por status/nome/CPU/memória, e agrupamento por status/função/região. Click no tile abre um modal de detalhe (Dialog do shadcn) com tabela de discos e top processos — ou render prop customizável via renderDetail.",
+    tags: [
+      "fleet",
+      "server",
+      "grid",
+      "monitoring",
+      "status",
+      "cpu",
+      "memory",
+      "sparkline",
+      "infra",
+      "observability",
+    ],
+  },
+  {
+    slug: "server-overview-card",
+    name: "Server Overview Card",
+    category: "Feedback",
+    description:
+      "Card denso de overview de UM servidor/container (estilo New Relic / Datadog Host Summary): status, uptime, host, gauges radiais de CPU + memória (270°), lista de discos com throughput, rede + conexões, top 5 processos e último incidente. Cores semânticas por status e sparklines opcionais. Determinístico, sem dependências novas.",
+    tags: [
+      "server",
+      "overview",
+      "host",
+      "infra",
+      "observabilidade",
+      "metricas",
+      "cpu",
+      "memoria",
+      "disco",
+      "rede",
+      "processos",
+      "sre",
+      "monitoramento",
+      "gauge",
+      "sparkline",
+    ],
+  },
+  {
+    slug: "container-resource-panel",
+    name: "Container Resource Panel",
+    category: "Feedback",
+    description:
+      "Painel read-only dos recursos de um container Docker: status (running/exited/restarting/paused/dead/created), health, CPU/MEM com limites e barras, network rx/tx, block I/O read/write, restart count com cor, portas publicadas, env vars (com masked) e mounts. Inspirado em Portainer / Docker Desktop.",
+    usage:
+      "Passe um ContainerMetrics e o painel renderiza header, mini-cards, barras, portas, env (com botão ver mais) e mounts. Cores reagem a data-status (emerald/sky/amber/rose/gray) e o restart count colore 0=emerald, 1-3=amber, >3=rose. Sem dependências novas, sem PRNG.",
+    tags: [
+      "container",
+      "docker",
+      "resources",
+      "metrics",
+      "cpu",
+      "memory",
+      "ports",
+      "env",
+      "mounts",
+      "observability",
+      "portainer",
+    ],
+  },
+  {
+    slug: "error-tracker-feed",
+    name: "Error Tracker Feed",
+    category: "Feedback",
+    description:
+      "Feed de erros/exception events em tempo real no estilo Sentry: cada item mostra tipo, mensagem, contagem de ocorrências, primeiro/último avistamento, ambiente (dev/staging/prod), usuário afetado e status (novo/resolvido/ignorado). Inclui filtros por ambiente/status/tipo, sparkline de tendência e agrupamento por tipo/serviço/usuário.",
+    tags: [
+      "error",
+      "exception",
+      "sentry",
+      "tracker",
+      "feed",
+      "errors",
+      "production",
+      "observability",
+    ],
+  },
+  {
+    slug: "db-schema-explorer",
+    name: "DB Schema Explorer",
+    category: "Feedback",
+    description:
+      "Explorador de schema de banco no estilo DBeaver/Navicat: árvore lateral (banco → schemas → tabelas) com busca em tempo real, painel de detalhe com 4 abas (Columns / Indexes / Foreign keys / DDL) e referência FK clicável que pula para a tabela alvo.",
+    tags: [
+      "database",
+      "schema",
+      "postgres",
+      "mysql",
+      "sqlserver",
+      "oracle",
+      "sqlite",
+      "tree",
+      "ddl",
+      "foreign-key",
+      "observability",
+    ],
+    usage:
+      "Passe `database: DatabaseSchema` com id, name, engine, host:port, version, sizeMB, tables e schemas (cada um com tables, columns, primaryKey, indexes, foreignKeys, rowCount?, sizeMB?). Suporta busca por nome de tabela/coluna/referência e toggle 'Só com FK'. Clique em uma referência FK na aba 'Foreign keys' para saltar para a tabela alvo. Use as abas Columns/Indexes/FKs/DDL para inspecionar.",
+  },
+  {
+    slug: "slow-query-list",
+    name: "Slow Query List",
+    category: "Feedback",
+    description:
+      "Listagem de queries SQL lentas com diagnóstico: tempo, query SQL com syntax highlight, plano do EXPLAIN em árvore, locks ativos e sugestões automáticas (índice faltante, rewrite, vacuum, stats, lock). Filtros por threshold, severidade e banco; agrupamento por tabela/database/user.",
+    usage:
+      "Use para dashboards de observabilidade de banco (estilo pgAdmin, DataDog DBM, pganalyze). Filtro threshold esmaece queries abaixo do limite; chips de severidade (warning/critical) e banco permitem drill-down. Sugestões com DDL têm botão de copiar para clipboard.",
+    tags: [
+      "slow-query",
+      "sql",
+      "database",
+      "observability",
+      "explain",
+      "performance",
+      "monitoring",
+      "db",
+    ],
+  },
+  {
+    slug: "user-activity-stream",
+    name: "User Activity Stream",
+    category: "Feedback",
+    description:
+      "Feed de atividades de usuários em tempo real (estilo Hotjar/FullStory/Mixpanel Live). Cada item é uma ação observada (login, page_view, form_submit, error, abuse_flag etc.) com avatar, timestamp relativo, geo e IP. Suporta filtros (ação, usuário, período), agrupamento por usuário/ação/página e auto-scroll com botão 'pular para o mais recente' quando o usuário rola pra cima.",
+    tags: [
+      "activity",
+      "stream",
+      "live",
+      "tempo real",
+      "feed",
+      "usuário",
+      "log",
+      "observabilidade",
+      "analytics",
+      "eventos",
+      "hotjar",
+      "fullstory",
+      "mixpanel",
+    ],
+  },
+  {
+    slug: "db-overview-grid",
+    name: "Db Overview Grid",
+    category: "Feedback",
+    description:
+      "Visão geral em grid de uma frota de bancos de dados (Postgres, MySQL, SQL Server, Oracle, SQLite). " +
+      "Cada tile mostra env, engine, host:port, status, conexões, tamanho, cache hit, QPS, slow queries, TPS, replication lag, top 3 tabelas e último backup. " +
+      "Inclui busca, ordenação e Dialog de detalhe via render prop (integra com `db-schema-explorer`).",
+    tags: [
+      "database",
+      "banco",
+      "postgresql",
+      "mysql",
+      "sqlserver",
+      "oracle",
+      "sqlite",
+      "fleet",
+      "infra",
+      "observabilidade",
+      "feedback",
+      "grid",
+    ],
+  },
+  {
+    slug: "incident-timeline",
+    name: "Incident Timeline",
+    category: "Feedback",
+    description:
+      "Timeline vertical de eventos de um incidente (detect → page → escalate → mitigate → resolve, etc.) com sticky header de status/severidade, nós circulares coloridos por severidade, chips por tipo de evento, timestamps relativo e absoluto, autor opcional e modo live que re-renderiza tempos a cada 30s. Inspirado no ObservabilityCenter, reutilizável para qualquer fluxo de incident response.",
+    tags: [
+      "timeline",
+      "incidente",
+      "incident",
+      "observabilidade",
+      "observability",
+      "eventos",
+      "events",
+      "sre",
+      "alert",
+      "pager",
+      "postmortem",
+      "feedback",
+    ],
+    usage:
+      "Use em painéis de incident response, status pages e postmortem. Passe `events` ordenados cronologicamente, `status` para o badge do header (ongoing/mitigated/resolved) e `severity` para a cor global. Ative `live` para re-renderizar tempos relativos a cada 30s em incidentes em andamento. `onEventClick` recebe o evento clicado para abrir detalhes, side-panel ou navegar para a página do alerta.",
   },
 ]
 
