@@ -306,7 +306,7 @@ export function DbaWorkbench() {
     if (!selectedTableRef) return null
     for (const schema of activeDb.schemas) {
       const t = schema.tables.find(
-        (tab) => tab.name === selectedTableRef.table,
+        (tab: { name: string }) => tab.name === selectedTableRef.table,
       )
       if (t) return t
     }
@@ -586,7 +586,7 @@ export function DbaWorkbench() {
           <DbSchemaExplorer
             database={activeDb}
             embedded
-            onTableClick={(ref) => setSelectedTableRef(ref)}
+            onTableClick={(ref: { schema: string; table: string }) => setSelectedTableRef(ref)}
           />
         </main>
 
@@ -674,7 +674,7 @@ export function DbaWorkbench() {
                       Índices ({selectedTable.indexes.length})
                     </p>
                     <ul className="flex max-h-[140px] flex-col gap-0.5 overflow-y-auto rounded border border-border/40 bg-background/30 p-1">
-                      {selectedTable.indexes.map((idx) => (
+                      {selectedTable.indexes.map((idx: { name: string; type: string; columns: unknown[] }) => (
                         <li
                           key={idx.name}
                           className="flex items-center justify-between gap-2 rounded px-1.5 py-0.5 text-[11px] hover:bg-muted/30"
@@ -699,7 +699,7 @@ export function DbaWorkbench() {
                         Foreign keys ({selectedTable.foreignKeys.length})
                       </p>
                       <ul className="flex max-h-[140px] flex-col gap-1 overflow-y-auto rounded border border-border/40 bg-background/30 p-1">
-                        {selectedTable.foreignKeys.map((fk) => (
+                        {selectedTable.foreignKeys.map((fk: { name: string }) => (
                           <li
                             key={fk.name}
                             className="rounded border border-sky-500/20 bg-sky-500/5 px-1.5 py-1 text-[11px]"
@@ -797,11 +797,11 @@ export function DbaWorkbench() {
           <span className="flex items-center gap-1">
             <Clock className="size-3" />
             <span className="hidden sm:inline">
-              {activeDb.schemas.reduce((a, s) => a + s.tables.length, 0)}{" "}
+              {activeDb.schemas.reduce((a: number, s: { tables: unknown[] }) => a + s.tables.length, 0)}{" "}
               tabelas visíveis
             </span>
             <span className="sm:hidden">
-              {activeDb.schemas.reduce((a, s) => a + s.tables.length, 0)} tab
+              {activeDb.schemas.reduce((a: number, s: { tables: unknown[] }) => a + s.tables.length, 0)} tab
             </span>
           </span>
         </span>
