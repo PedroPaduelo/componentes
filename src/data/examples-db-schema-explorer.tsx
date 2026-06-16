@@ -13,7 +13,7 @@ import { DbSchemaExplorer } from "@/components/ui/db-schema-explorer"
 import type { Example } from "@/data/examples"
 import type { DatabaseSchema } from "@/components/ui/db-schema-explorer-types"
 
-const auditDb: DatabaseSchema = {
+export const auditDb: DatabaseSchema = {
   id: "audit-db",
   name: "audit-prod-01",
   engine: "postgresql",
@@ -541,7 +541,7 @@ const auditDb: DatabaseSchema = {
   ],
 }
 
-const sgtMaker: DatabaseSchema = {
+export const sgtMaker: DatabaseSchema = {
   id: "sgt-maker",
   name: "sgt-maker-app",
   engine: "postgresql",
