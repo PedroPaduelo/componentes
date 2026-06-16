@@ -635,11 +635,19 @@ export function DbaWorkbench() {
                       Colunas ({selectedTable.columns.length})
                     </p>
                     <ul className="flex max-h-[180px] flex-col gap-0.5 overflow-y-auto rounded border border-border/40 bg-background/30 p-1">
-                      {selectedTable.columns.map((c) => (
-                        <li
-                          key={c.name}
-                          className="flex items-center justify-between gap-2 rounded px-1.5 py-0.5 text-[11px] hover:bg-muted/30"
-                        >
+                      {selectedTable.columns.map(
+                        (c: {
+                          name: string
+                          type: string
+                          isPrimary?: boolean
+                          isForeign?: boolean
+                          defaultValue?: string
+                          nullable: boolean
+                        }) => (
+                          <li
+                            key={c.name}
+                            className="flex items-center justify-between gap-2 rounded px-1.5 py-0.5 text-[11px] hover:bg-muted/30"
+                          >
                           <span className="flex min-w-0 items-center gap-1">
                             {c.isPrimary && (
                               <span className="shrink-0 rounded bg-amber-500/15 px-1 text-[9px] font-bold text-amber-500">
@@ -699,20 +707,31 @@ export function DbaWorkbench() {
                         Foreign keys ({selectedTable.foreignKeys.length})
                       </p>
                       <ul className="flex max-h-[140px] flex-col gap-1 overflow-y-auto rounded border border-border/40 bg-background/30 p-1">
-                        {selectedTable.foreignKeys.map((fk: { name: string }) => (
-                          <li
-                            key={fk.name}
-                            className="rounded border border-sky-500/20 bg-sky-500/5 px-1.5 py-1 text-[11px]"
-                          >
-                            <p className="truncate font-mono text-foreground" title={fk.name}>
-                              {fk.name}
-                            </p>
-                            <p className="truncate text-[10px] text-muted-foreground">
-                              → {fk.references.schema}.{fk.references.table}.
-                              {fk.references.column}
-                            </p>
-                          </li>
-                        ))}
+                        {selectedTable.foreignKeys.map(
+                          (fk: {
+                            name: string
+                            columns?: string[]
+                            references?: {
+                              schema: string
+                              table: string
+                              column: string
+                            }
+                            onDelete?: string
+                          }) => (
+                            <li
+                              key={fk.name}
+                              className="rounded border border-sky-500/20 bg-sky-500/5 px-1.5 py-1 text-[11px]"
+                            >
+                              <p className="truncate font-mono text-foreground" title={fk.name}>
+                                {fk.name}
+                              </p>
+                              <p className="truncate text-[10px] text-muted-foreground">
+                                → {fk.references.schema}.{fk.references.table}.
+                                {fk.references.column}
+                              </p>
+                            </li>
+                          ),
+                        )}
                       </ul>
                     </div>
                   )}
