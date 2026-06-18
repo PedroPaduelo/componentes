@@ -19,9 +19,12 @@
  * cores de status/heatmap são severidade/data-viz.
  *
  * Componentização: o ECG, a sparkline (via SignalCard), o gauge radial, o
- * card-shell (DashboardPanel com glow) e o cartão de golden signal foram
- * extraídos para componentes registrados (`@/components/ui/*`) e são reusados
- * aqui — esta composição só orquestra a simulação e o layout.
+ * card-shell (DashboardPanel com glow), o cartão de golden signal, a malha de
+ * serviços (ServiceMesh), o stream de logs (LogStream) e a cascata de trace
+ * (TraceWaterfall) foram extraídos para componentes registrados
+ * (`@/components/ui/*`) e são reusados aqui — esta composição só orquestra a
+ * simulação e o layout (incluindo a grade-heatmap, ainda acoplada à janela
+ * rolante do tick).
  */
 
 import * as React from "react"
@@ -52,14 +55,16 @@ import { Button } from "@/components/ui/button"
 import { AnimatedNumber } from "@/components/ui/animated-number"
 import { DashboardPanel } from "@/components/ui/dashboard-panel"
 import { EcgStrip } from "@/components/ui/ecg-strip"
+import { LogStream } from "@/components/ui/log-stream"
 import { RadialGauge } from "@/components/ui/radial-gauge"
+import { ServiceMesh } from "@/components/ui/service-mesh"
 import { SignalCard } from "@/components/ui/signal-card"
+import { TraceWaterfall } from "@/components/ui/trace-waterfall"
 import {
   CONSUMERS_OF,
   DOWNSTREAM_OF,
   EDGES,
   HTTP_METHODS,
-  LOG_LEVEL_CLASSES,
   LOG_MESSAGES,
   LOG_PATHS,
   MESH_VIEWBOX,
@@ -69,22 +74,17 @@ import {
   STATUS_CLASSES,
   STATUS_HEX,
   STATUS_LABEL,
-  STATUS_RANK,
   clamp,
-  edgeControl,
-  edgePathD,
   formatClock,
   formatCompact,
   formatMs,
   formatPct,
   heatColor,
   mulberry32,
-  quadAt,
   seedFor,
   type AlertItem,
   type LogEntry,
   type LogLevel,
-  type Point,
   type ServiceStatus,
   type TraceSpan,
 } from "./observability-center-data"
@@ -99,7 +99,6 @@ const HEAT_COLS = 34
 const LOG_CAP = 70
 const ALERT_CAP = 16
 const TICK_MS = 1100
-const PARTICLE_COUNT = 76
 const BASE_SEED = 0x5eed
 
 type TimeWindow = "live" | "5m" | "1h"
@@ -174,10 +173,6 @@ function deriveStatus(
   if (err > 0.12 || p95 > base * 3) return "critical"
   if (err > 0.04 || p95 > base * 1.8) return "degraded"
   return "healthy"
-}
-
-function worse(a: ServiceStatus, b: ServiceStatus): ServiceStatus {
-  return STATUS_RANK[a] >= STATUS_RANK[b] ? a : b
 }
 
 function pushHist(hist: number[], value: number): number[] {
@@ -495,264 +490,6 @@ function trendFraction(hist: number[]): number {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Service Mesh (SVG vivo)                                            */
-/* ------------------------------------------------------------------ */
-
-type EdgeGeo = { from: Point; c: Point; to: Point }
-
-function MeshNode({
-  id,
-  selected,
-  status,
-  rps,
-  p95,
-  pinging,
-  onSelect,
-}: {
-  id: string
-  selected: boolean
-  status: ServiceStatus
-  rps: number
-  p95: number
-  pinging: boolean
-  onSelect: (id: string) => void
-}) {
-  const def = SERVICE_MAP[id]
-  const w = 124
-  const h = 46
-  const color = STATUS_HEX[status]
-  return (
-    <g
-      transform={`translate(${def.x} ${def.y})`}
-      onClick={() => onSelect(id)}
-      style={{ cursor: "pointer" }}
-      role="button"
-      aria-label={`${def.name} — ${STATUS_LABEL[status]}`}
-    >
-      {/* radar pings (atenção: selecionado ou em alarme) */}
-      {pinging && (
-        <>
-          <circle r={26} fill="none" stroke={color} strokeWidth={2} className="obs-radar-ring" />
-          <circle r={26} fill="none" stroke={color} strokeWidth={2} className="obs-radar-ring" style={{ animationDelay: "1.3s" }} />
-        </>
-      )}
-      {selected && (
-        <rect
-          x={-w / 2 - 6}
-          y={-h / 2 - 6}
-          width={w + 12}
-          height={h + 12}
-          rx={14}
-          fill="none"
-          stroke="var(--primary)"
-          strokeWidth={1.6}
-          strokeDasharray="5 5"
-          opacity={0.9}
-        />
-      )}
-      <rect
-        x={-w / 2}
-        y={-h / 2}
-        width={w}
-        height={h}
-        rx={11}
-        fill="var(--card)"
-        stroke={status === "healthy" ? "var(--border)" : color}
-        strokeWidth={status === "healthy" ? 1 : 1.5}
-        style={status === "healthy" ? undefined : { filter: `drop-shadow(0 0 5px ${color})` }}
-      />
-      <rect x={-w / 2} y={-h / 2} width={4} height={h} rx={2} fill={color} />
-      <circle cx={w / 2 - 12} cy={-h / 2 + 12} r={3.4} fill={color} filter="url(#obs-glow)" />
-      <text x={-w / 2 + 14} y={-3} fill="var(--foreground)" fontSize={13} fontWeight={600}>
-        {def.name}
-      </text>
-      <text x={-w / 2 + 14} y={14} fill="var(--muted-foreground)" fontSize={10.5} fontFamily="ui-monospace, monospace">
-        {formatCompact(rps)} rps · {formatMs(p95)}
-      </text>
-    </g>
-  )
-}
-
-function ServiceMesh({
-  services,
-  selectedId,
-  incidentId,
-  running,
-  onSelect,
-}: {
-  services: Record<string, Runtime>
-  selectedId: string
-  incidentId: string | null
-  running: boolean
-  onSelect: (id: string) => void
-}) {
-  const geo = React.useMemo<EdgeGeo[]>(
-    () =>
-      EDGES.map((e) => {
-        const from = { x: SERVICE_MAP[e.from].x, y: SERVICE_MAP[e.from].y }
-        const to = { x: SERVICE_MAP[e.to].x, y: SERVICE_MAP[e.to].y }
-        return { from, c: edgeControl(from, to, e.bow), to }
-      }),
-    [],
-  )
-
-  const particlesRef = React.useRef<{ e: number; t: number; sp: number }[]>([])
-  const lineRefs = React.useRef<(SVGLineElement | null)[]>([])
-  const simRef = React.useRef(services)
-  const runningRef = React.useRef(running)
-
-  simRef.current = services
-  runningRef.current = running
-
-  if (particlesRef.current.length === 0) {
-    const rng = mulberry32(1337)
-    for (let i = 0; i < PARTICLE_COUNT; i++) {
-      particlesRef.current.push({ e: Math.floor(rng() * EDGES.length), t: rng(), sp: 0.16 + rng() * 0.24 })
-    }
-  }
-
-  React.useEffect(() => {
-    const rng = mulberry32(0xc0ffee)
-    let raf = 0
-    let last = performance.now()
-    const loop = (now: number) => {
-      const dt = Math.min(48, now - last) / 1000
-      last = now
-      if (runningRef.current) {
-        const svc = simRef.current
-        let total = 0
-        for (const e of EDGES) total += svc[e.from]?.rps ?? 1
-        const ps = particlesRef.current
-        for (let i = 0; i < ps.length; i++) {
-          const p = ps[i]
-          p.t += p.sp * dt
-          if (p.t >= 1) {
-            p.t -= 1
-            let pick = rng() * total
-            let chosen = 0
-            for (let k = 0; k < EDGES.length; k++) {
-              pick -= svc[EDGES[k].from]?.rps ?? 1
-              if (pick <= 0) {
-                chosen = k
-                break
-              }
-            }
-            p.e = chosen
-            p.sp = 0.16 + rng() * 0.26
-          }
-          const g = geo[p.e]
-          const head = quadAt(g.from, g.c, g.to, p.t)
-          const tail = quadAt(g.from, g.c, g.to, Math.max(0, p.t - 0.05))
-          const el = lineRefs.current[i]
-          if (el) {
-            const sev = worse(svc[EDGES[p.e].from]?.status ?? "healthy", svc[EDGES[p.e].to]?.status ?? "healthy")
-            el.setAttribute("x1", tail.x.toFixed(1))
-            el.setAttribute("y1", tail.y.toFixed(1))
-            el.setAttribute("x2", head.x.toFixed(1))
-            el.setAttribute("y2", head.y.toFixed(1))
-            el.setAttribute("stroke", PACKET_HEX[sev])
-            el.setAttribute("stroke-width", sev === "healthy" ? "3" : "4")
-          }
-        }
-      }
-      raf = requestAnimationFrame(loop)
-    }
-    raf = requestAnimationFrame(loop)
-    return () => cancelAnimationFrame(raf)
-  }, [geo])
-
-  return (
-    <svg
-      viewBox={`0 0 ${MESH_VIEWBOX.w} ${MESH_VIEWBOX.h}`}
-      preserveAspectRatio="xMidYMid meet"
-      className="block w-full"
-      style={{ aspectRatio: `${MESH_VIEWBOX.w} / ${MESH_VIEWBOX.h}` }}
-    >
-      <defs>
-        <filter id="obs-glow" x="-60%" y="-60%" width="220%" height="220%">
-          <feGaussianBlur stdDeviation="2.4" result="b" />
-          <feMerge>
-            <feMergeNode in="b" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-        <pattern id="obs-grid" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M 40 0 L 0 0 0 40" fill="none" stroke="var(--border)" strokeWidth="0.6" opacity="0.5" />
-        </pattern>
-        <radialGradient id="obs-scope" cx="50%" cy="46%" r="65%">
-          <stop offset="55%" stopColor="transparent" />
-          <stop offset="100%" stopColor="var(--background)" stopOpacity="0.65" />
-        </radialGradient>
-      </defs>
-
-      <rect x={0} y={0} width={MESH_VIEWBOX.w} height={MESH_VIEWBOX.h} fill="url(#obs-grid)" />
-
-      {/* arestas: base + fluxo tracejado + tinta de severidade */}
-      {EDGES.map((e, i) => {
-        const sev = worse(services[e.from]?.status ?? "healthy", services[e.to]?.status ?? "healthy")
-        const d = edgePathD(geo[i].from, geo[i].c, geo[i].to)
-        return (
-          <g key={e.id}>
-            <path d={d} fill="none" stroke="var(--border)" strokeWidth={2.4} strokeLinecap="round" />
-            <path
-              d={d}
-              fill="none"
-              stroke={sev === "healthy" ? PACKET_HEX.healthy : STATUS_HEX[sev]}
-              strokeWidth={1.4}
-              strokeLinecap="round"
-              opacity={0.5}
-              className={running ? "obs-flow-edge" : undefined}
-            />
-            {sev !== "healthy" && (
-              <path d={d} fill="none" stroke={STATUS_HEX[sev]} strokeWidth={3} strokeLinecap="round" opacity={0.28} />
-            )}
-          </g>
-        )
-      })}
-
-      {/* pacotes de tráfego (com cauda de cometa) */}
-      <g filter="url(#obs-glow)">
-        {Array.from({ length: PARTICLE_COUNT }, (_, i) => (
-          <line
-            key={i}
-            ref={(el) => {
-              lineRefs.current[i] = el
-            }}
-            x1={-10}
-            y1={-10}
-            x2={-10}
-            y2={-10}
-            stroke={PACKET_HEX.healthy}
-            strokeWidth={3}
-            strokeLinecap="round"
-          />
-        ))}
-      </g>
-
-      {/* nós */}
-      {SERVICES.map((s) => {
-        const st = services[s.id].status
-        return (
-          <MeshNode
-            key={s.id}
-            id={s.id}
-            selected={selectedId === s.id}
-            status={st}
-            rps={services[s.id].rps}
-            p95={services[s.id].p95}
-            pinging={selectedId === s.id || st === "critical" || incidentId === s.id}
-            onSelect={onSelect}
-          />
-        )
-      })}
-
-      {/* vinheta de escopo */}
-      <rect x={0} y={0} width={MESH_VIEWBOX.w} height={MESH_VIEWBOX.h} fill="url(#obs-scope)" pointerEvents="none" />
-    </svg>
-  )
-}
-
-/* ------------------------------------------------------------------ */
 /*  Componente principal                                               */
 /* ------------------------------------------------------------------ */
 
@@ -831,13 +568,24 @@ export function ObservabilityCenter() {
   const scoreColor = STATUS_HEX[globalStatus]
   const stress = clamp((100 - totals.score) / 100 + totals.errRate * 4, 0, 1)
   const firingCount = alerts.filter((a) => a.firing).length
-  const visibleLogs = logs.filter((l) => levels[l.level])
 
-  const logCounts = React.useMemo(() => {
-    const counts: Record<LogLevel, number> = { debug: 0, info: 0, warn: 0, error: 0 }
-    for (const l of logs) counts[l.level]++
-    return counts
-  }, [logs])
+  /* nós da malha (mapeia o runtime simulado → props genéricas do ServiceMesh) */
+  const meshNodes = React.useMemo(
+    () =>
+      SERVICES.map((s) => {
+        const r = services[s.id]
+        return {
+          id: s.id,
+          label: s.name,
+          x: s.x,
+          y: s.y,
+          status: r.status,
+          weight: r.rps,
+          meta: `${formatCompact(r.rps)} rps · ${formatMs(r.p95)}`,
+        }
+      }),
+    [services],
+  )
 
   return (
     <div className="relative isolate flex flex-col overflow-hidden bg-background text-foreground">
@@ -989,10 +737,17 @@ export function ObservabilityCenter() {
         >
           <div className="px-2 pb-2 pt-1">
             <ServiceMesh
-              services={services}
+              nodes={meshNodes}
+              edges={EDGES}
+              width={MESH_VIEWBOX.w}
+              height={MESH_VIEWBOX.h}
               selectedId={selectedId}
-              incidentId={incidentId}
-              running={running}
+              pingIds={incidentId ? [incidentId] : undefined}
+              paused={!running}
+              particleCount={76}
+              statusColors={STATUS_HEX}
+              packetColors={PACKET_HEX}
+              statusLabels={STATUS_LABEL}
               onSelect={(id) => dispatch({ type: "SELECT", id })}
             />
           </div>
@@ -1150,7 +905,7 @@ export function ObservabilityCenter() {
           </div>
         </DashboardPanel>
 
-        {/* ---- Heatmap ---- */}
+        {/* ---- Heatmap (grade acoplada à janela rolante do tick) ---- */}
         <DashboardPanel variant="framed" title="Heatmap de latência" icon={<Layers className="size-4" />} className="lg:col-span-7" action={<span className="text-[11px] text-muted-foreground">{selDef.name} · p95</span>} bodyClassName="p-4">
           <div className="flex gap-2">
             <div className="flex flex-col justify-between py-0.5 text-[10px] text-muted-foreground">
@@ -1174,22 +929,21 @@ export function ObservabilityCenter() {
         </DashboardPanel>
 
         {/* ---- Trace waterfall ---- */}
-        <DashboardPanel variant="framed" title="Distributed trace" icon={<Workflow className="size-4" />} className="lg:col-span-5" action={<span className="font-mono text-[11px] text-muted-foreground">#{(tick % 9000) + 1000}</span>} bodyClassName="flex flex-col gap-1.5 p-4">
-          {trace.map((span) => (
-            <div key={span.id} className="flex items-center gap-2">
-              <div className="w-24 shrink-0 truncate text-[11px] text-muted-foreground" style={{ paddingLeft: span.depth * 8 }}>
-                {span.label}
-              </div>
-              <div className="relative h-4 flex-1 overflow-hidden rounded bg-muted/50">
-                <div
-                  className="absolute inset-y-0 rounded transition-all duration-500"
-                  style={{ left: `${span.startPct}%`, width: `${clamp(span.widthPct, 2, 100)}%`, backgroundColor: STATUS_HEX[span.status], opacity: 0.85, boxShadow: `0 0 6px ${STATUS_HEX[span.status]}` }}
-                />
-              </div>
-              <div className="w-12 shrink-0 text-right font-mono text-[10px] tabular-nums text-muted-foreground">{formatMs(span.ms)}</div>
-            </div>
-          ))}
-          {trace.length <= 1 && <p className="py-3 text-center text-xs text-muted-foreground">Serviço folha — sem dependências downstream.</p>}
+        <DashboardPanel variant="framed" title="Distributed trace" icon={<Workflow className="size-4" />} className="lg:col-span-5" action={<span className="font-mono text-[11px] text-muted-foreground">#{(tick % 9000) + 1000}</span>} bodyClassName="p-4">
+          <TraceWaterfall
+            total={100}
+            statusColors={STATUS_HEX}
+            leafLabel="Serviço folha — sem dependências downstream."
+            spans={trace.map((span) => ({
+              id: span.id,
+              label: span.label,
+              start: span.startPct,
+              duration: span.widthPct,
+              status: span.status,
+              depth: span.depth,
+              valueLabel: formatMs(span.ms),
+            }))}
+          />
         </DashboardPanel>
 
         {/* ---- Log stream ---- */}
@@ -1198,39 +952,24 @@ export function ObservabilityCenter() {
           title="Live log stream"
           icon={<Activity className="size-4" />}
           className="lg:col-span-7"
-          action={
-            <div className="flex items-center gap-1">
-              {(["debug", "info", "warn", "error"] as LogLevel[]).map((lvl) => (
-                <button
-                  key={lvl}
-                  type="button"
-                  onClick={() => dispatch({ type: "TOGGLE_LEVEL", level: lvl })}
-                  className={cn("rounded border px-1.5 py-0.5 text-[10px] font-medium uppercase tabular-nums transition-opacity", LOG_LEVEL_CLASSES[lvl].chip, !levels[lvl] && "opacity-35")}
-                >
-                  {lvl} {logCounts[lvl]}
-                </button>
-              ))}
-            </div>
-          }
           bodyClassName="p-0"
         >
-          <div className="h-[260px] overflow-y-auto px-2 py-1.5 font-mono text-[11px] leading-relaxed">
-            {visibleLogs.length === 0 ? (
-              <p className="px-2 py-6 text-center text-muted-foreground">Nenhum log no filtro atual.</p>
-            ) : (
-              visibleLogs.map((log) => (
-                <div key={log.id} className="flex items-start gap-2 rounded px-2 py-0.5 hover:bg-muted/40">
-                  <span className="shrink-0 text-muted-foreground">{formatClock(log.t)}</span>
-                  <span className={cn("w-10 shrink-0 font-semibold uppercase", LOG_LEVEL_CLASSES[log.level].text)}>{log.level}</span>
-                  <span className="shrink-0 text-foreground/70">{SERVICE_MAP[log.service].short}</span>
-                  <span className="min-w-0 flex-1 truncate text-muted-foreground">
-                    <span className="text-foreground/80">{log.method}</span> {log.path}{" "}
-                    <span className={log.status >= 500 ? "text-rose-400" : log.status >= 400 ? "text-amber-400" : "text-emerald-400"}>{log.status}</span> · {log.ms}ms · {log.message}
-                  </span>
-                </div>
-              ))
-            )}
-          </div>
+          <LogStream
+            className="h-[304px]"
+            levels={levels}
+            onToggleLevel={(lvl) => dispatch({ type: "TOGGLE_LEVEL", level: lvl as LogLevel })}
+            entries={logs.map((log) => ({
+              id: log.id,
+              level: log.level,
+              time: formatClock(log.t),
+              service: SERVICE_MAP[log.service].short,
+              method: log.method,
+              path: log.path,
+              code: log.status,
+              ms: log.ms,
+              message: log.message,
+            }))}
+          />
         </DashboardPanel>
 
         {/* ---- Alerts ---- */}

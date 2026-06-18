@@ -2861,6 +2861,74 @@ export const components: ComponentMeta[] = [
     usage:
       "Coloque dentro de um container com altura definida (o <svg> ocupa 100%). Use `color` (CSS) para o traço/glow, `speed` (multiplicador de velocidade) e `amplitude` (pico R) para o ritmo, e `paused` para congelar. `height` controla apenas o viewBox.",
   },
+  {
+    slug: "service-mesh",
+    name: "Service Mesh",
+    category: "Feedback",
+    description:
+      "Malha viva de serviços: grafo de nós ligados por arestas curvas com PACOTES de tráfego trafegando ao vivo (SVG + requestAnimationFrame, cauda de cometa) coloridos por severidade do trecho, distribuídos pelo peso de cada nó. Nós em alarme/selecionados ganham glow e radar pings. Autocontido (PRNG, geometria e animações CSS escopadas inclusos); o rAF é sempre cancelado no unmount.",
+    tags: [
+      "service-mesh",
+      "mesh",
+      "malha",
+      "topology",
+      "topologia",
+      "graph",
+      "grafo",
+      "network",
+      "packets",
+      "observability",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Passe `nodes` (`{ id, label, x, y, status?, weight?, meta? }[]`) e `edges` (`{ from, to, bow? }[]`); `weight` (ex.: rps) pondera a quantidade de pacotes por aresta. Use `width`/`height` para o viewBox (o sistema de coordenadas dos `x`/`y`), `selectedId` + `onSelect` para seleção, `pingIds` para destacar nós (ex.: incidente), `paused`/`speed`/`particleCount` para o tráfego, e `statusColors`/`packetColors`/`statusLabels` para customizar cores/rótulos.",
+  },
+  {
+    slug: "log-stream",
+    name: "Log Stream",
+    category: "Feedback",
+    description:
+      "Stream de logs estilo terminal, com fonte monoespaçada e linhas densas (horário, nível colorido, serviço, método + path, código de status tingido por faixa HTTP, duração e mensagem). No topo, chips de filtro por nível com contagem — controlados (via `levels` + `onToggleLevel`) ou internos (estado próprio, tudo ligado por padrão).",
+    tags: [
+      "log-stream",
+      "logs",
+      "log",
+      "stream",
+      "terminal",
+      "console",
+      "filter",
+      "filtro",
+      "observability",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Passe `entries` (`{ level, message?, code?, method?, path?, service?, ms?, time? }[]`). Para filtros controlados, passe `levels` (mapa nível→ativo) + `onToggleLevel`; omitindo `levels`, o componente mantém o próprio estado. Use `levelOrder`/`levelStyles` para customizar os níveis, `showFilters={false}` para esconder a barra, e `scrollClassName`/`className` para a altura/área rolável.",
+  },
+  {
+    slug: "trace-waterfall",
+    name: "Trace Waterfall",
+    category: "Feedback",
+    description:
+      "Cascata (waterfall) de spans de um trace distribuído: cada span é uma barra posicionada/dimensionada por início/duração sobre uma escala total, indentada por profundidade e tingida pelo status (verde/âmbar/vermelho, com glow) — um heatmap de latência p95 por span. Mensagem opcional de 'serviço folha' quando há ≤1 span.",
+    tags: [
+      "trace-waterfall",
+      "trace",
+      "waterfall",
+      "cascata",
+      "spans",
+      "span",
+      "latency",
+      "latencia",
+      "heatmap",
+      "observability",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Passe `spans` (`{ label, start, duration, service?, status?, depth?, valueLabel? }[]`); `start`/`duration` são frações de `total` (a escala; se omitido, é inferido do maior `start + duration`). Use `valueLabel` para o número à direita (default = duração formatada via `formatValue`), `statusColors` para as cores das barras, `minWidthPct` para a largura mínima visível e `leafLabel` para a mensagem de serviço folha.",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

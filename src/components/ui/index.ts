@@ -880,5 +880,20 @@ export type {
 } from "./signal-card"
 export { EcgStrip } from "./ecg-strip"
 export type { EcgStripProps } from "./ecg-strip"
+export { ServiceMesh } from "./service-mesh"
+export type {
+  ServiceMeshProps,
+  ServiceMeshNode,
+  ServiceMeshEdge,
+  ServiceMeshStatus,
+} from "./service-mesh"
+export { LogStream } from "./log-stream"
+export type {
+  LogStreamProps,
+  LogStreamEntry,
+  LogStreamLevelStyle,
+} from "./log-stream"
+export { TraceWaterfall } from "./trace-waterfall"
+export type { TraceWaterfallProps, TraceWaterfallSpan } from "./trace-waterfall"
 
 

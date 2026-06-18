@@ -250,6 +250,9 @@ import { examplesUpgradeCard } from "./examples-upgrade-card"
 import { examplesRadialGauge } from "./examples-radial-gauge"
 import { examplesSignalCard } from "./examples-signal-card"
 import { examplesEcgStrip } from "./examples-ecg-strip"
+import { examplesServiceMesh } from "./examples-service-mesh"
+import { examplesLogStream } from "./examples-log-stream"
+import { examplesTraceWaterfall } from "./examples-trace-waterfall"
 
 export type Example = {
   title: string
@@ -1565,6 +1568,9 @@ export const examples: Record<string, Example[]> = {
   ...examplesRadialGauge,
   ...examplesSignalCard,
   ...examplesEcgStrip,
+  ...examplesServiceMesh,
+  ...examplesLogStream,
+  ...examplesTraceWaterfall,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
