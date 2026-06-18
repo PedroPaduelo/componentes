@@ -8,8 +8,10 @@
  * por domínio (ex.: todos os inputs numa única seção "Forms & Inputs").
  *
  * --- ADITIVO E DESACOPLADO (decisão de design) ---
- * - NÃO importa nem altera `families.ts` (derivação de família/origem continua
- *   intacta) nem `CATEGORIES` (as 4 categorias canônicas seguem como estão).
+ * - NÃO altera `families.ts` (derivação de família/origem continua intacta) nem
+ *   `CATEGORIES` (as 4 categorias canônicas seguem como estão). Os helpers de
+ *   grupo (O2.3) apenas CONSOMEM `groupByFamily`/`components` (read-only) para
+ *   derivar contagens e famílias por grupo — sem duplicar nem modificar dado.
  * - NÃO adiciona nenhum campo em `ComponentMeta` → os parsers regex dos scripts
  *   de `_meta` (build-ai-assets / build-registry) NÃO são afetados.
  * - O vínculo slug → grupo vive em `SLUG_GROUP_MAP` (mapa de derivação externo),
@@ -31,6 +33,9 @@ import {
   Type,
   type LucideIcon,
 } from "lucide-react"
+
+import { components } from "@/data/components"
+import { groupByFamily, type Family } from "@/data/families"
 
 /* -------------------------------------------------------------------------- */
 /* Domínios macro (ordenam os grupos)                                          */
@@ -449,4 +454,61 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "3d-globe": "globes-maps",
   "github-globe": "globes-maps",
   "world-map": "globes-maps",
+}
+
+/* -------------------------------------------------------------------------- */
+/* Helpers de derivação de grupo (O2.3)                                        */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * Resolve o GRUPO de um slug.
+ *
+ * Consulta {@link SLUG_GROUP_MAP} (O(1)) e cai em {@link DEFAULT_GROUP} para
+ * slugs ainda não classificados (itens novos do registry). É a porta de entrada
+ * única para qualquer UI/consumidor que precise saber a que grupo um componente
+ * pertence — ninguém deve ler `SLUG_GROUP_MAP` direto.
+ */
+export function getGroup(slug: string): GroupId {
+  return SLUG_GROUP_MAP[slug] ?? DEFAULT_GROUP
+}
+
+/** Um {@link Group} anotado com as contagens derivadas do registry. */
+export interface GroupWithCount extends Group {
+  /** Nº de componentes (slugs do registry) pertencentes ao grupo. */
+  componentCount: number
+  /** Nº de famílias (variantes agrupadas via `groupByFamily`) no grupo. */
+  familyCount: number
+}
+
+/**
+ * Lista os 9 grupos JÁ ORDENADOS por `order` (primitivos → aplicações → visual),
+ * cada um anotado com a contagem de componentes e de famílias do registry.
+ *
+ * Usado pela navegação/sidebar para renderizar as seções com seus totais sem
+ * reimplementar a contagem. Deriva tudo de `components` + {@link getGroup}.
+ */
+export function listGroups(): GroupWithCount[] {
+  return [...GROUPS]
+    .sort((a, b) => a.order - b.order)
+    .map((group) => {
+      const items = components.filter((c) => getGroup(c.slug) === group.id)
+      return {
+        ...group,
+        componentCount: items.length,
+        familyCount: groupByFamily(items).length,
+      }
+    })
+}
+
+/**
+ * Retorna os componentes de um grupo já agrupados em FAMÍLIAS.
+ *
+ * Filtra o registry por {@link getGroup} `=== groupId` e delega a clusterização
+ * por família ao `groupByFamily` de `families.ts` (read-only) — então as
+ * famílias saem ordenadas alfabeticamente por base, consistentes com o resto da
+ * vitrine. Grupo sem itens → array vazio.
+ */
+export function getGroupItems(groupId: GroupId): Family[] {
+  const items = components.filter((c) => getGroup(c.slug) === groupId)
+  return groupByFamily(items)
 }
