@@ -66,6 +66,57 @@ function parseEntries(file, { hasCategory }) {
   return out
 }
 
+/**
+ * Parseia o `SLUG_GROUP_MAP` e os `GROUPS` de `groups.ts` via regex.
+ *
+ * Retorna `{ slugGroup: Record<slug, groupId>, groupLabel: Record<groupId, label> }`.
+ * NÃO importa o módulo TypeScript — lê o source como texto, mesma abordagem do
+ * `parseEntries`. O mapa vive separado do registry (`components.ts`), então o
+ * parser `fieldText` não é afetado.
+ */
+function parseGroups() {
+  const txt = read(resolve(SRC, "data/groups.ts"))
+
+  // Group labels: extrai { id: "...", label: "..." } de cada entry em GROUPS[]
+  const groupLabel = {}
+  const entryRe = /id:\s*"([^"]+)"[^}]*?label:\s*"([^"]+)"/g
+  let em
+  while ((em = entryRe.exec(txt))) {
+    groupLabel[em[1]] = em[2]
+  }
+
+  // Slug → groupId: extrai pares do body do `export const SLUG_GROUP_MAP = { ... }`
+  const slugGroup = {}
+  const declRe = /export const SLUG_GROUP_MAP[^{]*\{/
+  const dm = txt.match(declRe)
+  if (dm) {
+    const openBrace = dm.index + dm[0].length - 1
+    let depth = 0
+    let end = -1
+    for (let i = openBrace; i < txt.length; i++) {
+      if (txt[i] === "{") depth++
+      if (txt[i] === "}") {
+        depth--
+        if (depth === 0) {
+          end = i
+          break
+        }
+      }
+    }
+    const body = txt.slice(openBrace + 1, end)
+    // Casa ambos os formatos de key: "slug": "group" e slug: "group"
+    const pairRe = /(?:"([^"]+)"|([a-zA-Z0-9_-]+)):\s*"([^"]+)"/g
+    let pm
+    while ((pm = pairRe.exec(body))) {
+      slugGroup[pm[1] || pm[2]] = pm[3]
+    }
+  }
+
+  return { slugGroup, groupLabel }
+}
+
+const { slugGroup, groupLabel } = parseGroups()
+
 const components = parseEntries("data/components.ts", { hasCategory: true })
 const compositions = parseEntries("data/compositions.ts", { hasCategory: true })
 
@@ -106,12 +157,47 @@ lines.push("")
 
 lines.push(`## Componentes (${components.length})`)
 lines.push("")
-for (const c of components) {
-  const cat = c.category ? ` — ${c.category}` : ""
-  lines.push(`- **${c.name}** (\`${c.slug}\`)${cat}. ${c.description}`)
-  lines.push(`  - instalar: \`${addCmd(c.slug)}\``)
-}
+lines.push(
+  "Componentes organizados por **grupo** (clusterização por domínio). Use o grupo para descobrir componentes relacionados.",
+)
 lines.push("")
+
+// Agrupar componentes por grupo (ordem dos GROUPS, depois sem grupo)
+const groupOrder = Object.keys(groupLabel)
+const byGroup = {}
+const noGroup = []
+for (const c of components) {
+  const gid = slugGroup[c.slug]
+  if (gid) {
+    if (!byGroup[gid]) byGroup[gid] = []
+    byGroup[gid].push(c)
+  } else {
+    noGroup.push(c)
+  }
+}
+
+for (const gid of groupOrder) {
+  const items = byGroup[gid]
+  if (!items || items.length === 0) continue
+  lines.push(`### ${groupLabel[gid]} (${items.length})`)
+  lines.push("")
+  for (const c of items) {
+    const cat = c.category ? ` — ${c.category}` : ""
+    lines.push(`- **${c.name}** (\`${c.slug}\`)${cat}. ${c.description}`)
+    lines.push(`  - instalar: \`${addCmd(c.slug)}\``)
+  }
+  lines.push("")
+}
+if (noGroup.length > 0) {
+  lines.push(`### Outros (${noGroup.length})`)
+  lines.push("")
+  for (const c of noGroup) {
+    const cat = c.category ? ` — ${c.category}` : ""
+    lines.push(`- **${c.name}** (\`${c.slug}\`)${cat}. ${c.description}`)
+    lines.push(`  - instalar: \`${addCmd(c.slug)}\``)
+  }
+  lines.push("")
+}
 
 lines.push(`## Composições / blocos (${compositions.length})`)
 lines.push("")

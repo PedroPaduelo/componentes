@@ -119,7 +119,7 @@ function firstExample(family: Family): Example | undefined {
  *
  *   ## Mais
  *   - Página de instalação da vitrine: https://.../instalacao
- *   - Repositório: https://github.com/<configure depois — (repo TBD)>
+ *   - Repositório: https://github.com/PedroPaduelo/componentes
  */
 export function buildComponentPrompt(family: Family): string {
   const representative = family.variants[0]
@@ -193,7 +193,7 @@ export function buildComponentPrompt(family: Family): string {
   lines.push(
     `- Página de instalação da vitrine: ${REGISTRY_BASE_URL}/instalacao`,
   )
-  lines.push("- Repositório: https://github.com/(repo TBD)")
+  lines.push("- Repositório: https://github.com/PedroPaduelo/componentes")
 
   return lines.join("\n")
 }
