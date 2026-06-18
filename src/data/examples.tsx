@@ -241,6 +241,9 @@ import { examplesPreferenceRow } from "./examples-preference-row"
 import { examplesActivityFeed } from "./examples-activity-feed"
 import { examplesLeaderboardList } from "./examples-leaderboard-list"
 import { examplesInvoiceTable } from "./examples-invoice-table"
+import { examplesDashboardSidebarNav } from "./examples-dashboard-sidebar-nav"
+import { examplesDashboardUserMenu } from "./examples-dashboard-user-menu"
+import { examplesDonutBreakdown } from "./examples-donut-breakdown"
 
 export type Example = {
   title: string
@@ -1547,6 +1550,9 @@ export const examples: Record<string, Example[]> = {
   ...examplesActivityFeed,
   ...examplesLeaderboardList,
   ...examplesInvoiceTable,
+  ...examplesDashboardSidebarNav,
+  ...examplesDashboardUserMenu,
+  ...examplesDonutBreakdown,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

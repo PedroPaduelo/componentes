@@ -7,7 +7,8 @@
  *  - TableFluid + sub (tabelas de clientes e faturas filtráveis/paginadas)
  *  - Tabs/TabsList/TabsTrigger/TabsContent (visões em Analytics)
  *  - Dialog/DialogContent/... (detalhe do cliente, fatura e criação em overlay)
- *  - DropdownMenu* (menu do usuário) + Avatar (membros/feed/usuário)
+ *  - DashboardSidebarNav (navegação lateral) + DashboardUserMenu (avatar + menu)
+ *  - DonutBreakdown (distribuição de planos) + Avatar (membros/feed)
  *  - SwitchFluid / SelectFluid / Input (preferências, filtros e período)
  *  - Badge (status/plano) + Button (navegação/ações) + Toaster (Sonner)
  *
@@ -38,7 +39,6 @@ import {
   Download,
   LogOut,
   User,
-  ChevronDown,
   Trash2,
   Sparkles,
   Wallet,
@@ -51,10 +51,11 @@ import {
   AnimatedNumber,
   BarChart,
   HBarChart,
-  DonutChart,
+  DonutBreakdown,
   KpiCard,
   Sparkline,
   DashboardPanel,
+  DashboardSidebarNav,
   DetailStatCell,
   PreferenceRow,
   ActivityFeed,
@@ -84,12 +85,7 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DashboardUserMenu,
   Separator,
   Progress,
   Toaster,
@@ -601,41 +597,17 @@ function OverviewSection() {
           title="Distribuição de planos"
           description="Mix da base de clientes."
         >
-          <div className="flex flex-col items-center gap-4">
-            <div className="relative" style={{ width: 168, height: 168 }}>
-              <DonutChart
-                segments={PLAN_DISTRIBUTION.map((p) => ({
-                  label: p.label,
-                  value: p.value,
-                  className: PLAN_SEGMENT_CLASS[p.label as CustomerRow["plan"]],
-                }))}
-              />
-              <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-2xl font-semibold text-foreground">
-                  {CUSTOMERS.length}
-                </span>
-                <span className="text-[11px] text-muted-foreground">clientes</span>
-              </div>
-            </div>
-            <ul className="flex w-full flex-col gap-2">
-              {PLAN_DISTRIBUTION.map((p) => (
-                <li
-                  key={p.label}
-                  className="flex items-center justify-between text-sm"
-                >
-                  <span className="flex items-center gap-2 text-foreground">
-                    <span
-                      className={`size-2.5 rounded-full ${
-                        PLAN_DOT_CLASS[p.label as CustomerRow["plan"]]
-                      }`}
-                    />
-                    {p.label}
-                  </span>
-                  <span className="font-medium text-foreground">{p.value}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <DonutBreakdown
+            orientation="vertical"
+            centerLabel={CUSTOMERS.length}
+            centerSublabel="clientes"
+            segments={PLAN_DISTRIBUTION.map((p) => ({
+              label: p.label,
+              value: p.value,
+              className: PLAN_SEGMENT_CLASS[p.label as CustomerRow["plan"]],
+              dotClassName: PLAN_DOT_CLASS[p.label as CustomerRow["plan"]],
+            }))}
+          />
         </DashboardPanel>
       </div>
 
@@ -1590,45 +1562,35 @@ export function SaasDashboardPro() {
   return (
     <div className="flex min-h-[70vh] w-full overflow-hidden rounded-xl border border-border bg-background text-foreground">
       {/* Sidebar */}
-      <aside className="hidden w-56 shrink-0 flex-col gap-1 border-r border-border bg-card/40 p-4 md:flex">
-        <div className="mb-4 flex items-center gap-2 px-2">
-          <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Activity className="size-4" />
-          </span>
-          <span className="text-sm font-semibold">Nimbus</span>
-        </div>
-        <nav className="flex flex-col gap-1" aria-label="Navegação principal">
-          {NAV.map((item) => {
-            const Icon = item.icon
-            const active = item.id === section
-            return (
-              <Button
-                key={item.id}
-                variant={active ? "secondary" : "ghost"}
-                className="justify-start gap-2"
-                aria-current={active ? "page" : undefined}
-                onClick={() => setSection(item.id)}
-              >
-                <Icon className="size-4" />
-                {item.label}
-              </Button>
-            )
-          })}
-        </nav>
-        <div className="mt-auto rounded-lg border border-border bg-muted/40 p-3">
-          <p className="text-xs font-medium">Plano Pro</p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            7 dias restantes no teste.
-          </p>
-          <Button
-            size="sm"
-            className="mt-3 w-full"
-            onClick={() => setSection("billing")}
-          >
-            Fazer upgrade
-          </Button>
-        </div>
-      </aside>
+      <DashboardSidebarNav
+        className="hidden md:flex"
+        items={NAV}
+        activeId={section}
+        onSelect={(id) => setSection(id as SectionId)}
+        brand={
+          <>
+            <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <Activity className="size-4" />
+            </span>
+            <span className="text-sm font-semibold">Nimbus</span>
+          </>
+        }
+        footer={
+          <div className="rounded-lg border border-border bg-muted/40 p-3">
+            <p className="text-xs font-medium">Plano Pro</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              7 dias restantes no teste.
+            </p>
+            <Button
+              size="sm"
+              className="mt-3 w-full"
+              onClick={() => setSection("billing")}
+            >
+              Fazer upgrade
+            </Button>
+          </div>
+        }
+      />
 
       {/* Conteúdo */}
       <div className="flex min-w-0 flex-1 flex-col">
@@ -1663,53 +1625,30 @@ export function SaasDashboardPro() {
 
             <Separator orientation="vertical" className="hidden h-6 sm:block" />
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <button
-                  type="button"
-                  className="flex items-center gap-2 rounded-full outline-none focus-visible:ring-2 focus-visible:ring-ring"
-                  aria-label="Menu do usuário"
-                >
-                  <Avatar className="size-8 border border-border">
-                    <AvatarImage
-                      src="https://picsum.photos/seed/aurora.vale/64/64"
-                      alt="Aurora Vale"
-                    />
-                    <AvatarFallback>AV</AvatarFallback>
-                  </Avatar>
-                  <ChevronDown className="hidden size-4 text-muted-foreground sm:block" />
-                </button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-52">
-                <DropdownMenuLabel>
-                  <p className="text-sm font-medium text-foreground">Aurora Vale</p>
-                  <p className="text-xs font-normal text-muted-foreground">
-                    aurora@nimbus.io
-                  </p>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onSelect={() => toast("Abrindo perfil")}>
-                  <User className="size-4" />
-                  Perfil
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setSection("settings")}>
-                  <Settings className="size-4" />
-                  Configurações
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setSection("billing")}>
-                  <Receipt className="size-4" />
-                  Cobrança
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  variant="destructive"
-                  onSelect={() => toast("Sessão encerrada")}
-                >
-                  <LogOut className="size-4" />
-                  Sair
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <DashboardUserMenu
+              name="Aurora Vale"
+              email="aurora@nimbus.io"
+              avatar="https://picsum.photos/seed/aurora.vale/64/64"
+              fallback="AV"
+              items={[
+                { id: "profile", label: "Perfil", icon: User },
+                { id: "settings", label: "Configurações", icon: Settings },
+                { id: "billing", label: "Cobrança", icon: Receipt },
+                {
+                  id: "logout",
+                  label: "Sair",
+                  icon: LogOut,
+                  destructive: true,
+                  separatorBefore: true,
+                },
+              ]}
+              onSelect={(id) => {
+                if (id === "profile") toast("Abrindo perfil")
+                else if (id === "settings") setSection("settings")
+                else if (id === "billing") setSection("billing")
+                else if (id === "logout") toast("Sessão encerrada")
+              }}
+            />
           </div>
         </header>
 

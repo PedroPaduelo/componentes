@@ -845,5 +845,20 @@ export { LeaderboardList } from "./leaderboard-list"
 export type { LeaderboardListProps, LeaderboardItem } from "./leaderboard-list"
 export { InvoiceTable } from "./invoice-table"
 export type { InvoiceTableProps, InvoiceTableItem } from "./invoice-table"
+export { DashboardSidebarNav } from "./dashboard-sidebar-nav"
+export type {
+  DashboardSidebarNavProps,
+  DashboardSidebarNavItem,
+} from "./dashboard-sidebar-nav"
+export { DashboardUserMenu } from "./dashboard-user-menu"
+export type {
+  DashboardUserMenuProps,
+  DashboardUserMenuItem,
+} from "./dashboard-user-menu"
+export { DonutBreakdown } from "./donut-breakdown"
+export type {
+  DonutBreakdownProps,
+  DonutBreakdownSegment,
+} from "./donut-breakdown"
 
 

@@ -2672,6 +2672,69 @@ export const components: ComponentMeta[] = [
     usage:
       "Passe `items` como lista de `{ label, qty, unit }`; o valor de cada linha é `qty * unit`. Use `total` para exibir a linha de total no `<tfoot>`. Troque `formatValue` para mudar a moeda/escala e `labels` para renomear as colunas (item/qty/value/total).",
   },
+  {
+    slug: "dashboard-sidebar-nav",
+    name: "Dashboard Sidebar Nav",
+    category: "Layout",
+    description:
+      "Barra lateral de navegação para layouts de dashboard/app: marca/brand no topo, lista de itens com ícone e destaque do item ativo, e um rodapé opcional fixado embaixo (ex.: card de upgrade). Navegação 100% controlada por props — sem estado próprio.",
+    tags: [
+      "sidebar",
+      "navegacao",
+      "navigation",
+      "nav",
+      "aside",
+      "menu-lateral",
+      "dashboard",
+      "app-shell",
+      "layout",
+      "shared",
+    ],
+    usage:
+      "Passe `items` como lista de `{ id, label, icon? }`, mais `activeId` (item destacado) e `onSelect(id)` para reagir aos cliques — o estado de navegação fica fora do componente. Use `brand` (envolto num cabeçalho padrão) ou `header` (conteúdo cru) no topo e `footer` para o conteúdo de baixo (ex.: card de upgrade). Acrescente `hidden md:flex` ao className para esconder a sidebar no mobile.",
+  },
+  {
+    slug: "dashboard-user-menu",
+    name: "Dashboard User Menu",
+    category: "Actions",
+    description:
+      "Gatilho de avatar + dropdown do usuário para a topbar: avatar (com chevron opcional) que abre um menu com cabeçalho de identidade (nome + e-mail) e uma lista de ações vindas por props, com suporte a item destrutivo e separadores.",
+    tags: [
+      "user-menu",
+      "menu-usuario",
+      "avatar",
+      "dropdown",
+      "account",
+      "conta",
+      "topbar",
+      "perfil",
+      "dashboard",
+      "actions",
+    ],
+    usage:
+      "Passe `name` e, opcionalmente, `email`/`avatar`/`fallback`. As ações vão em `items` como `{ id, label, icon?, destructive?, separatorBefore? }` e disparam `onSelect(id)`. Use `separatorBefore` para isolar um item (ex.: 'Sair') e `destructive` para destacá-lo. `children` injeta conteúdo extra ao fim do menu; `align`/`showChevron` ajustam o gatilho.",
+  },
+  {
+    slug: "donut-breakdown",
+    name: "Donut Breakdown",
+    category: "Feedback",
+    description:
+      "Bloco de distribuição: combina um DonutChart (anel proporcional) com uma legenda (bolinha de cor + rótulo + valor) e um rótulo central opcional (ex.: total). Ideal para 'Distribuição de planos', 'Mix de receita por categoria' e afins. Reusa o DonutChart internamente.",
+    tags: [
+      "donut",
+      "breakdown",
+      "distribuicao",
+      "distribution",
+      "pie",
+      "legenda",
+      "legend",
+      "chart",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Passe `segments` como `{ label, value, className?, dotClassName? }` — `className` é a cor do arco (ex.: 'stroke-primary') e `dotClassName` a da bolinha da legenda (default: derivada do `className`). Use `centerLabel`/`centerSublabel` para o miolo do anel, `title` para um título acima e `orientation` ('horizontal' = legenda à direita, 'vertical' = abaixo). `size` controla o diâmetro.",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
