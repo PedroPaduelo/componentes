@@ -4,7 +4,7 @@ import { ArrowLeft, Loader2, Sparkles, Terminal } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { CodeBlockCommand } from "@/components/ui/code-block-command"
-import { CopyPromptButton } from "@/components/showcase/CopyPromptButton"
+import { AiActionsMenu } from "@/components/showcase/AiActionsMenu"
 import { DocPagerNav } from "@/components/showcase/DocPagerNav"
 import { compositionScreens } from "@/compositions"
 import { getCompositionBySlug } from "@/data/compositions"
@@ -49,7 +49,10 @@ export function CompositionDetail() {
           </p>
         </div>
         <div className="flex shrink-0 items-center gap-2">
-          <CopyPromptButton prompt={buildCompositionPrompt(composition)} />
+          <AiActionsMenu
+            prompt={buildCompositionPrompt(composition)}
+            className="shrink-0"
+          />
           <Button asChild variant="outline">
             <Link to="/compositions">
               <ArrowLeft className="size-4" />

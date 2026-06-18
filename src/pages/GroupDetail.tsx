@@ -1,11 +1,13 @@
-import { useCallback, useEffect } from "react"
+import { useCallback, useEffect, useMemo } from "react"
 import { useLocation, useParams } from "react-router-dom"
 
+import { AiActionsMenu } from "@/components/showcase/AiActionsMenu"
 import { DocBreadcrumb } from "@/components/showcase/DocBreadcrumb"
 import { DocPagerNav } from "@/components/showcase/DocPagerNav"
 import { OnThisPage, type TocSection } from "@/components/showcase/OnThisPage"
 import { OriginBadge } from "@/components/catalog/OriginBadge"
 import { VariantSection } from "@/pages/FamilyDetail"
+import { buildComponentPrompt } from "@/data/component-prompt"
 import type { Family } from "@/data/families"
 import {
   GROUPS,
@@ -51,6 +53,12 @@ function GroupView({ groupId, hash }: { groupId: GroupId; hash: string }) {
   const families = getGroupItems(groupId)
   const Icon = group.icon
   const componentCount = families.reduce((n, f) => n + f.variants.length, 0)
+
+  /** Markdown agregado do grupo: prompts de cada família concatenados. */
+  const groupPrompt = useMemo(
+    () => families.map((f) => buildComponentPrompt(f)).join("\n\n---\n\n"),
+    [families],
+  )
 
   const scrollTo = useCallback((id: string) => {
     const el = document.getElementById(id)
@@ -113,6 +121,10 @@ function GroupView({ groupId, hash }: { groupId: GroupId; hash: string }) {
             {componentCount}{" "}
             {componentCount === 1 ? "componente" : "componentes"}
           </p>
+          <AiActionsMenu
+            prompt={groupPrompt}
+            className="shrink-0"
+          />
         </header>
 
         {/* Seções: uma família por bloco (variantes empilhadas). */}
