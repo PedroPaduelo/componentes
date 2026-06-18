@@ -260,6 +260,9 @@ import { examplesFavoritesList } from "./examples-favorites-list"
 import { examplesQueryHistoryList } from "./examples-query-history-list"
 import { examplesTableInfoPanel } from "./examples-table-info-panel"
 import { examplesWorkbenchStatusBar } from "./examples-workbench-status-bar"
+import { examplesUserListItem } from "./examples-user-list-item"
+import { examplesMetricGlowCard } from "./examples-metric-glow-card"
+import { examplesLatencyHeatmap } from "./examples-latency-heatmap"
 
 export type Example = {
   title: string
@@ -1585,6 +1588,9 @@ export const examples: Record<string, Example[]> = {
   ...examplesQueryHistoryList,
   ...examplesTableInfoPanel,
   ...examplesWorkbenchStatusBar,
+  ...examplesUserListItem,
+  ...examplesMetricGlowCard,
+  ...examplesLatencyHeatmap,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

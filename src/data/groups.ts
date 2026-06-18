@@ -394,8 +394,10 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "incident-timeline": "dashboards-dev",
   "invoice-table": "dashboards-dev",
   "kpi-card": "dashboards-dev",
+  "latency-heatmap": "dashboards-dev",
   "leaderboard-list": "dashboards-dev",
   "log-stream": "dashboards-dev",
+  "metric-glow-card": "dashboards-dev",
   "query-history-list": "dashboards-dev",
   "radial-gauge": "dashboards-dev",
   "react-flow": "dashboards-dev",
@@ -414,6 +416,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "trace-waterfall": "dashboards-dev",
   "upgrade-card": "dashboards-dev",
   "user-activity-stream": "dashboards-dev",
+  "user-list-item": "dashboards-dev",
 
   // — Efeitos de Texto: flip, typewriter, gradiente, brilho, reveal —
   "canvas-text": "text-effects",

@@ -20,11 +20,11 @@
  *
  * Componentização: o ECG, a sparkline (via SignalCard), o gauge radial, o
  * card-shell (DashboardPanel com glow), o cartão de golden signal, a malha de
- * serviços (ServiceMesh), o stream de logs (LogStream) e a cascata de trace
- * (TraceWaterfall) foram extraídos para componentes registrados
- * (`@/components/ui/*`) e são reusados aqui — esta composição só orquestra a
- * simulação e o layout (incluindo a grade-heatmap, ainda acoplada à janela
- * rolante do tick).
+ * serviços (ServiceMesh), o stream de logs (LogStream), a cascata de trace
+ * (TraceWaterfall) e a grade-heatmap de latência (LatencyHeatmap) foram
+ * extraídos para componentes registrados (`@/components/ui/*`) e são reusados
+ * aqui — esta composição só orquestra a simulação e o layout (passando a
+ * janela rolante do tick e a escala de cor como props ao heatmap).
  */
 
 import * as React from "react"
@@ -55,6 +55,7 @@ import { Button } from "@/components/ui/button"
 import { AnimatedNumber } from "@/components/ui/animated-number"
 import { DashboardPanel } from "@/components/ui/dashboard-panel"
 import { EcgStrip } from "@/components/ui/ecg-strip"
+import { LatencyHeatmap } from "@/components/ui/latency-heatmap"
 import { LogStream } from "@/components/ui/log-stream"
 import { RadialGauge } from "@/components/ui/radial-gauge"
 import { ServiceMesh } from "@/components/ui/service-mesh"
@@ -907,25 +908,7 @@ export function ObservabilityCenter() {
 
         {/* ---- Heatmap (grade acoplada à janela rolante do tick) ---- */}
         <DashboardPanel variant="framed" title="Heatmap de latência" icon={<Layers className="size-4" />} className="lg:col-span-7" action={<span className="text-[11px] text-muted-foreground">{selDef.name} · p95</span>} bodyClassName="p-4">
-          <div className="flex gap-2">
-            <div className="flex flex-col justify-between py-0.5 text-[10px] text-muted-foreground">
-              <span>lento</span>
-              <span>rápido</span>
-            </div>
-            <div className="flex-1">
-              <div className="grid gap-0.5" style={{ gridTemplateColumns: `repeat(${HEAT_COLS}, minmax(0, 1fr))` }}>
-                {Array.from({ length: HEAT_ROWS }, (_, row) =>
-                  heatCols.map((col, c) => (
-                    <div key={`${row}-${c}`} className="aspect-square rounded-[2px]" style={{ backgroundColor: heatColor(col[row]) }} />
-                  )),
-                )}
-              </div>
-              <div className="mt-1.5 flex justify-between text-[10px] text-muted-foreground">
-                <span>−{HEAT_COLS}t</span>
-                <span>agora</span>
-              </div>
-            </div>
-          </div>
+          <LatencyHeatmap columns={heatCols} rows={HEAT_ROWS} colorScale={heatColor} />
         </DashboardPanel>
 
         {/* ---- Trace waterfall ---- */}

@@ -3077,6 +3077,71 @@ export const components: ComponentMeta[] = [
     usage:
       "Passe `left` e `right` com o conteúdo já montado (spans com ícones/pontos de status). O grupo `right` é alinhado à direita automaticamente. Aceita className/props padrão de um <footer> para ajustes finos.",
   },
+  {
+    slug: "user-list-item",
+    name: "User List Item",
+    category: "Feedback",
+    description:
+      "Linha de usuário para listas de pessoas em dashboards: avatar (com fallback de iniciais) + nome e e-mail à esquerda; à direita um slot para status/badge e/ou ações. Reusa Avatar e Badge do acervo; sem estado próprio. A casca (borda/padding) fica por conta do consumidor via className.",
+    tags: [
+      "user",
+      "usuario",
+      "list",
+      "lista",
+      "avatar",
+      "pessoa",
+      "row",
+      "linha",
+      "membro",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Passe `name` e, opcionalmente, `email`, `avatar` (URL), `fallback` (iniciais) e `meta` (linha auxiliar). À direita, use `status` (renderiza um Badge interno) ou `badge` (elemento pronto, tem prioridade) e/ou `actions`/children. Adicione `border`/`padding` por className para o visual de caixa, ou empilhe em `divide-y` para o visual de lista.",
+  },
+  {
+    slug: "metric-glow-card",
+    name: "Metric Glow Card",
+    category: "Feedback",
+    description:
+      "Conteúdo de métrica centrado para dashboards de destaque: rótulo em maiúsculas, valor em string livre (ex.: \"R$ 124.500\", \"4m 32s\") e uma variação colorida por tendência (verde/vermelho). É só o conteúdo, pensado para morar dentro de uma casca com brilho (ex.: o GlowCard do glow-card-grid).",
+    tags: [
+      "metrica",
+      "metric",
+      "kpi",
+      "glow",
+      "brilho",
+      "card",
+      "valor",
+      "delta",
+      "destaque",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Passe `title`, `value` (string já formatada) e, opcionalmente, `change` + `positive` (verde quando true, vermelho quando false). Diferente do KpiCard (que tem chrome de card, valor numérico animado e badge em pílula), aqui o valor é string e o layout é centrado, sem chrome — coloque-o dentro de uma casca como o GlowCard (registryDependency na composição) para o efeito de brilho.",
+  },
+  {
+    slug: "latency-heatmap",
+    name: "Latency Heatmap",
+    category: "Feedback",
+    description:
+      "Grade (heatmap) de latência/intensidade em CSS grid: matriz coluna-maior em que cada célula recebe uma cor via escala configurável, com eixos opcionais (lento/rápido à esquerda, janela/agora abaixo). Totalmente desacoplado de simulação — só recebe a matriz e renderiza.",
+    tags: [
+      "heatmap",
+      "mapa-calor",
+      "grade",
+      "grid",
+      "latencia",
+      "latency",
+      "matriz",
+      "observability",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Passe `columns` como `number[][]` (coluna-maior: cada coluna é um array de valores por linha, 0..1) e, opcionalmente, `rows`. Troque a paleta com `colorScale` (recebe o valor e devolve cor CSS; default teal→âmbar→rosa) e ajuste os eixos com `rowLabels`/`colLabels` (ou `false` para esconder). Bom para a janela rolante de p95 por tick em centros de observabilidade.",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

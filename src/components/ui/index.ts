@@ -895,6 +895,12 @@ export type {
 } from "./log-stream"
 export { TraceWaterfall } from "./trace-waterfall"
 export type { TraceWaterfallProps, TraceWaterfallSpan } from "./trace-waterfall"
+export { UserListItem } from "./user-list-item"
+export type { UserListItemProps } from "./user-list-item"
+export { MetricGlowCard } from "./metric-glow-card"
+export type { MetricGlowCardProps } from "./metric-glow-card"
+export { LatencyHeatmap } from "./latency-heatmap"
+export type { LatencyHeatmapProps } from "./latency-heatmap"
 // Lote dba-workbench (extraídos da composição)
 export { CollapsibleSection } from "./collapsible-section"
 export type { CollapsibleSectionProps } from "./collapsible-section"

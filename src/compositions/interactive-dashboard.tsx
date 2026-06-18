@@ -10,12 +10,16 @@ import * as React from "react"
 import { Activity, BarChart3, LayoutDashboard, Settings, Users } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
+import { BarChart } from "@/components/ui/bar-chart"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { GlowCard, GlowCardGrid } from "@/components/ui/glow-card-grid"
 import { Keyboard } from "@/components/ui/keyboard"
+import { MetricGlowCard } from "@/components/ui/metric-glow-card"
 import { MultiStepLoader } from "@/components/ui/multi-step-loader"
+import { PreferenceRow } from "@/components/ui/preference-row"
 import { StickyScroll } from "@/components/ui/sticky-scroll-reveal"
+import { UserListItem } from "@/components/ui/user-list-item"
 
 /* ------------------------------------------------------------------ */
 /*  Loading demo data                                                  */
@@ -113,6 +117,43 @@ const METRICS = [
     positive: false,
     icon: "https://picsum.photos/seed/metric-time/160/160",
   },
+]
+
+/* ------------------------------------------------------------------ */
+/*  Traffic chart data                                                 */
+/* ------------------------------------------------------------------ */
+
+const TRAFFIC_SERIES = [
+  { label: "Jan", value: 40 },
+  { label: "Fev", value: 65 },
+  { label: "Mar", value: 45 },
+  { label: "Abr", value: 80 },
+  { label: "Mai", value: 55 },
+  { label: "Jun", value: 90 },
+  { label: "Jul", value: 70 },
+  { label: "Ago", value: 85 },
+  { label: "Set", value: 60 },
+  { label: "Out", value: 95 },
+  { label: "Nov", value: 75 },
+  { label: "Dez", value: 88 },
+]
+
+/* ------------------------------------------------------------------ */
+/*  Users / settings data                                              */
+/* ------------------------------------------------------------------ */
+
+const USERS = [
+  { name: "Ana Silva", email: "ana@example.com", status: "Ativo" },
+  { name: "Carlos Souza", email: "carlos@example.com", status: "Ativo" },
+  { name: "Maria Santos", email: "maria@example.com", status: "Pendente" },
+  { name: "João Oliveira", email: "joao@example.com", status: "Ativo" },
+  { name: "Fernanda Lima", email: "fernanda@example.com", status: "Inativo" },
+]
+
+const SETTINGS = [
+  { label: "Notificações por email", description: "Receba atualizações por email" },
+  { label: "Modo escuro automático", description: "Alterna conforme o sistema" },
+  { label: "Relatórios semanais", description: "Resumo toda segunda-feira" },
 ]
 
 /* ------------------------------------------------------------------ */
@@ -242,21 +283,12 @@ export function InteractiveDashboard() {
             <GlowCardGrid columns={4}>
               {METRICS.map((metric) => (
                 <GlowCard key={metric.title} icon={metric.icon} iconAlt={metric.title}>
-                  <div className="px-4 text-center">
-                    <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                      {metric.title}
-                    </p>
-                    <p className="mt-2 text-2xl font-bold text-foreground">
-                      {metric.value}
-                    </p>
-                    <span
-                      className={`mt-1 inline-block text-xs font-medium ${
-                        metric.positive ? "text-emerald-500" : "text-red-500"
-                      }`}
-                    >
-                      {metric.change}
-                    </span>
-                  </div>
+                  <MetricGlowCard
+                    title={metric.title}
+                    value={metric.value}
+                    change={metric.change}
+                    positive={metric.positive}
+                  />
                 </GlowCard>
               ))}
             </GlowCardGrid>
@@ -289,31 +321,11 @@ export function InteractiveDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="flex h-64 items-end justify-between gap-2 rounded-lg bg-muted/30 p-4">
-                  {[40, 65, 45, 80, 55, 90, 70, 85, 60, 95, 75, 88].map(
-                    (h, i) => (
-                      <div
-                        key={i}
-                        className="flex-1 rounded-t bg-primary/70 transition-all hover:bg-primary"
-                        style={{ height: `${h}%` }}
-                      />
-                    ),
-                  )}
-                </div>
-                <div className="mt-3 flex justify-between text-xs text-muted-foreground">
-                  <span>Jan</span>
-                  <span>Fev</span>
-                  <span>Mar</span>
-                  <span>Abr</span>
-                  <span>Mai</span>
-                  <span>Jun</span>
-                  <span>Jul</span>
-                  <span>Ago</span>
-                  <span>Set</span>
-                  <span>Out</span>
-                  <span>Nov</span>
-                  <span>Dez</span>
-                </div>
+                <BarChart
+                  series={TRAFFIC_SERIES}
+                  accent="bg-primary/70"
+                  className="h-64 gap-2 rounded-lg bg-muted/30 p-4"
+                />
               </CardContent>
             </Card>
           </div>
@@ -346,44 +358,27 @@ export function InteractiveDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {[
-                    { name: "Ana Silva", email: "ana@example.com", status: "Ativo" },
-                    { name: "Carlos Souza", email: "carlos@example.com", status: "Ativo" },
-                    { name: "Maria Santos", email: "maria@example.com", status: "Pendente" },
-                    { name: "João Oliveira", email: "joao@example.com", status: "Ativo" },
-                    { name: "Fernanda Lima", email: "fernanda@example.com", status: "Inativo" },
-                  ].map((user) => (
-                    <div
+                  {USERS.map((user) => (
+                    <UserListItem
                       key={user.email}
-                      className="flex items-center justify-between rounded-lg border bg-background/50 px-4 py-3"
-                    >
-                      <div className="flex items-center gap-3">
-                        <img
-                          src={`https://picsum.photos/seed/${user.name.replace(/\s/g, "-")}/40/40`}
-                          alt={user.name}
-                          className="h-10 w-10 rounded-full"
-                        />
-                        <div>
-                          <p className="text-sm font-medium text-foreground">
-                            {user.name}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {user.email}
-                          </p>
-                        </div>
-                      </div>
-                      <Badge
-                        variant={
-                          user.status === "Ativo"
-                            ? "default"
-                            : user.status === "Pendente"
-                              ? "secondary"
-                              : "outline"
-                        }
-                      >
-                        {user.status}
-                      </Badge>
-                    </div>
+                      name={user.name}
+                      email={user.email}
+                      avatar={`https://picsum.photos/seed/${user.name.replace(/\s/g, "-")}/40/40`}
+                      className="rounded-lg border bg-background/50 px-4 py-3"
+                      badge={
+                        <Badge
+                          variant={
+                            user.status === "Ativo"
+                              ? "default"
+                              : user.status === "Pendente"
+                                ? "secondary"
+                                : "outline"
+                          }
+                        >
+                          {user.status}
+                        </Badge>
+                      }
+                    />
                   ))}
                 </div>
               </CardContent>
@@ -417,26 +412,15 @@ export function InteractiveDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {[
-                    { label: "Notificações por email", description: "Receba atualizações por email" },
-                    { label: "Modo escuro automático", description: "Alterna conforme o sistema" },
-                    { label: "Relatórios semanais", description: "Resumo toda segunda-feira" },
-                  ].map((setting) => (
-                    <div
+                <div className="divide-y divide-border rounded-lg border bg-background/50 px-4">
+                  {SETTINGS.map((setting) => (
+                    <PreferenceRow
                       key={setting.label}
-                      className="flex items-center justify-between rounded-lg border bg-background/50 px-4 py-3"
+                      label={setting.label}
+                      description={setting.description}
                     >
-                      <div>
-                        <p className="text-sm font-medium text-foreground">
-                          {setting.label}
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          {setting.description}
-                        </p>
-                      </div>
                       <Badge variant="secondary">Ativo</Badge>
-                    </div>
+                    </PreferenceRow>
                   ))}
                 </div>
               </CardContent>
