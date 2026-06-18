@@ -1,6 +1,7 @@
 import { Link, NavLink } from "react-router-dom"
-import { Boxes, Menu } from "lucide-react"
+import { Menu } from "lucide-react"
 import { ThemeToggle } from "@/components/theme/theme-toggle"
+import { Logo } from "@/components/layout/Logo"
 import {
   Sheet,
   SheetContent,
@@ -31,8 +32,7 @@ export function Header({ searchSlot }: HeaderProps) {
     <header className="sticky top-0 z-40 w-full border-b border-border bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-4 sm:px-6">
         <Link to="/" className="flex items-center gap-2 font-semibold">
-          <Boxes className="h-5 w-5 text-primary" />
-          <span className="text-base tracking-tight">Vitrine UI</span>
+          <Logo textClassName="text-base tracking-tight" />
         </Link>
 
         <nav className="hidden items-center gap-1 text-sm sm:flex">
@@ -69,8 +69,7 @@ export function Header({ searchSlot }: HeaderProps) {
               <SheetHeader>
                 <SheetTitle className="text-left">
                   <Link to="/" className="flex items-center gap-2">
-                    <Boxes className="h-5 w-5 text-primary" />
-                    <span className="text-base font-semibold tracking-tight">Vitrine UI</span>
+                    <Logo textClassName="text-base font-semibold tracking-tight" />
                   </Link>
                 </SheetTitle>
               </SheetHeader>
