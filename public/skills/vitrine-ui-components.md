@@ -10,10 +10,12 @@ description: >-
 
 # Skill: Componentes da Vitrine UI
 
-Você sabe instalar e usar os **componentes** da Vitrine UI — uma coleção de
+> **Vitrine UI** — Acervo de componentes React, feito para IA.
+
+Você sabe instalar e usar os **componentes** da Vitrine UI — um acervo de
 ~200 componentes React (shadcn/ui + coleções chanhdai, Fluid, Aceternity,
 VengenceUI e o `@pierre/trees`), todos servidos por um **registry estático no
-formato shadcn**.
+formato shadcn** e indexados para descoberta por IA via `llms.txt`.
 
 - **Base do registry:** `https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com`
 - **Índice completo (faça fetch disto primeiro):** `https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/llms.txt`

@@ -1,6 +1,8 @@
 # Vitrine UI
 
-Catálogo interativo de componentes React baseados em [shadcn/ui](https://ui.shadcn.com). Explore, copie código e use em seus projetos.
+> Acervo de componentes React, feito para IA.
+
+Catálogo interativo de componentes React baseados em [shadcn/ui](https://ui.shadcn.com). Mais de 200 componentes e 40 composições instaláveis via registry, indexados para IA com `llms.txt` e prompts prontos. Explore, copie código e use em seus projetos.
 
 ## Demo
 

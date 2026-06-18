@@ -10,10 +10,13 @@ description: >-
 
 # Skill: Composições (blocos) da Vitrine UI
 
+> **Vitrine UI** — Acervo de componentes React, feito para IA.
+
 Você sabe instalar e usar as **composições** da Vitrine UI: telas inteiras
 ("blocos") montadas a partir dos componentes da vitrine — landing pages,
 dashboards, pricing, chat/IA, IDE com IA, editores de nó (React Flow), PDP de
-e-commerce, blog editorial, onboarding wizard, e mais.
+e-commerce, blog editorial, onboarding wizard, e mais. Cada composição é
+instalável com um único comando `npx shadcn@latest add`.
 
 - **Base do registry:** `https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com`
 - **Índice completo (fetch primeiro):** `https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/llms.txt`
