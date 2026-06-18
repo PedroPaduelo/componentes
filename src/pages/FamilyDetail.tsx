@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
 import { Link, Navigate, useLocation, useParams } from "react-router-dom"
-import { ChevronRight } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -8,6 +7,7 @@ import { CodeBlockCommand } from "@/components/ui/code-block-command"
 import { ExampleBlock } from "@/components/showcase/ExampleBlock"
 import { CodeBlock } from "@/components/showcase/CodeBlock"
 import { CopyPromptButton } from "@/components/showcase/CopyPromptButton"
+import { DocBreadcrumb } from "@/components/showcase/DocBreadcrumb"
 import { DocPagerNav } from "@/components/showcase/DocPagerNav"
 import { OnThisPage, type TocSection } from "@/components/showcase/OnThisPage"
 import { OriginBadge } from "@/components/catalog/OriginBadge"
@@ -120,20 +120,23 @@ function FamilyView({ family, hash }: { family: Family; hash: string }) {
   return (
     <div className="mx-auto flex w-full max-w-6xl gap-10 px-4 py-8 sm:px-8 sm:py-12">
       <article className="min-w-0 max-w-3xl flex-1">
-        {/* Breadcrumb leve — a navegação principal é a sidebar. */}
-        <nav
-          aria-label="Trilha de navegação"
-          className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground"
-        >
-          <Link
-            to="/components"
-            className="transition-colors hover:text-foreground"
-          >
-            Componentes
-          </Link>
-          <ChevronRight className="size-3.5 shrink-0 opacity-60" aria-hidden />
-          <span className="font-medium text-foreground">{family.name}</span>
-        </nav>
+        {/*
+          Breadcrumb leve — a navegação principal é a sidebar. Três níveis:
+          Componentes › <Categoria> › <Item>. O nível do meio é a categoria da
+          família (na Onda 2 passa a ser o GRUPO via O2.7). O catálogo (`/`) é a
+          tela onde a categoria é filtrável; o último item é a página atual.
+        */}
+        <DocBreadcrumb
+          className="mb-6"
+          segments={[
+            { label: "Componentes", href: "/components" },
+            {
+              label: family.category,
+              href: `/?category=${encodeURIComponent(family.category)}`,
+            },
+            { label: family.name },
+          ]}
+        />
 
         {/* Header da página */}
         <header className="space-y-4 border-b border-border pb-8">
