@@ -840,7 +840,11 @@ export type { DetailStatCellProps } from "./detail-stat-cell"
 export { PreferenceRow } from "./preference-row"
 export type { PreferenceRowProps } from "./preference-row"
 export { ActivityFeed } from "./activity-feed"
-export type { ActivityFeedProps, ActivityFeedItem } from "./activity-feed"
+export type {
+  ActivityFeedProps,
+  ActivityFeedItem,
+  ActivityFeedBadge,
+} from "./activity-feed"
 export { LeaderboardList } from "./leaderboard-list"
 export type { LeaderboardListProps, LeaderboardItem } from "./leaderboard-list"
 export { InvoiceTable } from "./invoice-table"
@@ -860,5 +864,11 @@ export type {
   DonutBreakdownProps,
   DonutBreakdownSegment,
 } from "./donut-breakdown"
+export { StatTile } from "./stat-tile"
+export type { StatTileProps } from "./stat-tile"
+export { DashboardTopbar } from "./dashboard-topbar"
+export type { DashboardTopbarProps } from "./dashboard-topbar"
+export { UpgradeCard } from "./upgrade-card"
+export type { UpgradeCardProps, UpgradeCardCta } from "./upgrade-card"
 
 

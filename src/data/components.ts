@@ -2735,6 +2735,69 @@ export const components: ComponentMeta[] = [
     usage:
       "Passe `segments` como `{ label, value, className?, dotClassName? }` — `className` é a cor do arco (ex.: 'stroke-primary') e `dotClassName` a da bolinha da legenda (default: derivada do `className`). Use `centerLabel`/`centerSublabel` para o miolo do anel, `title` para um título acima e `orientation` ('horizontal' = legenda à direita, 'vertical' = abaixo). `size` controla o diâmetro.",
   },
+  {
+    slug: "stat-tile",
+    name: "Stat Tile",
+    category: "Feedback",
+    description:
+      "Mini-card de estatística para dashboards: ícone opcional + rótulo, valor numérico animado (via AnimatedNumber) com prefixo/sufixo, e um badge de variação (delta) opcional colorido por tendência. Versão compacta do KpiCard, para grades densas de métricas.",
+    tags: [
+      "stat",
+      "estatistica",
+      "metric",
+      "metrica",
+      "tile",
+      "mini-card",
+      "kpi",
+      "dashboard",
+      "feedback",
+      "shared",
+    ],
+    usage:
+      "Passe `label` e `value` (animado). Use `prefix`/`suffix` para moeda ou unidades (ex.: ' dias'), `icon` para o ícone antes do rótulo e, opcionalmente, `delta` (badge de variação: verde >= 0, vermelho < 0) com `trend` para forçar a direção e `hint` para um texto auxiliar.",
+  },
+  {
+    slug: "dashboard-topbar",
+    name: "Dashboard Topbar",
+    category: "Layout",
+    description:
+      "Barra superior (header) para layouts de dashboard/app: botão de menu opcional (mobile), título com adorno opcional ao lado (ex.: badge de status), slot de busca (ou campo padrão via onSearch) e as ações à direita. Sem estado de UI hardcoded — tudo vem por props.",
+    tags: [
+      "topbar",
+      "header",
+      "appbar",
+      "barra-superior",
+      "navbar",
+      "toolbar",
+      "dashboard",
+      "app-shell",
+      "layout",
+      "shared",
+    ],
+    usage:
+      "Passe `title` e, opcionalmente, `titleAdornment` (ex.: um badge ao lado). Para a busca, use o slot `search` (tem prioridade) ou `onSearch` (renderiza um campo padrão com `searchPlaceholder`). As ações à direita vão em `actions` (ou `children`). Use `onMenu` para exibir o botão de menu no mobile.",
+  },
+  {
+    slug: "upgrade-card",
+    name: "Upgrade Card",
+    category: "Feedback",
+    description:
+      "Card promocional de upgrade de plano: título, descrição opcional e um CTA (botão via onClick ou link via href), com ícone opcional. Ideal para o rodapé de uma sidebar de dashboard ('Plano Pro / Fazer upgrade'), mas genérico para qualquer call-to-action.",
+    tags: [
+      "upgrade",
+      "plano",
+      "plan",
+      "cta",
+      "call-to-action",
+      "billing",
+      "pricing",
+      "sidebar",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Passe `title` e, opcionalmente, `description`. O CTA vai em `cta` como `{ label, onClick? }` (botão) ou `{ label, href }` (link `<a>`, tem prioridade sobre onClick). Use `icon` para um ícone antes do título.",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

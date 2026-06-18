@@ -1,17 +1,16 @@
 /**
  * Composição "SaaS Dashboard".
  *
- * Tela composta exclusivamente por componentes do registry da vitrine:
- *  - Button + Badge (topbar / sidebar / ações)
- *  - AnimatedNumber (KPIs animados nos cards de métrica)
- *  - GitHubContributions (heatmap de atividade)
- *  - TableFluid + TableFluidHeader/Body/Row/Head/Cell (tabela de dados)
- *  - Tabs + TabsList/TabsTrigger/TabsContent (alternância de visões)
+ * Tela montada inteiramente com componentes do registry da vitrine — sem
+ * sub-blocos visuais genéricos inline. As métricas usam `KpiCard`/`StatTile`,
+ * o feed usa `ActivityFeed`, a navegação usa `DashboardSidebarNav` e a barra
+ * superior usa `DashboardTopbar`; o card de upgrade é o `UpgradeCard`. O resto
+ * (heatmap, tooltip de membros, tabelas com abas) reusa GitHubContributions,
+ * AnimatedTooltip e TableFluid. Restam apenas helpers de dados e as seções
+ * orquestradoras app-specific.
  */
 import * as React from "react"
 import {
-  ArrowUpRight,
-  ArrowDownRight,
   DollarSign,
   Users,
   Activity,
@@ -31,11 +30,7 @@ import {
 import {
   Button,
   Badge,
-  AnimatedNumber,
   AnimatedTooltip,
-  Avatar,
-  AvatarImage,
-  AvatarFallback,
   GitHubContributions,
   TableFluid,
   TableFluidHeader,
@@ -49,9 +44,16 @@ import {
   TabsContent,
   Tree,
   TOCMinimap,
+  KpiCard,
+  StatTile,
+  ActivityFeed,
+  DashboardSidebarNav,
+  DashboardTopbar,
+  UpgradeCard,
 } from "@/components/ui"
 import type { ContributionDay } from "@/components/ui/github-contributions"
 import type { AnimatedTooltipItem } from "@/components/ui/animated-tooltip-types"
+import type { DashboardSidebarNavItem } from "@/components/ui/dashboard-sidebar-nav"
 
 /* -------------------------------------------------------------------------- */
 /*                                   dados                                     */
@@ -303,11 +305,11 @@ const ACTIVITY_FEED: ActivityEvent[] = [
   },
 ]
 
-const NAV = [
-  { label: "Visão geral", icon: LayoutDashboard, active: true },
-  { label: "Análises", icon: BarChart3, active: false },
-  { label: "Clientes", icon: Users, active: false },
-  { label: "Configurações", icon: Settings, active: false },
+const NAV: DashboardSidebarNavItem[] = [
+  { id: "overview", label: "Visão geral", icon: LayoutDashboard },
+  { id: "analytics", label: "Análises", icon: BarChart3 },
+  { id: "customers", label: "Clientes", icon: Users },
+  { id: "settings", label: "Configurações", icon: Settings },
 ]
 
 /* Árvore de arquivos do projeto exibida na sidebar. */
@@ -330,7 +332,7 @@ const TOC_ITEMS = [
 ]
 
 /* -------------------------------------------------------------------------- */
-/*                              sub-componentes                                */
+/*                              helpers de dados                               */
 /* -------------------------------------------------------------------------- */
 
 function planVariant(plan: CustomerRow["plan"]) {
@@ -343,68 +345,6 @@ function statusVariant(status: CustomerRow["status"]) {
   if (status === "Ativo") return "default" as const
   if (status === "Pendente") return "secondary" as const
   return "destructive" as const
-}
-
-function KpiCard({ kpi }: { kpi: Kpi }) {
-  const Icon = kpi.icon
-  const positive = kpi.delta >= 0
-  return (
-    <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-5 shadow-sm">
-      <div className="flex items-center justify-between">
-        <span className="text-sm text-muted-foreground">{kpi.label}</span>
-        <span className="flex size-8 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-          <Icon className="size-4" />
-        </span>
-      </div>
-      <div className="flex items-baseline gap-1 text-3xl font-semibold tracking-tight text-foreground">
-        {kpi.prefix ? <span>{kpi.prefix}</span> : null}
-        <AnimatedNumber value={kpi.value} />
-        {kpi.suffix ? (
-          <span className="text-2xl text-muted-foreground">{kpi.suffix}</span>
-        ) : null}
-      </div>
-      <div className="flex items-center gap-1.5 text-xs">
-        <span
-          className={
-            positive
-              ? "inline-flex items-center gap-0.5 rounded-md bg-emerald-500/10 px-1.5 py-0.5 font-medium text-emerald-600 dark:text-emerald-400"
-              : "inline-flex items-center gap-0.5 rounded-md bg-rose-500/10 px-1.5 py-0.5 font-medium text-rose-600 dark:text-rose-400"
-          }
-        >
-          {positive ? (
-            <ArrowUpRight className="size-3" />
-          ) : (
-            <ArrowDownRight className="size-3" />
-          )}
-          {Math.abs(kpi.delta)}%
-        </span>
-        <span className="text-muted-foreground">vs. mês anterior</span>
-      </div>
-    </div>
-  )
-}
-
-function ActivityStatCard({ stat }: { stat: ActivityStat }) {
-  const Icon = stat.icon
-  return (
-    <div className="flex flex-col gap-2 rounded-lg border border-border bg-card p-3 shadow-sm">
-      <div className="flex items-center gap-2 text-muted-foreground">
-        <span className="flex size-7 items-center justify-center rounded-md bg-muted">
-          <Icon className="size-3.5" />
-        </span>
-        <span className="text-xs">{stat.label}</span>
-      </div>
-      <div className="flex items-baseline gap-0.5 text-xl font-semibold tracking-tight text-foreground">
-        {stat.prefix ? <span>{stat.prefix}</span> : null}
-        <AnimatedNumber value={stat.value} />
-        {stat.suffix ? (
-          <span className="text-sm font-normal text-muted-foreground">
-            {stat.suffix}
-          </span>
-        ) : null}
-      </div>
-    </div>
-  )
 }
 
 function eventKindVariant(kind: ActivityKind) {
@@ -422,103 +362,67 @@ function eventKindLabel(kind: ActivityKind) {
   return "Comentário"
 }
 
-function ActivityFeedItem({ event }: { event: ActivityEvent }) {
-  const initials = event.name
-    .split(" ")
-    .map((part) => part[0])
-    .slice(0, 2)
-    .join("")
-  return (
-    <li className="flex items-start gap-3">
-      <Avatar className="size-8 shrink-0">
-        <AvatarImage
-          src={`https://picsum.photos/seed/${event.seed}/64/64`}
-          alt={event.name}
-        />
-        <AvatarFallback className="text-xs">{initials}</AvatarFallback>
-      </Avatar>
-      <div className="min-w-0 flex-1">
-        <p className="text-sm leading-snug text-foreground">
-          <span className="font-medium">{event.name}</span>{" "}
-          <span className="text-muted-foreground">{event.action}</span>
-        </p>
-        <div className="mt-1 flex items-center gap-2">
-          <Badge variant={eventKindVariant(event.kind)} className="text-[10px]">
-            {eventKindLabel(event.kind)}
-          </Badge>
-          <span className="text-xs text-muted-foreground">{event.time}</span>
-        </div>
-      </div>
-    </li>
-  )
-}
-
 /* -------------------------------------------------------------------------- */
 /*                                 composição                                  */
 /* -------------------------------------------------------------------------- */
 
 export function SaasDashboard() {
+  const [activeNav, setActiveNav] = React.useState("overview")
+
   return (
     <div className="flex min-h-[40vh] w-full overflow-hidden rounded-xl border border-border bg-background text-foreground">
       {/* Sidebar */}
-      <aside className="hidden w-56 shrink-0 flex-col gap-1 border-r border-border bg-card/40 p-4 lg:flex">
-        <div className="mb-4 flex items-center gap-2 px-2">
-          <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <Activity className="size-4" />
-          </span>
-          <span className="text-sm font-semibold">Nimbus</span>
-        </div>
-        {NAV.map((item) => {
-          const Icon = item.icon
-          return (
-            <Button
-              key={item.label}
-              variant={item.active ? "secondary" : "ghost"}
-              className="justify-start gap-2"
-            >
-              <Icon className="size-4" />
-              {item.label}
-            </Button>
-          )
-        })}
-        <div className="mt-auto rounded-lg border border-border bg-muted/40 p-3">
-          <p className="text-xs font-medium">Plano Pro</p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            7 dias restantes no teste.
-          </p>
-          <Button size="sm" className="mt-3 w-full">
-            Fazer upgrade
-          </Button>
-        </div>
+      <DashboardSidebarNav
+        className="hidden lg:flex"
+        items={NAV}
+        activeId={activeNav}
+        onSelect={setActiveNav}
+        brand={
+          <>
+            <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+              <Activity className="size-4" />
+            </span>
+            <span className="text-sm font-semibold">Nimbus</span>
+          </>
+        }
+        footer={
+          <>
+            <UpgradeCard
+              title="Plano Pro"
+              description="7 dias restantes no teste."
+              cta={{ label: "Fazer upgrade" }}
+            />
 
-        {/* Árvore de arquivos do projeto */}
-        <div className="mt-4">
-          <p className="mb-2 px-2 text-xs font-medium text-muted-foreground">
-            Arquivos do projeto
-          </p>
-          <Tree
-            data={PROJECT_FILES}
-            initialExpansion="open"
-            density="compact"
-            style={
-              { "--trees-height": "220px" } as React.CSSProperties &
-                Record<`--${string}`, string>
-            }
-          />
-        </div>
-      </aside>
+            {/* Árvore de arquivos do projeto */}
+            <div className="mt-4">
+              <p className="mb-2 px-2 text-xs font-medium text-muted-foreground">
+                Arquivos do projeto
+              </p>
+              <Tree
+                data={PROJECT_FILES}
+                initialExpansion="open"
+                density="compact"
+                style={
+                  { "--trees-height": "220px" } as React.CSSProperties &
+                    Record<`--${string}`, string>
+                }
+              />
+            </div>
+          </>
+        }
+      />
 
       {/* Conteúdo */}
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Topbar */}
-        <header className="flex items-center justify-between gap-3 border-b border-border px-4 py-3 sm:px-6">
-          <div className="flex items-center gap-2">
-            <h1 className="text-base font-semibold">Visão geral</h1>
+        <DashboardTopbar
+          title="Visão geral"
+          titleAdornment={
             <Badge variant="secondary" className="hidden sm:inline-flex">
               Tempo real
             </Badge>
-          </div>
-          <div className="flex items-center gap-2">
+          }
+          search={
             <Button
               variant="outline"
               size="sm"
@@ -527,15 +431,19 @@ export function SaasDashboard() {
               <Search className="size-4" />
               Buscar
             </Button>
-            <Button variant="ghost" size="icon" aria-label="Notificações">
-              <Bell className="size-4" />
-            </Button>
-            <Button size="sm" className="gap-1.5">
-              <Plus className="size-4" />
-              Novo relatório
-            </Button>
-          </div>
-        </header>
+          }
+          actions={
+            <>
+              <Button variant="ghost" size="icon" aria-label="Notificações">
+                <Bell className="size-4" />
+              </Button>
+              <Button size="sm" className="gap-1.5">
+                <Plus className="size-4" />
+                Novo relatório
+              </Button>
+            </>
+          }
+        />
 
         {/* Body */}
         <div className="flex flex-col gap-6 p-4 sm:p-6">
@@ -553,7 +461,16 @@ export function SaasDashboard() {
             className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4"
           >
             {KPIS.map((kpi) => (
-              <KpiCard key={kpi.label} kpi={kpi} />
+              <KpiCard
+                key={kpi.label}
+                label={kpi.label}
+                value={kpi.value}
+                prefix={kpi.prefix}
+                suffix={kpi.suffix}
+                delta={kpi.delta}
+                icon={kpi.icon}
+                hint="vs. mês anterior"
+              />
             ))}
           </section>
 
@@ -585,7 +502,14 @@ export function SaasDashboard() {
               <div className="flex flex-col gap-4 lg:col-span-2">
                 <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
                   {ACTIVITY_STATS.map((stat) => (
-                    <ActivityStatCard key={stat.label} stat={stat} />
+                    <StatTile
+                      key={stat.label}
+                      label={stat.label}
+                      value={stat.value}
+                      prefix={stat.prefix}
+                      suffix={stat.suffix}
+                      icon={stat.icon}
+                    />
                   ))}
                 </div>
 
@@ -606,11 +530,19 @@ export function SaasDashboard() {
                     Ao vivo
                   </Badge>
                 </div>
-                <ul className="flex flex-col gap-4">
-                  {ACTIVITY_FEED.map((event) => (
-                    <ActivityFeedItem key={event.id} event={event} />
-                  ))}
-                </ul>
+                <ActivityFeed
+                  items={ACTIVITY_FEED.map((event) => ({
+                    id: event.id,
+                    name: event.name,
+                    action: event.action,
+                    time: event.time,
+                    avatar: `https://picsum.photos/seed/${event.seed}/64/64`,
+                    badge: {
+                      label: eventKindLabel(event.kind),
+                      variant: eventKindVariant(event.kind),
+                    },
+                  }))}
+                />
                 <Button
                   variant="ghost"
                   size="sm"

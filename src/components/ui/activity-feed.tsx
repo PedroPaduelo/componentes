@@ -2,19 +2,31 @@
  * ActivityFeed — lista de eventos recentes (feed) com avatar e timestamp.
  *
  * Cada item mostra o avatar do ator e uma frase "{ator} {ação} {alvo}" com o
- * timestamp relativo logo abaixo. Itens são separados por divisória, num
- * container rolável de altura limitada — ideal para o card "Atividade recente"
- * de um dashboard.
+ * timestamp relativo logo abaixo. Opcionalmente, um badge de categoria do
+ * evento é exibido ao lado do timestamp. Itens são separados por divisória,
+ * num container rolável de altura limitada — ideal para o card "Atividade
+ * recente" de um dashboard.
  *
- * Extraído da composição `saas-dashboard-pro`. SHARED — sem dependências novas
- * além de Avatar, sem estado. O elemento raiz expõe `data-slot="activity-feed"`
- * e aceita className/props padrão de um <div>.
+ * Extraído da composição `saas-dashboard-pro`. SHARED — depende de Avatar e
+ * Badge, sem estado. O elemento raiz expõe `data-slot="activity-feed"` e
+ * aceita className/props padrão de um <div>.
  */
 
 import * as React from "react"
+import { type VariantProps } from "class-variance-authority"
 
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { badgeVariants } from "@/components/ui/badge-variants"
+
+/** Badge opcional de categoria, exibido ao lado do timestamp. */
+export interface ActivityFeedBadge {
+  /** Texto do badge (ex.: "Deploy"). */
+  label: string
+  /** Variante visual do badge. Default: a do próprio Badge. */
+  variant?: VariantProps<typeof badgeVariants>["variant"]
+}
 
 /** Um evento do feed: ator, ação, alvo opcional e timestamp. */
 export interface ActivityFeedItem {
@@ -32,6 +44,8 @@ export interface ActivityFeedItem {
   avatar?: string
   /** Texto do fallback do avatar. Default: as 2 primeiras letras do nome. */
   fallback?: string
+  /** Badge opcional de categoria do evento, exibido junto ao timestamp. */
+  badge?: ActivityFeedBadge
 }
 
 export interface ActivityFeedProps
@@ -76,7 +90,21 @@ function ActivityFeed({ items, className, ...props }: ActivityFeedProps) {
                   </>
                 ) : null}
               </p>
-              <p className="text-xs text-muted-foreground">{item.time}</p>
+              {item.badge ? (
+                <div className="mt-0.5 flex items-center gap-2">
+                  <Badge
+                    variant={item.badge.variant}
+                    className="text-[10px]"
+                  >
+                    {item.badge.label}
+                  </Badge>
+                  <span className="text-xs text-muted-foreground">
+                    {item.time}
+                  </span>
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground">{item.time}</p>
+              )}
             </div>
           </li>
         ))}

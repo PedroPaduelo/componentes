@@ -313,6 +313,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   compare: "layout-containers",
   "dashboard-panel": "layout-containers",
   "dashboard-sidebar-nav": "layout-containers",
+  "dashboard-topbar": "layout-containers",
   dialog: "layout-containers",
   "dialog-fluid": "layout-containers",
   "direction-aware-hover": "layout-containers",
@@ -393,10 +394,12 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "server-overview-card": "dashboards-dev",
   "slow-query-list": "dashboards-dev",
   sparkline: "dashboards-dev",
+  "stat-tile": "dashboards-dev",
   table: "dashboards-dev",
   "table-fluid": "dashboards-dev",
   terminal: "dashboards-dev",
   timeline: "dashboards-dev",
+  "upgrade-card": "dashboards-dev",
   "user-activity-stream": "dashboards-dev",
 
   // — Efeitos de Texto: flip, typewriter, gradiente, brilho, reveal —
