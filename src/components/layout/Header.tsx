@@ -11,7 +11,10 @@ import {
 import { cn } from "@/lib/utils"
 
 type HeaderProps = {
-  /** Slot para um campo de busca (preenchido na Task 2). */
+  /**
+   * Slot de busca global. O `Layout` injeta aqui o gatilho da command palette
+   * (⌘K) — renderizado no header desktop (md+) e dentro do menu mobile (Sheet).
+   */
   searchSlot?: React.ReactNode
 }
 
