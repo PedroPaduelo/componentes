@@ -9,19 +9,19 @@
     "lucide-react@^0.468.0"
   ],
   "registryDependencies": [
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/accordion.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/alert.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/badge.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/breadcrumb.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/code-block.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/code-block-command.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/command.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/separator.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/sheet.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/table.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/tabs.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/accordion.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/alert.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/breadcrumb.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/code-block.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/code-block-command.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/command.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/separator.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/sheet.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/table.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tabs.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
   ],
   "files": [
     {

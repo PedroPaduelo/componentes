@@ -1,7 +1,7 @@
 {
   "$schema": "https://ui.shadcn.com/schema/registry.json",
   "name": "vitrine-ui",
-  "homepage": "https://componentes-fe-cmq0d9kr.cloud.serendiped.com",
+  "homepage": "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com",
   "items": [
     {
       "name": "3d-card-effect",
@@ -122,12 +122,12 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/icon-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-proximity-hover.json"
       ],
       "files": [
         {
@@ -234,7 +234,7 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {
@@ -276,7 +276,7 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-outside-click.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-outside-click.json"
       ],
       "files": [
         {
@@ -317,14 +317,14 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button-fluid.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-merge-split.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button-fluid.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/icon-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-merge-split.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-proximity-hover.json"
       ],
       "files": [
         {
@@ -598,7 +598,7 @@
         "class-variance-authority@^0.7.1"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json"
       ],
       "files": [
         {
@@ -669,8 +669,8 @@
         "class-variance-authority@^0.7.1"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/icon-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json"
       ],
       "files": [
         {
@@ -790,7 +790,7 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/canvas-reveal-effect.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/canvas-reveal-effect.json"
       ],
       "files": [
         {
@@ -828,7 +828,7 @@
         "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json"
       ],
       "files": [
         {
@@ -846,9 +846,9 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/file-thumbnail-fluid.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/file-thumbnail-fluid.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json"
       ],
       "files": [
         {
@@ -883,12 +883,12 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-merge-split.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-merge-split.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-proximity-hover.json"
       ],
       "files": [
         {
@@ -907,7 +907,7 @@
         "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {
@@ -946,8 +946,8 @@
         "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {
@@ -989,16 +989,16 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/dropdown-fluid.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/slider-fluid.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-classes.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/tooltip-fluid.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dropdown-fluid.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/icon-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/slider-fluid.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/surface-classes.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/surface-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tooltip-fluid.json"
       ],
       "files": [
         {
@@ -1059,7 +1059,7 @@
         "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/dialog.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dialog.json"
       ],
       "files": [
         {
@@ -1097,8 +1097,8 @@
         "class-variance-authority@^0.7.1"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/dialog.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dialog.json"
       ],
       "files": [
         {
@@ -1124,7 +1124,7 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/sparkles.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/sparkles.json"
       ],
       "files": [
         {
@@ -1161,7 +1161,7 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {
@@ -1245,8 +1245,8 @@
         "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/input.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input.json"
       ],
       "files": [
         {
@@ -1265,9 +1265,9 @@
         "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/calendar.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/popover.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/calendar.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/popover.json"
       ],
       "files": [
         {
@@ -1302,13 +1302,13 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button-fluid.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-classes.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-context.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button-fluid.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/icon-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/surface-classes.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/surface-context.json"
       ],
       "files": [
         {
@@ -1362,7 +1362,7 @@
       "title": "Dotted Glow Background",
       "description": "Fundo em canvas da Aceternity UI: grade de pontos que pulsam (alpha animado) com efeito glow, via requestAnimationFrame. Cores reativas ao tema (light/dark) por CSS variables, alta densidade (devicePixelRatio) e ResizeObserver.",
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {
@@ -1418,11 +1418,11 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/elevated.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/elevated.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-proximity-hover.json"
       ],
       "files": [
         {
@@ -1475,8 +1475,8 @@
       "type": "registry:lib",
       "title": "Elevated",
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-classes.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-context.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/surface-classes.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/surface-context.json"
       ],
       "files": [
         {
@@ -1528,7 +1528,7 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-outside-click.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-outside-click.json"
       ],
       "files": [
         {
@@ -1565,7 +1565,7 @@
         "pdfjs-dist@^4.10.38"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json"
       ],
       "files": [
         {
@@ -1994,7 +1994,7 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-tokens.json"
       ],
       "files": [
         {
@@ -2271,11 +2271,11 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/tooltip-fluid.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/icon-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tooltip-fluid.json"
       ],
       "files": [
         {
@@ -2290,10 +2290,10 @@
       "title": "Input Group (Fluid)",
       "description": "Grupo de campos de texto da Fluid Functionalism com destaque por proximidade do cursor, ícones, foco animado e mensagens de erro.",
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/icon-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json"
       ],
       "files": [
         {
@@ -2311,16 +2311,16 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button-fluid.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/file-thumbnail-fluid.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-classes.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/tooltip-fluid.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button-fluid.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/file-thumbnail-fluid.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/icon-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/surface-classes.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/surface-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tooltip-fluid.json"
       ],
       "files": [
         {
@@ -2821,7 +2821,7 @@
         "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json"
       ],
       "files": [
         {
@@ -2889,7 +2889,7 @@
       "title": "Perspective Grid",
       "description": "Grid 3D em perspectiva com tiles coloridos no hover — efeito de profundidade para hero/backgrounds.",
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {
@@ -3039,11 +3039,11 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-proximity-hover.json"
       ],
       "files": [
         {
@@ -3061,7 +3061,7 @@
         "@xyflow/react@^12.11.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {
@@ -3125,7 +3125,7 @@
         "class-variance-authority@^0.7.1"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {
@@ -3246,12 +3246,12 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/elevated.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/elevated.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/icon-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-proximity-hover.json"
       ],
       "files": [
         {
@@ -3440,9 +3440,9 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json"
       ],
       "files": [
         {
@@ -3675,7 +3675,7 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json"
       ],
       "files": [
         {
@@ -3705,9 +3705,9 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-proximity-hover.json"
       ],
       "files": [
         {
@@ -3741,14 +3741,14 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-classes.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/surface-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/icon-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/surface-classes.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/surface-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-proximity-hover.json"
       ],
       "files": [
         {
@@ -3766,12 +3766,12 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-tokens.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/icon-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-proximity-hover.json"
       ],
       "files": [
         {
@@ -3798,7 +3798,7 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/scales.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/scales.json"
       ],
       "files": [
         {
@@ -3918,8 +3918,8 @@
         "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/dropdown-menu.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dropdown-menu.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {
@@ -3941,7 +3941,7 @@
         "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {
@@ -3972,7 +3972,7 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json"
       ],
       "files": [
         {
@@ -4009,12 +4009,12 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/accordion-fluid.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/badge-fluid.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/accordion-fluid.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge-fluid.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/icon-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json"
       ],
       "files": [
         {
@@ -4149,9 +4149,9 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/springs.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/springs.json"
       ],
       "files": [
         {
@@ -4189,7 +4189,7 @@
         "class-variance-authority@^0.7.1"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {
@@ -4278,7 +4278,7 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-proximity-hover.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-proximity-hover.json"
       ],
       "files": [
         {
@@ -4410,8 +4410,8 @@
         "class-variance-authority@^0.7.1"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/badge.json",
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/card.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/card.json"
       ],
       "files": [
         {
@@ -4434,7 +4434,7 @@
         "motion@^12.40.0"
       ],
       "registryDependencies": [
-        "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {

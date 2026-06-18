@@ -31,7 +31,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, "../../..")
 const SRC = resolve(ROOT, "src")
 const PUBLIC_R = resolve(ROOT, "public/r")
-const HOMEPAGE = "https://componentes-fe-cmq0d9kr.cloud.serendiped.com"
+const HOMEPAGE = "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com"
 const regDepUrl = (name) => `${HOMEPAGE}/r/${name}.json`
 
 // ── helpers de filesystem ────────────────────────────────────────────────

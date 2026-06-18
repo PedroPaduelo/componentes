@@ -4,7 +4,7 @@ Catálogo interativo de componentes React baseados em [shadcn/ui](https://ui.sha
 
 ## Demo
 
-Acesse a versão online: [componentes-fe-cmq0d9kr.cloud.serendiped.com](https://componentes-fe-cmq0d9kr.cloud.serendiped.com)
+Acesse a versão online: [ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com](https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com)
 
 ## Stack
 
@@ -93,7 +93,7 @@ e **Actions** (26). Variantes do mesmo componente são agrupadas em **famílias*
 completos) em `src/data/compositions.ts`.
 
 A fonte da verdade completa é o próprio catálogo (`/`) e o índice gerado para IA
-em [`/llms.txt`](https://componentes-fe-cmq0d9kr.cloud.serendiped.com/llms.txt).
+em [`/llms.txt`](https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/llms.txt).
 Componentes são distribuídos como um registry shadcn auto-hospedado
 (`public/r/*.json`), instaláveis com `npx shadcn@latest add <url>/r/<slug>.json`.
 

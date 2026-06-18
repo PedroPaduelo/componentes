@@ -8,10 +8,10 @@
     "lucide-react@^0.468.0"
   ],
   "registryDependencies": [
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/badge.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/glare-card.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/infinite-moving-cards.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/slider.json"
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/glare-card.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/infinite-moving-cards.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/slider.json"
   ],
   "files": [
     {

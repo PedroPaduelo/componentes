@@ -8,14 +8,14 @@
     "lucide-react@^0.468.0"
   ],
   "registryDependencies": [
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/badge.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/card.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/github-globe.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/parallax-scroll.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/timeline.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/world-map.json"
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/card.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/github-globe.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/parallax-scroll.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/timeline.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/world-map.json"
   ],
   "files": [
     {

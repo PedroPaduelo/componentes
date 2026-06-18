@@ -8,11 +8,11 @@
     "lucide-react@^0.468.0"
   ],
   "registryDependencies": [
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/input.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/multi-step-loader.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/radio-group-fluid.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/switch-fluid.json"
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/multi-step-loader.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/radio-group-fluid.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/switch-fluid.json"
   ],
   "files": [
     {

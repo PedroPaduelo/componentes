@@ -4,10 +4,10 @@
   "title": "Input Group (Fluid)",
   "description": "Grupo de campos de texto da Fluid Functionalism com destaque por proximidade do cursor, ícones, foco animado e mensagens de erro.",
   "registryDependencies": [
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/fluid-tokens.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/font-weight.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/icon-context.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/shape-context.json"
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-tokens.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/font-weight.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/icon-context.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shape-context.json"
   ],
   "files": [
     {

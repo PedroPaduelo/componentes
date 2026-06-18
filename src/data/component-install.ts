@@ -25,7 +25,7 @@
  * aponta para `${REGISTRY_BASE_URL}/r/<slug>.json`.
  */
 export const REGISTRY_BASE_URL =
-  "https://componentes-fe-cmq0d9kr.cloud.serendiped.com"
+  "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com"
 
 /**
  * Comando CANÔNICO de instalação de um componente via CLI do shadcn.

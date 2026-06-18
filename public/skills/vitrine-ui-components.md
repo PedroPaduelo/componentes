@@ -15,9 +15,9 @@ Você sabe instalar e usar os **componentes** da Vitrine UI — uma coleção de
 VengenceUI e o `@pierre/trees`), todos servidos por um **registry estático no
 formato shadcn**.
 
-- **Base do registry:** `https://componentes-fe-cmq0d9kr.cloud.serendiped.com`
-- **Índice completo (faça fetch disto primeiro):** `https://componentes-fe-cmq0d9kr.cloud.serendiped.com/llms.txt`
-- **Catálogo humano:** `https://componentes-fe-cmq0d9kr.cloud.serendiped.com/components`
+- **Base do registry:** `https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com`
+- **Índice completo (faça fetch disto primeiro):** `https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/llms.txt`
+- **Catálogo humano:** `https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/components`
 
 ## Quando usar esta skill
 
@@ -48,13 +48,13 @@ encontram o `cn` e quebram.
    CSS/tokens necessários — tudo automático:
 
    ```bash
-   npx shadcn@latest add https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/<slug>.json
+   npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/<slug>.json
    ```
 
    Exemplo (Button):
 
    ```bash
-   npx shadcn@latest add https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json
+   npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json
    ```
 
 3. **Importe e use.** Todos seguem a MESMA API:

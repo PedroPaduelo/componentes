@@ -4,7 +4,7 @@
   "title": "Dotted Glow Background",
   "description": "Fundo em canvas da Aceternity UI: grade de pontos que pulsam (alpha animado) com efeito glow, via requestAnimationFrame. Cores reativas ao tema (light/dark) por CSS variables, alta densidade (devicePixelRatio) e ResizeObserver.",
   "registryDependencies": [
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json"
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
   ],
   "files": [
     {

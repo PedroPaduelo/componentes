@@ -26,7 +26,7 @@ import { LLMS_TXT_PATH } from "@/data/ai-index"
 import { cn } from "@/lib/utils"
 
 /** Base pública do registry shadcn servido por esta vitrine. */
-const REGISTRY_BASE_URL = "https://componentes-fe-cmq0d9kr.cloud.serendiped.com"
+const REGISTRY_BASE_URL = "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com"
 
 /** Comando de exemplo (button) — o usuário troca o slug pelo componente desejado. */
 const ADD_COMMAND = `npx shadcn@latest add ${REGISTRY_BASE_URL}/r/button.json`

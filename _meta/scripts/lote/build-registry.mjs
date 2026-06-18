@@ -38,7 +38,7 @@ import {
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, "../../..")
 const SRC = resolve(ROOT, "src")
-const HOMEPAGE = "https://componentes-fe-cmq0d9kr.cloud.serendiped.com"
+const HOMEPAGE = "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com"
 
 /**
  * registryDependencies precisam ser URLs ABSOLUTAS do NOSSO registry — o

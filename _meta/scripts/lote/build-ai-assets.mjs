@@ -20,7 +20,7 @@ import { dirname, resolve } from "node:path"
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(__dirname, "../../..")
 const SRC = resolve(ROOT, "src")
-const HOMEPAGE = "https://componentes-fe-cmq0d9kr.cloud.serendiped.com"
+const HOMEPAGE = "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com"
 const read = (p) => readFileSync(p, "utf8")
 
 function unescapeStr(s) {

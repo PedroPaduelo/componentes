@@ -9,18 +9,18 @@
     "motion@^12.40.0"
   ],
   "registryDependencies": [
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/background-beams.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/background-beams-with-collision.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/background-boxes.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/background-lines.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/background-ripple-effect.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/dot-grid-spotlight.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/light-lines.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/perspective-grid.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/sparkles.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/svg-mask-effect.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/use-theme.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/vortex.json"
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/background-beams.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/background-beams-with-collision.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/background-boxes.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/background-lines.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/background-ripple-effect.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dot-grid-spotlight.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/light-lines.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/perspective-grid.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/sparkles.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/svg-mask-effect.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/vortex.json"
   ],
   "files": [
     {

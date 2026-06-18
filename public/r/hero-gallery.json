@@ -5,17 +5,17 @@
   "title": "Hero Gallery",
   "description": "Vitrine visual com galeria de imagens em destaque e efeitos de profundidade para portfólios e produtos.",
   "registryDependencies": [
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/3d-card-effect.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/animated-number.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/animated-testimonials.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/button.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/colourful-text.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/container-scroll-animation.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/expandable-cards.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/focus-cards.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/hero-parallax.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/parallax-hero-images.json",
-    "https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/tabs.json"
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/3d-card-effect.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/animated-number.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/animated-testimonials.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/colourful-text.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/container-scroll-animation.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/expandable-cards.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/focus-cards.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/hero-parallax.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/parallax-hero-images.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tabs.json"
   ],
   "files": [
     {

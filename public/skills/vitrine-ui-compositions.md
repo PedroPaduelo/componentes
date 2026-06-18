@@ -15,9 +15,9 @@ Você sabe instalar e usar as **composições** da Vitrine UI: telas inteiras
 dashboards, pricing, chat/IA, IDE com IA, editores de nó (React Flow), PDP de
 e-commerce, blog editorial, onboarding wizard, e mais.
 
-- **Base do registry:** `https://componentes-fe-cmq0d9kr.cloud.serendiped.com`
-- **Índice completo (fetch primeiro):** `https://componentes-fe-cmq0d9kr.cloud.serendiped.com/llms.txt`
-- **Galeria humana:** `https://componentes-fe-cmq0d9kr.cloud.serendiped.com/compositions`
+- **Base do registry:** `https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com`
+- **Índice completo (fetch primeiro):** `https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/llms.txt`
+- **Galeria humana:** `https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/compositions`
 
 ## Quando usar esta skill
 
@@ -49,13 +49,13 @@ Tailwind v4 + shadcn inicializado (cria `components.json` e `@/lib/utils`).
 2. **Instale o bloco inteiro:**
 
    ```bash
-   npx shadcn@latest add https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/<slug>.json
+   npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/<slug>.json
    ```
 
    Exemplo (Landing page):
 
    ```bash
-   npx shadcn@latest add https://componentes-fe-cmq0d9kr.cloud.serendiped.com/r/landing-page.json
+   npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/landing-page.json
    ```
 
 3. **Renderize a tela.** O arquivo principal fica em
