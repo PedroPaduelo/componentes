@@ -2588,6 +2588,90 @@ export const components: ComponentMeta[] = [
     usage:
       "Passe `label` e, opcionalmente, `icon`; o valor vai como children. Combine várias células em um grid (ex.: `grid grid-cols-2 gap-4`) para montar o resumo de uma entidade. Os children aceitam qualquer conteúdo — texto, Badge, status com bolinha, ID em fonte mono, etc.",
   },
+  {
+    slug: "preference-row",
+    name: "Preference Row",
+    category: "Forms",
+    description:
+      "Linha de preferência/toggle para telas de configurações: título (label) e descrição opcional à esquerda, com um slot para o controle (Switch, Select, Button…) à direita. Pensada para listas separadas por divisória; sem estado próprio (o controle vive fora).",
+    tags: [
+      "preferencia",
+      "preference",
+      "toggle",
+      "settings",
+      "configuracoes",
+      "switch",
+      "linha",
+      "row",
+      "label",
+      "forms",
+    ],
+    usage:
+      "Passe `label` e, opcionalmente, `description`; o controle vai como children ou pela prop `control` (quando ambos existem, `control` tem prioridade). Empilhe várias linhas num container com `divide-y divide-border` para o visual de painel de preferências. O estado do controle (ex.: um Switch controlado) fica por sua conta, fora do componente.",
+  },
+  {
+    slug: "activity-feed",
+    name: "Activity Feed",
+    category: "Feedback",
+    description:
+      "Feed de eventos recentes com avatar, frase \"{ator} {ação} {alvo}\" e timestamp relativo. Itens separados por divisória dentro de um container rolável de altura limitada — ideal para o card \"Atividade recente\" de um dashboard. Sem estado próprio; os dados vêm por props.",
+    tags: [
+      "atividade",
+      "activity",
+      "feed",
+      "eventos",
+      "timeline",
+      "avatar",
+      "timestamp",
+      "dashboard",
+      "audit",
+      "feedback",
+    ],
+    usage:
+      "Passe `items` como lista de `{ id, name, action, target?, time, avatar?, fallback? }`. Sem `avatar`, o item mostra apenas o fallback (default: 2 primeiras letras do nome). `target` é opcional. Ajuste a altura do scroll sobrescrevendo o className do container (default `max-h-[280px] overflow-y-auto`).",
+  },
+  {
+    slug: "leaderboard-list",
+    name: "Leaderboard List",
+    category: "Feedback",
+    description:
+      "Ranking de itens com posição, avatar, nome + barra de progresso, badge opcional e valor formatado alinhado à direita. Ideal para \"Top clientes por MRR\", \"Top produtos\" e afins. O valor vem já formatado e o progresso (0..100) já calculado — sem suposição de moeda ou escala.",
+    tags: [
+      "ranking",
+      "leaderboard",
+      "top",
+      "lista",
+      "progresso",
+      "progress",
+      "avatar",
+      "mrr",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Passe `items` como lista de `{ id, name, value, progress, rank?, avatar?, fallback?, badge? }`. `value` é uma string já formatada (ex.: \"$1,200\"); `progress` é 0..100 (largura da barra). `rank` é opcional (default: índice + 1) e `badge` é um slot livre, normalmente um `<Badge>`.",
+  },
+  {
+    slug: "invoice-table",
+    name: "Invoice Table",
+    category: "Layout",
+    description:
+      "Tabela compacta de itens de uma fatura (item, quantidade, valor) com header discreto; cada linha mostra o valor calculado como `qty × unit`. Opcionalmente renderiza uma linha de total no rodapé. Valores formatados por `formatValue` (default \"$\" + en-US), sem assumir moeda.",
+    tags: [
+      "fatura",
+      "invoice",
+      "tabela",
+      "table",
+      "cobranca",
+      "billing",
+      "itens",
+      "total",
+      "dashboard",
+      "layout",
+    ],
+    usage:
+      "Passe `items` como lista de `{ label, qty, unit }`; o valor de cada linha é `qty * unit`. Use `total` para exibir a linha de total no `<tfoot>`. Troque `formatValue` para mudar a moeda/escala e `labels` para renomear as colunas (item/qty/value/total).",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

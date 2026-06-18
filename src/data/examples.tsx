@@ -237,6 +237,10 @@ import { examplesKpiCard } from "./examples-kpi-card"
 import { examplesSparkline } from "./examples-sparkline"
 import { examplesDashboardPanel } from "./examples-dashboard-panel"
 import { examplesDetailStatCell } from "./examples-detail-stat-cell"
+import { examplesPreferenceRow } from "./examples-preference-row"
+import { examplesActivityFeed } from "./examples-activity-feed"
+import { examplesLeaderboardList } from "./examples-leaderboard-list"
+import { examplesInvoiceTable } from "./examples-invoice-table"
 
 export type Example = {
   title: string
@@ -1539,6 +1543,10 @@ export const examples: Record<string, Example[]> = {
   ...examplesSparkline,
   ...examplesDashboardPanel,
   ...examplesDetailStatCell,
+  ...examplesPreferenceRow,
+  ...examplesActivityFeed,
+  ...examplesLeaderboardList,
+  ...examplesInvoiceTable,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

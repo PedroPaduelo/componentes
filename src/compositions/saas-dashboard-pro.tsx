@@ -56,6 +56,10 @@ import {
   Sparkline,
   DashboardPanel,
   DetailStatCell,
+  PreferenceRow,
+  ActivityFeed,
+  LeaderboardList,
+  InvoiceTable,
   GitHubContributions,
   TableFluid,
   TableFluidHeader,
@@ -579,34 +583,17 @@ function OverviewSection() {
             description="Eventos da conta nas últimas horas."
             action={<Badge variant="outline">Ao vivo</Badge>}
           >
-            <div className="max-h-[280px] overflow-y-auto pr-1">
-              <ul className="flex flex-col">
-                {ACTIVITY.map((ev, i) => (
-                  <li
-                    key={ev.id}
-                    className={`flex items-center gap-3 py-3 ${
-                      i === 0 ? "pt-0" : ""
-                    } ${i === ACTIVITY.length - 1 ? "pb-0" : "border-b border-border"}`}
-                  >
-                    <Avatar className="size-9 border border-border">
-                      <AvatarImage
-                        src={`https://picsum.photos/seed/${ev.seed}/64/64`}
-                        alt={ev.name}
-                      />
-                      <AvatarFallback>{ev.name.slice(0, 2)}</AvatarFallback>
-                    </Avatar>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm text-foreground">
-                        <span className="font-medium">{ev.name}</span>{" "}
-                        <span className="text-muted-foreground">{ev.action}</span>{" "}
-                        <span className="font-medium">{ev.target}</span>
-                      </p>
-                      <p className="text-xs text-muted-foreground">{ev.time}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <ActivityFeed
+              items={ACTIVITY.map((ev) => ({
+                id: ev.id,
+                name: ev.name,
+                action: ev.action,
+                target: ev.target,
+                time: ev.time,
+                avatar: `https://picsum.photos/seed/${ev.seed}/64/64`,
+                fallback: ev.name.slice(0, 2),
+              }))}
+            />
           </DashboardPanel>
         </div>
 
@@ -657,46 +644,20 @@ function OverviewSection() {
         description="Maiores contas da base."
         action={<Badge variant="outline">Ranking</Badge>}
       >
-        <ul className="flex flex-col">
-          {TOP_CUSTOMERS.map((c, i) => {
+        <LeaderboardList
+          items={TOP_CUSTOMERS.map((c) => {
             const max = TOP_CUSTOMERS[0].mrr || 1
-            const pct = (c.mrr / max) * 100
-            return (
-              <li
-                key={c.id}
-                className={`flex items-center gap-3 py-3 ${i === 0 ? "pt-0" : ""} ${
-                  i === TOP_CUSTOMERS.length - 1 ? "pb-0" : "border-b border-border"
-                }`}
-              >
-                <span className="flex size-6 shrink-0 items-center justify-center rounded-md bg-muted text-xs font-semibold text-muted-foreground">
-                  {i + 1}
-                </span>
-                <Avatar className="size-8 border border-border">
-                  <AvatarImage
-                    src={`https://picsum.photos/seed/${c.seed}/64/64`}
-                    alt={c.name}
-                  />
-                  <AvatarFallback>{c.name.slice(0, 2)}</AvatarFallback>
-                </Avatar>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-foreground">
-                    {c.name}
-                  </p>
-                  <div className="mt-1 h-1.5 w-full overflow-hidden rounded-full bg-muted">
-                    <div
-                      className="h-full rounded-full bg-primary"
-                      style={{ width: `${pct}%` }}
-                    />
-                  </div>
-                </div>
-                <Badge variant={planVariant(c.plan)}>{c.plan}</Badge>
-                <span className="w-16 shrink-0 text-right text-sm font-semibold text-foreground">
-                  {money(c.mrr)}
-                </span>
-              </li>
-            )
+            return {
+              id: c.id,
+              name: c.name,
+              value: money(c.mrr),
+              progress: (c.mrr / max) * 100,
+              avatar: `https://picsum.photos/seed/${c.seed}/64/64`,
+              fallback: c.name.slice(0, 2),
+              badge: <Badge variant={planVariant(c.plan)}>{c.plan}</Badge>,
+            }
           })}
-        </ul>
+        />
       </DashboardPanel>
 
       <DashboardPanel
@@ -1148,30 +1109,7 @@ function InvoiceDetail({
               <span className="text-sm text-muted-foreground">{invoice.plan}</span>
             </div>
 
-            <div className="overflow-hidden rounded-lg border border-border">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border bg-muted/40 text-left text-xs text-muted-foreground">
-                    <th className="px-3 py-2 font-medium">Item</th>
-                    <th className="px-3 py-2 text-center font-medium">Qtd.</th>
-                    <th className="px-3 py-2 text-right font-medium">Valor</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {invoice.items.map((item) => (
-                    <tr key={item.label} className="border-b border-border last:border-0">
-                      <td className="px-3 py-2 text-foreground">{item.label}</td>
-                      <td className="px-3 py-2 text-center text-muted-foreground">
-                        {item.qty}
-                      </td>
-                      <td className="px-3 py-2 text-right text-foreground">
-                        {money(item.qty * item.unit)}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            <InvoiceTable items={invoice.items} formatValue={money} />
 
             <div className="flex items-center justify-between">
               <span className="text-sm text-muted-foreground">Total</span>
@@ -1450,7 +1388,7 @@ function SettingsSection() {
         <DashboardPanel title="Preferências" description="Notificações e segurança da conta.">
           <div className="flex flex-col divide-y divide-border">
             <PreferenceRow
-              title="Notificações por e-mail"
+              label="Notificações por e-mail"
               description="Receba alertas de atividade importante."
             >
               <SwitchFluid
@@ -1460,7 +1398,7 @@ function SettingsSection() {
               />
             </PreferenceRow>
             <PreferenceRow
-              title="Relatório semanal"
+              label="Relatório semanal"
               description="Um resumo dos KPIs toda segunda-feira."
             >
               <SwitchFluid
@@ -1470,7 +1408,7 @@ function SettingsSection() {
               />
             </PreferenceRow>
             <PreferenceRow
-              title="Autenticação em dois fatores"
+              label="Autenticação em dois fatores"
               description="Camada extra de segurança no login."
             >
               <SwitchFluid
@@ -1555,26 +1493,6 @@ function SettingsSection() {
           </ul>
         )}
       </DashboardPanel>
-    </div>
-  )
-}
-
-function PreferenceRow({
-  title,
-  description,
-  children,
-}: {
-  title: string
-  description: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className="flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0">
-      <div className="min-w-0">
-        <p className="text-sm font-medium text-foreground">{title}</p>
-        <p className="text-xs text-muted-foreground">{description}</p>
-      </div>
-      <div className="shrink-0">{children}</div>
     </div>
   )
 }

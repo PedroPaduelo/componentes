@@ -242,6 +242,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   keyboard: "forms-inputs",
   "middle-truncation": "forms-inputs",
   "placeholders-and-vanish-input": "forms-inputs",
+  "preference-row": "forms-inputs",
   "radio-group": "forms-inputs",
   "radio-group-fluid": "forms-inputs",
   "react-wheel-picker": "forms-inputs",
@@ -366,6 +367,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "thinking-steps-fluid": "chat-ai",
 
   // — Dashboards & Dev: tabelas, overview, timelines, feeds, terminais —
+  "activity-feed": "dashboards-dev",
   "bar-chart": "dashboards-dev",
   "code-block": "dashboards-dev",
   "code-block-command": "dashboards-dev",
@@ -380,7 +382,9 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "github-contributions": "dashboards-dev",
   "h-bar-chart": "dashboards-dev",
   "incident-timeline": "dashboards-dev",
+  "invoice-table": "dashboards-dev",
   "kpi-card": "dashboards-dev",
+  "leaderboard-list": "dashboards-dev",
   "react-flow": "dashboards-dev",
   "request-flow-inspector": "dashboards-dev",
   "server-overview-card": "dashboards-dev",
