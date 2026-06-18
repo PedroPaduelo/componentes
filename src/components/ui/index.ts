@@ -895,5 +895,30 @@ export type {
 } from "./log-stream"
 export { TraceWaterfall } from "./trace-waterfall"
 export type { TraceWaterfallProps, TraceWaterfallSpan } from "./trace-waterfall"
+// Lote dba-workbench (extraídos da composição)
+export { CollapsibleSection } from "./collapsible-section"
+export type { CollapsibleSectionProps } from "./collapsible-section"
+export { DatabaseTabBar } from "./database-tab-bar"
+export type { DatabaseTabBarProps, DatabaseTab } from "./database-tab-bar"
+export { ConnectionList } from "./connection-list"
+export type {
+  ConnectionListProps,
+  ConnectionListItem,
+  ConnectionStatus,
+} from "./connection-list"
+export { FavoritesList } from "./favorites-list"
+export type { FavoritesListProps, FavoritesListItem } from "./favorites-list"
+export { QueryHistoryList } from "./query-history-list"
+export type { QueryHistoryListProps, QueryHistoryItem } from "./query-history-list"
+export { TableInfoPanel } from "./table-info-panel"
+export type {
+  TableInfoPanelProps,
+  TableInfoTable,
+  TableInfoColumn,
+  TableInfoIndex,
+  TableInfoForeignKey,
+} from "./table-info-panel"
+export { WorkbenchStatusBar } from "./workbench-status-bar"
+export type { WorkbenchStatusBarProps } from "./workbench-status-bar"
 
 

@@ -7,24 +7,21 @@
  * (tabs de bancos abertos, sidebar de conexões/favoritos/queries
  * recentes, painel direito de info da tabela, status bar).
  *
- * Tabs de bancos abertos (estilo VS Code) — clicar alterna entre
- * `auditDb` (Postgres de produção da auditoria) e `sgtMaker` (Postgres
- * do SGT Maker), cada um com seu próprio state de seleção de tabela
- * dentro do `DbSchemaExplorer`.
+ * Componentização: as peças visuais genéricas do workbench foram extraídas
+ * para componentes registrados (`@/components/ui/*`) e são reusadas aqui —
+ * esta composição só orquestra o estado e o layout. São elas:
+ *  - `DatabaseTabBar`: as tabs de bancos abertos (estilo VS Code).
+ *  - `CollapsibleSection`: a casca das 3 seções colapsáveis da sidebar.
+ *  - `ConnectionList` / `FavoritesList` / `QueryHistoryList`: as 3 listas.
+ *  - `TableInfoPanel`: o painel direito de info da tabela selecionada.
+ *  - `WorkbenchStatusBar`: o footer/status bar.
+ *  - `StatTile`: reusado dentro do `TableInfoPanel`.
  *
- * Sidebar esquerda (280px sticky) tem 3 seções colapsáveis:
- *  - Conexões: lista dos bancos abertos + botão "Nova conexão"
- *  - Favoritos: tabelas marcadas pelo usuário
- *  - Histórico: queries SQL recentes (mock determinístico)
+ * O que permanece inline é app-specific: o `QueryDetailDialog` (modal com o
+ * SQL completo + metadados da query do histórico) e a geração determinística
+ * dos dados mock.
  *
- * Painel direito (320px, sticky, scroll próprio) mostra info da
- * tabela selecionada: row count, size, último vacuum/analyze,
- * distribuição de colunas por tipo, índices e FKs.
- *
- * Footer (status bar) mostra: conexão ativa, encoding, query time
- * da última ação, transações, etc — só visual, sem lógica.
- *
- * Tudo determinístico (PRNG seedado), sem `Math.random`.
+ * Tudo determinístico (PRNG seedado), sem `Math.random` nos dados.
  *
  * O componente `DbSchemaExplorer` continua existindo e sendo
  * usável standalone (página /components/db-schema-explorer) — a
@@ -36,23 +33,16 @@ import {
   Activity,
   Bookmark,
   Check,
-  ChevronDown,
-  ChevronRight,
   Clock,
   Copy,
   Database as DatabaseIcon,
   FileCode2,
   History,
   Loader2,
-  Plus,
   RefreshCw,
   Settings,
-  Star,
-  StarOff,
-  Table as TableIcon,
   Terminal,
   Wifi,
-  X,
 } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
@@ -66,15 +56,19 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { CollapsibleSection } from "@/components/ui/collapsible-section"
+import { ConnectionList } from "@/components/ui/connection-list"
+import { DatabaseTabBar } from "@/components/ui/database-tab-bar"
+import { FavoritesList } from "@/components/ui/favorites-list"
+import { QueryHistoryList } from "@/components/ui/query-history-list"
+import { TableInfoPanel } from "@/components/ui/table-info-panel"
+import { WorkbenchStatusBar } from "@/components/ui/workbench-status-bar"
 import { DbSchemaExplorer } from "@/components/ui/db-schema-explorer"
 import {
   type DatabaseSchema,
   type TableDef,
 } from "@/components/ui/db-schema-explorer-types"
-import {
-  auditDb,
-  sgtMaker,
-} from "@/data/examples-db-schema-explorer"
+import { auditDb, sgtMaker } from "@/data/examples-db-schema-explorer"
 
 /* -------------------------------------------------------------------------- */
 /*                            helpers determinísticos                          */
@@ -100,17 +94,6 @@ function seedFromString(s: string): number {
   return h >>> 0
 }
 
-function formatSize(mb: number): string {
-  if (mb >= 1024) return `${(mb / 1024).toFixed(1)}GB`
-  return `${mb}MB`
-}
-
-function formatCount(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
-  if (n >= 1_000) return `${(n / 1_000).toFixed(1)}k`
-  return String(n)
-}
-
 function formatRelativeTime(iso: string): string {
   const diffMs = Date.now() - Date.parse(iso)
   if (Number.isNaN(diffMs)) return "—"
@@ -134,7 +117,7 @@ function formatIsoShort(iso: string): string {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                              Componente                                    */
+/*                              Dados (mock)                                   */
 /* -------------------------------------------------------------------------- */
 
 type RecentQuery = {
@@ -182,9 +165,7 @@ function buildRecentQueries(databaseId: string, count: number): RecentQuery[] {
   const out: RecentQuery[] = []
   for (let i = 0; i < count; i++) {
     const t = templates[Math.floor(rng() * templates.length)]
-    const durationMs = Math.round(
-      t.minMs + rng() * (t.maxMs - t.minMs),
-    )
+    const durationMs = Math.round(t.minMs + rng() * (t.maxMs - t.minMs))
     out.push({
       id: `q-${i}-${databaseId}`,
       sql: t.sql,
@@ -202,7 +183,12 @@ function buildFavorites(databaseId: string): string[] {
     return ["iam.users", "audit.events", "iam.sessions", "billing.invoices"]
   }
   if (databaseId === "sgt-maker-db") {
-    return ["core.users", "workflow.tasks", "core.notifications", "analytics.reports"]
+    return [
+      "core.users",
+      "workflow.tasks",
+      "core.notifications",
+      "analytics.reports",
+    ]
   }
   return []
 }
@@ -224,28 +210,37 @@ const ENGINE_TONE: Record<DatabaseSchema["engine"], string> = {
   sqlite: "text-gray-500 bg-gray-500/10 border-gray-500/30",
 }
 
-export function DbaWorkbench() {
-  // Bancos "abertos" como tabs (fixos — auditoria + SGT Maker).
-  const databases: DatabaseSchema[] = [auditDb, sgtMaker]
-  const [activeDbId, setActiveDbId] = useState<string>(auditDb.id)
-  const activeDb = databases.find((d) => d.id === activeDbId) ?? databases[0]
+/** Bancos "configurados" (abríveis como tabs). */
+const ALL_DBS: DatabaseSchema[] = [auditDb, sgtMaker]
 
-  // Tabela selecionada. É atualizada por 2 fontes:
-  //  1. Click numa tabela na árvore central (via `onTableClick`
-  //     do <DbSchemaExplorer>) — fonte primária.
+/* -------------------------------------------------------------------------- */
+/*                              Componente                                    */
+/* -------------------------------------------------------------------------- */
+
+export function DbaWorkbench() {
+  // Bancos "abertos" como tabs (estilo VS Code, com close/reopen).
+  const [openDbIds, setOpenDbIds] = useState<string[]>(() =>
+    ALL_DBS.map((d) => d.id),
+  )
+  const [activeDbId, setActiveDbId] = useState<string>(auditDb.id)
+  const activeDb = ALL_DBS.find((d) => d.id === activeDbId) ?? ALL_DBS[0]
+  const openDatabases = ALL_DBS.filter((d) => openDbIds.includes(d.id))
+
+  // Tabela selecionada. É atualizada por 3 fontes:
+  //  1. Click numa tabela na árvore central (via `onTableClick`).
   //  2. Click num favorito da sidebar (atalho rápido).
-  // O estado é "owned" pela composição, não pelo componente, pra que
-  // o painel direito sempre reflita a tabela ativa independente de
-  // qual caminho o usuário usou pra chegar nela.
+  //  3. Click numa FK no painel direito (navegação).
+  // O estado é "owned" pela composição, não pelo componente, pra que o painel
+  // direito sempre reflita a tabela ativa independente do caminho usado.
   const [selectedTableRef, setSelectedTableRef] = useState<{
     schema: string
     table: string
   } | null>(null)
 
-  // Favoritos (toggle por schema.table)
+  // Favoritos (toggle por schema.table, namespaced por banco)
   const [favorites, setFavorites] = useState<Set<string>>(() => {
     const s = new Set<string>()
-    for (const db of databases) {
+    for (const db of ALL_DBS) {
       for (const fav of buildFavorites(db.id)) {
         s.add(`${db.id}::${fav}`)
       }
@@ -253,14 +248,12 @@ export function DbaWorkbench() {
     return s
   })
 
-  // Sidebar — seção colapsada
+  // Sidebar — estado aberto/fechado de cada seção
   const [openSections, setOpenSections] = useState({
     connections: true,
     favorites: true,
     history: true,
   })
-  const toggleSection = (s: keyof typeof openSections) =>
-    setOpenSections((prev) => ({ ...prev, [s]: !prev[s] }))
 
   // Status bar — "query time" simulado
   const [lastActionMs, setLastActionMs] = useState<number | null>(null)
@@ -298,6 +291,29 @@ export function DbaWorkbench() {
     }, 2000)
   }
 
+  /* ------- tabs (abrir / selecionar / fechar) ------- */
+
+  const selectDb = (id: string) => {
+    setActiveDbId(id)
+    setSelectedTableRef(null)
+    setLastActionMs(null)
+  }
+  const openDb = (id: string) => {
+    setOpenDbIds((prev) => (prev.includes(id) ? prev : [...prev, id]))
+    selectDb(id)
+  }
+  const closeDb = (id: string) => {
+    if (openDbIds.length <= 1) return
+    const next = openDbIds.filter((x) => x !== id)
+    setOpenDbIds(next)
+    if (id === activeDbId) {
+      setActiveDbId(next[0])
+      setSelectedTableRef(null)
+      setLastActionMs(null)
+    }
+  }
+  const newConnection = () => setOpenDbIds(ALL_DBS.map((d) => d.id))
+
   // Histórico de queries (mock determinístico)
   const recentQueries = buildRecentQueries(activeDb.id, 6)
 
@@ -305,9 +321,7 @@ export function DbaWorkbench() {
   const selectedTable: TableDef | null = (() => {
     if (!selectedTableRef) return null
     for (const schema of activeDb.schemas) {
-      const t = schema.tables.find(
-        (tab: { name: string }) => tab.name === selectedTableRef.table,
-      )
+      const t = schema.tables.find((tab) => tab.name === selectedTableRef.table)
       if (t) return t
     }
     return null
@@ -328,6 +342,34 @@ export function DbaWorkbench() {
     setSelectedQuery(q)
     setLastActionMs(q.durationMs)
   }
+
+  /* ------- dados derivados para as listas / status bar ------- */
+
+  const favoriteItems = [...favorites]
+    .filter((k) => k.startsWith(`${activeDbId}::`))
+    .map((key) => ({ id: key, label: key.replace(`${activeDbId}::`, "") }))
+
+  const selectFavorite = (id: string) => {
+    const [schema, table] = id.replace(`${activeDbId}::`, "").split(".")
+    setSelectedTableRef({ schema, table })
+  }
+
+  const historyItems = recentQueries.map((q) => ({
+    id: q.id,
+    sql: q.sql,
+    durationMs: q.durationMs,
+    timeLabel: formatRelativeTime(q.t),
+  }))
+
+  const selectHistory = (item: { id: string }) => {
+    const q = recentQueries.find((r) => r.id === item.id)
+    if (q) onClickRecentQuery(q)
+  }
+
+  const tablesVisible = activeDb.schemas.reduce(
+    (a, s) => a + s.tables.length,
+    0,
+  )
 
   return (
     <div
@@ -400,55 +442,25 @@ export function DbaWorkbench() {
       {/* ============================================================ */}
       {/*  TABS de bancos abertos (estilo VS Code)                    */}
       {/* ============================================================ */}
-      <div
-        data-slot="dba-workbench-tabs"
-        className="flex shrink-0 items-end gap-0 border-b border-border bg-muted/30 pl-2"
-      >
-        {databases.map((db) => {
-          const isActive = db.id === activeDbId
-          return (
-            <button
-              key={db.id}
-              type="button"
-              data-slot="dba-workbench-tab"
-              data-active={isActive ? "true" : "false"}
-              onClick={() => {
-                setActiveDbId(db.id)
-                setSelectedTableRef(null)
-                setLastActionMs(null)
-              }}
-              className={`group inline-flex items-center gap-1.5 rounded-t-md border-x border-t px-2.5 py-1.5 text-xs font-medium transition-colors sm:gap-2 sm:px-3 ${
-                isActive
-                  ? "border-border bg-background text-foreground"
-                  : "border-transparent text-muted-foreground hover:bg-background/60 hover:text-foreground"
-              }`}
+      <DatabaseTabBar
+        tabs={openDatabases.map((db) => ({
+          id: db.id,
+          label: db.name,
+          icon: DatabaseIcon,
+          meta: (
+            <span
+              className={`hidden rounded px-1 py-0 text-[9px] font-semibold uppercase sm:inline ${ENGINE_TONE[db.engine].split(" ")[0]}`}
             >
-              <DatabaseIcon className="size-3 shrink-0" />
-              <span className="max-w-[120px] truncate sm:max-w-[160px]">
-                {db.name}
-              </span>
-              <span
-                className={`hidden rounded px-1 py-0 text-[9px] font-semibold uppercase sm:inline ${ENGINE_TONE[db.engine].split(" ")[0]}`}
-              >
-                {db.engine.slice(0, 4)}
-              </span>
-              <X
-                className={`size-3 shrink-0 opacity-0 transition-opacity group-hover:opacity-60 ${
-                  isActive ? "opacity-60" : ""
-                }`}
-                aria-hidden
-              />
-            </button>
-          )
-        })}
-        <button
-          type="button"
-          aria-label="Nova conexão"
-          className="ml-1 flex size-7 items-center justify-center rounded text-muted-foreground transition-colors hover:bg-background/60 hover:text-foreground"
-        >
-          <Plus className="size-3.5" />
-        </button>
-      </div>
+              {db.engine.slice(0, 4)}
+            </span>
+          ),
+        }))}
+        activeId={activeDbId}
+        onSelect={selectDb}
+        onClose={closeDb}
+        onNew={newConnection}
+        newLabel="Nova conexão"
+      />
 
       {/* ============================================================ */}
       {/*  MAIN: Sidebar | Centro (DbSchemaExplorer) | Painel direito  */}
@@ -461,120 +473,69 @@ export function DbaWorkbench() {
         >
           <ScrollArea className="flex-1">
             {/* --- CONEXÕES --- */}
-            <Section
+            <CollapsibleSection
               title="Conexões"
               icon={<Wifi className="size-3.5" />}
               open={openSections.connections}
-              onToggle={() => toggleSection("connections")}
-              count={databases.length}
+              onOpenChange={(o) =>
+                setOpenSections((p) => ({ ...p, connections: o }))
+              }
+              action={
+                <span className="rounded bg-muted/60 px-1 text-[9px] tabular-nums">
+                  {ALL_DBS.length}
+                </span>
+              }
+              className="border-b border-border/60"
+              headerClassName="gap-1.5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground hover:bg-muted/30 hover:text-foreground"
             >
-              <ul className="flex flex-col gap-0.5">
-                {databases.map((db) => {
-                  const isActive = db.id === activeDbId
-                  return (
-                    <li key={db.id}>
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setActiveDbId(db.id)
-                          setSelectedTableRef(null)
-                        }}
-                        className={`flex w-full items-center gap-2 rounded px-2 py-1.5 text-left text-[11px] transition-colors ${
-                          isActive
-                            ? "bg-primary/10 text-foreground"
-                            : "text-muted-foreground hover:bg-muted/40 hover:text-foreground"
-                        }`}
-                      >
-                        <span
-                          className={`size-1.5 shrink-0 rounded-full ${
-                            isActive ? "bg-emerald-500" : "bg-gray-400"
-                          }`}
-                          aria-hidden
-                        />
-                        <span className="min-w-0 flex-1 truncate font-medium">
-                          {db.name}
-                        </span>
-                        <span className="shrink-0 text-[10px] text-muted-foreground">
-                          {db.schemas.length}sch
-                        </span>
-                      </button>
-                    </li>
-                  )
-                })}
-              </ul>
-            </Section>
+              <ConnectionList
+                items={ALL_DBS.map((db) => ({
+                  id: db.id,
+                  name: db.name,
+                  meta: `${db.schemas.length}sch`,
+                }))}
+                activeId={activeDbId}
+                onSelect={openDb}
+              />
+            </CollapsibleSection>
 
             {/* --- FAVORITOS --- */}
-            <Section
+            <CollapsibleSection
               title="Favoritos"
               icon={<Bookmark className="size-3.5" />}
               open={openSections.favorites}
-              onToggle={() => toggleSection("favorites")}
-              count={favorites.size}
+              onOpenChange={(o) =>
+                setOpenSections((p) => ({ ...p, favorites: o }))
+              }
+              action={
+                <span className="rounded bg-muted/60 px-1 text-[9px] tabular-nums">
+                  {favoriteItems.length}
+                </span>
+              }
+              className="border-b border-border/60"
+              headerClassName="gap-1.5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground hover:bg-muted/30 hover:text-foreground"
             >
-              <ul className="flex flex-col gap-0.5">
-                {[...favorites]
-                  .filter((k) => k.startsWith(`${activeDbId}::`))
-                  .map((key) => {
-                    const ref = key.replace(`${activeDbId}::`, "")
-                    return (
-                      <li key={key}>
-                        <button
-                          type="button"
-                          onClick={() => {
-                            const [schema, table] = ref.split(".")
-                            setSelectedTableRef({ schema, table })
-                          }}
-                          className="flex w-full items-center gap-2 rounded px-2 py-1 text-left text-[11px] text-muted-foreground transition-colors hover:bg-muted/40 hover:text-foreground"
-                        >
-                          <Star className="size-3 shrink-0 fill-amber-500 text-amber-500" />
-                          <span className="min-w-0 flex-1 truncate font-mono">
-                            {ref}
-                          </span>
-                        </button>
-                      </li>
-                    )
-                  })}
-                {favorites.size === 0 && (
-                  <li className="px-2 py-1 text-[10px] italic text-muted-foreground/60">
-                    Nenhum favorito
-                  </li>
-                )}
-              </ul>
-            </Section>
+              <FavoritesList items={favoriteItems} onSelect={selectFavorite} />
+            </CollapsibleSection>
 
             {/* --- HISTÓRICO DE QUERIES --- */}
-            <Section
+            <CollapsibleSection
               title="Histórico de queries"
               icon={<History className="size-3.5" />}
               open={openSections.history}
-              onToggle={() => toggleSection("history")}
-              count={recentQueries.length}
+              onOpenChange={(o) =>
+                setOpenSections((p) => ({ ...p, history: o }))
+              }
+              action={
+                <span className="rounded bg-muted/60 px-1 text-[9px] tabular-nums">
+                  {historyItems.length}
+                </span>
+              }
+              className="border-b border-border/60"
+              headerClassName="gap-1.5 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground hover:bg-muted/30 hover:text-foreground"
             >
-              <ul className="flex flex-col gap-1">
-                {recentQueries.map((q) => (
-                  <li key={q.id}>
-                    <button
-                      type="button"
-                      onClick={() => onClickRecentQuery(q)}
-                      className="group flex w-full flex-col gap-1 rounded border border-border/60 bg-background/40 px-2 py-1.5 text-left transition-colors hover:bg-muted/40"
-                    >
-                      <code className="block truncate font-mono text-[10px] text-foreground/80">
-                        {q.sql.replace(/\s+/g, " ").slice(0, 60)}
-                        {q.sql.length > 60 ? "…" : ""}
-                      </code>
-                      <div className="flex items-center gap-2 text-[9px] text-muted-foreground tabular-nums">
-                        <span className="flex items-center gap-0.5">
-                          <Clock className="size-2.5" /> {q.durationMs}ms
-                        </span>
-                        <span>·</span>
-                        <span>{formatRelativeTime(q.t)}</span>
-                      </div>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </Section>
+              <QueryHistoryList items={historyItems} onSelect={selectHistory} />
+            </CollapsibleSection>
           </ScrollArea>
         </aside>
 
@@ -586,7 +547,9 @@ export function DbaWorkbench() {
           <DbSchemaExplorer
             database={activeDb}
             embedded
-            onTableClick={(ref: { schema: string; table: string }) => setSelectedTableRef(ref)}
+            onTableClick={(ref: { schema: string; table: string }) =>
+              setSelectedTableRef(ref)
+            }
           />
         </main>
 
@@ -595,236 +558,79 @@ export function DbaWorkbench() {
           data-slot="dba-workbench-info"
           className="hidden w-[280px] shrink-0 flex-col border-l border-border bg-card/40 xl:flex"
         >
-          <ScrollArea className="flex-1">
-            <div className="flex flex-col gap-3 p-3">
-              {selectedTable ? (
-                <>
-                  <div className="min-w-0">
-                    <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                      Tabela selecionada
-                    </p>
-                    <div className="mt-1 flex min-w-0 items-center gap-1.5">
-                      <TableIcon className="size-3.5 shrink-0 text-primary" />
-                      <code
-                        className="truncate text-sm font-semibold"
-                        title={`${selectedTableRef?.schema}.${selectedTable.name}`}
-                      >
-                        {selectedTableRef?.schema}.{selectedTable.name}
-                      </code>
-                    </div>
-                    {selectedTable.description && (
-                      <p className="mt-1 line-clamp-2 text-[11px] text-muted-foreground">
-                        {selectedTable.description}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <StatTile
-                      label="Linhas"
-                      value={formatCount(selectedTable.rowCount ?? 0)}
-                    />
-                    <StatTile
-                      label="Tamanho"
-                      value={formatSize(selectedTable.sizeMB ?? 0)}
-                    />
-                  </div>
-
-                  <div className="min-w-0">
-                    <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">
-                      Colunas ({selectedTable.columns.length})
-                    </p>
-                    <ul className="flex max-h-[180px] flex-col gap-0.5 overflow-y-auto rounded border border-border/40 bg-background/30 p-1">
-                      {selectedTable.columns.map(
-                        (c: {
-                          name: string
-                          type: string
-                          isPrimary?: boolean
-                          isForeign?: boolean
-                          defaultValue?: string
-                          nullable: boolean
-                        }) => (
-                          <li
-                            key={c.name}
-                            className="flex items-center justify-between gap-2 rounded px-1.5 py-0.5 text-[11px] hover:bg-muted/30"
-                          >
-                          <span className="flex min-w-0 items-center gap-1">
-                            {c.isPrimary && (
-                              <span className="shrink-0 rounded bg-amber-500/15 px-1 text-[9px] font-bold text-amber-500">
-                                PK
-                              </span>
-                            )}
-                            {c.isForeign && (
-                              <span className="shrink-0 rounded bg-sky-500/15 px-1 text-[9px] font-bold text-sky-500">
-                                FK
-                              </span>
-                            )}
-                            <span
-                              className="truncate font-mono"
-                              title={c.name}
-                            >
-                              {c.name}
-                            </span>
-                          </span>
-                          <span
-                            className="shrink-0 truncate text-[10px] text-muted-foreground"
-                            title={c.type}
-                          >
-                            {c.type}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <div className="min-w-0">
-                    <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">
-                      Índices ({selectedTable.indexes.length})
-                    </p>
-                    <ul className="flex max-h-[140px] flex-col gap-0.5 overflow-y-auto rounded border border-border/40 bg-background/30 p-1">
-                      {selectedTable.indexes.map((idx: { name: string; type: string; columns: unknown[] }) => (
-                        <li
-                          key={idx.name}
-                          className="flex items-center justify-between gap-2 rounded px-1.5 py-0.5 text-[11px] hover:bg-muted/30"
-                        >
-                          <span
-                            className="truncate font-mono"
-                            title={idx.name}
-                          >
-                            {idx.name}
-                          </span>
-                          <span className="shrink-0 text-[10px] text-muted-foreground">
-                            {idx.type} · {idx.columns.length}col
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {selectedTable.foreignKeys.length > 0 && (
-                    <div className="min-w-0">
-                      <p className="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground">
-                        Foreign keys ({selectedTable.foreignKeys.length})
-                      </p>
-                      <ul className="flex max-h-[140px] flex-col gap-1 overflow-y-auto rounded border border-border/40 bg-background/30 p-1">
-                        {selectedTable.foreignKeys.map(
-                          (fk: {
-                            name: string
-                            columns?: string[]
-                            references: {
-                              schema: string
-                              table: string
-                              column: string
-                            }
-                            onDelete?: string
-                          }) => (
-                            <li
-                              key={fk.name}
-                              className="rounded border border-sky-500/20 bg-sky-500/5 px-1.5 py-1 text-[11px]"
-                            >
-                              <p className="truncate font-mono text-foreground" title={fk.name}>
-                                {fk.name}
-                              </p>
-                              <p className="truncate text-[10px] text-muted-foreground">
-                                → {fk.references.schema}.{fk.references.table}.
-                                {fk.references.column}
-                              </p>
-                            </li>
-                          ),
-                        )}
-                      </ul>
-                    </div>
-                  )}
-
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="w-full"
-                    onClick={() => onClickFavorite(selectedTableRef!.schema, selectedTableRef!.table)}
-                  >
-                    {favorites.has(
-                      `${activeDbId}::${selectedTableRef?.schema}.${selectedTableRef?.table}`,
-                    ) ? (
-                      <>
-                        <StarOff className="size-3.5" />
-                        Remover dos favoritos
-                      </>
-                    ) : (
-                      <>
-                        <Star className="size-3.5" />
-                        Adicionar aos favoritos
-                      </>
-                    )}
-                  </Button>
-                </>
-              ) : (
-                <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
-                  <div className="flex size-12 items-center justify-center rounded-full border border-dashed border-border bg-background/40">
-                    <TableIcon className="size-5 text-muted-foreground/40" />
-                  </div>
-                  <div className="flex flex-col gap-1">
-                    <p className="text-xs font-medium text-foreground">
-                      Nenhuma tabela selecionada
-                    </p>
-                    <p className="max-w-[200px] text-[10px] text-muted-foreground/70">
-                      Clique numa tabela na árvore ao lado para ver
-                      linhas, tamanho, colunas, índices e foreign keys.
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </ScrollArea>
+          <TableInfoPanel
+            table={selectedTable}
+            schemaName={selectedTableRef?.schema}
+            isFavorite={
+              selectedTableRef
+                ? favorites.has(
+                    `${activeDbId}::${selectedTableRef.schema}.${selectedTableRef.table}`,
+                  )
+                : false
+            }
+            onToggleFavorite={
+              selectedTableRef
+                ? () =>
+                    onClickFavorite(
+                      selectedTableRef.schema,
+                      selectedTableRef.table,
+                    )
+                : undefined
+            }
+            onNavigateFk={(ref) =>
+              setSelectedTableRef({ schema: ref.schema, table: ref.table })
+            }
+          />
         </aside>
       </div>
 
       {/* ============================================================ */}
       {/*  STATUS BAR (rodapé)                                        */}
       {/* ============================================================ */}
-      <footer
-        data-slot="dba-workbench-statusbar"
-        className="flex shrink-0 items-center gap-2 overflow-x-auto border-t border-border bg-card px-3 py-1 text-[10px] tabular-nums text-muted-foreground md:gap-4"
-      >
-        <span className="flex shrink-0 items-center gap-1">
-          <span
-            className="size-1.5 rounded-full bg-emerald-500"
-            aria-hidden
-          />
-          conectado
-        </span>
-        <span className="hidden shrink-0 items-center gap-1 sm:flex">
-          <DatabaseIcon className="size-3" />
-          <span className="max-w-[140px] truncate" title={activeDb.name}>
-            {activeDb.name}
-          </span>
-        </span>
-        <span className="hidden shrink-0 md:inline">encoding: UTF8</span>
-        <span className="hidden shrink-0 lg:inline">read-only: off</span>
-        <span className="ml-auto flex shrink-0 items-center gap-2 md:gap-3">
-          {lastActionMs !== null ? (
+      <WorkbenchStatusBar
+        left={
+          <>
+            <span className="flex shrink-0 items-center gap-1">
+              <span
+                className="size-1.5 rounded-full bg-emerald-500"
+                aria-hidden
+              />
+              conectado
+            </span>
+            <span className="hidden shrink-0 items-center gap-1 sm:flex">
+              <DatabaseIcon className="size-3" />
+              <span className="max-w-[140px] truncate" title={activeDb.name}>
+                {activeDb.name}
+              </span>
+            </span>
+            <span className="hidden shrink-0 md:inline">encoding: UTF8</span>
+            <span className="hidden shrink-0 lg:inline">read-only: off</span>
+          </>
+        }
+        right={
+          <>
+            {lastActionMs !== null ? (
+              <span className="flex items-center gap-1">
+                <Loader2 className="size-3 animate-spin" />
+                <span className="hidden sm:inline">última query: </span>
+                {lastActionMs}ms
+              </span>
+            ) : (
+              <span className="flex items-center gap-1">
+                <Activity className="size-3" />
+                <span className="hidden sm:inline">idle</span>
+              </span>
+            )}
             <span className="flex items-center gap-1">
-              <Loader2 className="size-3 animate-spin" />
-              <span className="hidden sm:inline">última query: </span>
-              {lastActionMs}ms
+              <Clock className="size-3" />
+              <span className="hidden sm:inline">
+                {tablesVisible} tabelas visíveis
+              </span>
+              <span className="sm:hidden">{tablesVisible} tab</span>
             </span>
-          ) : (
-            <span className="flex items-center gap-1">
-              <Activity className="size-3" />
-              <span className="hidden sm:inline">idle</span>
-            </span>
-          )}
-          <span className="flex items-center gap-1">
-            <Clock className="size-3" />
-            <span className="hidden sm:inline">
-              {activeDb.schemas.reduce((a: number, s: { tables: unknown[] }) => a + s.tables.length, 0)}{" "}
-              tabelas visíveis
-            </span>
-            <span className="sm:hidden">
-              {activeDb.schemas.reduce((a: number, s: { tables: unknown[] }) => a + s.tables.length, 0)} tab
-            </span>
-          </span>
-        </span>
-      </footer>
+          </>
+        }
+      />
 
       {/* ============================================================ */}
       {/*  DIALOG — detalhes da query selecionada no histórico        */}
@@ -838,10 +644,7 @@ export function DbaWorkbench() {
           }
         }}
       >
-        <DialogContent
-          data-slot="query-history-dialog"
-          className="max-w-2xl"
-        >
+        <DialogContent data-slot="query-history-dialog" className="max-w-2xl">
           {selectedQuery && (
             <>
               <DialogHeader>
@@ -857,8 +660,8 @@ export function DbaWorkbench() {
                   </Badge>
                 </div>
                 <DialogDescription>
-                  Query executada em {formatRelativeTime(selectedQuery.t)} ·
-                  ID {selectedQuery.id}
+                  Query executada em {formatRelativeTime(selectedQuery.t)} · ID{" "}
+                  {selectedQuery.id}
                 </DialogDescription>
               </DialogHeader>
 
@@ -904,10 +707,7 @@ export function DbaWorkbench() {
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
                       Executada
                     </p>
-                    <p
-                      className="font-mono text-xs"
-                      title={selectedQuery.t}
-                    >
+                    <p className="font-mono text-xs" title={selectedQuery.t}>
                       {formatRelativeTime(selectedQuery.t)}
                     </p>
                   </div>
@@ -937,66 +737,6 @@ export function DbaWorkbench() {
           )}
         </DialogContent>
       </Dialog>
-    </div>
-  )
-}
-
-/* -------------------------------------------------------------------------- */
-/*                       Sub-componentes internos                              */
-/* -------------------------------------------------------------------------- */
-
-function Section({
-  title,
-  icon,
-  open,
-  onToggle,
-  count,
-  children,
-}: {
-  title: string
-  icon: React.ReactNode
-  open: boolean
-  onToggle: () => void
-  count?: number
-  children: React.ReactNode
-}) {
-  return (
-    <section className="border-b border-border/60">
-      <button
-        type="button"
-        onClick={onToggle}
-        className="flex w-full items-center gap-1.5 px-3 py-1.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground transition-colors hover:bg-muted/30 hover:text-foreground"
-      >
-        {open ? (
-          <ChevronDown className="size-3 shrink-0" />
-        ) : (
-          <ChevronRight className="size-3 shrink-0" />
-        )}
-        <span className="shrink-0">{icon}</span>
-        <span className="flex-1 truncate">{title}</span>
-        {count !== undefined && (
-          <span className="shrink-0 rounded bg-muted/60 px-1 text-[9px] tabular-nums">
-            {count}
-          </span>
-        )}
-      </button>
-      {open && <div className="px-2 pb-2">{children}</div>}
-    </section>
-  )
-}
-
-function StatTile({ label, value }: { label: string; value: string }) {
-  return (
-    <div className="min-w-0 rounded-md border border-border bg-background/60 p-2">
-      <p className="truncate text-[10px] uppercase tracking-wider text-muted-foreground">
-        {label}
-      </p>
-      <p
-        className="truncate font-mono text-sm font-semibold tabular-nums"
-        title={value}
-      >
-        {value}
-      </p>
     </div>
   )
 }

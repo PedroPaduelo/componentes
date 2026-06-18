@@ -2929,6 +2929,154 @@ export const components: ComponentMeta[] = [
     usage:
       "Passe `spans` (`{ label, start, duration, service?, status?, depth?, valueLabel? }[]`); `start`/`duration` são frações de `total` (a escala; se omitido, é inferido do maior `start + duration`). Use `valueLabel` para o número à direita (default = duração formatada via `formatValue`), `statusColors` para as cores das barras, `minWidthPct` para a largura mínima visível e `leafLabel` para a mensagem de serviço folha.",
   },
+  {
+    slug: "collapsible-section",
+    name: "Collapsible Section",
+    category: "Layout",
+    description:
+      "Seção colapsável com header clicável (chevron + ícone + título + slot de ação) e conteúdo que aparece/some. Funciona controlada (open + onOpenChange) ou não-controlada (defaultOpen). O slot de ação fica fora do botão de toggle, permitindo ações interativas próprias (ex.: um '+'). Ideal para sidebars e acordeões de seções.",
+    tags: [
+      "collapsible",
+      "colapsavel",
+      "section",
+      "secao",
+      "accordion",
+      "acordeao",
+      "sidebar",
+      "disclosure",
+      "layout",
+      "shared",
+    ],
+    usage:
+      "Passe `title` e, opcionalmente, `icon` e `action` (slot à direita do header, ex.: um badge de contagem). Controle o estado com `open` + `onOpenChange` ou deixe não-controlado com `defaultOpen` (default aberto). Use `headerClassName`/`contentClassName` para ajustar o estilo do header/conteúdo.",
+  },
+  {
+    slug: "database-tab-bar",
+    name: "Database Tab Bar",
+    category: "Actions",
+    description:
+      "Barra de abas estilo VS Code para 'documentos' abertos (bancos, arquivos, queries). Cada aba tem rótulo, ícone opcional, um slot de meta (ex.: badge de engine) e, quando 'suja' (dirty), mostra um ponto que vira o 'X' de fechar no hover. Um botão '+' opcional dispara onNew. 100% controlada por props.",
+    tags: [
+      "tabs",
+      "abas",
+      "tab-bar",
+      "vscode",
+      "editor",
+      "database",
+      "banco",
+      "navigation",
+      "actions",
+      "dashboard",
+    ],
+    usage:
+      "Passe `tabs` (`{ id, label, icon?, dirty?, meta? }[]`), `activeId` e `onSelect`. Use `onClose` para exibir o 'X' de fechar em cada aba (abas `dirty` mostram um ponto que vira 'X' no hover) e `onNew` para o botão '+' ao fim (com `newLabel` para o rótulo acessível).",
+  },
+  {
+    slug: "connection-list",
+    name: "Connection List",
+    category: "Feedback",
+    description:
+      "Lista de conexões/instâncias (bancos, servidores) para uma sidebar: cada item tem um indicador de status (ponto), nome e um slot de meta à direita; o item ativo recebe destaque. Sem estado próprio — tudo vem por props.",
+    tags: [
+      "connection",
+      "conexao",
+      "list",
+      "lista",
+      "sidebar",
+      "database",
+      "server",
+      "status",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Passe `items` (`{ id, name, meta?, status? }[]`), `activeId` e `onSelect`. O ponto de status é colorido por `status` (online/offline/warning) ou, na ausência dele, por ativo (verde) vs. inativo (cinza). `meta` é um slot livre à direita (ex.: '4sch').",
+  },
+  {
+    slug: "favorites-list",
+    name: "Favorites List",
+    category: "Feedback",
+    description:
+      "Lista de itens favoritados (estrela) para uma sidebar: cada item mostra uma estrela preenchida e um rótulo (mono por padrão). Opcionalmente, um botão de remover (StarOff) aparece no hover. Mostra um estado vazio quando não há itens.",
+    tags: [
+      "favorites",
+      "favoritos",
+      "star",
+      "estrela",
+      "bookmark",
+      "list",
+      "lista",
+      "sidebar",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Passe `items` (`{ id, label }[]`) e `onSelect`. Use `onRemove` para exibir um botão de remover (StarOff) no hover de cada item e `emptyLabel` para customizar o estado vazio (default: 'Nenhum favorito').",
+  },
+  {
+    slug: "query-history-list",
+    name: "Query History List",
+    category: "Feedback",
+    description:
+      "Histórico de queries (SQL) recentes para uma sidebar: cada item é um cartão com o SQL colapsado em uma linha (truncado) e uma linha de meta com duração e horário relativo. Controlada por props.",
+    tags: [
+      "query",
+      "sql",
+      "history",
+      "historico",
+      "list",
+      "lista",
+      "sidebar",
+      "database",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Passe `items` (`{ id, sql, durationMs?, timeLabel? }[]`) e `onSelect` (recebe o item clicado). `sql` é colapsado em uma linha e truncado por `maxLength` (default 60); `timeLabel` é o horário já formatado (ex.: 'há 7 min').",
+  },
+  {
+    slug: "table-info-panel",
+    name: "Table Info Panel",
+    category: "Feedback",
+    description:
+      "Painel de inspeção de uma tabela de banco: cabeçalho com schema.tabela + descrição, dois StatTiles (linhas e tamanho) e listas roláveis de colunas, índices e foreign keys, com estado vazio e botão de favoritar. Reusa StatTile, ScrollArea e Button do acervo; as FKs viram clicáveis quando onNavigateFk é passado.",
+    tags: [
+      "table",
+      "tabela",
+      "info",
+      "schema",
+      "columns",
+      "colunas",
+      "index",
+      "foreign-key",
+      "database",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Passe `table` (`{ name, columns, indexes, foreignKeys, rowCount?, sizeMB?, description? }`) e, opcionalmente, `schemaName` (prefixo). `null`/`undefined` mostra o estado vazio (customize via `emptyHint`). Use `onNavigateFk` para tornar as FKs clicáveis e `isFavorite` + `onToggleFavorite` para o botão de favoritar.",
+  },
+  {
+    slug: "workbench-status-bar",
+    name: "Workbench Status Bar",
+    category: "Feedback",
+    description:
+      "Barra de status (rodapé) estilo IDE: uma faixa fina, densa e rolável horizontalmente, com slots de itens à esquerda e à direita (o grupo da direita é empurrado com ml-auto). Só a casca visual — o conteúdo dos segmentos vem por props.",
+    tags: [
+      "status-bar",
+      "statusbar",
+      "footer",
+      "rodape",
+      "ide",
+      "workbench",
+      "vscode",
+      "dashboard",
+      "feedback",
+      "shared",
+    ],
+    usage:
+      "Passe `left` e `right` com o conteúdo já montado (spans com ícones/pontos de status). O grupo `right` é alinhado à direita automaticamente. Aceita className/props padrão de um <footer> para ajustes finos.",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

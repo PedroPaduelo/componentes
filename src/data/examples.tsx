@@ -253,6 +253,13 @@ import { examplesEcgStrip } from "./examples-ecg-strip"
 import { examplesServiceMesh } from "./examples-service-mesh"
 import { examplesLogStream } from "./examples-log-stream"
 import { examplesTraceWaterfall } from "./examples-trace-waterfall"
+import { examplesCollapsibleSection } from "./examples-collapsible-section"
+import { examplesDatabaseTabBar } from "./examples-database-tab-bar"
+import { examplesConnectionList } from "./examples-connection-list"
+import { examplesFavoritesList } from "./examples-favorites-list"
+import { examplesQueryHistoryList } from "./examples-query-history-list"
+import { examplesTableInfoPanel } from "./examples-table-info-panel"
+import { examplesWorkbenchStatusBar } from "./examples-workbench-status-bar"
 
 export type Example = {
   title: string
@@ -1571,6 +1578,13 @@ export const examples: Record<string, Example[]> = {
   ...examplesServiceMesh,
   ...examplesLogStream,
   ...examplesTraceWaterfall,
+  ...examplesCollapsibleSection,
+  ...examplesDatabaseTabBar,
+  ...examplesConnectionList,
+  ...examplesFavoritesList,
+  ...examplesQueryHistoryList,
+  ...examplesTableInfoPanel,
+  ...examplesWorkbenchStatusBar,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
