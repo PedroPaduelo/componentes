@@ -1138,6 +1138,25 @@
       ]
     },
     {
+      "name": "container-resource-panel",
+      "type": "registry:ui",
+      "title": "Container Resource Panel",
+      "description": "Painel read-only dos recursos de um container Docker: status (running/exited/restarting/paused/dead/created), health, CPU/MEM com limites e barras, network rx/tx, block I/O read/write, restart count com cor, portas publicadas, env vars (com masked) e mounts. Inspirado em Portainer / Docker Desktop.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/container-resource-panel.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/container-resource-panel-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "container-scroll-animation",
       "type": "registry:ui",
       "title": "Container Scroll Animation",
@@ -1272,6 +1291,59 @@
       "files": [
         {
           "path": "src/components/ui/date-picker.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "db-overview-grid",
+      "type": "registry:ui",
+      "title": "Db Overview Grid",
+      "description": "Visão geral em grid de uma frota de bancos de dados (Postgres, MySQL, SQL Server, Oracle, SQLite). Cada tile mostra env, engine, host:port, status, conexões, tamanho, cache hit, QPS, slow queries, TPS, replication lag, top 3 tabelas e último backup. Inclui busca, ordenação e Dialog de detalhe via render prop (integra com `db-schema-explorer`).",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dialog.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/select.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/db-overview-grid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/db-overview-grid-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "db-schema-explorer",
+      "type": "registry:ui",
+      "title": "DB Schema Explorer",
+      "description": "Explorador de schema de banco no estilo DBeaver/Navicat: árvore lateral (banco → schemas → tabelas) com busca em tempo real, painel de detalhe com 4 abas (Columns / Indexes / Foreign keys / DDL) e referência FK clicável que pula para a tabela alvo.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/scroll-area.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/table.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tabs.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/db-schema-explorer.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/db-schema-explorer-types.ts",
           "type": "registry:ui"
         }
       ]
@@ -1501,6 +1573,32 @@
       ]
     },
     {
+      "name": "error-tracker-feed",
+      "type": "registry:ui",
+      "title": "Error Tracker Feed",
+      "description": "Feed de erros/exception events estilo Sentry: lista de issues com tipo, mensagem, count, ambiente (prod/staging/dev), status (new/resolved/ignored/suppressed), usuários afetados e mini-sparkline de tendência. Filtros funcionais (ambiente, status, busca por tipo) e agrupamento configurável por tipo, serviço ou usuário.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dialog.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tabs.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/error-tracker-feed.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/error-tracker-feed-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "evervault-card",
       "type": "registry:ui",
       "title": "Evervault Card",
@@ -1595,6 +1693,32 @@
         },
         {
           "path": "src/components/ui/file-upload-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "fleet-server-grid",
+      "type": "registry:ui",
+      "title": "Fleet Server Grid",
+      "description": "Grid responsivo de tiles compactos para visualizar uma frota de servidores de uma vez. Cada tile mostra nome, host, status dot (verde/âmbar/vermelho), 3 mini-barras (CPU/MEM/DISK com cor reativa ao percentual), sparkline determinística de CPU (12 pontos), uptime formatado, função e região. Suporta busca em tempo real (nome/host/função/região), sort por status/nome/CPU/memória, e agrupamento por status/função/região. Click no tile abre um modal de detalhe (Dialog do shadcn) com tabela de discos e top processos — ou render prop customizável via renderDetail.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dialog.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/select.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tabs.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/fleet-server-grid.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/fleet-server-grid-types.ts",
           "type": "registry:ui"
         }
       ]
@@ -2222,6 +2346,25 @@
       "files": [
         {
           "path": "src/components/ui/images-slider.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "incident-timeline",
+      "type": "registry:ui",
+      "title": "Incident Timeline",
+      "description": "Timeline vertical de eventos de um incidente (detect → page → escalate → mitigate → resolve, etc.) com sticky header de status/severidade, nós circulares coloridos por severidade, chips por tipo de evento, timestamps relativo e absoluto, autor opcional e modo live que re-renderiza tempos a cada 30s. Inspirado no ObservabilityCenter, reutilizável para qualquer fluxo de incident response.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/incident-timeline.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/incident-timeline-types.ts",
           "type": "registry:ui"
         }
       ]
@@ -3106,10 +3249,10 @@
           "--xy-minimap-background-color": "var(--muted)",
           "--xy-minimap-mask-background-color": "color-mix(in oklab, var(--background) 65%, transparent)",
           "--xy-minimap-node-background-color": "var(--muted-foreground)",
+          "--xy-background-pattern-color": "var(--border)",
           "--xy-selection-background-color": "color-mix(in oklab, var(--primary) 10%, transparent)",
           "--xy-selection-border": "1px dotted color-mix(in oklab, var(--primary) 70%, transparent)",
-          "--xy-attribution-background-color": "color-mix(in oklab, var(--background) 50%, transparent)",
-          "--xy-background-pattern-color": "var(--border)"
+          "--xy-attribution-background-color": "color-mix(in oklab, var(--background) 50%, transparent)"
         }
       }
     },
@@ -3140,6 +3283,22 @@
           "color": "color-mix(in oklab, var(--foreground) 65%, transparent)"
         }
       }
+    },
+    {
+      "name": "request-flow-inspector",
+      "type": "registry:ui",
+      "title": "Request Flow Inspector",
+      "description": "Inspetor detalhado de UMA request HTTP no estilo DevTools Network / Datadog APM: método, URL, status com cor semântica, waterfall de timing (DNS/TCP/TLS/Server/Transfer), request/response headers, body com syntax highlight de JSON, cookies com badges secure/httpOnly, IDs de trace e card lateral com IP, geo (bandeira/ASN/user-agent) e ambiente.",
+      "files": [
+        {
+          "path": "src/components/ui/request-flow-inspector.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/request-flow-inspector-types.ts",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "resizable",
@@ -3273,6 +3432,25 @@
       "files": [
         {
           "path": "src/components/ui/separator.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "server-overview-card",
+      "type": "registry:ui",
+      "title": "Server Overview Card",
+      "description": "Card denso de overview de UM servidor/container (estilo New Relic / Datadog Host Summary): status, uptime, host, gauges radiais de CPU + memória (270°), lista de discos com throughput, rede + conexões, top 5 processos e último incidente. Cores semânticas por status e sparklines opcionais. Determinístico, sem dependências novas.",
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/server-overview-card.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/server-overview-card-types.ts",
           "type": "registry:ui"
         }
       ]
@@ -3445,6 +3623,25 @@
       "files": [
         {
           "path": "src/components/ui/slider-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "slow-query-list",
+      "type": "registry:ui",
+      "title": "Slow Query List",
+      "description": "Listagem de queries SQL lentas com diagnóstico: tempo, query SQL com syntax highlight, plano do EXPLAIN em árvore, locks ativos e sugestões automáticas (índice faltante, rewrite, vacuum, stats, lock). Filtros por threshold, severidade e banco; agrupamento por tabela/database/user.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/slow-query-list.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/slow-query-list-types.ts",
           "type": "registry:ui"
         }
       ]
@@ -4329,6 +4526,30 @@
           "path": "src/components/theme/use-theme.ts",
           "type": "registry:component",
           "target": "~/src/components/theme/use-theme.ts"
+        }
+      ]
+    },
+    {
+      "name": "user-activity-stream",
+      "type": "registry:ui",
+      "title": "User Activity Stream",
+      "description": "Feed de atividades de usuários em tempo real (estilo Hotjar/FullStory/Mixpanel Live). Cada item é uma ação observada (login, page_view, form_submit, error, abuse_flag etc.) com avatar, timestamp relativo, geo e IP. Suporta filtros (ação, usuário, período), agrupamento por usuário/ação/página e auto-scroll com botão 'pular para o mais recente' quando o usuário rola pra cima.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/avatar.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/user-activity-stream.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/user-activity-stream-types.ts",
+          "type": "registry:ui"
         }
       ]
     },
