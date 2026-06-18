@@ -247,6 +247,9 @@ import { examplesDonutBreakdown } from "./examples-donut-breakdown"
 import { examplesStatTile } from "./examples-stat-tile"
 import { examplesDashboardTopbar } from "./examples-dashboard-topbar"
 import { examplesUpgradeCard } from "./examples-upgrade-card"
+import { examplesRadialGauge } from "./examples-radial-gauge"
+import { examplesSignalCard } from "./examples-signal-card"
+import { examplesEcgStrip } from "./examples-ecg-strip"
 
 export type Example = {
   title: string
@@ -1559,6 +1562,9 @@ export const examples: Record<string, Example[]> = {
   ...examplesStatTile,
   ...examplesDashboardTopbar,
   ...examplesUpgradeCard,
+  ...examplesRadialGauge,
+  ...examplesSignalCard,
+  ...examplesEcgStrip,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */

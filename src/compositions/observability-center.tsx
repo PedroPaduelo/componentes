@@ -17,14 +17,17 @@
  * Tudo dirigido por um relógio simulado determinístico (PRNG seedado pelo
  * tick — zero Math.random). Casco em tokens shadcn (tema light/dark reativo);
  * cores de status/heatmap são severidade/data-viz.
+ *
+ * Componentização: o ECG, a sparkline (via SignalCard), o gauge radial, o
+ * card-shell (DashboardPanel com glow) e o cartão de golden signal foram
+ * extraídos para componentes registrados (`@/components/ui/*`) e são reusados
+ * aqui — esta composição só orquestra a simulação e o layout.
  */
 
 import * as React from "react"
 import {
   Activity,
   AlertTriangle,
-  ArrowDownRight,
-  ArrowUpRight,
   CheckCircle2,
   Clock,
   Cpu,
@@ -47,7 +50,10 @@ import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { AnimatedNumber } from "@/components/ui/animated-number"
-import { GlowingEffect } from "@/components/ui/glowing-effect"
+import { DashboardPanel } from "@/components/ui/dashboard-panel"
+import { EcgStrip } from "@/components/ui/ecg-strip"
+import { RadialGauge } from "@/components/ui/radial-gauge"
+import { SignalCard } from "@/components/ui/signal-card"
 import {
   CONSUMERS_OF,
   DOWNSTREAM_OF,
@@ -480,221 +486,12 @@ function viewHist(hist: number[], window: TimeWindow): number[] {
   return hist.slice(-WINDOW_LEN[window])
 }
 
-function trendOf(hist: number[]): number {
+/** Variação relativa (fração assinada) entre o último ponto e 7 ticks atrás. */
+function trendFraction(hist: number[]): number {
   if (hist.length < 7) return 0
-  return hist[hist.length - 1] - hist[hist.length - 7]
-}
-
-/* ------------------------------------------------------------------ */
-/*  ECG hero strip (batimento do sistema, via rAF)                     */
-/* ------------------------------------------------------------------ */
-
-const ECG_W = 1200
-const ECG_H = 84
-const ECG_CYCLE = 150
-const ECG_CYCLES = ECG_W / ECG_CYCLE
-
-function ecgPath(midY: number, amp: number): string {
-  const pts: string[] = []
-  for (let i = 0; i < ECG_CYCLES; i++) {
-    const x = i * ECG_CYCLE
-    pts.push(
-      `${x} ${midY}`,
-      `${x + ECG_CYCLE * 0.42} ${midY}`,
-      `${x + ECG_CYCLE * 0.48} ${midY - amp * 0.16}`,
-      `${x + ECG_CYCLE * 0.53} ${midY}`,
-      `${x + ECG_CYCLE * 0.57} ${midY + amp * 0.14}`,
-      `${x + ECG_CYCLE * 0.61} ${midY - amp}`,
-      `${x + ECG_CYCLE * 0.65} ${midY + amp * 0.4}`,
-      `${x + ECG_CYCLE * 0.69} ${midY}`,
-      `${x + ECG_CYCLE * 0.8} ${midY - amp * 0.26}`,
-      `${x + ECG_CYCLE * 0.9} ${midY}`,
-      `${x + ECG_CYCLE} ${midY}`,
-    )
-  }
-  return `M ${pts.join(" L ")}`
-}
-
-function EcgStrip({ status, stress, running }: { status: ServiceStatus; stress: number; running: boolean }) {
-  const gRef = React.useRef<SVGGElement>(null)
-  const offsetRef = React.useRef(0)
-  const stressRef = React.useRef(stress)
-  const runningRef = React.useRef(running)
-  stressRef.current = stress
-  runningRef.current = running
-
-  const amp = 24 + stress * 12
-  const path = React.useMemo(() => ecgPath(ECG_H / 2, amp), [amp])
-  const color = STATUS_HEX[status]
-
-  React.useEffect(() => {
-    let raf = 0
-    let last = performance.now()
-    const loop = (now: number) => {
-      const dt = Math.min(48, now - last) / 1000
-      last = now
-      if (runningRef.current) {
-        const beat = 0.92 - stressRef.current * 0.5 // s por batida (mais rápido sob stress)
-        const pxPerSec = ECG_CYCLE / Math.max(0.32, beat)
-        let o = offsetRef.current - pxPerSec * dt
-        if (o <= -ECG_W) o += ECG_W
-        offsetRef.current = o
-        if (gRef.current) gRef.current.setAttribute("transform", `translate(${o.toFixed(1)} 0)`)
-      }
-      raf = requestAnimationFrame(loop)
-    }
-    raf = requestAnimationFrame(loop)
-    return () => cancelAnimationFrame(raf)
-  }, [])
-
-  return (
-    <svg
-      viewBox={`0 0 ${ECG_W} ${ECG_H}`}
-      preserveAspectRatio="none"
-      className="h-full w-full"
-      style={{ filter: `drop-shadow(0 0 6px ${color})` }}
-    >
-      <line x1={0} y1={ECG_H / 2} x2={ECG_W} y2={ECG_H / 2} stroke="var(--border)" strokeWidth={1} />
-      <g ref={gRef}>
-        <path d={path} fill="none" stroke={color} strokeWidth={2.2} strokeLinejoin="round" strokeLinecap="round" />
-        <g transform={`translate(${ECG_W} 0)`}>
-          <path d={path} fill="none" stroke={color} strokeWidth={2.2} strokeLinejoin="round" strokeLinecap="round" />
-        </g>
-      </g>
-    </svg>
-  )
-}
-
-/* ------------------------------------------------------------------ */
-/*  Sparkline (SVG)                                                    */
-/* ------------------------------------------------------------------ */
-
-function Sparkline({ values, color }: { values: number[]; color: string }) {
-  const W = 132
-  const H = 40
-  const pad = 3
-  if (values.length < 2) return <svg viewBox={`0 0 ${W} ${H}`} className="h-10 w-full" />
-  let min = Infinity
-  let max = -Infinity
-  for (const v of values) {
-    if (v < min) min = v
-    if (v > max) max = v
-  }
-  const span = max - min || 1
-  const step = (W - pad * 2) / (values.length - 1)
-  const pts = values.map((v, i) => {
-    const x = pad + i * step
-    const y = pad + (H - pad * 2) * (1 - (v - min) / span)
-    return `${x.toFixed(1)} ${y.toFixed(1)}`
-  })
-  const line = `M ${pts.join(" L ")}`
-  const lastX = pad + (values.length - 1) * step
-  const area = `${line} L ${lastX.toFixed(1)} ${H - pad} L ${pad} ${H - pad} Z`
-  const lastY = pad + (H - pad * 2) * (1 - (values[values.length - 1] - min) / span)
-  return (
-    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className="h-10 w-full">
-      <path d={area} fill={color} opacity={0.12} />
-      <path d={line} fill="none" stroke={color} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx={lastX} cy={lastY} r={2.4} fill={color} style={{ filter: `drop-shadow(0 0 3px ${color})` }} />
-    </svg>
-  )
-}
-
-/* ------------------------------------------------------------------ */
-/*  Radial gauge (270°)                                                */
-/* ------------------------------------------------------------------ */
-
-function RadialGauge({
-  value,
-  size,
-  stroke,
-  color,
-  children,
-}: {
-  value: number
-  size: number
-  stroke: number
-  color: string
-  children?: React.ReactNode
-}) {
-  const r = (size - stroke) / 2
-  const c = 2 * Math.PI * r
-  const arc = 0.75
-  const dashTrack = `${(c * arc).toFixed(2)} ${c.toFixed(2)}`
-  const dashVal = `${(c * arc * clamp(value, 0, 1)).toFixed(2)} ${c.toFixed(2)}`
-  return (
-    <div className="relative" style={{ width: size, height: size }}>
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-        <g transform={`rotate(135 ${size / 2} ${size / 2})`}>
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={r}
-            fill="none"
-            stroke="var(--muted)"
-            strokeWidth={stroke}
-            strokeDasharray={dashTrack}
-            strokeLinecap="round"
-          />
-          <circle
-            cx={size / 2}
-            cy={size / 2}
-            r={r}
-            fill="none"
-            stroke={color}
-            strokeWidth={stroke}
-            strokeDasharray={dashVal}
-            strokeLinecap="round"
-            style={{ transition: "stroke-dasharray 0.6s ease", filter: `drop-shadow(0 0 5px ${color})` }}
-          />
-        </g>
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center">{children}</div>
-    </div>
-  )
-}
-
-/* ------------------------------------------------------------------ */
-/*  Card shell                                                         */
-/* ------------------------------------------------------------------ */
-
-function Panel({
-  title,
-  icon,
-  right,
-  className,
-  bodyClassName,
-  glow,
-  children,
-}: {
-  title: string
-  icon: React.ReactNode
-  right?: React.ReactNode
-  className?: string
-  bodyClassName?: string
-  glow?: boolean
-  children: React.ReactNode
-}) {
-  return (
-    <section
-      className={cn(
-        "relative flex min-w-0 flex-col overflow-hidden rounded-xl border border-border bg-card",
-        className,
-      )}
-    >
-      {glow && (
-        <GlowingEffect disabled={false} glow={false} blur={0} spread={42} proximity={72} borderWidth={2} />
-      )}
-      <header className="relative flex items-center justify-between gap-2 border-b border-border px-4 py-2.5">
-        <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
-          <span className="text-muted-foreground">{icon}</span>
-          {title}
-        </div>
-        {right}
-      </header>
-      <div className={cn("relative min-w-0 flex-1", bodyClassName)}>{children}</div>
-    </section>
-  )
+  const prev = hist[hist.length - 7]
+  const base = Math.abs(prev || hist[0] || 1) || 1
+  return (hist[hist.length - 1] - prev) / base
 }
 
 /* ------------------------------------------------------------------ */
@@ -956,52 +753,6 @@ function ServiceMesh({
 }
 
 /* ------------------------------------------------------------------ */
-/*  Golden signal card                                                 */
-/* ------------------------------------------------------------------ */
-
-function SignalCard({
-  label,
-  icon,
-  value,
-  hist,
-  color,
-  invert,
-  window,
-}: {
-  label: string
-  icon: React.ReactNode
-  value: string
-  hist: number[]
-  color: string
-  invert: boolean
-  window: TimeWindow
-}) {
-  const tr = trendOf(hist)
-  const up = tr >= 0
-  const good = invert ? !up : up
-  const trendClass = good ? "text-emerald-500" : "text-rose-500"
-  const TrendIcon = up ? ArrowUpRight : ArrowDownRight
-  const pctBase = Math.abs(hist[hist.length - 7] ?? hist[0] ?? 1) || 1
-  const pct = Math.abs(tr) / pctBase
-  return (
-    <div className="flex flex-col gap-2 rounded-lg border border-border bg-background/40 p-3">
-      <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
-        <span className="flex items-center gap-1.5">
-          <span style={{ color }}>{icon}</span>
-          {label}
-        </span>
-        <span className={cn("flex items-center gap-0.5 tabular-nums", trendClass)}>
-          <TrendIcon className="size-3" />
-          {formatPct(pct, 1)}
-        </span>
-      </div>
-      <div className="text-xl font-semibold tabular-nums text-foreground">{value}</div>
-      <Sparkline values={viewHist(hist, window)} color={color} />
-    </div>
-  )
-}
-
-/* ------------------------------------------------------------------ */
 /*  Componente principal                                               */
 /* ------------------------------------------------------------------ */
 
@@ -1188,7 +939,13 @@ export function ObservabilityCenter() {
           </div>
         </div>
         <div className="h-12 min-w-0 flex-1">
-          <EcgStrip status={globalStatus} stress={stress} running={running} />
+          <EcgStrip
+            color={scoreColor}
+            amplitude={24 + stress * 12}
+            speed={1 + stress * 1.2}
+            paused={!running}
+            className="h-full w-full"
+          />
         </div>
         <div className="hidden shrink-0 flex-col items-end leading-tight sm:flex">
           <div className="text-base font-bold tabular-nums text-foreground">
@@ -1210,12 +967,13 @@ export function ObservabilityCenter() {
       {/* ============================ GRID ============================ */}
       <div className="relative z-10 grid grid-cols-1 gap-3 p-3 lg:grid-cols-12">
         {/* ---- Mesh ---- */}
-        <Panel
+        <DashboardPanel
+          variant="framed"
           title="Topologia de serviços"
           icon={<Workflow className="size-4" />}
           className="lg:col-span-8"
           glow
-          right={
+          action={
             <div className="hidden items-center gap-3 text-[11px] text-muted-foreground sm:flex">
               {(Object.keys(KIND_META) as (keyof typeof KIND_META)[]).map((k) => {
                 const M = KIND_META[k]
@@ -1252,10 +1010,11 @@ export function ObservabilityCenter() {
             </span>
             <span>Clique num serviço para inspecionar →</span>
           </div>
-        </Panel>
+        </DashboardPanel>
 
         {/* ---- SLO / Health rail ---- */}
-        <Panel
+        <DashboardPanel
+          variant="framed"
           title="SLO & saúde"
           icon={<Gauge className="size-4" />}
           className="lg:col-span-4"
@@ -1263,7 +1022,7 @@ export function ObservabilityCenter() {
           bodyClassName="flex flex-col gap-4 p-4"
         >
           <div className="flex items-center gap-4">
-            <RadialGauge value={totals.availability} size={108} stroke={11} color={scoreColor}>
+            <RadialGauge value={totals.availability} max={1} size={108} thickness={11} color={scoreColor}>
               <span className="text-lg font-bold tabular-nums" style={{ color: scoreColor }}>
                 {formatPct(totals.availability, 2)}
               </span>
@@ -1319,14 +1078,15 @@ export function ObservabilityCenter() {
               <AnimatedNumber value={Math.round(totals.rps)} /> <span className="text-xs text-muted-foreground">rps</span>
             </span>
           </div>
-        </Panel>
+        </DashboardPanel>
 
         {/* ---- Golden signals ---- */}
-        <Panel
+        <DashboardPanel
+          variant="framed"
           title="Golden signals"
           icon={<Activity className="size-4" />}
           className="lg:col-span-12"
-          right={
+          action={
             <div className="flex items-center gap-2">
               <span className={cn("size-2 rounded-full", STATUS_CLASSES[sel.status].dot)} />
               <span className="text-xs font-medium text-foreground">{selDef.name}</span>
@@ -1337,9 +1097,34 @@ export function ObservabilityCenter() {
           }
           bodyClassName="grid grid-cols-2 gap-3 p-3 lg:grid-cols-4"
         >
-          <SignalCard label="Latência p95" icon={<Clock className="size-3.5" />} value={formatMs(sel.p95)} hist={sel.histP95} color="#fb923c" invert window={timeWindow} />
-          <SignalCard label="Throughput" icon={<Zap className="size-3.5" />} value={`${formatCompact(sel.rps)} rps`} hist={sel.histRps} color="#38bdf8" invert={false} window={timeWindow} />
-          <SignalCard label="Taxa de erro" icon={<AlertTriangle className="size-3.5" />} value={formatPct(sel.err, 2)} hist={sel.histErr} color="#f43f5e" invert window={timeWindow} />
+          <SignalCard
+            label="Latência p95"
+            icon={<Clock className="size-3.5" />}
+            value={formatMs(sel.p95)}
+            data={viewHist(sel.histP95, timeWindow)}
+            trend={trendFraction(sel.histP95)}
+            trendPolarity="up-bad"
+            tone="amber"
+          />
+          <SignalCard
+            label="Throughput"
+            icon={<Zap className="size-3.5" />}
+            value={formatCompact(sel.rps)}
+            unit="rps"
+            data={viewHist(sel.histRps, timeWindow)}
+            trend={trendFraction(sel.histRps)}
+            trendPolarity="up-good"
+            tone="sky"
+          />
+          <SignalCard
+            label="Taxa de erro"
+            icon={<AlertTriangle className="size-3.5" />}
+            value={formatPct(sel.err, 2)}
+            data={viewHist(sel.histErr, timeWindow)}
+            trend={trendFraction(sel.histErr)}
+            trendPolarity="up-bad"
+            tone="rose"
+          />
           <div className="flex flex-col gap-2 rounded-lg border border-border bg-background/40 p-3">
             <div className="flex items-center justify-between text-xs font-medium text-muted-foreground">
               <span className="flex items-center gap-1.5">
@@ -1363,10 +1148,10 @@ export function ObservabilityCenter() {
               </div>
             </div>
           </div>
-        </Panel>
+        </DashboardPanel>
 
         {/* ---- Heatmap ---- */}
-        <Panel title="Heatmap de latência" icon={<Layers className="size-4" />} className="lg:col-span-7" right={<span className="text-[11px] text-muted-foreground">{selDef.name} · p95</span>} bodyClassName="p-4">
+        <DashboardPanel variant="framed" title="Heatmap de latência" icon={<Layers className="size-4" />} className="lg:col-span-7" action={<span className="text-[11px] text-muted-foreground">{selDef.name} · p95</span>} bodyClassName="p-4">
           <div className="flex gap-2">
             <div className="flex flex-col justify-between py-0.5 text-[10px] text-muted-foreground">
               <span>lento</span>
@@ -1386,10 +1171,10 @@ export function ObservabilityCenter() {
               </div>
             </div>
           </div>
-        </Panel>
+        </DashboardPanel>
 
         {/* ---- Trace waterfall ---- */}
-        <Panel title="Distributed trace" icon={<Workflow className="size-4" />} className="lg:col-span-5" right={<span className="font-mono text-[11px] text-muted-foreground">#{(tick % 9000) + 1000}</span>} bodyClassName="flex flex-col gap-1.5 p-4">
+        <DashboardPanel variant="framed" title="Distributed trace" icon={<Workflow className="size-4" />} className="lg:col-span-5" action={<span className="font-mono text-[11px] text-muted-foreground">#{(tick % 9000) + 1000}</span>} bodyClassName="flex flex-col gap-1.5 p-4">
           {trace.map((span) => (
             <div key={span.id} className="flex items-center gap-2">
               <div className="w-24 shrink-0 truncate text-[11px] text-muted-foreground" style={{ paddingLeft: span.depth * 8 }}>
@@ -1405,14 +1190,15 @@ export function ObservabilityCenter() {
             </div>
           ))}
           {trace.length <= 1 && <p className="py-3 text-center text-xs text-muted-foreground">Serviço folha — sem dependências downstream.</p>}
-        </Panel>
+        </DashboardPanel>
 
         {/* ---- Log stream ---- */}
-        <Panel
+        <DashboardPanel
+          variant="framed"
           title="Live log stream"
           icon={<Activity className="size-4" />}
           className="lg:col-span-7"
-          right={
+          action={
             <div className="flex items-center gap-1">
               {(["debug", "info", "warn", "error"] as LogLevel[]).map((lvl) => (
                 <button
@@ -1445,14 +1231,15 @@ export function ObservabilityCenter() {
               ))
             )}
           </div>
-        </Panel>
+        </DashboardPanel>
 
         {/* ---- Alerts ---- */}
-        <Panel
+        <DashboardPanel
+          variant="framed"
           title="Alertas & incidentes"
           icon={<Siren className="size-4" />}
           className="lg:col-span-5"
-          right={
+          action={
             firingCount > 0 ? (
               <Badge className="gap-1 bg-rose-500/15 text-rose-500">
                 <span className="size-1.5 animate-pulse rounded-full bg-rose-500" />
@@ -1499,7 +1286,7 @@ export function ObservabilityCenter() {
               </div>
             )}
           </div>
-        </Panel>
+        </DashboardPanel>
       </div>
 
       {/* ============================ STATUS BAR ============================ */}

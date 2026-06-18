@@ -870,5 +870,15 @@ export { DashboardTopbar } from "./dashboard-topbar"
 export type { DashboardTopbarProps } from "./dashboard-topbar"
 export { UpgradeCard } from "./upgrade-card"
 export type { UpgradeCardProps, UpgradeCardCta } from "./upgrade-card"
+export { RadialGauge } from "./radial-gauge"
+export type { RadialGaugeProps, RadialGaugeThreshold } from "./radial-gauge"
+export { SignalCard } from "./signal-card"
+export type {
+  SignalCardProps,
+  SignalCardStatus,
+  SignalCardTone,
+} from "./signal-card"
+export { EcgStrip } from "./ecg-strip"
+export type { EcgStripProps } from "./ecg-strip"
 
 

@@ -2798,6 +2798,69 @@ export const components: ComponentMeta[] = [
     usage:
       "Passe `title` e, opcionalmente, `description`. O CTA vai em `cta` como `{ label, onClick? }` (botão) ou `{ label, href }` (link `<a>`, tem prioridade sobre onClick). Use `icon` para um ícone antes do título.",
   },
+  {
+    slug: "radial-gauge",
+    name: "Radial Gauge",
+    category: "Feedback",
+    description:
+      "Medidor radial de arco SVG (270°) com trilha de fundo, arco de valor com glow e miolo de valor/unidade/rótulo (ou children custom). A cor do arco é fixa (`color`) ou derivada por faixa de valor (`thresholds`). Ideal para SLO, saturação (CPU/memória/disco) e disponibilidade.",
+    tags: [
+      "gauge",
+      "medidor",
+      "radial",
+      "arc",
+      "arco",
+      "slo",
+      "saturation",
+      "dashboard",
+      "feedback",
+      "shared",
+    ],
+    usage:
+      "Passe `value` (normalizado em `[min, max]`, default 0–100). Use `color` para uma cor fixa do arco ou `thresholds` (`{ upTo, color }[]`) para colorir por faixa. `size`/`thickness` controlam o diâmetro/espessura; `label`/`unit` preenchem o miolo padrão, ou passe `children` para um miolo custom.",
+  },
+  {
+    slug: "signal-card",
+    name: "Signal Card",
+    category: "Feedback",
+    description:
+      "Cartão de 'golden signal' para observabilidade: ícone + rótulo, valor (com unidade), indicador de variação (trend com seta colorida por polaridade) e uma mini-sparkline. Reusa o componente Sparkline por baixo. A cor de acento vem de `tone` ou é derivada de `status`.",
+    tags: [
+      "signal",
+      "golden-signal",
+      "sinal",
+      "metric",
+      "metrica",
+      "sparkline",
+      "observability",
+      "dashboard",
+      "feedback",
+      "shared",
+    ],
+    usage:
+      "Passe `label`, `value` (string já formatada) e `data` (série da sparkline). Use `unit` para a unidade ao lado do valor, `icon` antes do rótulo e `trend` (fração assinada, ex.: 0.04 = +4%) com `trendPolarity` ('up-good' | 'up-bad') para o indicador de variação. A cor de acento vem de `tone` ('sky' | 'amber' | 'rose'…) ou, na ausência dele, de `status` ('healthy' | 'degraded' | 'critical').",
+  },
+  {
+    slug: "ecg-strip",
+    name: "ECG Strip",
+    category: "Feedback",
+    description:
+      "Faixa de 'batimento' (eletrocardiograma) animada em SVG, varrendo horizontalmente via requestAnimationFrame com glow na cor do traço (loop sem costura). Velocidade, amplitude e cor são controláveis, e a animação pode ser congelada — o rAF é sempre cancelado no unmount. Dá um pulso 'vivo' a headers de observabilidade.",
+    tags: [
+      "ecg",
+      "heartbeat",
+      "batimento",
+      "pulse",
+      "pulso",
+      "waveform",
+      "animation",
+      "observability",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Coloque dentro de um container com altura definida (o <svg> ocupa 100%). Use `color` (CSS) para o traço/glow, `speed` (multiplicador de velocidade) e `amplitude` (pico R) para o ritmo, e `paused` para congelar. `height` controla apenas o viewBox.",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

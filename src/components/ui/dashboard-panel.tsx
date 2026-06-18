@@ -1,70 +1,123 @@
 /**
  * DashboardPanel — card-shell de painel para dashboards.
  *
- * Container com borda/sombra padrão e um header de duas partes: à esquerda um
- * título e uma descrição opcional; à direita um slot de `action` (badge, botão,
- * select…). O conteúdo do painel vai em `children`, abaixo do header.
+ * Suporta dois layouts via `variant`:
+ *  - "card" (default): container com padding interno (p-5) e um header de duas
+ *    partes — à esquerda título + descrição opcional; à direita um slot de
+ *    `action`. O conteúdo vai em `children`, abaixo do header.
+ *  - "framed": header com borda inferior (ícone opcional + título à esquerda,
+ *    `action` à direita) e um corpo "flush" (sem padding por padrão), denso —
+ *    ideal para trilhas de observabilidade. Use `bodyClassName` para o corpo.
  *
- * Extraído da composição `saas-dashboard-pro`. Sem dependências novas, sem
- * estado. O elemento raiz é uma <section> com `data-slot="dashboard-panel"` e
- * aceita className/props padrão.
- *
- * A prop opcional `glow` é um ponto de extensão reservado para uma futura
- * variante com brilho (ex.: GlowingEffect usada na trilha de observability).
- * Por enquanto ela apenas marca o elemento (`data-glow`) — NÃO adiciona
- * dependências nem altera o visual — para manter compatibilidade quando a
- * variante for ligada.
+ * Extraído da composição `saas-dashboard-pro`; a variante "framed" e o `glow`
+ * vêm da `observability-center`. Quando `glow` é true, renderiza o
+ * `GlowingEffect` (componente irmão → registryDependency) por cima da borda e
+ * marca o elemento com `data-glow`. Sem `glow`, o visual é idêntico ao
+ * anterior (zero efeito, sem `relative`). O elemento raiz é uma <section> com
+ * `data-slot="dashboard-panel"` e aceita className/props padrão.
  */
 
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { GlowingEffect, type GlowingEffectProps } from "@/components/ui/glowing-effect"
 
 export interface DashboardPanelProps extends React.HTMLAttributes<HTMLElement> {
   /** Título do painel (header). */
   title: string
-  /** Descrição opcional, abaixo do título. */
+  /** Descrição opcional, abaixo do título (variante "card"). */
   description?: string
+  /** Ícone exibido antes do título (variante "framed"). */
+  icon?: React.ReactNode
   /** Slot de ação à direita do header (ex.: Badge, Button). */
   action?: React.ReactNode
+  /**
+   * Layout do painel:
+   * - "card" (default): card com padding interno e header título/descrição.
+   * - "framed": header com borda inferior + ícone e corpo flush (denso).
+   */
+  variant?: "card" | "framed"
+  /** Classe extra do corpo (variante "framed"). */
+  bodyClassName?: string
   /** Conteúdo do painel. */
   children?: React.ReactNode
   /**
-   * Reservado para a futura variante com brilho (GlowingEffect). Sem efeito
-   * visual por enquanto: apenas marca o elemento com `data-glow`.
+   * Liga o brilho de borda (GlowingEffect). Quando true, renderiza o efeito
+   * internamente e marca o elemento com `data-glow`. Sem efeito, o visual é
+   * idêntico ao painel sem brilho.
    */
   glow?: boolean
+  /** Props repassadas ao GlowingEffect quando `glow` está ativo. */
+  glowProps?: Partial<GlowingEffectProps>
 }
 
 function DashboardPanel({
   title,
   description,
+  icon,
   action,
+  variant = "card",
+  bodyClassName,
   glow = false,
+  glowProps,
   className,
   children,
   ...props
 }: DashboardPanelProps) {
+  const framed = variant === "framed"
   return (
     <section
       data-slot="dashboard-panel"
       data-glow={glow ? "" : undefined}
       className={cn(
-        "rounded-xl border border-border bg-card p-5 shadow-sm",
-        className
+        framed
+          ? "relative flex min-w-0 flex-col overflow-hidden rounded-xl border border-border bg-card"
+          : "rounded-xl border border-border bg-card p-5 shadow-sm",
+        // sem `glow`, nada muda; com `glow` no layout "card" precisamos do
+        // contexto de posicionamento/recorte para o efeito.
+        glow && !framed && "relative overflow-hidden",
+        className,
       )}
       {...props}
     >
-      <div className="mb-4 flex items-start justify-between gap-3">
-        <div>
-          <h2 className="text-sm font-semibold text-foreground">{title}</h2>
-          {description ? (
-            <p className="text-xs text-muted-foreground">{description}</p>
-          ) : null}
-        </div>
-        {action}
-      </div>
-      {children}
+      {glow ? (
+        <GlowingEffect
+          disabled={false}
+          glow={false}
+          blur={0}
+          spread={42}
+          proximity={72}
+          borderWidth={2}
+          {...glowProps}
+        />
+      ) : null}
+      {framed ? (
+        <>
+          <header className="relative flex items-center justify-between gap-2 border-b border-border px-4 py-2.5">
+            <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+              {icon ? <span className="text-muted-foreground">{icon}</span> : null}
+              {title}
+            </div>
+            {action}
+          </header>
+          <div className={cn("relative min-w-0 flex-1", bodyClassName)}>
+            {children}
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="relative mb-4 flex items-start justify-between gap-3">
+            <div>
+              <h2 className="text-sm font-semibold text-foreground">{title}</h2>
+              {description ? (
+                <p className="text-xs text-muted-foreground">{description}</p>
+              ) : null}
+            </div>
+            {action}
+          </div>
+          {children}
+        </>
+      )}
     </section>
   )
 }
