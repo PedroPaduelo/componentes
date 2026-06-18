@@ -5,8 +5,10 @@ import { ArrowLeft, Loader2, Sparkles, Terminal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { CodeBlockCommand } from "@/components/ui/code-block-command"
 import { CopyPromptButton } from "@/components/showcase/CopyPromptButton"
+import { DocPagerNav } from "@/components/showcase/DocPagerNav"
 import { compositionScreens } from "@/compositions"
 import { getCompositionBySlug } from "@/data/compositions"
+import { getAdjacentCompositions } from "@/lib/composition-nav"
 import {
   buildCompositionPrompt,
   getCompositionAddCommand,
@@ -33,6 +35,7 @@ export function CompositionDetail() {
   const widthClass = composition.wide ? "max-w-[1600px]" : "max-w-6xl"
   const addCommand = getCompositionAddCommand(composition.slug)
   const exportName = getCompositionExportName(composition.slug)
+  const { prev, next } = getAdjacentCompositions(composition.slug)
 
   return (
     <div className={`mx-auto ${widthClass} px-4 py-12 sm:px-6`}>
@@ -119,6 +122,19 @@ export function CompositionDetail() {
           </div>
         )}
       </div>
+
+      <DocPagerNav
+        prev={
+          prev
+            ? { href: `/compositions/${prev.slug}`, label: prev.name }
+            : undefined
+        }
+        next={
+          next
+            ? { href: `/compositions/${next.slug}`, label: next.name }
+            : undefined
+        }
+      />
     </div>
   )
 }
