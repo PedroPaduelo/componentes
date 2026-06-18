@@ -2503,6 +2503,91 @@ export const components: ComponentMeta[] = [
     usage:
       "Passe `segments` como lista de `{ label, value, className }`, onde `className` é a cor do arco (ex.: \"stroke-primary\"). Ajuste `size`/`thickness` para o diâmetro e a espessura do anel. Sobreponha um rótulo central com um elemento posicionado de forma absoluta sobre um wrapper relativo do mesmo tamanho.",
   },
+  {
+    slug: "kpi-card",
+    name: "KPI Card",
+    category: "Feedback",
+    description:
+      "Cartão de métrica para dashboards: rótulo, valor numérico animado (AnimatedNumber) com prefixo/sufixo opcionais, ícone e um badge de variação (`delta`) colorido por tendência (verde/vermelho). API genérica, pronta para reuso em qualquer painel de KPIs.",
+    tags: [
+      "kpi",
+      "metrica",
+      "card",
+      "cartao",
+      "indicador",
+      "stat",
+      "delta",
+      "tendencia",
+      "dashboard",
+      "analytics",
+      "feedback",
+    ],
+    usage:
+      "Passe `label`, `value` e, opcionalmente, `prefix`/`suffix` (ex.: \"$\" e \".3%\"), `icon` e `delta` (variação em %). A cor do badge é derivada do sinal de `delta`, mas pode ser forçada com `trend` (\"up\"/\"down\"). Use `hint` para trocar o texto auxiliar (default: \"vs. período anterior\"). Combine vários em um grid para o topo do dashboard.",
+  },
+  {
+    slug: "sparkline",
+    name: "Sparkline",
+    category: "Feedback",
+    description:
+      "Mini-gráfico de linha em SVG (polyline + área translúcida) feito sem dependências. A escala vertical é normalizada ao min/max da série; cores da linha e da área são classes Tailwind. Ideal para tendências compactas dentro de cards e KPIs.",
+    tags: [
+      "sparkline",
+      "grafico",
+      "chart",
+      "linha",
+      "line",
+      "tendencia",
+      "trend",
+      "svg",
+      "dashboard",
+      "analytics",
+      "feedback",
+    ],
+    usage:
+      "Passe `data` como `number[]`; o desenho normaliza ao menor/maior valor. Troque `stroke` e `fill` (classes Tailwind, ex.: \"stroke-emerald-500\" / \"fill-emerald-500/10\") para mudar as cores e `strokeWidth` para a espessura. O tamanho renderizado vem do className (default ocupa a largura total, altura `h-14`); `width`/`height` ajustam só o viewBox.",
+  },
+  {
+    slug: "dashboard-panel",
+    name: "Dashboard Panel",
+    category: "Layout",
+    description:
+      "Card-shell de painel para dashboards: borda/sombra padrão e um header com título, descrição opcional e um slot de ação à direita; o conteúdo vai em children. Inclui um ponto de extensão `glow` reservado para uma futura variante com brilho.",
+    tags: [
+      "panel",
+      "painel",
+      "card",
+      "container",
+      "shell",
+      "dashboard",
+      "section",
+      "header",
+      "layout",
+    ],
+    usage:
+      "Passe `title` e, opcionalmente, `description` e `action` (um Badge, Button ou Select renderizado no canto direito do header). O conteúdo do painel vai como children. Use para padronizar os blocos de um dashboard (gráficos, tabelas, listas). A prop `glow` é reservada para a futura variante com brilho e hoje apenas marca o elemento (`data-glow`).",
+  },
+  {
+    slug: "detail-stat-cell",
+    name: "Detail Stat Cell",
+    category: "Feedback",
+    description:
+      "Célula de rótulo + valor para grades de detalhe: rótulo discreto no topo (com ícone opcional) e o valor/conteúdo logo abaixo, dentro de um bloco com borda suave. Pensada para resumos em duas colunas (cartão/diálogo de cliente, fatura, recurso).",
+    tags: [
+      "detalhe",
+      "detail",
+      "stat",
+      "celula",
+      "campo",
+      "label",
+      "valor",
+      "resumo",
+      "dashboard",
+      "feedback",
+    ],
+    usage:
+      "Passe `label` e, opcionalmente, `icon`; o valor vai como children. Combine várias células em um grid (ex.: `grid grid-cols-2 gap-4`) para montar o resumo de uma entidade. Os children aceitam qualquer conteúdo — texto, Badge, status com bolinha, ID em fonte mono, etc.",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

@@ -829,5 +829,13 @@ export { HBarChart } from "./h-bar-chart"
 export type { HBarChartProps, HBarChartDatum } from "./h-bar-chart"
 export { DonutChart } from "./donut-chart"
 export type { DonutChartProps, DonutSegment } from "./donut-chart"
+export { KpiCard } from "./kpi-card"
+export type { KpiCardProps } from "./kpi-card"
+export { Sparkline } from "./sparkline"
+export type { SparklineProps } from "./sparkline"
+export { DashboardPanel } from "./dashboard-panel"
+export type { DashboardPanelProps } from "./dashboard-panel"
+export { DetailStatCell } from "./detail-stat-cell"
+export type { DetailStatCellProps } from "./detail-stat-cell"
 
 

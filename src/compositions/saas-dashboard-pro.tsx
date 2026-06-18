@@ -52,6 +52,10 @@ import {
   BarChart,
   HBarChart,
   DonutChart,
+  KpiCard,
+  Sparkline,
+  DashboardPanel,
+  DetailStatCell,
   GitHubContributions,
   TableFluid,
   TableFluidHeader,
@@ -534,108 +538,6 @@ function money(value: number) {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                              sub-componentes                               */
-/* -------------------------------------------------------------------------- */
-
-function KpiCard({ kpi }: { kpi: Kpi }) {
-  const Icon = kpi.icon
-  const positive = kpi.delta >= 0
-  return (
-    <div className="flex flex-col gap-3 rounded-xl border border-border bg-card p-5 shadow-sm">
-      <div className="flex items-center justify-between">
-        <span className="text-sm text-muted-foreground">{kpi.label}</span>
-        <span className="flex size-8 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-          <Icon className="size-4" />
-        </span>
-      </div>
-      <div className="flex items-baseline gap-1 text-3xl font-semibold tracking-tight text-foreground">
-        {kpi.prefix ? <span>{kpi.prefix}</span> : null}
-        <AnimatedNumber value={kpi.value} />
-        {kpi.suffix ? (
-          <span className="text-2xl text-muted-foreground">{kpi.suffix}</span>
-        ) : null}
-      </div>
-      <div className="flex items-center gap-1.5 text-xs">
-        <span
-          className={
-            positive
-              ? "inline-flex items-center gap-0.5 rounded-md bg-emerald-500/10 px-1.5 py-0.5 font-medium text-emerald-600 dark:text-emerald-400"
-              : "inline-flex items-center gap-0.5 rounded-md bg-rose-500/10 px-1.5 py-0.5 font-medium text-rose-600 dark:text-rose-400"
-          }
-        >
-          {positive ? "+" : ""}
-          {kpi.delta}%
-        </span>
-        <span className="text-muted-foreground">vs. período anterior</span>
-      </div>
-    </div>
-  )
-}
-
-/* Sparkline SVG (polyline) a partir de uma série de percentuais. */
-function Sparkline({ points }: { points: number[] }) {
-  const w = 240
-  const h = 56
-  const max = Math.max(...points)
-  const min = Math.min(...points)
-  const span = Math.max(max - min, 1)
-  const step = points.length > 1 ? w / (points.length - 1) : w
-  const coords = points.map((p, i) => {
-    const x = i * step
-    const y = h - ((p - min) / span) * (h - 8) - 4
-    return `${x.toFixed(1)},${y.toFixed(1)}`
-  })
-  const linePoints = coords.join(" ")
-  const areaPoints = `0,${h} ${linePoints} ${w},${h}`
-  return (
-    <svg
-      viewBox={`0 0 ${w} ${h}`}
-      className="h-14 w-full"
-      preserveAspectRatio="none"
-      role="img"
-      aria-label="Tendência de retenção"
-    >
-      <polygon points={areaPoints} className="fill-primary/10" />
-      <polyline
-        points={linePoints}
-        fill="none"
-        className="stroke-primary"
-        strokeWidth={2}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  )
-}
-
-function Panel({
-  title,
-  description,
-  action,
-  children,
-}: {
-  title: string
-  description?: string
-  action?: React.ReactNode
-  children: React.ReactNode
-}) {
-  return (
-    <section className="rounded-xl border border-border bg-card p-5 shadow-sm">
-      <div className="mb-4 flex items-start justify-between gap-3">
-        <div>
-          <h2 className="text-sm font-semibold text-foreground">{title}</h2>
-          {description ? (
-            <p className="text-xs text-muted-foreground">{description}</p>
-          ) : null}
-        </div>
-        {action}
-      </div>
-      {children}
-    </section>
-  )
-}
-
-/* -------------------------------------------------------------------------- */
 /*                                  seções                                     */
 /* -------------------------------------------------------------------------- */
 
@@ -644,22 +546,22 @@ function OverviewSection() {
     <div className="flex flex-col gap-6">
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {OVERVIEW_KPIS.map((kpi) => (
-          <KpiCard key={kpi.label} kpi={kpi} />
+          <KpiCard key={kpi.label} {...kpi} />
         ))}
       </section>
 
       <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
         <div className="xl:col-span-2">
-          <Panel
+          <DashboardPanel
             title="Receita por mês"
             description="Evolução do MRR ao longo do ano."
             action={<Badge variant="outline">2025</Badge>}
           >
             <BarChart series={REVENUE_SERIES} />
-          </Panel>
+          </DashboardPanel>
         </div>
-        <Panel title="Retenção" description="Coorte dos últimos 10 períodos.">
-          <Sparkline points={RETENTION_SPARK} />
+        <DashboardPanel title="Retenção" description="Coorte dos últimos 10 períodos.">
+          <Sparkline data={RETENTION_SPARK} aria-label="Tendência de retenção" />
           <p className="mt-3 text-2xl font-semibold tracking-tight text-foreground">
             <AnimatedNumber value={70} />
             <span className="text-base text-muted-foreground">%</span>
@@ -667,12 +569,12 @@ function OverviewSection() {
           <p className="text-xs text-muted-foreground">
             retenção no período mais recente
           </p>
-        </Panel>
+        </DashboardPanel>
       </div>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2">
-          <Panel
+          <DashboardPanel
             title="Atividade recente"
             description="Eventos da conta nas últimas horas."
             action={<Badge variant="outline">Ao vivo</Badge>}
@@ -705,10 +607,10 @@ function OverviewSection() {
                 ))}
               </ul>
             </div>
-          </Panel>
+          </DashboardPanel>
         </div>
 
-        <Panel
+        <DashboardPanel
           title="Distribuição de planos"
           description="Mix da base de clientes."
         >
@@ -747,10 +649,10 @@ function OverviewSection() {
               ))}
             </ul>
           </div>
-        </Panel>
+        </DashboardPanel>
       </div>
 
-      <Panel
+      <DashboardPanel
         title="Top clientes por MRR"
         description="Maiores contas da base."
         action={<Badge variant="outline">Ranking</Badge>}
@@ -795,15 +697,15 @@ function OverviewSection() {
             )
           })}
         </ul>
-      </Panel>
+      </DashboardPanel>
 
-      <Panel
+      <DashboardPanel
         title="Atividade da equipe"
         description="Eventos de produto nas últimas 26 semanas."
         action={<Badge variant="outline">Heatmap</Badge>}
       >
         <GitHubContributions data={CONTRIBUTIONS} weeks={26} colorScale="green" />
-      </Panel>
+      </DashboardPanel>
     </div>
   )
 }
@@ -865,7 +767,7 @@ function AnalyticsSection() {
 
       <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {kpis.map((kpi) => (
-          <KpiCard key={kpi.label} kpi={kpi} />
+          <KpiCard key={kpi.label} {...kpi} />
         ))}
       </section>
 
@@ -894,7 +796,7 @@ function AnalyticsSection() {
           </TabsContent>
 
           <TabsContent value="retention" className="mt-5">
-            <Sparkline points={RETENTION_SPARK} />
+            <Sparkline data={RETENTION_SPARK} aria-label="Tendência de retenção" />
             <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-5">
               {RETENTION_SPARK.slice(0, 5).map((p, i) => (
                 <div
@@ -940,33 +842,33 @@ function CustomerDetail({
               <DialogDescription>{customer.email}</DialogDescription>
             </DialogHeader>
             <div className="grid grid-cols-2 gap-4 text-sm">
-              <DetailRow icon={CreditCard} label="Plano">
+              <DetailStatCell icon={CreditCard} label="Plano">
                 <Badge variant={planVariant(customer.plan)}>{customer.plan}</Badge>
-              </DetailRow>
-              <DetailRow icon={Activity} label="Status">
+              </DetailStatCell>
+              <DetailStatCell icon={Activity} label="Status">
                 <span className="inline-flex items-center gap-1.5">
                   <span
                     className={`size-2 rounded-full ${statusDot(customer.status)}`}
                   />
                   {customer.status}
                 </span>
-              </DetailRow>
-              <DetailRow icon={DollarSign} label="MRR">
+              </DetailStatCell>
+              <DetailStatCell icon={DollarSign} label="MRR">
                 <span className="font-medium text-foreground">
                   {money(customer.mrr)}
                 </span>
-              </DetailRow>
-              <DetailRow icon={Users} label="País">
+              </DetailStatCell>
+              <DetailStatCell icon={Users} label="País">
                 <span className="text-foreground">{customer.country}</span>
-              </DetailRow>
-              <DetailRow icon={Mail} label="ID">
+              </DetailStatCell>
+              <DetailStatCell icon={Mail} label="ID">
                 <span className="font-mono text-xs text-foreground">
                   {customer.id}
                 </span>
-              </DetailRow>
-              <DetailRow icon={Activity} label="Cliente desde">
+              </DetailStatCell>
+              <DetailStatCell icon={Activity} label="Cliente desde">
                 <span className="text-foreground">{customer.since}</span>
-              </DetailRow>
+              </DetailStatCell>
             </div>
             <div className="flex justify-end gap-2">
               <Button variant="outline" size="sm" onClick={() => onOpenChange(false)}>
@@ -978,26 +880,6 @@ function CustomerDetail({
         ) : null}
       </DialogContent>
     </Dialog>
-  )
-}
-
-function DetailRow({
-  icon: Icon,
-  label,
-  children,
-}: {
-  icon: React.ComponentType<{ className?: string }>
-  label: string
-  children: React.ReactNode
-}) {
-  return (
-    <div className="flex flex-col gap-1 rounded-lg border border-border bg-muted/30 p-3">
-      <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-        <Icon className="size-3.5" />
-        {label}
-      </span>
-      <span className="text-sm">{children}</span>
-    </div>
   )
 }
 
@@ -1045,7 +927,7 @@ function CustomersSection() {
 
   return (
     <div className="flex flex-col gap-4">
-      <Panel
+      <DashboardPanel
         title="Clientes"
         description={`${filtered.length} de ${CUSTOMERS.length} clientes`}
         action={
@@ -1219,7 +1101,7 @@ function CustomersSection() {
             </Button>
           </div>
         </div>
-      </Panel>
+      </DashboardPanel>
 
       <CustomerDetail
         customer={selected}
@@ -1342,7 +1224,7 @@ function BillingSection() {
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        <Panel
+        <DashboardPanel
           title="Plano atual"
           description="Assinatura e uso da conta."
           action={<Badge variant="secondary">Pro anual</Badge>}
@@ -1366,9 +1248,9 @@ function BillingSection() {
             <Sparkles className="size-4" />
             Fazer upgrade
           </Button>
-        </Panel>
+        </DashboardPanel>
 
-        <Panel
+        <DashboardPanel
           title="Método de pagamento"
           description="Cartão padrão da conta."
         >
@@ -1390,9 +1272,9 @@ function BillingSection() {
             <Wallet className="size-4" />
             Atualizar cartão
           </Button>
-        </Panel>
+        </DashboardPanel>
 
-        <Panel title="Resumo" description="Totais do ciclo atual.">
+        <DashboardPanel title="Resumo" description="Totais do ciclo atual.">
           <div className="flex flex-col gap-3">
             <div className="flex items-center justify-between rounded-lg border border-border bg-muted/30 p-3">
               <span className="text-sm text-muted-foreground">Pago</span>
@@ -1413,10 +1295,10 @@ function BillingSection() {
               </span>
             </div>
           </div>
-        </Panel>
+        </DashboardPanel>
       </div>
 
-      <Panel
+      <DashboardPanel
         title="Histórico de faturas"
         description="Clique em uma fatura para ver os detalhes."
         action={<Badge variant="outline">2025</Badge>}
@@ -1487,7 +1369,7 @@ function BillingSection() {
             </TableFluidBody>
           </TableFluid>
         </div>
-      </Panel>
+      </DashboardPanel>
 
       <InvoiceDetail invoice={selected} open={open} onOpenChange={setOpen} />
     </div>
@@ -1515,7 +1397,7 @@ function SettingsSection() {
   return (
     <div className="flex flex-col gap-6">
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <Panel
+        <DashboardPanel
           title="Workspace"
           description="Informações básicas da sua organização."
         >
@@ -1563,9 +1445,9 @@ function SettingsSection() {
               Salvar alterações
             </Button>
           </div>
-        </Panel>
+        </DashboardPanel>
 
-        <Panel title="Preferências" description="Notificações e segurança da conta.">
+        <DashboardPanel title="Preferências" description="Notificações e segurança da conta.">
           <div className="flex flex-col divide-y divide-border">
             <PreferenceRow
               title="Notificações por e-mail"
@@ -1598,10 +1480,10 @@ function SettingsSection() {
               />
             </PreferenceRow>
           </div>
-        </Panel>
+        </DashboardPanel>
       </div>
 
-      <Panel
+      <DashboardPanel
         title="Membros da equipe"
         description={`${members.length} ${members.length === 1 ? "pessoa" : "pessoas"} com acesso ao workspace.`}
         action={
@@ -1672,7 +1554,7 @@ function SettingsSection() {
             ))}
           </ul>
         )}
-      </Panel>
+      </DashboardPanel>
     </div>
   )
 }

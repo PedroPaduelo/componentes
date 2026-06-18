@@ -233,6 +233,10 @@ import { examplesIncidentTimeline } from "./examples-incident-timeline"
 import { examplesBarChart } from "./examples-bar-chart"
 import { examplesHBarChart } from "./examples-h-bar-chart"
 import { examplesDonutChart } from "./examples-donut-chart"
+import { examplesKpiCard } from "./examples-kpi-card"
+import { examplesSparkline } from "./examples-sparkline"
+import { examplesDashboardPanel } from "./examples-dashboard-panel"
+import { examplesDetailStatCell } from "./examples-detail-stat-cell"
 
 export type Example = {
   title: string
@@ -1531,6 +1535,10 @@ export const examples: Record<string, Example[]> = {
   ...examplesBarChart,
   ...examplesHBarChart,
   ...examplesDonutChart,
+  ...examplesKpiCard,
+  ...examplesSparkline,
+  ...examplesDashboardPanel,
+  ...examplesDetailStatCell,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
