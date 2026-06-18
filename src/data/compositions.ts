@@ -445,6 +445,28 @@ export const compositions: Composition[] = [
     category: "Aplicação",
     wide: true,
   },
+  {
+    slug: "dba-workbench",
+    name: "DBA Workbench",
+    description:
+      "Workbench IDE-like de banco de dados (estilo DBeaver / Navicat / DataGrip) construído em torno do componente DbSchemaExplorer: tabs de bancos abertos (estilo VS Code) com 2 bancos pré-abertos (Postgres da auditoria de produção + Postgres do SGT Maker), sidebar esquerda com 3 seções colapsáveis (Conexões, Favoritos, Histórico de queries SQL recentes), painel direito com info da tabela selecionada (linhas, tamanho, colunas com badges PK/FK, índices, foreign keys), status bar com conexão ativa e query time da última ação, topbar com badge de engine e ações globais (Refresh, Export DDL, Query, Settings). Tudo determinístico (PRNG seedado) — sem Math.random. Clique em uma tabela na árvore central pra popular o painel direito; clique no ícone de estrela pra favoritar/desfavoritar.",
+    tags: [
+      "database",
+      "dba",
+      "workbench",
+      "dbeaver",
+      "navicat",
+      "ide",
+      "sql",
+      "schema",
+      "postgres",
+      "devtools",
+      "app",
+      "interativo",
+    ],
+    category: "Aplicação",
+    wide: true,
+  },
 ]
 
 export function getCompositionBySlug(slug: string): Composition | undefined {
