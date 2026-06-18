@@ -3,9 +3,9 @@ import { Link, Navigate, useLocation, useParams } from "react-router-dom"
 
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { CodeBlockCommand } from "@/components/ui/code-block-command"
 import { ExampleBlock } from "@/components/showcase/ExampleBlock"
 import { CodeBlock } from "@/components/showcase/CodeBlock"
+import { InstallTabs } from "@/components/showcase/InstallTabs"
 import { CopyPromptButton } from "@/components/showcase/CopyPromptButton"
 import { DocBreadcrumb } from "@/components/showcase/DocBreadcrumb"
 import { DocPagerNav } from "@/components/showcase/DocPagerNav"
@@ -22,10 +22,7 @@ import {
   type Family,
 } from "@/data/families"
 import { getExamplesBySlug } from "@/data/examples"
-import {
-  getComponentInstall,
-  getRegistryAddCommand,
-} from "@/data/component-install"
+import { getComponentInstall } from "@/data/component-install"
 import { getAdjacentFamilies } from "@/lib/doc-nav"
 import { NotFound } from "@/pages/NotFound"
 
@@ -251,7 +248,6 @@ function VariantSection({
   const installId = `${variant.slug}-instalacao`
   const tipId = `${variant.slug}-dica`
 
-  const addCommand = getRegistryAddCommand(variant.slug)
   const importSnippet = `import { ${install.exportName} } from "${install.importPath}"`
 
   return (
@@ -329,7 +325,7 @@ function VariantSection({
             </Link>
             .
           </p>
-          <CodeBlockCommand code={addCommand} />
+          <InstallTabs slug={variant.slug} />
         </div>
         <div className="space-y-2">
           <p className="text-sm text-muted-foreground">
