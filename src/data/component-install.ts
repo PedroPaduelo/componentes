@@ -38,6 +38,55 @@ export function getRegistryAddCommand(slug: string): string {
   return `npx shadcn@latest add ${REGISTRY_BASE_URL}/r/${slug}.json`
 }
 
+/**
+ * Os 4 package managers suportados nas tabs de instalação por item.
+ * A ordem reflete a ordem de exibição preferida (pnpm primeiro, como mercado).
+ */
+export const PACKAGE_MANAGERS = ["pnpm", "npm", "yarn", "bun"] as const
+
+/** Identificador de um package manager suportado. */
+export type PackageManager = (typeof PACKAGE_MANAGERS)[number]
+
+/** Mapa package manager → comando `shadcn add` correspondente. */
+export type RegistryAddCommands = Record<PackageManager, string>
+
+/**
+ * "Executor" (CLI runner) de cada package manager para rodar a CLI do shadcn
+ * sem instalar nada global. Mantém a mesma sub-CLI (`shadcn@latest add …`),
+ * só troca o prefixo de execução.
+ */
+const PACKAGE_MANAGER_RUNNERS: RegistryAddCommands = {
+  pnpm: "pnpm dlx",
+  npm: "npx",
+  yarn: "yarn dlx",
+  bun: "bunx",
+}
+
+/**
+ * Deriva os comandos de instalação por package manager para um slug.
+ * Reusa a URL JÁ montada por `getRegistryAddCommand` (não duplica o domínio
+ * do registry nem o caminho `/r/<slug>.json`): apenas remove o prefixo `npx `
+ * do comando canônico e reaplica o executor de cada package manager.
+ *
+ * Ex.: `getRegistryAddCommands("button")` →
+ *   {
+ *     pnpm: "pnpm dlx shadcn@latest add https://.../r/button.json",
+ *     npm:  "npx shadcn@latest add https://.../r/button.json",
+ *     yarn: "yarn dlx shadcn@latest add https://.../r/button.json",
+ *     bun:  "bunx shadcn@latest add https://.../r/button.json",
+ *   }
+ */
+export function getRegistryAddCommands(slug: string): RegistryAddCommands {
+  // `addArgs` = "shadcn@latest add <REGISTRY_BASE_URL>/r/<slug>.json"
+  const addArgs = getRegistryAddCommand(slug).replace(/^npx /, "")
+  return {
+    pnpm: `${PACKAGE_MANAGER_RUNNERS.pnpm} ${addArgs}`,
+    npm: `${PACKAGE_MANAGER_RUNNERS.npm} ${addArgs}`,
+    yarn: `${PACKAGE_MANAGER_RUNNERS.yarn} ${addArgs}`,
+    bun: `${PACKAGE_MANAGER_RUNNERS.bun} ${addArgs}`,
+  }
+}
+
 /** Resultado da derivação de instalação de um componente. */
 export interface ComponentInstall {
   /** Caminho de import sem extensão, ex.: "@/components/ui/button". */
