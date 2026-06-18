@@ -190,18 +190,263 @@ export const GROUP_BY_ID: Record<GroupId, Group> = GROUPS.reduce(
 )
 
 /* -------------------------------------------------------------------------- */
-/* Mapa slug → grupo (preenchido em O2.2)                                      */
+/* Mapa slug → grupo (O2.2 — clusterização)                                    */
 /* -------------------------------------------------------------------------- */
+
+/**
+ * Grupo de fallback para slugs SEM entrada explícita em `SLUG_GROUP_MAP`.
+ *
+ * Hoje o mapa cobre os 214 slugs de `components.ts`, então o fallback só atua
+ * para itens NOVOS ainda não classificados. Aponta para `feedback-status`
+ * (a antiga categoria \"lixão\" Feedback) por ser o destino historicamente
+ * neutro até a curadoria mover o item para o grupo certo.
+ */
+export const DEFAULT_GROUP: GroupId = "feedback-status"
 
 /**
  * Mapa de derivação `slug do componente → grupo`.
  *
- * COBERTURA (a completar em O2.2): deve mapear TODOS os ~214 slugs de
- * `components.ts`. A vinculação fica AQUI (e não em `ComponentMeta`) para
- * manter a camada de grupos aditiva e desacoplada do registry e dos parsers
- * `_meta`. Slugs sem entrada serão tratados por um fallback na camada de O2.2
- * (ex.: deduzir o grupo a partir da `category`/tags ou cair num grupo padrão).
+ * COBERTURA: mapeia TODOS os 214 slugs de `components.ts`, cada um para 1 dos
+ * 9 `GroupId`. A vinculação fica AQUI (e não em `ComponentMeta`) para manter a
+ * camada de grupos aditiva e desacoplada do registry e dos parsers `_meta`.
+ * Slugs futuros sem entrada caem em `DEFAULT_GROUP`.
  *
- * Intencionalmente VAZIO nesta task (O2.1 entrega só tipos + taxonomia + ordem).
+ * Curadoria por DOMÍNIO (não pela `category` canônica): a dor #1 era a dispersão
+ * de \"inputs\" em 5 páginas, \"botões\" em 7 e o \"lixão\" Feedback (efeitos de
+ * texto, backgrounds, chat/IA, dashboards e globos misturados). Aqui cada slug
+ * vai para o grupo do seu domínio real. Organizado por grupo, alfabético dentro
+ * de cada bloco.
  */
-export const SLUG_GROUP_MAP: Record<string, GroupId> = {}
+export const SLUG_GROUP_MAP: Record<string, GroupId> = {
+  // — Forms & Inputs: campos, seleção e captura de dados —
+  calendar: "forms-inputs",
+  checkbox: "forms-inputs",
+  "checkbox-group-fluid": "forms-inputs",
+  "color-picker-fluid": "forms-inputs",
+  "consent-manager": "forms-inputs",
+  "date-picker": "forms-inputs",
+  "elastic-slider": "forms-inputs",
+  "file-thumbnail-fluid": "forms-inputs",
+  "file-upload": "forms-inputs",
+  form: "forms-inputs",
+  "gooey-input": "forms-inputs",
+  input: "forms-inputs",
+  "input-copy-fluid": "forms-inputs",
+  "input-group-fluid": "forms-inputs",
+  "input-otp": "forms-inputs",
+  keyboard: "forms-inputs",
+  "middle-truncation": "forms-inputs",
+  "placeholders-and-vanish-input": "forms-inputs",
+  "radio-group": "forms-inputs",
+  "radio-group-fluid": "forms-inputs",
+  "react-wheel-picker": "forms-inputs",
+  select: "forms-inputs",
+  "select-fluid": "forms-inputs",
+  "slide-to-unlock": "forms-inputs",
+  slider: "forms-inputs",
+  "slider-fluid": "forms-inputs",
+  switch: "forms-inputs",
+  "switch-fluid": "forms-inputs",
+  textarea: "forms-inputs",
+
+  // — Actions & Navegação: gatilhos de ação, menus, abas, navbars —
+  "animated-button": "actions-navigation",
+  breadcrumb: "actions-navigation",
+  button: "actions-navigation",
+  "button-fluid": "actions-navigation",
+  "chevrons-up-down-icon": "actions-navigation",
+  command: "actions-navigation",
+  "context-menu": "actions-navigation",
+  "copy-button": "actions-navigation",
+  "creepy-button": "actions-navigation",
+  "dropdown-fluid": "actions-navigation",
+  "dropdown-menu": "actions-navigation",
+  "floating-dock": "actions-navigation",
+  "floating-navbar": "actions-navigation",
+  "glass-dock": "actions-navigation",
+  "hover-border-gradient": "actions-navigation",
+  "icon-swap": "actions-navigation",
+  "magnetic-button": "actions-navigation",
+  menubar: "actions-navigation",
+  "moving-border": "actions-navigation",
+  "navbar-menu": "actions-navigation",
+  "navigation-menu": "actions-navigation",
+  notch: "actions-navigation",
+  pagination: "actions-navigation",
+  popover: "actions-navigation",
+  "resizable-navbar": "actions-navigation",
+  sidebar: "actions-navigation",
+  "stateful-button": "actions-navigation",
+  tabs: "actions-navigation",
+  "tabs-fluid": "actions-navigation",
+  "tabs-subtle-fluid": "actions-navigation",
+  "theme-switcher": "actions-navigation",
+  "theme-toggle-effect": "actions-navigation",
+  "toc-minimap": "actions-navigation",
+  toggle: "actions-navigation",
+
+  // — Layout & Containers: cards, grids, carrosséis, modais, drawers —
+  "3d-card-effect": "layout-containers",
+  "3d-pin": "layout-containers",
+  accordion: "layout-containers",
+  "accordion-fluid": "layout-containers",
+  "alert-dialog": "layout-containers",
+  "animated-modal": "layout-containers",
+  "animated-testimonials": "layout-containers",
+  "apple-cards-carousel": "layout-containers",
+  "aspect-ratio": "layout-containers",
+  "bento-grid": "layout-containers",
+  card: "layout-containers",
+  "card-hover-effect": "layout-containers",
+  "card-spotlight": "layout-containers",
+  "card-stack": "layout-containers",
+  carousel: "layout-containers",
+  collapsible: "layout-containers",
+  "comet-card": "layout-containers",
+  compare: "layout-containers",
+  dialog: "layout-containers",
+  "dialog-fluid": "layout-containers",
+  "direction-aware-hover": "layout-containers",
+  "draggable-card": "layout-containers",
+  drawer: "layout-containers",
+  "evervault-card": "layout-containers",
+  "expandable-cards": "layout-containers",
+  "features-section-with-skeletons": "layout-containers",
+  "focus-cards": "layout-containers",
+  "glare-card": "layout-containers",
+  "glow-card-grid": "layout-containers",
+  "glowing-stars-effect": "layout-containers",
+  "images-slider": "layout-containers",
+  "infinite-moving-cards": "layout-containers",
+  "layout-grid": "layout-containers",
+  "logo-slider": "layout-containers",
+  resizable: "layout-containers",
+  "scroll-area": "layout-containers",
+  "scroll-fade-effect": "layout-containers",
+  separator: "layout-containers",
+  sheet: "layout-containers",
+  "sticky-scroll-reveal": "layout-containers",
+  "team-section-with-scales": "layout-containers",
+  tree: "layout-containers",
+  "wobble-card": "layout-containers",
+  "work-experience-component": "layout-containers",
+
+  // — Feedback & Status: badges, alertas, toasts, progress, tooltips —
+  alert: "feedback-status",
+  "animated-number": "feedback-status",
+  "animated-tooltip": "feedback-status",
+  avatar: "feedback-status",
+  badge: "feedback-status",
+  "badge-fluid": "feedback-status",
+  "hover-card": "feedback-status",
+  "images-badge": "feedback-status",
+  "link-preview": "feedback-status",
+  loader: "feedback-status",
+  "mobius-loop-icon": "feedback-status",
+  "multi-step-loader": "feedback-status",
+  progress: "feedback-status",
+  skeleton: "feedback-status",
+  sonner: "feedback-status",
+  "sticky-banner": "feedback-status",
+  toast: "feedback-status",
+  "tooltip-card": "feedback-status",
+  "tooltip-fluid": "feedback-status",
+
+  // — Chat & IA: mensagens, raciocínio, prompts, perguntas ao usuário —
+  "ask-user-questions-fluid": "chat-ai",
+  "chat-message-fluid": "chat-ai",
+  "input-message-fluid": "chat-ai",
+  "thinking-indicator-fluid": "chat-ai",
+  "thinking-steps-fluid": "chat-ai",
+
+  // — Dashboards & Dev: tabelas, overview, timelines, feeds, terminais —
+  "code-block": "dashboards-dev",
+  "code-block-command": "dashboards-dev",
+  "container-resource-panel": "dashboards-dev",
+  "data-table": "dashboards-dev",
+  "db-overview-grid": "dashboards-dev",
+  "db-schema-explorer": "dashboards-dev",
+  "error-tracker-feed": "dashboards-dev",
+  "fleet-server-grid": "dashboards-dev",
+  "github-contributions": "dashboards-dev",
+  "incident-timeline": "dashboards-dev",
+  "react-flow": "dashboards-dev",
+  "request-flow-inspector": "dashboards-dev",
+  "server-overview-card": "dashboards-dev",
+  "slow-query-list": "dashboards-dev",
+  table: "dashboards-dev",
+  "table-fluid": "dashboards-dev",
+  terminal: "dashboards-dev",
+  timeline: "dashboards-dev",
+  "user-activity-stream": "dashboards-dev",
+
+  // — Efeitos de Texto: flip, typewriter, gradiente, brilho, reveal —
+  "canvas-text": "text-effects",
+  "colourful-text": "text-effects",
+  "container-cover": "text-effects",
+  "container-text-flip": "text-effects",
+  "cyber-glitch-text": "text-effects",
+  "encrypted-text": "text-effects",
+  "flip-fade-text": "text-effects",
+  "flip-text": "text-effects",
+  "flip-words": "text-effects",
+  "fluid-gradient-text": "text-effects",
+  "layout-text-flip": "text-effects",
+  "shimmering-text": "text-effects",
+  "squiggly-text": "text-effects",
+  "text-flipping-board": "text-effects",
+  "text-generate-effect": "text-effects",
+  "text-hover-effect": "text-effects",
+  "text-reveal-card": "text-effects",
+  "typewriter-effect": "text-effects",
+
+  // — Backgrounds & FX: beams, auroras, partículas, spotlights, shaders —
+  "3d-marquee": "backgrounds-fx",
+  "ascii-art": "backgrounds-fx",
+  "aurora-background": "backgrounds-fx",
+  "background-beams": "backgrounds-fx",
+  "background-beams-with-collision": "backgrounds-fx",
+  "background-boxes": "backgrounds-fx",
+  "background-gradient": "backgrounds-fx",
+  "background-gradient-animation": "backgrounds-fx",
+  "background-lines": "backgrounds-fx",
+  "background-ripple-effect": "backgrounds-fx",
+  "canvas-reveal-effect": "backgrounds-fx",
+  "container-scroll-animation": "backgrounds-fx",
+  "dither-shader": "backgrounds-fx",
+  "dot-grid-spotlight": "backgrounds-fx",
+  "dotted-glow-background": "backgrounds-fx",
+  "following-pointer": "backgrounds-fx",
+  "glowing-effect": "backgrounds-fx",
+  "google-gemini-effect": "backgrounds-fx",
+  "grid-and-dot-backgrounds": "backgrounds-fx",
+  "hero-highlight": "backgrounds-fx",
+  "hero-parallax": "backgrounds-fx",
+  "hero-section-with-mousemove": "backgrounds-fx",
+  "lamp-effect": "backgrounds-fx",
+  lens: "backgrounds-fx",
+  "light-lines": "backgrounds-fx",
+  "macbook-scroll": "backgrounds-fx",
+  meteors: "backgrounds-fx",
+  "noise-background": "backgrounds-fx",
+  "parallax-hero-images": "backgrounds-fx",
+  "parallax-hero-images-2": "backgrounds-fx",
+  "parallax-scroll": "backgrounds-fx",
+  "perspective-grid": "backgrounds-fx",
+  "pixelated-canvas": "backgrounds-fx",
+  scales: "backgrounds-fx",
+  "shooting-stars-and-stars-background": "backgrounds-fx",
+  sparkles: "backgrounds-fx",
+  spotlight: "backgrounds-fx",
+  "spotlight-new": "backgrounds-fx",
+  "svg-mask-effect": "backgrounds-fx",
+  "tracing-beam": "backgrounds-fx",
+  vortex: "backgrounds-fx",
+  "wavy-background": "backgrounds-fx",
+  "webcam-pixel-grid": "backgrounds-fx",
+
+  // — Globos & Mapas: globos interativos (cobe/three) e mapas-múndi —
+  "3d-globe": "globes-maps",
+  "github-globe": "globes-maps",
+  "world-map": "globes-maps",
+}
