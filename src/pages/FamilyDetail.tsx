@@ -69,8 +69,14 @@ export function FamilyDetail() {
   return <FamilyView family={family} hash={location.hash} />
 }
 
-/** Render efetivo da família (separado pra usar hooks sem condicional). */
-function FamilyView({ family, hash }: { family: Family; hash: string }) {
+/**
+ * Render efetivo da família (separado pra usar hooks sem condicional).
+ *
+ * Exportado para reuso: a group-page (`/components/grupo/:groupId`, O2.4) não usa
+ * o `FamilyView` inteiro (monta o próprio layout de grupo), mas mantemos o export
+ * disponível como ponto de extensão; quem reaproveita de fato é `VariantSection`.
+ */
+export function FamilyView({ family, hash }: { family: Family; hash: string }) {
   const multi = family.variants.length > 1
   const [active, setActive] = useState<string>(family.variants[0].slug)
   const representative = family.variants[0]
@@ -228,8 +234,12 @@ function buildTocSections(family: Family, multi: boolean): TocSection[] {
  * Headings semânticos: h2 para o nome da variante (quando multi-variante) ou
  * para as subseções (quando família de variante única); h3 para subseções
  * dentro de uma variante multi. Todos com `id` para ancoragem do TOC (FASE 3).
+ *
+ * Exportado para reuso na group-page (`/components/grupo/:groupId`, O2.4), que
+ * renderiza as MESMAS seções de variante (id=slug, scroll-mt, Uso/Instalação/
+ * Dica + InstallTabs) para todas as famílias de um grupo, sem duplicar a UI.
  */
-function VariantSection({
+export function VariantSection({
   variant,
   multi,
 }: {

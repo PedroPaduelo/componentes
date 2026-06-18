@@ -24,6 +24,9 @@ const ComponentsIndex = lazy(() =>
 const FamilyDetail = lazy(() =>
   import("@/pages/FamilyDetail").then((m) => ({ default: m.FamilyDetail }))
 )
+const GroupDetail = lazy(() =>
+  import("@/pages/GroupDetail").then((m) => ({ default: m.GroupDetail }))
+)
 const InstallGuide = lazy(() =>
   import("@/pages/InstallGuide").then((m) => ({ default: m.InstallGuide }))
 )
@@ -50,12 +53,16 @@ function App() {
         {/*
           Área de documentação: sidebar de navegação + conteúdo central.
           - /components            → índice (redireciona pra primeira família)
+          - /components/grupo/:groupId → group-page (cluster inteiro: todas as
+            famílias/variantes em seções com âncora). Segmento estático "grupo"
+            torna a rota mais específica que /components/:id (não colidem).
           - /components/:id        → família (ex.: "button") renderiza FamilyDetail;
             slug de variante (ex.: "button-fluid") redireciona pra
             /components/<base>#<slug> (tratado dentro do FamilyDetail).
         */}
         <Route element={<DocsLayout />}>
           <Route path="/components" element={<ComponentsIndex />} />
+          <Route path="/components/grupo/:groupId" element={<GroupDetail />} />
           <Route path="/components/:id" element={<FamilyDetail />} />
         </Route>
         <Route path="/instalacao" element={<InstallGuide />} />
