@@ -365,15 +365,18 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "thinking-steps-fluid": "chat-ai",
 
   // — Dashboards & Dev: tabelas, overview, timelines, feeds, terminais —
+  "bar-chart": "dashboards-dev",
   "code-block": "dashboards-dev",
   "code-block-command": "dashboards-dev",
   "container-resource-panel": "dashboards-dev",
   "data-table": "dashboards-dev",
   "db-overview-grid": "dashboards-dev",
   "db-schema-explorer": "dashboards-dev",
+  "donut-chart": "dashboards-dev",
   "error-tracker-feed": "dashboards-dev",
   "fleet-server-grid": "dashboards-dev",
   "github-contributions": "dashboards-dev",
+  "h-bar-chart": "dashboards-dev",
   "incident-timeline": "dashboards-dev",
   "react-flow": "dashboards-dev",
   "request-flow-inspector": "dashboards-dev",

@@ -822,4 +822,12 @@ export type {
   FleetServerGridGroupBy,
 } from "./fleet-server-grid-types"
 
+// Lote dashboards-dev (extraídos de composições)
+export { BarChart } from "./bar-chart"
+export type { BarChartProps, BarChartDatum } from "./bar-chart"
+export { HBarChart } from "./h-bar-chart"
+export type { HBarChartProps, HBarChartDatum } from "./h-bar-chart"
+export { DonutChart } from "./donut-chart"
+export type { DonutChartProps, DonutSegment } from "./donut-chart"
+
 

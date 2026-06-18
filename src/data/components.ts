@@ -2438,6 +2438,71 @@ export const components: ComponentMeta[] = [
     usage:
       "Use em painéis de incident response, status pages e postmortem. Passe `events` ordenados cronologicamente, `status` para o badge do header (ongoing/mitigated/resolved) e `severity` para a cor global. Ative `live` para re-renderizar tempos relativos a cada 30s em incidentes em andamento. `onEventClick` recebe o evento clicado para abrir detalhes, side-panel ou navegar para a página do alerta.",
   },
+  {
+    slug: "bar-chart",
+    name: "Bar Chart",
+    category: "Feedback",
+    description:
+      "Gráfico de barras verticais minimalista feito só com divs: altura proporcional ao maior valor da série e cor de preenchimento configurável via `accent`. Sem dependências, ideal para mini-gráficos de receita/uso em dashboards.",
+    tags: [
+      "grafico",
+      "chart",
+      "barras",
+      "bar",
+      "vertical",
+      "dashboard",
+      "metricas",
+      "dados",
+      "analytics",
+      "feedback",
+    ],
+    usage:
+      "Passe `series` como lista de `{ label, value }`; o maior valor vira o topo (100%) e os demais são normalizados. Use `accent` (classe Tailwind, ex.: \"bg-emerald-500\") para trocar a cor das barras. Bom para painéis de receita por mês, visitantes por dia, etc.",
+  },
+  {
+    slug: "h-bar-chart",
+    name: "Horizontal Bar Chart",
+    category: "Feedback",
+    description:
+      "Gráfico de barras horizontais minimalista feito só com divs: rótulo à esquerda, trilha preenchida proporcional ao maior valor e valor à direita. Sem dependências, ideal para rankings e comparações (ex.: canais de aquisição) em dashboards.",
+    tags: [
+      "grafico",
+      "chart",
+      "barras",
+      "bar",
+      "horizontal",
+      "ranking",
+      "dashboard",
+      "metricas",
+      "dados",
+      "analytics",
+      "feedback",
+    ],
+    usage:
+      "Passe `series` como lista de `{ label, value }`; o maior valor vira a barra cheia (100%) e os demais são normalizados. Use quando precisar comparar poucas categorias com rótulos longos — as barras horizontais acomodam o texto melhor que o Bar Chart vertical.",
+  },
+  {
+    slug: "donut-chart",
+    name: "Donut Chart",
+    category: "Feedback",
+    description:
+      "Donut/anel genérico em SVG montado a partir de arcos: trilha de fundo + um arco por segmento, com comprimento proporcional ao total e cor por classe Tailwind. Vão central livre para um rótulo absoluto. Sem dependências, ideal para distribuições (mix de planos, share) em dashboards.",
+    tags: [
+      "grafico",
+      "chart",
+      "donut",
+      "rosca",
+      "pizza",
+      "svg",
+      "distribuicao",
+      "dashboard",
+      "metricas",
+      "analytics",
+      "feedback",
+    ],
+    usage:
+      "Passe `segments` como lista de `{ label, value, className }`, onde `className` é a cor do arco (ex.: \"stroke-primary\"). Ajuste `size`/`thickness` para o diâmetro e a espessura do anel. Sobreponha um rótulo central com um elemento posicionado de forma absoluta sobre um wrapper relativo do mesmo tamanho.",
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

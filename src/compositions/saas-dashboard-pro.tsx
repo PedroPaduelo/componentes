@@ -49,6 +49,9 @@ import {
   Badge,
   Input,
   AnimatedNumber,
+  BarChart,
+  HBarChart,
+  DonutChart,
   GitHubContributions,
   TableFluid,
   TableFluidHeader,
@@ -569,68 +572,6 @@ function KpiCard({ kpi }: { kpi: Kpi }) {
   )
 }
 
-/* Barras verticais em divs (largura/altura via style inline — nunca classe interpolada). */
-function BarChart({
-  series,
-  accent = "bg-primary",
-}: {
-  series: { label: string; value: number }[]
-  accent?: string
-}) {
-  const max = Math.max(...series.map((s) => s.value), 1)
-  return (
-    <div className="flex h-40 items-end gap-1.5">
-      {series.map((s) => {
-        const pct = (s.value / max) * 100
-        return (
-          <div
-            key={s.label}
-            className="flex min-w-0 flex-1 flex-col items-center gap-1.5"
-          >
-            <div className="flex w-full flex-1 items-end">
-              <div
-                className={`w-full rounded-t-md ${accent}`}
-                style={{ height: `${pct}%` }}
-              />
-            </div>
-            <span className="w-full truncate text-center text-[10px] text-muted-foreground">
-              {s.label}
-            </span>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
-/* Barras horizontais (canais) — largura via style inline. */
-function HBarChart({ series }: { series: { label: string; value: number }[] }) {
-  const max = Math.max(...series.map((s) => s.value), 1)
-  return (
-    <div className="flex flex-col gap-3">
-      {series.map((s) => {
-        const pct = (s.value / max) * 100
-        return (
-          <div key={s.label} className="flex items-center gap-3">
-            <span className="w-20 shrink-0 truncate text-xs text-muted-foreground">
-              {s.label}
-            </span>
-            <div className="h-2.5 flex-1 overflow-hidden rounded-full bg-muted">
-              <div
-                className="h-full rounded-full bg-primary"
-                style={{ width: `${pct}%` }}
-              />
-            </div>
-            <span className="w-8 shrink-0 text-right text-xs font-medium text-foreground">
-              {s.value}
-            </span>
-          </div>
-        )
-      })}
-    </div>
-  )
-}
-
 /* Sparkline SVG (polyline) a partir de uma série de percentuais. */
 function Sparkline({ points }: { points: number[] }) {
   const w = 240
@@ -663,61 +604,6 @@ function Sparkline({ points }: { points: number[] }) {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-    </svg>
-  )
-}
-
-/* Donut SVG genérico — dimensões via style inline; cor do arco via className. */
-function Donut({
-  segments,
-  size = 168,
-  thickness = 24,
-}: {
-  segments: { label: string; value: number; className: string }[]
-  size?: number
-  thickness?: number
-}) {
-  const total = segments.reduce((acc, s) => acc + s.value, 0) || 1
-  const radius = (size - thickness) / 2
-  const circumference = 2 * Math.PI * radius
-  let cursor = 0
-  return (
-    <svg
-      viewBox={`0 0 ${size} ${size}`}
-      style={{ width: size, height: size }}
-      role="img"
-      aria-label="Distribuição"
-    >
-      <circle
-        cx={size / 2}
-        cy={size / 2}
-        r={radius}
-        fill="none"
-        className="stroke-muted"
-        strokeWidth={thickness}
-      />
-      <g transform={`rotate(-90 ${size / 2} ${size / 2})`}>
-        {segments.map((seg) => {
-          const frac = seg.value / total
-          const dash = frac * circumference
-          const node = (
-            <circle
-              key={seg.label}
-              cx={size / 2}
-              cy={size / 2}
-              r={radius}
-              fill="none"
-              className={seg.className}
-              strokeWidth={thickness}
-              strokeDasharray={`${dash.toFixed(2)} ${(circumference - dash).toFixed(2)}`}
-              strokeDashoffset={(-cursor).toFixed(2)}
-              strokeLinecap="butt"
-            />
-          )
-          cursor += dash
-          return node
-        })}
-      </g>
     </svg>
   )
 }
@@ -828,7 +714,7 @@ function OverviewSection() {
         >
           <div className="flex flex-col items-center gap-4">
             <div className="relative" style={{ width: 168, height: 168 }}>
-              <Donut
+              <DonutChart
                 segments={PLAN_DISTRIBUTION.map((p) => ({
                   label: p.label,
                   value: p.value,

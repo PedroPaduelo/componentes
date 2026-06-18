@@ -230,6 +230,9 @@ import { examplesDbSchemaExplorer } from "./examples-db-schema-explorer"
 import { examplesSlowQueryList } from "./examples-slow-query-list"
 import { examplesUserActivityStream } from "./examples-user-activity-stream"
 import { examplesIncidentTimeline } from "./examples-incident-timeline"
+import { examplesBarChart } from "./examples-bar-chart"
+import { examplesHBarChart } from "./examples-h-bar-chart"
+import { examplesDonutChart } from "./examples-donut-chart"
 
 export type Example = {
   title: string
@@ -1524,6 +1527,10 @@ export const examples: Record<string, Example[]> = {
   // Lote Observabilidade
   ...examplesDbOverviewGrid,
   ...examplesIncidentTimeline,
+  // Lote dashboards-dev (extraídos de composições)
+  ...examplesBarChart,
+  ...examplesHBarChart,
+  ...examplesDonutChart,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
