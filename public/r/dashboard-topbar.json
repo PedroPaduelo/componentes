@@ -1,0 +1,21 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "dashboard-topbar",
+  "title": "Dashboard Topbar",
+  "description": "Barra superior (header) para layouts de dashboard/app: botão de menu opcional (mobile), título com adorno opcional ao lado (ex.: badge de status), slot de busca (ou campo padrão via onSearch) e as ações à direita. Sem estado de UI hardcoded — tudo vem por props.",
+  "dependencies": [
+    "lucide-react@^0.468.0"
+  ],
+  "registryDependencies": [
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/dashboard-topbar.tsx",
+      "content": "/**\n * DashboardTopbar — barra superior (header) para layouts de dashboard/app.\n *\n * Um <header> com, da esquerda para a direita: um botão de menu opcional\n * (mobile), o título e um adorno opcional ao lado dele (ex.: um badge de\n * status); à direita, um slot de busca (ou um campo de busca padrão quando\n * `onSearch` é passado) seguido das ações (`actions`/`children`).\n *\n * Extraído da composição `saas-dashboard`. Sem estado de UI hardcoded — o\n * conteúdo vem todo por props. O elemento raiz expõe\n * `data-slot=\"dashboard-topbar\"` e aceita className/props padrão de um\n * <header>.\n */\n\nimport * as React from \"react\"\nimport { Menu, Search as SearchIcon } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\nimport { Button } from \"@/components/ui/button\"\nimport { Input } from \"@/components/ui/input\"\n\nexport interface DashboardTopbarProps\n  extends Omit<React.HTMLAttributes<HTMLElement>, \"title\"> {\n  /** Título exibido à esquerda. */\n  title?: React.ReactNode\n  /** Conteúdo extra ao lado do título (ex.: um badge de status). */\n  titleAdornment?: React.ReactNode\n  /** Slot de busca (ex.: um input ou botão). Tem prioridade sobre `onSearch`. */\n  search?: React.ReactNode\n  /** Quando passado (e sem `search`), renderiza um campo de busca padrão. */\n  onSearch?: (value: string) => void\n  /** Placeholder do campo de busca padrão. Default: \"Buscar…\". */\n  searchPlaceholder?: string\n  /** Ações à direita (botões, ícones...). Alias de `children`. */\n  actions?: React.ReactNode\n  /** Callback do botão de menu (mobile). Quando passado, exibe o botão. */\n  onMenu?: () => void\n  /** Rótulo acessível do botão de menu. Default: \"Abrir menu\". */\n  menuLabel?: string\n}\n\nfunction DashboardTopbar({\n  title,\n  titleAdornment,\n  search,\n  onSearch,\n  searchPlaceholder = \"Buscar…\",\n  actions,\n  onMenu,\n  menuLabel = \"Abrir menu\",\n  className,\n  children,\n  ...props\n}: DashboardTopbarProps) {\n  const searchNode =\n    search ??\n    (onSearch ? (\n      <div className=\"relative hidden sm:block\">\n        <SearchIcon className=\"pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground\" />\n        <Input\n          type=\"search\"\n          placeholder={searchPlaceholder}\n          onChange={(e) => onSearch(e.target.value)}\n          className=\"h-9 w-48 pl-8\"\n        />\n      </div>\n    ) : null)\n\n  return (\n    <header\n      data-slot=\"dashboard-topbar\"\n      className={cn(\n        \"flex items-center justify-between gap-3 border-b border-border px-4 py-3 sm:px-6\",\n        className\n      )}\n      {...props}\n    >\n      <div className=\"flex min-w-0 items-center gap-2\">\n        {onMenu ? (\n          <Button\n            variant=\"ghost\"\n            size=\"icon\"\n            className=\"md:hidden\"\n            aria-label={menuLabel}\n            onClick={onMenu}\n          >\n            <Menu className=\"size-4\" />\n          </Button>\n        ) : null}\n        {title ? (\n          <h1 className=\"truncate text-base font-semibold\">{title}</h1>\n        ) : null}\n        {titleAdornment}\n      </div>\n      <div className=\"flex items-center gap-2\">\n        {searchNode}\n        {actions ?? children}\n      </div>\n    </header>\n  )\n}\n\nexport { DashboardTopbar }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

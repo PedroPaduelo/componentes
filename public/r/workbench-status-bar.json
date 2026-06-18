@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "workbench-status-bar",
+  "title": "Workbench Status Bar",
+  "description": "Barra de status (rodapé) estilo IDE: uma faixa fina, densa e rolável horizontalmente, com slots de itens à esquerda e à direita (o grupo da direita é empurrado com ml-auto). Só a casca visual — o conteúdo dos segmentos vem por props.",
+  "files": [
+    {
+      "path": "src/components/ui/workbench-status-bar.tsx",
+      "content": "/**\n * WorkbenchStatusBar — barra de status (rodapé) estilo IDE: uma faixa fina,\n * densa e rolável horizontalmente, com itens à esquerda e à direita.\n *\n * Modelo de slots: passe `left` e `right` com o conteúdo já montado (spans com\n * ícones/pontos de status). O grupo da direita é empurrado com `ml-auto`. Sem\n * estado próprio — só a casca visual.\n *\n * Extraído da composição `dba-workbench` (o footer/status bar). O elemento\n * raiz expõe `data-slot=\"workbench-status-bar\"` e aceita className/props\n * padrão de um <footer>.\n */\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface WorkbenchStatusBarProps\n  extends React.HTMLAttributes<HTMLElement> {\n  /** Itens à esquerda (status, conexão, encoding…). */\n  left?: React.ReactNode\n  /** Itens à direita (empurrados com `ml-auto`). */\n  right?: React.ReactNode\n}\n\nfunction WorkbenchStatusBar({\n  left,\n  right,\n  className,\n  children,\n  ...props\n}: WorkbenchStatusBarProps) {\n  return (\n    <footer\n      data-slot=\"workbench-status-bar\"\n      className={cn(\n        \"flex shrink-0 items-center gap-2 overflow-x-auto border-t border-border bg-card px-3 py-1 text-[10px] tabular-nums text-muted-foreground md:gap-4\",\n        className\n      )}\n      {...props}\n    >\n      {left}\n      {children}\n      {right ? (\n        <span className=\"ml-auto flex shrink-0 items-center gap-2 md:gap-3\">\n          {right}\n        </span>\n      ) : null}\n    </footer>\n  )\n}\n\nexport { WorkbenchStatusBar }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "favorites-list",
+  "title": "Favorites List",
+  "description": "Lista de itens favoritados (estrela) para uma sidebar: cada item mostra uma estrela preenchida e um rótulo (mono por padrão). Opcionalmente, um botão de remover (StarOff) aparece no hover. Mostra um estado vazio quando não há itens.",
+  "dependencies": [
+    "lucide-react@^0.468.0"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/favorites-list.tsx",
+      "content": "/**\n * FavoritesList — lista de itens favoritados (estrela) para uma sidebar. Cada\n * item mostra uma estrela preenchida e um rótulo (mono por padrão).\n * Opcionalmente, um botão de remover (StarOff) aparece no hover. Mostra um\n * estado vazio quando não há itens.\n *\n * Extraída da composição `dba-workbench` (seção \"Favoritos\" da sidebar). O\n * elemento raiz expõe `data-slot=\"favorites-list\"`.\n */\n\nimport * as React from \"react\"\nimport { Star, StarOff } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface FavoritesListItem {\n  id: string\n  label: React.ReactNode\n}\n\nexport interface FavoritesListProps\n  extends Omit<React.HTMLAttributes<HTMLUListElement>, \"onSelect\"> {\n  items: FavoritesListItem[]\n  onSelect?: (id: string) => void\n  /** Quando passado, exibe um botão de remover (StarOff) no hover. */\n  onRemove?: (id: string) => void\n  /** Texto exibido quando não há favoritos. Default: \"Nenhum favorito\". */\n  emptyLabel?: React.ReactNode\n}\n\nfunction FavoritesList({\n  items,\n  onSelect,\n  onRemove,\n  emptyLabel = \"Nenhum favorito\",\n  className,\n  ...props\n}: FavoritesListProps) {\n  return (\n    <ul\n      data-slot=\"favorites-list\"\n      className={cn(\"flex flex-col gap-0.5\", className)}\n      {...props}\n    >\n      {items.map((item) => (\n        <li key={item.id} className=\"group/fav flex items-center\">\n          <button\n            type=\"button\"\n            onClick={() => onSelect?.(item.id)}\n            className=\"flex min-w-0 flex-1 items-center gap-2 rounded px-2 py-1 text-left text-[11px] text-muted-foreground transition-colors hover:bg-muted/40 hover:text-foreground\"\n          >\n            <Star className=\"size-3 shrink-0 fill-amber-500 text-amber-500\" />\n            <span className=\"min-w-0 flex-1 truncate font-mono\">{item.label}</span>\n          </button>\n          {onRemove ? (\n            <button\n              type=\"button\"\n              aria-label=\"Remover dos favoritos\"\n              onClick={() => onRemove(item.id)}\n              className=\"flex size-5 shrink-0 items-center justify-center rounded text-muted-foreground opacity-0 transition-opacity hover:text-foreground group-hover/fav:opacity-100\"\n            >\n              <StarOff className=\"size-3\" />\n            </button>\n          ) : null}\n        </li>\n      ))}\n      {items.length === 0 ? (\n        <li className=\"px-2 py-1 text-[10px] italic text-muted-foreground/60\">\n          {emptyLabel}\n        </li>\n      ) : null}\n    </ul>\n  )\n}\n\nexport { FavoritesList }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

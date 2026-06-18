@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "h-bar-chart",
+  "title": "Horizontal Bar Chart",
+  "description": "Gráfico de barras horizontais minimalista feito só com divs: rótulo à esquerda, trilha preenchida proporcional ao maior valor e valor à direita. Sem dependências, ideal para rankings e comparações (ex.: canais de aquisição) em dashboards.",
+  "files": [
+    {
+      "path": "src/components/ui/h-bar-chart.tsx",
+      "content": "/**\n * HBarChart — gráfico de barras HORIZONTAIS minimalista, feito só com divs.\n *\n * Cada linha mostra o rótulo à esquerda, uma trilha (track) com a barra\n * preenchida proporcional ao maior valor da série, e o valor numérico à\n * direita. A largura da barra é aplicada por `style` inline (nunca classe\n * interpolada). Ótimo para rankings/comparações (ex.: canais de aquisição).\n *\n * Extraído da composição `saas-dashboard-pro`. Sem dependências novas, sem\n * estado. O elemento raiz expõe `data-slot=\"h-bar-chart\"` e aceita\n * className/props padrão de um <div>.\n */\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\n/** Um ponto da série: rótulo + valor numérico. */\nexport interface HBarChartDatum {\n  label: string\n  value: number\n}\n\nexport interface HBarChartProps extends React.HTMLAttributes<HTMLDivElement> {\n  /** Série de barras (rótulo + valor). O maior valor define a barra cheia (100%). */\n  series: HBarChartDatum[]\n}\n\nfunction HBarChart({ series, className, ...props }: HBarChartProps) {\n  const max = Math.max(...series.map((s) => s.value), 1)\n  return (\n    <div data-slot=\"h-bar-chart\" className={cn(\"flex flex-col gap-3\", className)} {...props}>\n      {series.map((s) => {\n        const pct = (s.value / max) * 100\n        return (\n          <div key={s.label} className=\"flex items-center gap-3\">\n            <span className=\"w-20 shrink-0 truncate text-xs text-muted-foreground\">\n              {s.label}\n            </span>\n            <div className=\"h-2.5 flex-1 overflow-hidden rounded-full bg-muted\">\n              <div\n                className=\"h-full rounded-full bg-primary\"\n                style={{ width: `${pct}%` }}\n              />\n            </div>\n            <span className=\"w-8 shrink-0 text-right text-xs font-medium text-foreground\">\n              {s.value}\n            </span>\n          </div>\n        )\n      })}\n    </div>\n  )\n}\n\nexport { HBarChart }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "preference-row",
+  "title": "Preference Row",
+  "description": "Linha de preferência/toggle para telas de configurações: título (label) e descrição opcional à esquerda, com um slot para o controle (Switch, Select, Button…) à direita. Pensada para listas separadas por divisória; sem estado próprio (o controle vive fora).",
+  "files": [
+    {
+      "path": "src/components/ui/preference-row.tsx",
+      "content": "/**\n * PreferenceRow — linha de preferência para telas de configurações.\n *\n * Item de duas partes: à esquerda um título (`label`) e uma descrição opcional;\n * à direita um slot para o controle (Switch, Select, Button…). Pensada para\n * listas de preferências/toggles separadas por divisórias (ex.: um painel\n * \"Preferências\" com `divide-y divide-border`).\n *\n * Extraído da composição `saas-dashboard-pro`. SHARED — sem dependências novas,\n * sem estado: o controle (e o estado dele) vive fora. O elemento raiz expõe\n * `data-slot=\"preference-row\"` e aceita className/props padrão de um <div>.\n *\n * O controle pode ser passado via `control` (slot dedicado) ou como `children`;\n * quando ambos existem, `control` tem prioridade.\n */\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface PreferenceRowProps\n  extends React.HTMLAttributes<HTMLDivElement> {\n  /** Título da preferência (à esquerda). */\n  label: string\n  /** Descrição opcional, abaixo do título. */\n  description?: string\n  /** Controle à direita (ex.: Switch). Alternativa a `children`. */\n  control?: React.ReactNode\n  /** Controle/conteúdo à direita, quando não usar `control`. */\n  children?: React.ReactNode\n}\n\nfunction PreferenceRow({\n  label,\n  description,\n  control,\n  className,\n  children,\n  ...props\n}: PreferenceRowProps) {\n  return (\n    <div\n      data-slot=\"preference-row\"\n      className={cn(\n        \"flex items-center justify-between gap-4 py-3 first:pt-0 last:pb-0\",\n        className\n      )}\n      {...props}\n    >\n      <div className=\"min-w-0\">\n        <p className=\"text-sm font-medium text-foreground\">{label}</p>\n        {description ? (\n          <p className=\"text-xs text-muted-foreground\">{description}</p>\n        ) : null}\n      </div>\n      <div className=\"shrink-0\">{control ?? children}</div>\n    </div>\n  )\n}\n\nexport { PreferenceRow }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

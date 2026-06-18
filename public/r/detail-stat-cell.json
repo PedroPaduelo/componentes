@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "detail-stat-cell",
+  "title": "Detail Stat Cell",
+  "description": "Célula de rótulo + valor para grades de detalhe: rótulo discreto no topo (com ícone opcional) e o valor/conteúdo logo abaixo, dentro de um bloco com borda suave. Pensada para resumos em duas colunas (cartão/diálogo de cliente, fatura, recurso).",
+  "files": [
+    {
+      "path": "src/components/ui/detail-stat-cell.tsx",
+      "content": "/**\n * DetailStatCell — célula de \"rótulo + valor\" para grades de detalhe.\n *\n * Mostra um rótulo discreto no topo (com ícone opcional) e o valor/conteúdo\n * logo abaixo, dentro de um bloco com borda suave. Pensada para grids de\n * detalhe (ex.: cartão/diálogo de um cliente, fatura ou recurso), onde várias\n * células compõem um resumo em duas colunas.\n *\n * Extraído da composição `saas-dashboard-pro`. Sem dependências novas, sem\n * estado. O elemento raiz expõe `data-slot=\"detail-stat-cell\"` e aceita\n * className/props padrão de um <div>.\n */\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface DetailStatCellProps\n  extends React.HTMLAttributes<HTMLDivElement> {\n  /** Rótulo da célula (ex.: \"Plano\", \"Status\"). */\n  label: string\n  /** Ícone opcional exibido antes do rótulo. */\n  icon?: React.ComponentType<{ className?: string }>\n  /** Valor/conteúdo exibido abaixo do rótulo. */\n  children?: React.ReactNode\n}\n\nfunction DetailStatCell({\n  label,\n  icon: Icon,\n  className,\n  children,\n  ...props\n}: DetailStatCellProps) {\n  return (\n    <div\n      data-slot=\"detail-stat-cell\"\n      className={cn(\n        \"flex flex-col gap-1 rounded-lg border border-border bg-muted/30 p-3\",\n        className\n      )}\n      {...props}\n    >\n      <span className=\"flex items-center gap-1.5 text-xs text-muted-foreground\">\n        {Icon ? <Icon className=\"size-3.5\" /> : null}\n        {label}\n      </span>\n      <span className=\"text-sm\">{children}</span>\n    </div>\n  )\n}\n\nexport { DetailStatCell }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

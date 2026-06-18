@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "upgrade-card",
+  "title": "Upgrade Card",
+  "description": "Card promocional de upgrade de plano: título, descrição opcional e um CTA (botão via onClick ou link via href), com ícone opcional. Ideal para o rodapé de uma sidebar de dashboard ('Plano Pro / Fazer upgrade'), mas genérico para qualquer call-to-action.",
+  "registryDependencies": [
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/upgrade-card.tsx",
+      "content": "/**\n * UpgradeCard — card promocional de upgrade de plano.\n *\n * Um bloco compacto com título, descrição opcional e um botão de chamada para\n * ação (CTA). Ideal para o rodapé de uma sidebar de dashboard (\"Plano Pro /\n * Fazer upgrade\"), mas genérico o suficiente para qualquer call-to-action.\n *\n * Extraído da composição `saas-dashboard`. SHARED — depende apenas do Button.\n * O CTA renderiza como link (`<a href>`) quando `cta.href` é passado, ou como\n * botão (`onClick`) caso contrário. O elemento raiz expõe\n * `data-slot=\"upgrade-card\"` e aceita className/props padrão de um <div>.\n */\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\nimport { Button } from \"@/components/ui/button\"\n\n/** Chamada para ação (CTA) do card. */\nexport interface UpgradeCardCta {\n  /** Rótulo do botão. */\n  label: string\n  /** Handler de clique (quando o CTA é um botão). */\n  onClick?: () => void\n  /** Destino do link (quando o CTA é um `<a>`). Tem prioridade sobre onClick. */\n  href?: string\n}\n\nexport interface UpgradeCardProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"title\"> {\n  /** Título do card (ex.: \"Plano Pro\"). */\n  title: React.ReactNode\n  /** Descrição opcional abaixo do título. */\n  description?: React.ReactNode\n  /** Chamada para ação opcional. */\n  cta?: UpgradeCardCta\n  /** Ícone opcional exibido antes do título. */\n  icon?: React.ComponentType<{ className?: string }>\n}\n\nfunction UpgradeCard({\n  title,\n  description,\n  cta,\n  icon: Icon,\n  className,\n  ...props\n}: UpgradeCardProps) {\n  return (\n    <div\n      data-slot=\"upgrade-card\"\n      className={cn(\n        \"rounded-lg border border-border bg-muted/40 p-3\",\n        className\n      )}\n      {...props}\n    >\n      <div className=\"flex items-center gap-2\">\n        {Icon ? (\n          <span className=\"flex size-6 items-center justify-center rounded-md bg-primary/10 text-primary\">\n            <Icon className=\"size-3.5\" />\n          </span>\n        ) : null}\n        <p className=\"text-xs font-medium\">{title}</p>\n      </div>\n      {description ? (\n        <p className=\"mt-1 text-xs text-muted-foreground\">{description}</p>\n      ) : null}\n      {cta ? (\n        cta.href ? (\n          <Button asChild size=\"sm\" className=\"mt-3 w-full\">\n            <a href={cta.href}>{cta.label}</a>\n          </Button>\n        ) : (\n          <Button size=\"sm\" className=\"mt-3 w-full\" onClick={cta.onClick}>\n            {cta.label}\n          </Button>\n        )\n      ) : null}\n    </div>\n  )\n}\n\nexport { UpgradeCard }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

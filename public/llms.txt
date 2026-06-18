@@ -21,11 +21,11 @@ npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com
 
 Depois, importe de `@/components/ui/<arquivo>` (componentes) ou renderize a tela em `@/compositions/<slug>` (composições). As dependências de componentes de uma composição são instaladas automaticamente (registryDependencies).
 
-## Componentes (214)
+## Componentes (247)
 
 Componentes organizados por **grupo** (clusterização por domínio). Use o grupo para descobrir componentes relacionados.
 
-### Forms & Inputs (29)
+### Forms & Inputs (30)
 
 - **Input** (`input`) — Forms. Campo de texto para entrada de dados em formulários, com estados de foco e erro.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input.json`
@@ -85,8 +85,10 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/keyboard.json`
 - **Placeholders and Vanish Input** (`placeholders-and-vanish-input`) — Forms. Campo de texto com placeholders animados que desaparecem ao focar, e botão de submit com loading animado. Efeito de 'vanish' no texto ao enviar.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/placeholders-and-vanish-input.json`
+- **Preference Row** (`preference-row`) — Forms. Linha de preferência/toggle para telas de configurações: título (label) e descrição opcional à esquerda, com um slot para o controle (Switch, Select, Button…) à direita. Pensada para listas separadas por divisória; sem estado próprio (o controle vive fora).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/preference-row.json`
 
-### Actions & Navegação (34)
+### Actions & Navegação (36)
 
 - **Button** (`button`) — Actions. Botão acionável com variantes de estilo e tamanho para disparar ações.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json`
@@ -156,8 +158,12 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/magnetic-button.json`
 - **Notch** (`notch`) — Layout. Barra/notch fixa no topo ou base do viewport (estilo iOS Dynamic Island) com grupos de triggers que abrem um popover de opções animado via motion/react. Cores dark hardcoded (bg-neutral-950/95, text-neutral-100/300/400) — brand do efeito, não segue tema shadcn.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/notch.json`
+- **Dashboard User Menu** (`dashboard-user-menu`) — Actions. Gatilho de avatar + dropdown do usuário para a topbar: avatar (com chevron opcional) que abre um menu com cabeçalho de identidade (nome + e-mail) e uma lista de ações vindas por props, com suporte a item destrutivo e separadores.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dashboard-user-menu.json`
+- **Database Tab Bar** (`database-tab-bar`) — Actions. Barra de abas estilo VS Code para 'documentos' abertos (bancos, arquivos, queries). Cada aba tem rótulo, ícone opcional, um slot de meta (ex.: badge de engine) e, quando 'suja' (dirty), mostra um ponto que vira o 'X' de fechar no hover. Um botão '+' opcional dispara onNew. 100% controlada por props.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/database-tab-bar.json`
 
-### Layout & Containers (44)
+### Layout & Containers (48)
 
 - **Card** (`card`) — Layout. Contêiner com cabeçalho, conteúdo e rodapé para agrupar informação relacionada.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/card.json`
@@ -247,8 +253,16 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/bento-grid.json`
 - **Infinite Moving Cards** (`infinite-moving-cards`) — Layout. Carrossel de cards em loop infinito. Os itens são duplicados em runtime e uma animação CSS faz a esteira correr sem emendas, com direção (left/right), velocidade (fast/normal/slow) e pausa no hover. Máscara lateral suaviza as bordas.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/infinite-moving-cards.json`
+- **Dashboard Panel** (`dashboard-panel`) — Layout. Card-shell de painel para dashboards: borda/sombra padrão e um header com título, descrição opcional e um slot de ação à direita; o conteúdo vai em children. Inclui um ponto de extensão `glow` reservado para uma futura variante com brilho.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dashboard-panel.json`
+- **Dashboard Sidebar Nav** (`dashboard-sidebar-nav`) — Layout. Barra lateral de navegação para layouts de dashboard/app: marca/brand no topo, lista de itens com ícone e destaque do item ativo, e um rodapé opcional fixado embaixo (ex.: card de upgrade). Navegação 100% controlada por props — sem estado próprio.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dashboard-sidebar-nav.json`
+- **Dashboard Topbar** (`dashboard-topbar`) — Layout. Barra superior (header) para layouts de dashboard/app: botão de menu opcional (mobile), título com adorno opcional ao lado (ex.: badge de status), slot de busca (ou campo padrão via onSearch) e as ações à direita. Sem estado de UI hardcoded — tudo vem por props.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dashboard-topbar.json`
+- **Collapsible Section** (`collapsible-section`) — Layout. Seção colapsável com header clicável (chevron + ícone + título + slot de ação) e conteúdo que aparece/some. Funciona controlada (open + onOpenChange) ou não-controlada (defaultOpen). O slot de ação fica fora do botão de toggle, permitindo ações interativas próprias (ex.: um '+'). Ideal para sidebars e acordeões de seções.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/collapsible-section.json`
 
-### Feedback & Status (19)
+### Feedback & Status (20)
 
 - **Badge** (`badge`) — Feedback. Etiqueta compacta para destacar status, contagens ou rótulos contextuais.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json`
@@ -288,6 +302,8 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/multi-step-loader.json`
 - **Link Preview** (`link-preview`) — Feedback. Hover-card que mostra um screenshot da URL apontada por um link, com leve parallax no eixo X seguindo o cursor. Usa @radix-ui/react-hover-card + qss.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/link-preview.json`
+- **Workbench Status Bar** (`workbench-status-bar`) — Feedback. Barra de status (rodapé) estilo IDE: uma faixa fina, densa e rolável horizontalmente, com slots de itens à esquerda e à direita (o grupo da direita é empurrado com ml-auto). Só a casca visual — o conteúdo dos segmentos vem por props.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/workbench-status-bar.json`
 
 ### Chat & IA (5)
 
@@ -302,7 +318,7 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
 - **Input Message (Fluid)** (`input-message-fluid`) — Forms. Composer de mensagem da Fluid Functionalism: textarea auto-expansível, anexos via drag-and-drop e picker, preview de imagens/PDF, slots customizáveis e botão de envio.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input-message-fluid.json`
 
-### Dashboards & Dev (19)
+### Dashboards & Dev (44)
 
 - **Data Table** (`data-table`) — Layout. Tabela de dados avançada com ordenação, paginação e busca global. Baseada em @tanstack/react-table.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/data-table.json`
@@ -342,6 +358,56 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/db-overview-grid.json`
 - **Incident Timeline** (`incident-timeline`) — Feedback. Timeline vertical de eventos de um incidente (detect → page → escalate → mitigate → resolve, etc.) com sticky header de status/severidade, nós circulares coloridos por severidade, chips por tipo de evento, timestamps relativo e absoluto, autor opcional e modo live que re-renderiza tempos a cada 30s. Inspirado no ObservabilityCenter, reutilizável para qualquer fluxo de incident response.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/incident-timeline.json`
+- **Bar Chart** (`bar-chart`) — Feedback. Gráfico de barras verticais minimalista feito só com divs: altura proporcional ao maior valor da série e cor de preenchimento configurável via `accent`. Sem dependências, ideal para mini-gráficos de receita/uso em dashboards.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/bar-chart.json`
+- **Horizontal Bar Chart** (`h-bar-chart`) — Feedback. Gráfico de barras horizontais minimalista feito só com divs: rótulo à esquerda, trilha preenchida proporcional ao maior valor e valor à direita. Sem dependências, ideal para rankings e comparações (ex.: canais de aquisição) em dashboards.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/h-bar-chart.json`
+- **Donut Chart** (`donut-chart`) — Feedback. Donut/anel genérico em SVG montado a partir de arcos: trilha de fundo + um arco por segmento, com comprimento proporcional ao total e cor por classe Tailwind. Vão central livre para um rótulo absoluto. Sem dependências, ideal para distribuições (mix de planos, share) em dashboards.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/donut-chart.json`
+- **KPI Card** (`kpi-card`) — Feedback. Cartão de métrica para dashboards: rótulo, valor numérico animado (AnimatedNumber) com prefixo/sufixo opcionais, ícone e um badge de variação (`delta`) colorido por tendência (verde/vermelho). API genérica, pronta para reuso em qualquer painel de KPIs.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/kpi-card.json`
+- **Sparkline** (`sparkline`) — Feedback. Mini-gráfico de linha em SVG (polyline + área translúcida) feito sem dependências. A escala vertical é normalizada ao min/max da série; cores da linha e da área são classes Tailwind. Ideal para tendências compactas dentro de cards e KPIs.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/sparkline.json`
+- **Detail Stat Cell** (`detail-stat-cell`) — Feedback. Célula de rótulo + valor para grades de detalhe: rótulo discreto no topo (com ícone opcional) e o valor/conteúdo logo abaixo, dentro de um bloco com borda suave. Pensada para resumos em duas colunas (cartão/diálogo de cliente, fatura, recurso).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/detail-stat-cell.json`
+- **Activity Feed** (`activity-feed`) — Feedback. Feed de eventos recentes com avatar, frase "{ator} {ação} {alvo}" e timestamp relativo. Itens separados por divisória dentro de um container rolável de altura limitada — ideal para o card "Atividade recente" de um dashboard. Sem estado próprio; os dados vêm por props.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/activity-feed.json`
+- **Leaderboard List** (`leaderboard-list`) — Feedback. Ranking de itens com posição, avatar, nome + barra de progresso, badge opcional e valor formatado alinhado à direita. Ideal para "Top clientes por MRR", "Top produtos" e afins. O valor vem já formatado e o progresso (0..100) já calculado — sem suposição de moeda ou escala.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/leaderboard-list.json`
+- **Invoice Table** (`invoice-table`) — Layout. Tabela compacta de itens de uma fatura (item, quantidade, valor) com header discreto; cada linha mostra o valor calculado como `qty × unit`. Opcionalmente renderiza uma linha de total no rodapé. Valores formatados por `formatValue` (default "$" + en-US), sem assumir moeda.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/invoice-table.json`
+- **Donut Breakdown** (`donut-breakdown`) — Feedback. Bloco de distribuição: combina um DonutChart (anel proporcional) com uma legenda (bolinha de cor + rótulo + valor) e um rótulo central opcional (ex.: total). Ideal para 'Distribuição de planos', 'Mix de receita por categoria' e afins. Reusa o DonutChart internamente.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/donut-breakdown.json`
+- **Stat Tile** (`stat-tile`) — Feedback. Mini-card de estatística para dashboards: ícone opcional + rótulo, valor numérico animado (via AnimatedNumber) com prefixo/sufixo, e um badge de variação (delta) opcional colorido por tendência. Versão compacta do KpiCard, para grades densas de métricas.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/stat-tile.json`
+- **Upgrade Card** (`upgrade-card`) — Feedback. Card promocional de upgrade de plano: título, descrição opcional e um CTA (botão via onClick ou link via href), com ícone opcional. Ideal para o rodapé de uma sidebar de dashboard ('Plano Pro / Fazer upgrade'), mas genérico para qualquer call-to-action.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/upgrade-card.json`
+- **Radial Gauge** (`radial-gauge`) — Feedback. Medidor radial de arco SVG (270°) com trilha de fundo, arco de valor com glow e miolo de valor/unidade/rótulo (ou children custom). A cor do arco é fixa (`color`) ou derivada por faixa de valor (`thresholds`). Ideal para SLO, saturação (CPU/memória/disco) e disponibilidade.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/radial-gauge.json`
+- **Signal Card** (`signal-card`) — Feedback. Cartão de 'golden signal' para observabilidade: ícone + rótulo, valor (com unidade), indicador de variação (trend com seta colorida por polaridade) e uma mini-sparkline. Reusa o componente Sparkline por baixo. A cor de acento vem de `tone` ou é derivada de `status`.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/signal-card.json`
+- **ECG Strip** (`ecg-strip`) — Feedback. Faixa de 'batimento' (eletrocardiograma) animada em SVG, varrendo horizontalmente via requestAnimationFrame com glow na cor do traço (loop sem costura). Velocidade, amplitude e cor são controláveis, e a animação pode ser congelada — o rAF é sempre cancelado no unmount. Dá um pulso 'vivo' a headers de observabilidade.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/ecg-strip.json`
+- **Service Mesh** (`service-mesh`) — Feedback. Malha viva de serviços: grafo de nós ligados por arestas curvas com PACOTES de tráfego trafegando ao vivo (SVG + requestAnimationFrame, cauda de cometa) coloridos por severidade do trecho, distribuídos pelo peso de cada nó. Nós em alarme/selecionados ganham glow e radar pings. Autocontido (PRNG, geometria e animações CSS escopadas inclusos); o rAF é sempre cancelado no unmount.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/service-mesh.json`
+- **Log Stream** (`log-stream`) — Feedback. Stream de logs estilo terminal, com fonte monoespaçada e linhas densas (horário, nível colorido, serviço, método + path, código de status tingido por faixa HTTP, duração e mensagem). No topo, chips de filtro por nível com contagem — controlados (via `levels` + `onToggleLevel`) ou internos (estado próprio, tudo ligado por padrão).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/log-stream.json`
+- **Trace Waterfall** (`trace-waterfall`) — Feedback. Cascata (waterfall) de spans de um trace distribuído: cada span é uma barra posicionada/dimensionada por início/duração sobre uma escala total, indentada por profundidade e tingida pelo status (verde/âmbar/vermelho, com glow) — um heatmap de latência p95 por span. Mensagem opcional de 'serviço folha' quando há ≤1 span.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/trace-waterfall.json`
+- **Connection List** (`connection-list`) — Feedback. Lista de conexões/instâncias (bancos, servidores) para uma sidebar: cada item tem um indicador de status (ponto), nome e um slot de meta à direita; o item ativo recebe destaque. Sem estado próprio — tudo vem por props.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/connection-list.json`
+- **Favorites List** (`favorites-list`) — Feedback. Lista de itens favoritados (estrela) para uma sidebar: cada item mostra uma estrela preenchida e um rótulo (mono por padrão). Opcionalmente, um botão de remover (StarOff) aparece no hover. Mostra um estado vazio quando não há itens.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/favorites-list.json`
+- **Query History List** (`query-history-list`) — Feedback. Histórico de queries (SQL) recentes para uma sidebar: cada item é um cartão com o SQL colapsado em uma linha (truncado) e uma linha de meta com duração e horário relativo. Controlada por props.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/query-history-list.json`
+- **Table Info Panel** (`table-info-panel`) — Feedback. Painel de inspeção de uma tabela de banco: cabeçalho com schema.tabela + descrição, dois StatTiles (linhas e tamanho) e listas roláveis de colunas, índices e foreign keys, com estado vazio e botão de favoritar. Reusa StatTile, ScrollArea e Button do acervo; as FKs viram clicáveis quando onNavigateFk é passado.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/table-info-panel.json`
+- **User List Item** (`user-list-item`) — Feedback. Linha de usuário para listas de pessoas em dashboards: avatar (com fallback de iniciais) + nome e e-mail à esquerda; à direita um slot para status/badge e/ou ações. Reusa Avatar e Badge do acervo; sem estado próprio. A casca (borda/padding) fica por conta do consumidor via className.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/user-list-item.json`
+- **Metric Glow Card** (`metric-glow-card`) — Feedback. Conteúdo de métrica centrado para dashboards de destaque: rótulo em maiúsculas, valor em string livre (ex.: "R$ 124.500", "4m 32s") e uma variação colorida por tendência (verde/vermelho). É só o conteúdo, pensado para morar dentro de uma casca com brilho (ex.: o GlowCard do glow-card-grid).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/metric-glow-card.json`
+- **Latency Heatmap** (`latency-heatmap`) — Feedback. Grade (heatmap) de latência/intensidade em CSS grid: matriz coluna-maior em que cada célula recebe uma cor via escala configurável, com eixos opcionais (lento/rápido à esquerda, janela/agora abaixo). Totalmente desacoplado de simulação — só recebe a matriz e renderiza.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/latency-heatmap.json`
 
 ### Efeitos de Texto (18)
 

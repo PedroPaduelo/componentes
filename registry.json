@@ -137,6 +137,29 @@
       ]
     },
     {
+      "name": "activity-feed",
+      "type": "registry:ui",
+      "title": "Activity Feed",
+      "description": "Feed de eventos recentes com avatar, frase \"{ator} {ação} {alvo}\" e timestamp relativo. Itens separados por divisória dentro de um container rolável de altura limitada — ideal para o card \"Atividade recente\" de um dashboard. Sem estado próprio; os dados vêm por props.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/avatar.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/activity-feed.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/badge-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "alert",
       "type": "registry:ui",
       "title": "Alert",
@@ -612,6 +635,18 @@
       ]
     },
     {
+      "name": "bar-chart",
+      "type": "registry:ui",
+      "title": "Bar Chart",
+      "description": "Gráfico de barras verticais minimalista feito só com divs: altura proporcional ao maior valor da série e cor de preenchimento configurável via `accent`. Sem dependências, ideal para mini-gráficos de receita/uso em dashboards.",
+      "files": [
+        {
+          "path": "src/components/ui/bar-chart.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "bento-grid",
       "type": "registry:ui",
       "title": "Bento Grid",
@@ -981,6 +1016,21 @@
       ]
     },
     {
+      "name": "collapsible-section",
+      "type": "registry:ui",
+      "title": "Collapsible Section",
+      "description": "Seção colapsável com header clicável (chevron + ícone + título + slot de ação) e conteúdo que aparece/some. Funciona controlada (open + onOpenChange) ou não-controlada (defaultOpen). O slot de ação fica fora do botão de toggle, permitindo ações interativas próprias (ex.: um '+'). Ideal para sidebars e acordeões de seções.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/collapsible-section.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "color-picker-fluid",
       "type": "registry:ui",
       "title": "Color Picker (Fluid)",
@@ -1084,6 +1134,18 @@
         },
         {
           "path": "src/components/ui/compare-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "connection-list",
+      "type": "registry:ui",
+      "title": "Connection List",
+      "description": "Lista de conexões/instâncias (bancos, servidores) para uma sidebar: cada item tem um indicador de status (ponto), nome e um slot de meta à direita; o item ativo recebe destaque. Sem estado próprio — tudo vem por props.",
+      "files": [
+        {
+          "path": "src/components/ui/connection-list.tsx",
           "type": "registry:ui"
         }
       ]
@@ -1255,6 +1317,74 @@
       ]
     },
     {
+      "name": "dashboard-panel",
+      "type": "registry:ui",
+      "title": "Dashboard Panel",
+      "description": "Card-shell de painel para dashboards: borda/sombra padrão e um header com título, descrição opcional e um slot de ação à direita; o conteúdo vai em children. Inclui um ponto de extensão `glow` reservado para uma futura variante com brilho.",
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/glowing-effect.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dashboard-panel.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dashboard-sidebar-nav",
+      "type": "registry:ui",
+      "title": "Dashboard Sidebar Nav",
+      "description": "Barra lateral de navegação para layouts de dashboard/app: marca/brand no topo, lista de itens com ícone e destaque do item ativo, e um rodapé opcional fixado embaixo (ex.: card de upgrade). Navegação 100% controlada por props — sem estado próprio.",
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dashboard-sidebar-nav.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dashboard-topbar",
+      "type": "registry:ui",
+      "title": "Dashboard Topbar",
+      "description": "Barra superior (header) para layouts de dashboard/app: botão de menu opcional (mobile), título com adorno opcional ao lado (ex.: badge de status), slot de busca (ou campo padrão via onSearch) e as ações à direita. Sem estado de UI hardcoded — tudo vem por props.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dashboard-topbar.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dashboard-user-menu",
+      "type": "registry:ui",
+      "title": "Dashboard User Menu",
+      "description": "Gatilho de avatar + dropdown do usuário para a topbar: avatar (com chevron opcional) que abre um menu com cabeçalho de identidade (nome + e-mail) e uma lista de ações vindas por props, com suporte a item destrutivo e separadores.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/avatar.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dropdown-menu.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dashboard-user-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "data-table",
       "type": "registry:ui",
       "title": "Data Table",
@@ -1270,6 +1400,21 @@
       "files": [
         {
           "path": "src/components/ui/data-table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "database-tab-bar",
+      "type": "registry:ui",
+      "title": "Database Tab Bar",
+      "description": "Barra de abas estilo VS Code para 'documentos' abertos (bancos, arquivos, queries). Cada aba tem rótulo, ícone opcional, um slot de meta (ex.: badge de engine) e, quando 'suja' (dirty), mostra um ponto que vira o 'X' de fechar no hover. Um botão '+' opcional dispara onNew. 100% controlada por props.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/database-tab-bar.tsx",
           "type": "registry:ui"
         }
       ]
@@ -1349,6 +1494,18 @@
       ]
     },
     {
+      "name": "detail-stat-cell",
+      "type": "registry:ui",
+      "title": "Detail Stat Cell",
+      "description": "Célula de rótulo + valor para grades de detalhe: rótulo discreto no topo (com ícone opcional) e o valor/conteúdo logo abaixo, dentro de um bloco com borda suave. Pensada para resumos em duas colunas (cartão/diálogo de cliente, fatura, recurso).",
+      "files": [
+        {
+          "path": "src/components/ui/detail-stat-cell.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "dialog",
       "type": "registry:ui",
       "title": "Dialog",
@@ -1412,6 +1569,33 @@
       "files": [
         {
           "path": "src/components/ui/dither-shader.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "donut-breakdown",
+      "type": "registry:ui",
+      "title": "Donut Breakdown",
+      "description": "Bloco de distribuição: combina um DonutChart (anel proporcional) com uma legenda (bolinha de cor + rótulo + valor) e um rótulo central opcional (ex.: total). Ideal para 'Distribuição de planos', 'Mix de receita por categoria' e afins. Reusa o DonutChart internamente.",
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/donut-chart.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/donut-breakdown.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "donut-chart",
+      "type": "registry:ui",
+      "title": "Donut Chart",
+      "description": "Donut/anel genérico em SVG montado a partir de arcos: trilha de fundo + um arco por segmento, com comprimento proporcional ao total e cor por classe Tailwind. Vão central livre para um rótulo absoluto. Sem dependências, ideal para distribuições (mix de planos, share) em dashboards.",
+      "files": [
+        {
+          "path": "src/components/ui/donut-chart.tsx",
           "type": "registry:ui"
         }
       ]
@@ -1519,6 +1703,18 @@
       "files": [
         {
           "path": "src/components/ui/dropdown-menu.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "ecg-strip",
+      "type": "registry:ui",
+      "title": "ECG Strip",
+      "description": "Faixa de 'batimento' (eletrocardiograma) animada em SVG, varrendo horizontalmente via requestAnimationFrame com glow na cor do traço (loop sem costura). Velocidade, amplitude e cor são controláveis, e a animação pode ser congelada — o rAF é sempre cancelado no unmount. Dá um pulso 'vivo' a headers de observabilidade.",
+      "files": [
+        {
+          "path": "src/components/ui/ecg-strip.tsx",
           "type": "registry:ui"
         }
       ]
@@ -1635,6 +1831,21 @@
         },
         {
           "path": "src/components/ui/expandable-cards-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "favorites-list",
+      "type": "registry:ui",
+      "title": "Favorites List",
+      "description": "Lista de itens favoritados (estrela) para uma sidebar: cada item mostra uma estrela preenchida e um rótulo (mono por padrão). Opcionalmente, um botão de remover (StarOff) aparece no hover. Mostra um estado vazio quando não há itens.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/favorites-list.tsx",
           "type": "registry:ui"
         }
       ]
@@ -2193,6 +2404,18 @@
       ]
     },
     {
+      "name": "h-bar-chart",
+      "type": "registry:ui",
+      "title": "Horizontal Bar Chart",
+      "description": "Gráfico de barras horizontais minimalista feito só com divs: rótulo à esquerda, trilha preenchida proporcional ao maior valor e valor à direita. Sem dependências, ideal para rankings e comparações (ex.: canais de aquisição) em dashboards.",
+      "files": [
+        {
+          "path": "src/components/ui/h-bar-chart.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "hero-highlight",
       "type": "registry:ui",
       "title": "Hero Highlight",
@@ -2504,6 +2727,18 @@
       }
     },
     {
+      "name": "invoice-table",
+      "type": "registry:ui",
+      "title": "Invoice Table",
+      "description": "Tabela compacta de itens de uma fatura (item, quantidade, valor) com header discreto; cada linha mostra o valor calculado como `qty × unit`. Opcionalmente renderiza uma linha de total no rodapé. Valores formatados por `formatValue` (default \"$\" + en-US), sem assumir moeda.",
+      "files": [
+        {
+          "path": "src/components/ui/invoice-table.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "keyboard",
       "type": "registry:ui",
       "title": "Keyboard",
@@ -2524,6 +2759,21 @@
       ]
     },
     {
+      "name": "kpi-card",
+      "type": "registry:ui",
+      "title": "KPI Card",
+      "description": "Cartão de métrica para dashboards: rótulo, valor numérico animado (AnimatedNumber) com prefixo/sufixo opcionais, ícone e um badge de variação (`delta`) colorido por tendência (verde/vermelho). API genérica, pronta para reuso em qualquer painel de KPIs.",
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/animated-number.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/kpi-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "lamp-effect",
       "type": "registry:ui",
       "title": "Lamp Effect",
@@ -2534,6 +2784,18 @@
       "files": [
         {
           "path": "src/components/ui/lamp-effect.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "latency-heatmap",
+      "type": "registry:ui",
+      "title": "Latency Heatmap",
+      "description": "Grade (heatmap) de latência/intensidade em CSS grid: matriz coluna-maior em que cada célula recebe uma cor via escala configurável, com eixos opcionais (lento/rápido à esquerda, janela/agora abaixo). Totalmente desacoplado de simulação — só recebe a matriz e renderiza.",
+      "files": [
+        {
+          "path": "src/components/ui/latency-heatmap.tsx",
           "type": "registry:ui"
         }
       ]
@@ -2564,6 +2826,21 @@
       "files": [
         {
           "path": "src/components/ui/layout-text-flip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "leaderboard-list",
+      "type": "registry:ui",
+      "title": "Leaderboard List",
+      "description": "Ranking de itens com posição, avatar, nome + barra de progresso, badge opcional e valor formatado alinhado à direita. Ideal para \"Top clientes por MRR\", \"Top produtos\" e afins. O valor vem já formatado e o progresso (0..100) já calculado — sem suposição de moeda ou escala.",
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/avatar.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/leaderboard-list.tsx",
           "type": "registry:ui"
         }
       ]
@@ -2635,6 +2912,18 @@
       "files": [
         {
           "path": "src/components/ui/loader.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "log-stream",
+      "type": "registry:ui",
+      "title": "Log Stream",
+      "description": "Stream de logs estilo terminal, com fonte monoespaçada e linhas densas (horário, nível colorido, serviço, método + path, código de status tingido por faixa HTTP, duração e mensagem). No topo, chips de filtro por nível com contagem — controlados (via `levels` + `onToggleLevel`) ou internos (estado próprio, tudo ligado por padrão).",
+      "files": [
+        {
+          "path": "src/components/ui/log-stream.tsx",
           "type": "registry:ui"
         }
       ]
@@ -2815,6 +3104,18 @@
           }
         }
       }
+    },
+    {
+      "name": "metric-glow-card",
+      "type": "registry:ui",
+      "title": "Metric Glow Card",
+      "description": "Conteúdo de métrica centrado para dashboards de destaque: rótulo em maiúsculas, valor em string livre (ex.: \"R$ 124.500\", \"4m 32s\") e uma variação colorida por tendência (verde/vermelho). É só o conteúdo, pensado para morar dentro de uma casca com brilho (ex.: o GlowCard do glow-card-grid).",
+      "files": [
+        {
+          "path": "src/components/ui/metric-glow-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
     },
     {
       "name": "middle-truncation",
@@ -3142,6 +3443,18 @@
       ]
     },
     {
+      "name": "preference-row",
+      "type": "registry:ui",
+      "title": "Preference Row",
+      "description": "Linha de preferência/toggle para telas de configurações: título (label) e descrição opcional à esquerda, com um slot para o controle (Switch, Select, Button…) à direita. Pensada para listas separadas por divisória; sem estado próprio (o controle vive fora).",
+      "files": [
+        {
+          "path": "src/components/ui/preference-row.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "progress",
       "type": "registry:ui",
       "title": "Progress",
@@ -3152,6 +3465,33 @@
       "files": [
         {
           "path": "src/components/ui/progress.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "query-history-list",
+      "type": "registry:ui",
+      "title": "Query History List",
+      "description": "Histórico de queries (SQL) recentes para uma sidebar: cada item é um cartão com o SQL colapsado em uma linha (truncado) e uma linha de meta com duração e horário relativo. Controlada por props.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/query-history-list.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "radial-gauge",
+      "type": "registry:ui",
+      "title": "Radial Gauge",
+      "description": "Medidor radial de arco SVG (270°) com trilha de fundo, arco de valor com glow e miolo de valor/unidade/rótulo (ou children custom). A cor do arco é fixa (`color`) ou derivada por faixa de valor (`thresholds`). Ideal para SLO, saturação (CPU/memória/disco) e disponibilidade.",
+      "files": [
+        {
+          "path": "src/components/ui/radial-gauge.tsx",
           "type": "registry:ui"
         }
       ]
@@ -3456,6 +3796,18 @@
       ]
     },
     {
+      "name": "service-mesh",
+      "type": "registry:ui",
+      "title": "Service Mesh",
+      "description": "Malha viva de serviços: grafo de nós ligados por arestas curvas com PACOTES de tráfego trafegando ao vivo (SVG + requestAnimationFrame, cauda de cometa) coloridos por severidade do trecho, distribuídos pelo peso de cada nó. Nós em alarme/selecionados ganham glow e radar pings. Autocontido (PRNG, geometria e animações CSS escopadas inclusos); o rAF é sempre cancelado no unmount.",
+      "files": [
+        {
+          "path": "src/components/ui/service-mesh.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "shape-context",
       "type": "registry:lib",
       "title": "Shape Context",
@@ -3540,6 +3892,24 @@
         },
         {
           "path": "src/components/ui/sidebar-context.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "signal-card",
+      "type": "registry:ui",
+      "title": "Signal Card",
+      "description": "Cartão de 'golden signal' para observabilidade: ícone + rótulo, valor (com unidade), indicador de variação (trend com seta colorida por polaridade) e uma mini-sparkline. Reusa o componente Sparkline por baixo. A cor de acento vem de `tone` ou é derivada de `status`.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/sparkline.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/signal-card.tsx",
           "type": "registry:ui"
         }
       ]
@@ -3678,6 +4048,18 @@
       ]
     },
     {
+      "name": "sparkline",
+      "type": "registry:ui",
+      "title": "Sparkline",
+      "description": "Mini-gráfico de linha em SVG (polyline + área translúcida) feito sem dependências. A escala vertical é normalizada ao min/max da série; cores da linha e da área são classes Tailwind. Ideal para tendências compactas dentro de cards e KPIs.",
+      "files": [
+        {
+          "path": "src/components/ui/sparkline.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "spotlight",
       "type": "registry:ui",
       "title": "Spotlight",
@@ -3743,6 +4125,21 @@
       "files": [
         {
           "path": "src/components/ui/squiggly-text.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "stat-tile",
+      "type": "registry:ui",
+      "title": "Stat Tile",
+      "description": "Mini-card de estatística para dashboards: ícone opcional + rótulo, valor numérico animado (via AnimatedNumber) com prefixo/sufixo, e um badge de variação (delta) opcional colorido por tendência. Versão compacta do KpiCard, para grades densas de métricas.",
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/animated-number.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/stat-tile.tsx",
           "type": "registry:ui"
         }
       ]
@@ -3907,6 +4304,26 @@
       "files": [
         {
           "path": "src/components/ui/table-fluid.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "table-info-panel",
+      "type": "registry:ui",
+      "title": "Table Info Panel",
+      "description": "Painel de inspeção de uma tabela de banco: cabeçalho com schema.tabela + descrição, dois StatTiles (linhas e tamanho) e listas roláveis de colunas, índices e foreign keys, com estado vazio e botão de favoritar. Reusa StatTile, ScrollArea e Button do acervo; as FKs viram clicáveis quando onNavigateFk é passado.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/scroll-area.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/stat-tile.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/table-info-panel.tsx",
           "type": "registry:ui"
         }
       ]
@@ -4356,6 +4773,18 @@
       ]
     },
     {
+      "name": "trace-waterfall",
+      "type": "registry:ui",
+      "title": "Trace Waterfall",
+      "description": "Cascata (waterfall) de spans de um trace distribuído: cada span é uma barra posicionada/dimensionada por início/duração sobre uma escala total, indentada por profundidade e tingida pelo status (verde/âmbar/vermelho, com glow) — um heatmap de latência p95 por span. Mensagem opcional de 'serviço folha' quando há ≤1 span.",
+      "files": [
+        {
+          "path": "src/components/ui/trace-waterfall.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "tracing-beam",
       "type": "registry:ui",
       "title": "Tracing Beam",
@@ -4466,6 +4895,21 @@
       ]
     },
     {
+      "name": "upgrade-card",
+      "type": "registry:ui",
+      "title": "Upgrade Card",
+      "description": "Card promocional de upgrade de plano: título, descrição opcional e um CTA (botão via onClick ou link via href), com ícone opcional. Ideal para o rodapé de uma sidebar de dashboard ('Plano Pro / Fazer upgrade'), mas genérico para qualquer call-to-action.",
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/upgrade-card.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "use-merge-split",
       "type": "registry:hook",
       "title": "Use Merge Split",
@@ -4549,6 +4993,22 @@
         },
         {
           "path": "src/components/ui/user-activity-stream-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "user-list-item",
+      "type": "registry:ui",
+      "title": "User List Item",
+      "description": "Linha de usuário para listas de pessoas em dashboards: avatar (com fallback de iniciais) + nome e e-mail à esquerda; à direita um slot para status/badge e/ou ações. Reusa Avatar e Badge do acervo; sem estado próprio. A casca (borda/padding) fica por conta do consumidor via className.",
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/avatar.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/user-list-item.tsx",
           "type": "registry:ui"
         }
       ]
@@ -4639,6 +5099,18 @@
         },
         {
           "path": "src/components/ui/work-experience-component-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "workbench-status-bar",
+      "type": "registry:ui",
+      "title": "Workbench Status Bar",
+      "description": "Barra de status (rodapé) estilo IDE: uma faixa fina, densa e rolável horizontalmente, com slots de itens à esquerda e à direita (o grupo da direita é empurrado com ml-auto). Só a casca visual — o conteúdo dos segmentos vem por props.",
+      "files": [
+        {
+          "path": "src/components/ui/workbench-status-bar.tsx",
           "type": "registry:ui"
         }
       ]

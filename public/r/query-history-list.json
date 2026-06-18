@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "query-history-list",
+  "title": "Query History List",
+  "description": "Histórico de queries (SQL) recentes para uma sidebar: cada item é um cartão com o SQL colapsado em uma linha (truncado) e uma linha de meta com duração e horário relativo. Controlada por props.",
+  "dependencies": [
+    "lucide-react@^0.468.0"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/query-history-list.tsx",
+      "content": "/**\n * QueryHistoryList — histórico de queries (SQL) recentes para uma sidebar.\n * Cada item é um cartão com o SQL colapsado em uma linha e truncado, e uma\n * linha de meta (duração + horário relativo já formatado). Controlada por\n * props.\n *\n * Extraída da composição `dba-workbench` (seção \"Histórico de queries\" da\n * sidebar). O elemento raiz expõe `data-slot=\"query-history-list\"`.\n */\n\nimport * as React from \"react\"\nimport { Clock } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface QueryHistoryItem {\n  id: string\n  /** SQL exibido (colapsado em uma linha e truncado por `maxLength`). */\n  sql: string\n  /** Duração da query em ms (exibida com ícone de relógio). */\n  durationMs?: number\n  /** Rótulo de tempo já formatado (ex.: \"há 7 min\"). */\n  timeLabel?: React.ReactNode\n}\n\nexport interface QueryHistoryListProps\n  extends Omit<React.HTMLAttributes<HTMLUListElement>, \"onSelect\"> {\n  items: QueryHistoryItem[]\n  onSelect?: (item: QueryHistoryItem) => void\n  /** Máximo de caracteres do SQL antes de truncar. Default: 60. */\n  maxLength?: number\n}\n\nfunction QueryHistoryList({\n  items,\n  onSelect,\n  maxLength = 60,\n  className,\n  ...props\n}: QueryHistoryListProps) {\n  return (\n    <ul\n      data-slot=\"query-history-list\"\n      className={cn(\"flex flex-col gap-1\", className)}\n      {...props}\n    >\n      {items.map((item) => {\n        const oneLine = item.sql.replace(/\\s+/g, \" \").trim()\n        const sql =\n          oneLine.length > maxLength\n            ? `${oneLine.slice(0, maxLength)}…`\n            : oneLine\n        const hasMeta = item.durationMs !== undefined || item.timeLabel != null\n        return (\n          <li key={item.id}>\n            <button\n              type=\"button\"\n              onClick={() => onSelect?.(item)}\n              className=\"group flex w-full flex-col gap-1 rounded border border-border/60 bg-background/40 px-2 py-1.5 text-left transition-colors hover:bg-muted/40\"\n            >\n              <code className=\"block truncate font-mono text-[10px] text-foreground/80\">\n                {sql}\n              </code>\n              {hasMeta ? (\n                <div className=\"flex items-center gap-2 text-[9px] tabular-nums text-muted-foreground\">\n                  {item.durationMs !== undefined ? (\n                    <span className=\"flex items-center gap-0.5\">\n                      <Clock className=\"size-2.5\" /> {item.durationMs}ms\n                    </span>\n                  ) : null}\n                  {item.durationMs !== undefined && item.timeLabel != null ? (\n                    <span>·</span>\n                  ) : null}\n                  {item.timeLabel != null ? <span>{item.timeLabel}</span> : null}\n                </div>\n              ) : null}\n            </button>\n          </li>\n        )\n      })}\n    </ul>\n  )\n}\n\nexport { QueryHistoryList }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

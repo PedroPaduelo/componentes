@@ -1,0 +1,14 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "metric-glow-card",
+  "title": "Metric Glow Card",
+  "description": "Conteúdo de métrica centrado para dashboards de destaque: rótulo em maiúsculas, valor em string livre (ex.: \"R$ 124.500\", \"4m 32s\") e uma variação colorida por tendência (verde/vermelho). É só o conteúdo, pensado para morar dentro de uma casca com brilho (ex.: o GlowCard do glow-card-grid).",
+  "files": [
+    {
+      "path": "src/components/ui/metric-glow-card.tsx",
+      "content": "/**\n * MetricGlowCard — conteúdo de métrica para dashboards de destaque.\n *\n * Bloco centrado: rótulo em maiúsculas espaçadas, valor em destaque (string\n * livre, ex.: \"R$ 124.500\", \"4m 32s\", \"3.24%\") e uma variação (`change`)\n * colorida por tendência — verde quando `positive`, vermelho caso contrário.\n *\n * Extraído da composição `interactive-dashboard`. É só o CONTEÚDO: foi pensado\n * para morar DENTRO de uma casca com brilho (ex.: o `GlowCard` do\n * `glow-card-grid`, que continua sendo a casca/registryDependency na\n * composição). Sem chrome de card próprio, sem estado. O elemento raiz expõe\n * `data-slot=\"metric-glow-card\"` e aceita className/props padrão de um <div>.\n *\n * Diferente do `KpiCard` (que tem chrome de card, valor numérico animado e\n * badge de delta em pílula): aqui o valor é uma string já formatada, o layout\n * é centrado e o delta é texto simples — ideal para sobrepor a um fundo com FX.\n */\n\nimport * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface MetricGlowCardProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"children\"> {\n  /** Rótulo/título da métrica (exibido em maiúsculas, com tracking). */\n  title: string\n  /** Valor já formatado (string livre: \"R$ 124.500\", \"4m 32s\", \"8.420\"…). */\n  value: React.ReactNode\n  /** Variação exibida abaixo do valor (ex.: \"+12.5%\", \"-0.4%\"). */\n  change?: React.ReactNode\n  /** Tendência da variação: verde quando `true`, vermelho quando `false`. */\n  positive?: boolean\n}\n\nfunction MetricGlowCard({\n  title,\n  value,\n  change,\n  positive = true,\n  className,\n  ...props\n}: MetricGlowCardProps) {\n  return (\n    <div\n      data-slot=\"metric-glow-card\"\n      className={cn(\"px-4 text-center\", className)}\n      {...props}\n    >\n      <p className=\"text-xs font-medium uppercase tracking-wider text-muted-foreground\">\n        {title}\n      </p>\n      <p className=\"mt-2 text-2xl font-bold text-foreground\">{value}</p>\n      {change != null ? (\n        <span\n          className={cn(\n            \"mt-1 inline-block text-xs font-medium\",\n            positive ? \"text-emerald-500\" : \"text-red-500\"\n          )}\n        >\n          {change}\n        </span>\n      ) : null}\n    </div>\n  )\n}\n\nexport { MetricGlowCard }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}
