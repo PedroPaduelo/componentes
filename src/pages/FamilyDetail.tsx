@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react"
-import { Link, Navigate, useLocation, useParams } from "react-router-dom"
+import { Link, Navigate, useParams } from "react-router-dom"
 
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -21,6 +21,7 @@ import {
   type ComponentOrigin,
   type Family,
 } from "@/data/families"
+import { getGroup, GROUP_BY_ID } from "@/data/groups"
 import { getExamplesBySlug } from "@/data/examples"
 import { getComponentInstall } from "@/data/component-install"
 import { getAdjacentFamilies } from "@/lib/doc-nav"
@@ -37,36 +38,47 @@ function originOf(variant: ComponentMeta): ComponentOrigin {
 }
 
 /**
- * Página de família: /components/:id
+ * Rota legada de componente: /components/:id
+ *
+ * A página standalone de família foi SUPERSEDED pela group-page
+ * (`/components/grupo/:groupId`, O2.4): hoje esta rota só PRESERVA deep-links
+ * antigos, redirecionando para a âncora do componente na página do seu grupo.
  *
  * Resolve o param `id`:
- *  1. Se `id` é um BASE de família (getFamilyBase(id) === id e existe família)
- *     → renderiza a página de família.
- *  2. Se `id` é o slug de uma VARIANTE (ex.: "button-fluid") → redireciona
- *     (replace) pra `/components/<base>#<id>`, preservando deep-links antigos.
- *  3. Se não casa nada → NotFound.
+ *  1. `id` é um BASE de família (ex.: "button") OU o slug de uma VARIANTE
+ *     (ex.: "button-fluid") → ambos resolvem o mesmo base via `getFamilyBase` e
+ *     redirecionam (replace) para `/components/grupo/<grupo>#<base>`.
+ *  2. `id` não resolve para nenhuma família conhecida → NotFound.
+ *
+ * `FamilyView`/`VariantSection` abaixo continuam exportados e reaproveitados
+ * pela group-page (`VariantSection`) — não são mais renderizados por esta rota.
  */
 export function FamilyDetail() {
   const { id } = useParams<{ id: string }>()
-  const location = useLocation()
 
   if (!id) {
     return <NotFound variant="component" />
   }
 
+  // Resolve o BASE da família: variante "button-fluid" → base "button"; o mapa
+  // FAMILY_BASE_MAP cobre casos como "dropdown-menu" → "dropdown".
   const base = getFamilyBase(id)
-
-  // É uma variante (não o base canônico): redireciona pra base#slug.
-  if (base !== id) {
-    return <Navigate to={`/components/${base}#${id}`} replace />
-  }
-
   const family = findFamilyByBase(base)
+
+  // Slug que não resolve para nenhuma família conhecida → NotFound (preserva o
+  // comportamento de erro para deep-links inválidos, ex.: /components/xpto).
   if (!family) {
     return <NotFound variant="component" />
   }
 
-  return <FamilyView family={family} hash={location.hash} />
+  // A group-page supersede a FamilyDetail como página standalone: qualquer
+  // deep-link antigo /components/<slug> (BASE ou VARIANTE) redireciona (replace)
+  // para a âncora #<base> na página do grupo correspondente, ex.:
+  //   /components/button       → /components/grupo/actions-navigation#button
+  //   /components/button-fluid → /components/grupo/actions-navigation#button
+  // `#<base>` é uma âncora existente na group-page (a VariantSection id=<base>),
+  // então o scroll-to-hash do GroupDetail leva direto ao componente.
+  return <Navigate to={`/components/grupo/${getGroup(base)}#${base}`} replace />
 }
 
 /**
@@ -80,6 +92,9 @@ export function FamilyView({ family, hash }: { family: Family; hash: string }) {
   const multi = family.variants.length > 1
   const [active, setActive] = useState<string>(family.variants[0].slug)
   const representative = family.variants[0]
+  // Grupo (clusterização O2.x) ao qual a família pertence — nível do meio do
+  // breadcrumb e link para a group-page.
+  const group = GROUP_BY_ID[getGroup(family.base)]
 
   const scrollTo = useCallback((slug: string) => {
     const el = document.getElementById(slug)
@@ -125,17 +140,17 @@ export function FamilyView({ family, hash }: { family: Family; hash: string }) {
       <article className="min-w-0 max-w-3xl flex-1">
         {/*
           Breadcrumb leve — a navegação principal é a sidebar. Três níveis:
-          Componentes › <Categoria> › <Item>. O nível do meio é a categoria da
-          família (na Onda 2 passa a ser o GRUPO via O2.7). O catálogo (`/`) é a
-          tela onde a categoria é filtrável; o último item é a página atual.
+          Componentes › <Grupo> › <Item>. O nível do meio é o GRUPO do
+          componente (O2.7) e seu link leva à group-page de destino; o último
+          item é a página atual.
         */}
         <DocBreadcrumb
           className="mb-6"
           segments={[
             { label: "Componentes", href: "/components" },
             {
-              label: family.category,
-              href: `/?category=${encodeURIComponent(family.category)}`,
+              label: group.label,
+              href: `/components/grupo/${group.id}`,
             },
             { label: family.name },
           ]}
