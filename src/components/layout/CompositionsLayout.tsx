@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import { Outlet } from "react-router-dom"
 import { PanelLeft } from "lucide-react"
 
@@ -13,6 +13,7 @@ import {
   CompositionsSidebar,
   CompositionsSidebarNav,
 } from "@/components/layout/CompositionsSidebar"
+import { RouteFallback } from "@/components/layout/RouteFallback"
 
 /**
  * Layout das COMPOSIÇÕES — espelha o `DocsLayout` de componentes: sidebar de
@@ -59,7 +60,9 @@ export function CompositionsLayout() {
           </Sheet>
         </div>
 
-        <Outlet />
+        <Suspense fallback={<RouteFallback />}>
+          <Outlet />
+        </Suspense>
       </div>
     </div>
   )

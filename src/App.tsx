@@ -1,15 +1,46 @@
+import { lazy } from "react"
 import { Routes, Route } from "react-router-dom"
 import { Layout } from "@/components/layout/Layout"
 import { DocsLayout } from "@/components/layout/DocsLayout"
 import { CompositionsLayout } from "@/components/layout/CompositionsLayout"
 import { Home } from "@/pages/Home"
-import { ComponentsIndex } from "@/pages/ComponentsIndex"
-import { FamilyDetail } from "@/pages/FamilyDetail"
-import { InstallGuide } from "@/pages/InstallGuide"
-import { AiIndex } from "@/pages/AiIndex"
-import { Compositions } from "@/pages/Compositions"
-import { CompositionDetail } from "@/pages/CompositionDetail"
-import { NotFound } from "@/pages/NotFound"
+
+/*
+  Code-splitting por rota: a Home (landing) é a única página carregada de forma
+  estática, porque é o destino padrão. As demais páginas são carregadas sob
+  demanda via React.lazy → cada rota vira um chunk separado, removendo do boot
+  de `/` o grafo pesado de FamilyDetail (barrel src/data/examples.tsx),
+  CompositionDetail (src/compositions, que arrasta three/@xyflow/react/motion…),
+  AiIndex/InstallGuide (src/data/ai-index → component-prompt → examples), etc.
+
+  Os layouts (Layout/DocsLayout/CompositionsLayout) permanecem estáticos: são o
+  shell leve e cada um envolve seu <Outlet/> com <Suspense> (ver os respectivos
+  componentes), então o header/footer/sidebar continuam visíveis enquanto o
+  chunk da página é baixado.
+*/
+const ComponentsIndex = lazy(() =>
+  import("@/pages/ComponentsIndex").then((m) => ({ default: m.ComponentsIndex }))
+)
+const FamilyDetail = lazy(() =>
+  import("@/pages/FamilyDetail").then((m) => ({ default: m.FamilyDetail }))
+)
+const InstallGuide = lazy(() =>
+  import("@/pages/InstallGuide").then((m) => ({ default: m.InstallGuide }))
+)
+const AiIndex = lazy(() =>
+  import("@/pages/AiIndex").then((m) => ({ default: m.AiIndex }))
+)
+const Compositions = lazy(() =>
+  import("@/pages/Compositions").then((m) => ({ default: m.Compositions }))
+)
+const CompositionDetail = lazy(() =>
+  import("@/pages/CompositionDetail").then((m) => ({
+    default: m.CompositionDetail,
+  }))
+)
+const NotFound = lazy(() =>
+  import("@/pages/NotFound").then((m) => ({ default: m.NotFound }))
+)
 
 function App() {
   return (

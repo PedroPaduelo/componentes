@@ -1,5 +1,6 @@
+import { Suspense } from "react"
 import { Link, useParams } from "react-router-dom"
-import { ArrowLeft, Sparkles, Terminal } from "lucide-react"
+import { ArrowLeft, Loader2, Sparkles, Terminal } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { CodeBlockCommand } from "@/components/ui/code-block-command"
@@ -101,7 +102,15 @@ export function CompositionDetail() {
 
       <div className="mt-8 overflow-hidden rounded-lg border border-border">
         {Screen ? (
-          <Screen />
+          <Suspense
+            fallback={
+              <div className="flex min-h-[40vh] items-center justify-center">
+                <Loader2 className="size-6 animate-spin text-muted-foreground" />
+              </div>
+            }
+          >
+            <Screen />
+          </Suspense>
         ) : (
           <div className="flex min-h-[40vh] items-center justify-center">
             <p className="text-muted-foreground">

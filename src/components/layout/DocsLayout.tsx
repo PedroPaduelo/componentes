@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { Suspense, useState } from "react"
 import { Outlet } from "react-router-dom"
 import { PanelLeft } from "lucide-react"
 
@@ -10,6 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { DocsSidebar, DocsSidebarNav } from "@/components/layout/DocsSidebar"
+import { RouteFallback } from "@/components/layout/RouteFallback"
 
 /**
  * Layout de DOCUMENTAÇÃO (estilo shadcn/Aceternity docs): sidebar de navegação
@@ -61,7 +62,9 @@ export function DocsLayout() {
           A coluna central não impõe max-width/padding próprios: o conteúdo
           (FamilyDetail) controla seu container legível (conteúdo + TOC).
         */}
-        <Outlet />
+        <Suspense fallback={<RouteFallback />}>
+          <Outlet />
+        </Suspense>
       </div>
     </div>
   )

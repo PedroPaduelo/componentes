@@ -1,90 +1,173 @@
-import type { ComponentType } from "react"
-import { LandingPage } from "./landing-page"
-import { SaasDashboard } from "./saas-dashboard"
-import { SaasDashboardPro } from "./saas-dashboard-pro"
-import { PricingPage } from "./pricing-page"
-import { TestimonialsWall } from "./testimonials-wall"
-import { HeroGallery } from "./hero-gallery"
-import { BackgroundsShowcase } from "./backgrounds-showcase"
-import { TextEffectsShowcase } from "./text-effects-showcase"
-import { SignupForm } from "./signup-form"
-import { ChatApp } from "./chat-app"
-import { ChatInboxPro } from "./chat-inbox-pro"
-import { ComponentPlayground } from "./component-playground"
-import { AiAgentsPlatform } from "./ai-agents-platform"
-import { ProductShowcase } from "./product-showcase"
-import { InteractiveDashboard } from "./interactive-dashboard"
-import { CreativePortfolio } from "./creative-portfolio"
-import { SaasLanding2 } from "./saas-landing-2"
-import { WorldMapExplorer } from "./world-map-explorer"
-import { ComponentPlayground2 } from "./component-playground-2"
-import { EcommerceStorefront } from "./ecommerce-storefront"
-import { ProductDetail } from "./product-detail"
-import { BlogArticle } from "./blog-article"
-import { DocsPortal } from "./docs-portal"
-import { EventConference } from "./event-conference"
-import { SettingsProfile } from "./settings-profile"
-import { OnboardingWizard } from "./onboarding-wizard"
-import { MusicPlayer } from "./music-player"
-import { ComingSoon } from "./coming-soon"
-import { TravelBooking } from "./travel-booking"
-import { AiIde } from "./ai-ide"
-import { WorkflowBuilder } from "./workflow-builder"
-import { AiAgentFlow } from "./ai-agent-flow"
-import { DbSchemaDesigner } from "./db-schema-designer"
-import { MindMap } from "./mind-map"
-import { CircuitSimulator } from "./circuit-simulator"
-import { ImagePipeline } from "./image-pipeline"
-import { JsonVisualizer } from "./json-visualizer"
-import { DataPipeline } from "./data-pipeline"
-import { MediaStudio } from "./media-studio"
-import { ObservabilityCenter } from "./observability-center"
-import { DbaWorkbench } from "./dba-workbench"
+import { lazy, type ComponentType, type LazyExoticComponent } from "react"
 
 /**
- * Mapa slug → componente de tela. Compartilhado entre a página de
- * detalhe (renderiza a composição) e fases futuras da feature.
+ * Mapa slug → componente de tela (composição), agora com **code-splitting**.
+ *
+ * Antes, este barrel importava as 42 composições de forma ESTÁTICA, o que
+ * arrastava three / @xyflow/react / motion / cobe e todo o conteúdo das telas
+ * para o grafo de boot assim que `CompositionDetail` (ou qualquer coisa que
+ * tocasse `@/compositions`) entrasse no bundle. Agora cada composição vira um
+ * `React.lazy(() => import("./<slug>"))` — só a tela aberta é baixada.
+ *
+ * Cada composição é um export NOMEADO (ex.: `export function LandingPage()`),
+ * então mapeamos para `{ default: m.<Export> }` no `.then`, como o React.lazy
+ * exige. O consumidor (`CompositionDetail`) renderiza dentro de um `<Suspense>`.
  */
-export const compositionScreens: Record<string, ComponentType> = {
-  "landing-page": LandingPage,
-  "saas-dashboard": SaasDashboard,
-  "saas-dashboard-pro": SaasDashboardPro,
-  "pricing-page": PricingPage,
-  "testimonials-wall": TestimonialsWall,
-  "hero-gallery": HeroGallery,
-  "backgrounds-showcase": BackgroundsShowcase,
-  "text-effects-showcase": TextEffectsShowcase,
-  "signup-form": SignupForm,
-  "chat-app": ChatApp,
-  "chat-inbox-pro": ChatInboxPro,
-  "component-playground": ComponentPlayground,
-  "ai-agents-platform": AiAgentsPlatform,
-  "product-showcase": ProductShowcase,
-  "creative-portfolio": CreativePortfolio,
-  "saas-landing-2": SaasLanding2,
-  "interactive-dashboard": InteractiveDashboard,
-  "world-map-explorer": WorldMapExplorer,
-  "component-playground-2": ComponentPlayground2,
-  "ecommerce-storefront": EcommerceStorefront,
-  "product-detail": ProductDetail,
-  "blog-article": BlogArticle,
-  "docs-portal": DocsPortal,
-  "event-conference": EventConference,
-  "settings-profile": SettingsProfile,
-  "onboarding-wizard": OnboardingWizard,
-  "music-player": MusicPlayer,
-  "coming-soon": ComingSoon,
-  "travel-booking": TravelBooking,
-  "ai-ide": AiIde,
-  "workflow-builder": WorkflowBuilder,
-  "ai-agent-flow": AiAgentFlow,
-  "db-schema-designer": DbSchemaDesigner,
-  "mind-map": MindMap,
-  "circuit-simulator": CircuitSimulator,
-  "image-pipeline": ImagePipeline,
-  "json-visualizer": JsonVisualizer,
-  "data-pipeline": DataPipeline,
-  "media-studio": MediaStudio,
-  "observability-center": ObservabilityCenter,
-  "dba-workbench": DbaWorkbench,
+export const compositionScreens: Record<
+  string,
+  LazyExoticComponent<ComponentType>
+> = {
+  "landing-page": lazy(() =>
+    import("./landing-page").then((m) => ({ default: m.LandingPage }))
+  ),
+  "saas-dashboard": lazy(() =>
+    import("./saas-dashboard").then((m) => ({ default: m.SaasDashboard }))
+  ),
+  "saas-dashboard-pro": lazy(() =>
+    import("./saas-dashboard-pro").then((m) => ({
+      default: m.SaasDashboardPro,
+    }))
+  ),
+  "pricing-page": lazy(() =>
+    import("./pricing-page").then((m) => ({ default: m.PricingPage }))
+  ),
+  "testimonials-wall": lazy(() =>
+    import("./testimonials-wall").then((m) => ({
+      default: m.TestimonialsWall,
+    }))
+  ),
+  "hero-gallery": lazy(() =>
+    import("./hero-gallery").then((m) => ({ default: m.HeroGallery }))
+  ),
+  "backgrounds-showcase": lazy(() =>
+    import("./backgrounds-showcase").then((m) => ({
+      default: m.BackgroundsShowcase,
+    }))
+  ),
+  "text-effects-showcase": lazy(() =>
+    import("./text-effects-showcase").then((m) => ({
+      default: m.TextEffectsShowcase,
+    }))
+  ),
+  "signup-form": lazy(() =>
+    import("./signup-form").then((m) => ({ default: m.SignupForm }))
+  ),
+  "chat-app": lazy(() =>
+    import("./chat-app").then((m) => ({ default: m.ChatApp }))
+  ),
+  "chat-inbox-pro": lazy(() =>
+    import("./chat-inbox-pro").then((m) => ({ default: m.ChatInboxPro }))
+  ),
+  "component-playground": lazy(() =>
+    import("./component-playground").then((m) => ({
+      default: m.ComponentPlayground,
+    }))
+  ),
+  "ai-agents-platform": lazy(() =>
+    import("./ai-agents-platform").then((m) => ({
+      default: m.AiAgentsPlatform,
+    }))
+  ),
+  "product-showcase": lazy(() =>
+    import("./product-showcase").then((m) => ({ default: m.ProductShowcase }))
+  ),
+  "creative-portfolio": lazy(() =>
+    import("./creative-portfolio").then((m) => ({
+      default: m.CreativePortfolio,
+    }))
+  ),
+  "saas-landing-2": lazy(() =>
+    import("./saas-landing-2").then((m) => ({ default: m.SaasLanding2 }))
+  ),
+  "interactive-dashboard": lazy(() =>
+    import("./interactive-dashboard").then((m) => ({
+      default: m.InteractiveDashboard,
+    }))
+  ),
+  "world-map-explorer": lazy(() =>
+    import("./world-map-explorer").then((m) => ({
+      default: m.WorldMapExplorer,
+    }))
+  ),
+  "component-playground-2": lazy(() =>
+    import("./component-playground-2").then((m) => ({
+      default: m.ComponentPlayground2,
+    }))
+  ),
+  "ecommerce-storefront": lazy(() =>
+    import("./ecommerce-storefront").then((m) => ({
+      default: m.EcommerceStorefront,
+    }))
+  ),
+  "product-detail": lazy(() =>
+    import("./product-detail").then((m) => ({ default: m.ProductDetail }))
+  ),
+  "blog-article": lazy(() =>
+    import("./blog-article").then((m) => ({ default: m.BlogArticle }))
+  ),
+  "docs-portal": lazy(() =>
+    import("./docs-portal").then((m) => ({ default: m.DocsPortal }))
+  ),
+  "event-conference": lazy(() =>
+    import("./event-conference").then((m) => ({ default: m.EventConference }))
+  ),
+  "settings-profile": lazy(() =>
+    import("./settings-profile").then((m) => ({ default: m.SettingsProfile }))
+  ),
+  "onboarding-wizard": lazy(() =>
+    import("./onboarding-wizard").then((m) => ({
+      default: m.OnboardingWizard,
+    }))
+  ),
+  "music-player": lazy(() =>
+    import("./music-player").then((m) => ({ default: m.MusicPlayer }))
+  ),
+  "coming-soon": lazy(() =>
+    import("./coming-soon").then((m) => ({ default: m.ComingSoon }))
+  ),
+  "travel-booking": lazy(() =>
+    import("./travel-booking").then((m) => ({ default: m.TravelBooking }))
+  ),
+  "ai-ide": lazy(() =>
+    import("./ai-ide").then((m) => ({ default: m.AiIde }))
+  ),
+  "workflow-builder": lazy(() =>
+    import("./workflow-builder").then((m) => ({ default: m.WorkflowBuilder }))
+  ),
+  "ai-agent-flow": lazy(() =>
+    import("./ai-agent-flow").then((m) => ({ default: m.AiAgentFlow }))
+  ),
+  "db-schema-designer": lazy(() =>
+    import("./db-schema-designer").then((m) => ({
+      default: m.DbSchemaDesigner,
+    }))
+  ),
+  "mind-map": lazy(() =>
+    import("./mind-map").then((m) => ({ default: m.MindMap }))
+  ),
+  "circuit-simulator": lazy(() =>
+    import("./circuit-simulator").then((m) => ({
+      default: m.CircuitSimulator,
+    }))
+  ),
+  "image-pipeline": lazy(() =>
+    import("./image-pipeline").then((m) => ({ default: m.ImagePipeline }))
+  ),
+  "json-visualizer": lazy(() =>
+    import("./json-visualizer").then((m) => ({ default: m.JsonVisualizer }))
+  ),
+  "data-pipeline": lazy(() =>
+    import("./data-pipeline").then((m) => ({ default: m.DataPipeline }))
+  ),
+  "media-studio": lazy(() =>
+    import("./media-studio").then((m) => ({ default: m.MediaStudio }))
+  ),
+  "observability-center": lazy(() =>
+    import("./observability-center").then((m) => ({
+      default: m.ObservabilityCenter,
+    }))
+  ),
+  "dba-workbench": lazy(() =>
+    import("./dba-workbench").then((m) => ({ default: m.DbaWorkbench }))
+  ),
 }
