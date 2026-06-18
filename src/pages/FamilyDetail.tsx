@@ -8,6 +8,7 @@ import { CodeBlockCommand } from "@/components/ui/code-block-command"
 import { ExampleBlock } from "@/components/showcase/ExampleBlock"
 import { CodeBlock } from "@/components/showcase/CodeBlock"
 import { CopyPromptButton } from "@/components/showcase/CopyPromptButton"
+import { DocPagerNav } from "@/components/showcase/DocPagerNav"
 import { OnThisPage, type TocSection } from "@/components/showcase/OnThisPage"
 import { OriginBadge } from "@/components/catalog/OriginBadge"
 import { ORIGIN_DESCRIPTIONS } from "@/components/catalog/origin-meta"
@@ -25,6 +26,7 @@ import {
   getComponentInstall,
   getRegistryAddCommand,
 } from "@/data/component-install"
+import { getAdjacentFamilies } from "@/lib/doc-nav"
 import { NotFound } from "@/pages/NotFound"
 
 /** Resolve a família cujo base bate exatamente com o param. */
@@ -105,6 +107,16 @@ function FamilyView({ family, hash }: { family: Family; hash: string }) {
 
   const tocSections = buildTocSections(family, multi)
 
+  // Navegação "Anterior / Próxima" — segue a mesma ordem da DocsSidebar.
+  // Mapeia Family → { href: /components/<base>, label: <name> }.
+  const { prev, next } = getAdjacentFamilies(family.base)
+  const pagerPrev = prev
+    ? { href: `/components/${prev.base}`, label: prev.name }
+    : undefined
+  const pagerNext = next
+    ? { href: `/components/${next.base}`, label: next.name }
+    : undefined
+
   return (
     <div className="mx-auto flex w-full max-w-6xl gap-10 px-4 py-8 sm:px-8 sm:py-12">
       <article className="min-w-0 max-w-3xl flex-1">
@@ -173,6 +185,9 @@ function FamilyView({ family, hash }: { family: Family; hash: string }) {
             <VariantSection key={variant.slug} variant={variant} multi={multi} />
           ))}
         </div>
+
+        {/* Rodapé: navegação Anterior / Próxima (ordem da sidebar). */}
+        <DocPagerNav prev={pagerPrev} next={pagerNext} />
       </article>
 
       {/* TOC "Nesta página" — coluna direita (xl+) */}
