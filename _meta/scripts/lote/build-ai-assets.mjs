@@ -123,10 +123,10 @@ const compositions = parseEntries("data/compositions.ts", { hasCategory: true })
 const addCmd = (slug) => `npx shadcn@latest add ${HOMEPAGE}/r/${slug}.json`
 
 const lines = []
-lines.push("# Vitrine UI — Índice para IA (llms.txt)")
+lines.push("# Vitrine UI — Acervo de componentes React, feito para IA")
 lines.push("")
 lines.push(
-  "> Catálogo de componentes React (shadcn/ui + coleções chanhdai, Fluid, Aceternity, VengenceUI, @pierre/trees) e de composições (telas inteiras). Tudo é INSTALÁVEL via CLI do shadcn a partir de um registry estático: um único comando baixa os arquivos, instala as dependências npm e injeta o CSS necessário.",
+  "> Catálogo de componentes React (shadcn/ui + coleções chanhdai, Fluid, Aceternity, VengenceUI, @pierre/trees) e de composições (telas inteiras). Tudo é INSTALÁVEL via CLI do shadcn a partir de um registry estático: um único comando baixa os arquivos, instala as dependências npm e injeta o CSS necessário. Indexado para IA com llms.txt, prompts prontos e skills de processo.",
 )
 lines.push("")
 lines.push(`- Base do registry: ${HOMEPAGE}`)

@@ -31,7 +31,7 @@ export const aiSkills: AiSkill[] = [
     slug: "vitrine-ui-components",
     title: "Componentes da Vitrine UI",
     description:
-      "Ensina uma IA a instalar e consumir qualquer um dos ~200 componentes da vitrine via a CLI do shadcn, incluindo o pré-requisito, a convenção de API única e os gotchas (tw-animate-css, alias @/).",
+      "Acervo de componentes React feito para IA — ensina uma IA a instalar e consumir qualquer um dos ~200 componentes via CLI do shadcn, incluindo o pré-requisito, a convenção de API única e os gotchas (tw-animate-css, alias @/).",
     whenToUse:
       "Quando o usuário pede para adicionar/usar um elemento de interface (botão, formulário, card, menu, efeito, background…).",
     path: "/skills/vitrine-ui-components.md",
@@ -41,7 +41,7 @@ export const aiSkills: AiSkill[] = [
     slug: "vitrine-ui-compositions",
     title: "Composições (blocos) da Vitrine UI",
     description:
-      "Ensina uma IA a instalar uma TELA inteira como bloco único — o comando baixa a composição e todos os componentes que ela usa — e a renderizá-la e personalizá-la.",
+      "Acervo de componentes React feito para IA — ensina uma IA a instalar uma TELA inteira como bloco único (o comando baixa a composição e todos os componentes que ela usa) e a renderizá-la e personalizá-la.",
     whenToUse:
       "Quando o usuário pede uma tela/página completa (landing, dashboard, pricing, chat/IA, editor de fluxo, PDP, blog, onboarding…).",
     path: "/skills/vitrine-ui-compositions.md",
