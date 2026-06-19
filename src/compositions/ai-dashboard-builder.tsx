@@ -25,9 +25,11 @@ import {
   Activity,
   BarChart3,
   Brain,
+  Copy,
   Cpu,
   Database,
   DollarSign,
+  Filter,
   LayoutDashboard,
   LineChart as LineChartIcon,
   PanelLeft,
@@ -404,6 +406,150 @@ function daysAgo(n: number): Date {
   return d
 }
 
+/** Limita `v` ao intervalo [min, max] (clamp puro). */
+function clamp(v: number, min: number, max: number): number {
+  if (v < min) return min
+  if (v > max) return max
+  return v
+}
+
+const DAY_MS = 86_400_000
+
+/** Aplica filtros (período × fonte × chips) ao widget, retornando CÓPIA escalada.
+ *  Determinístico (sem RNG). Não muta o widget original. */
+function applyFilters(w: CanvasWidget, f: FilterState): CanvasWidget {
+  // 1) fator de período: spanDays / 30, clampado em [0.3, 4]
+  let dateFactor = 1
+  if (f.dateFrom && f.dateTo) {
+    const spanDays = Math.max(1, Math.round((+f.dateTo - +f.dateFrom) / DAY_MS))
+    dateFactor = clamp(spanDays / 30, 0.3, 4)
+  }
+
+  // 2) fator de fonte de dados
+  let sourceFactor = 1
+  if (f.dataSource === "prod") sourceFactor = 1
+  else if (f.dataSource === "staging") sourceFactor = 0.6
+  else if (f.dataSource === "sandbox") sourceFactor = 0.35
+
+  // 3) fator de chips: cada chip atenua em 0.7
+  const chipFactor = Math.pow(0.7, f.chips.length)
+
+  const factor = dateFactor * sourceFactor * chipFactor
+
+  const scaledKpi =
+    w.kpiValue != null ? Math.round(w.kpiValue * factor) : undefined
+  const scaledBarSeries = w.barSeries?.map((d) => ({
+    ...d,
+    value: Math.round(d.value * factor),
+  }))
+  const scaledLineSeries = w.lineSeries?.map((s) => ({
+    ...s,
+    data: s.data.map((v) => Math.round(v * factor)),
+  }))
+  const scaledDonutSegments = w.donutSegments?.map((d) => ({
+    ...d,
+    value: Math.round(d.value * factor),
+  }))
+
+  return {
+    ...w,
+    kpiValue: scaledKpi,
+    barSeries: scaledBarSeries,
+    lineSeries: scaledLineSeries,
+    donutSegments: scaledDonutSegments,
+  }
+}
+
+/** Labels disponíveis para o botão "+ Filtro". Determinístico, ordem fixa. */
+const DIMENSION_FILTERS = [
+  "Região: Sul",
+  "Plano: Pro",
+  "Status: Ativo",
+  "Canal: Orgânico",
+]
+
+/** Slugs (kpi/bar/line/donut) para os 4 templates; variamos título por contador. */
+const TEMPLATE_NAMES: Record<string, string> = {
+  kpi: "KPI",
+  bar: "Bar Chart",
+  line: "Line Chart",
+  donut: "Donut Chart",
+}
+
+/** Construtor puro de widget a partir de um template + contador (determinístico). */
+function buildTemplateWidget(kind: string, seq: number): CanvasWidget {
+  const baseTitle = TEMPLATE_NAMES[kind] ?? "Widget"
+  if (kind === "kpi") {
+    return {
+      id: `tpl-${seq}`,
+      kind: "kpi",
+      title: `${baseTitle} #${seq}`,
+      kpiLabel: "Métrica",
+      kpiValue: 1000 + seq * 137,
+      kpiDelta: 5 + (seq % 7),
+    }
+  }
+  if (kind === "bar") {
+    return {
+      id: `tpl-${seq}`,
+      kind: "bar",
+      title: `${baseTitle} #${seq}`,
+      chartType: "bar",
+      query: `SELECT category, COUNT(*) AS total FROM events GROUP BY category ORDER BY 2 DESC LIMIT 6`,
+      durationMs: 40,
+      barSeries: [
+        { label: "A", value: 120 + seq * 11 },
+        { label: "B", value: 90 + seq * 9 },
+        { label: "C", value: 160 + seq * 7 },
+        { label: "D", value: 75 + seq * 13 },
+      ],
+      barAccent: "bg-emerald-500",
+    }
+  }
+  if (kind === "line") {
+    return {
+      id: `tpl-${seq}`,
+      kind: "line",
+      title: `${baseTitle} #${seq}`,
+      chartType: "line",
+      query: `SELECT day, value FROM metrics WHERE day > current_date - 10 ORDER BY 1`,
+      durationMs: 38,
+      lineSeries: [
+        {
+          label: "Valor",
+          data: [50 + seq, 55 + seq, 60 + seq, 65 + seq, 70 + seq, 75 + seq, 80 + seq, 85 + seq],
+          className: "stroke-primary",
+        },
+      ],
+      lineXLabels: ["D1", "D2", "D3", "D4", "D5", "D6", "D7", "D8"],
+    }
+  }
+  if (kind === "donut") {
+    return {
+      id: `tpl-${seq}`,
+      kind: "donut",
+      title: `${baseTitle} #${seq}`,
+      chartType: "donut",
+      query: `SELECT segment, COUNT(*) AS total FROM cohorts GROUP BY segment`,
+      durationMs: 29,
+      donutSegments: [
+        { label: "A", value: 40 + seq, className: "stroke-primary" },
+        { label: "B", value: 25 + seq, className: "stroke-emerald-500" },
+        { label: "C", value: 15 + seq, className: "stroke-blue-500" },
+      ],
+    }
+  }
+  // fallback: tratar como kpi
+  return {
+    id: `tpl-${seq}`,
+    kind: "kpi",
+    title: `${baseTitle} #${seq}`,
+    kpiLabel: "Métrica",
+    kpiValue: 1000 + seq * 137,
+    kpiDelta: 5,
+  }
+}
+
 /* -------------------------------------------------------------------------- */
 /*                          seed de dashboards (multi)                         */
 /* -------------------------------------------------------------------------- */
@@ -593,32 +739,160 @@ function WidgetContent({ w }: { w: CanvasWidget }) {
   }
 }
 
-function CanvasWidgetCard({ w }: { w: CanvasWidget }) {
-  if (w.kind === "kpi") {
-    return <WidgetContent w={w} />
-  }
+function WidgetActions({
+  onRefresh,
+  onDuplicate,
+  onRemove,
+}: {
+  onRefresh: () => void
+  onDuplicate: () => void
+  onRemove: () => void
+}) {
+  // stopPropagation para não disparar o onSelect do card.
   return (
-    <ChartWidget
-      title={w.title}
-      chartType={w.chartType}
-      query={w.query}
-      durationMs={w.durationMs}
-      actions={
+    <>
+      <TooltipFluid content="Atualizar">
         <ButtonFluid
           variant="ghost"
           size="icon-sm"
           aria-label="Atualizar widget"
+          onClick={(e) => {
+            e.stopPropagation()
+            onRefresh()
+          }}
         >
           <RefreshCw className="size-3.5" />
         </ButtonFluid>
-      }
-    >
-      <WidgetContent w={w} />
-    </ChartWidget>
+      </TooltipFluid>
+      <TooltipFluid content="Duplicar">
+        <ButtonFluid
+          variant="ghost"
+          size="icon-sm"
+          aria-label="Duplicar widget"
+          onClick={(e) => {
+            e.stopPropagation()
+            onDuplicate()
+          }}
+        >
+          <Copy className="size-3.5" />
+        </ButtonFluid>
+      </TooltipFluid>
+      <TooltipFluid content="Remover">
+        <ButtonFluid
+          variant="ghost"
+          size="icon-sm"
+          aria-label="Remover widget"
+          onClick={(e) => {
+            e.stopPropagation()
+            onRemove()
+          }}
+        >
+          <Trash2 className="size-3.5" />
+        </ButtonFluid>
+      </TooltipFluid>
+    </>
   )
 }
 
-function CanvasGrid({ widgets }: { widgets: CanvasWidget[] }) {
+function CanvasWidgetCard({
+  w,
+  selected,
+  onSelect,
+  onRefresh,
+  onDuplicate,
+  onRemove,
+}: {
+  w: CanvasWidget
+  selected: boolean
+  onSelect: (id: string) => void
+  onRefresh: (id: string) => void
+  onDuplicate: (id: string) => void
+  onRemove: (id: string) => void
+}) {
+  // Ring aplicado no wrapper externo (ChartWidget ou div) para padronizar.
+  const ringClass = selected
+    ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
+    : ""
+
+  if (w.kind === "kpi") {
+    return (
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={() => onSelect(w.id)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault()
+            onSelect(w.id)
+          }
+        }}
+        aria-pressed={selected}
+        className={cn(
+          "flex flex-col gap-2 rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          ringClass,
+        )}
+      >
+        {/* Rowzinha de ações acima do KpiCard */}
+        <div className="flex items-center justify-end gap-1">
+          <WidgetActions
+            onRefresh={() => onRefresh(w.id)}
+            onDuplicate={() => onDuplicate(w.id)}
+            onRemove={() => onRemove(w.id)}
+          />
+        </div>
+        <WidgetContent w={w} />
+      </div>
+    )
+  }
+  return (
+    <div
+      role="button"
+      tabIndex={0}
+      onClick={() => onSelect(w.id)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault()
+          onSelect(w.id)
+        }
+      }}
+      aria-pressed={selected}
+      className={cn("rounded-xl outline-none focus-visible:ring-2 focus-visible:ring-ring", ringClass)}
+    >
+      <ChartWidget
+        title={w.title}
+        chartType={w.chartType}
+        query={w.query}
+        durationMs={w.durationMs}
+        className="rounded-[inherit]"
+        actions={
+          <WidgetActions
+            onRefresh={() => onRefresh(w.id)}
+            onDuplicate={() => onDuplicate(w.id)}
+            onRemove={() => onRemove(w.id)}
+          />
+        }
+      >
+        <WidgetContent w={w} />
+      </ChartWidget>
+    </div>
+  )
+}
+
+function CanvasGrid({
+  widgets,
+  selectedId,
+  onSelect,
+  onRefresh,
+  onDuplicate,
+  onRemove,
+}: {
+  widgets: CanvasWidget[]
+  selectedId: string | null
+  onSelect: (id: string) => void
+  onRefresh: (id: string) => void
+  onDuplicate: (id: string) => void
+  onRemove: (id: string) => void
+}) {
   if (widgets.length === 0) {
     return (
       <div className="flex flex-1 flex-col items-center justify-center gap-3 text-center">
@@ -640,7 +914,15 @@ function CanvasGrid({ widgets }: { widgets: CanvasWidget[] }) {
   return (
     <div className="grid grid-cols-1 gap-3 overflow-y-auto sm:grid-cols-2 xl:grid-cols-3">
       {widgets.map((w) => (
-        <CanvasWidgetCard key={w.id} w={w} />
+        <CanvasWidgetCard
+          key={w.id}
+          w={w}
+          selected={w.id === selectedId}
+          onSelect={onSelect}
+          onRefresh={onRefresh}
+          onDuplicate={onDuplicate}
+          onRemove={onRemove}
+        />
       ))}
     </div>
   )
@@ -946,12 +1228,16 @@ function InspectorPanel({
   queryHistory,
   stepCount,
   elapsedMs,
+  selectedWidget,
+  onRemoveSelected,
 }: {
   selectedTemplate?: string
   onSelectTemplate: (id: string) => void
   queryHistory: QueryHistoryItem[]
   stepCount: number
   elapsedMs: number
+  selectedWidget: CanvasWidget | null
+  onRemoveSelected: () => void
 }) {
   return (
     <div className="flex h-full flex-col">
@@ -961,6 +1247,47 @@ function InspectorPanel({
       </div>
 
       <div className="flex flex-1 flex-col gap-5 overflow-y-auto p-4">
+        {/* Widget selecionado */}
+        <section className="flex flex-col gap-2 rounded-xl border border-border p-3">
+          <h3 className="px-0.5 text-xs font-medium text-muted-foreground">
+            Widget selecionado
+          </h3>
+          {selectedWidget ? (
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between gap-2">
+                <span className="truncate text-sm font-medium text-foreground">
+                  {selectedWidget.title}
+                </span>
+                <BadgeFluid variant="solid" size="sm" color="violet">
+                  {selectedWidget.chartType ?? selectedWidget.kind}
+                </BadgeFluid>
+              </div>
+              {selectedWidget.query ? (
+                <code className="block rounded bg-muted p-2 text-[11px] font-mono break-all text-foreground">
+                  {selectedWidget.query}
+                </code>
+              ) : (
+                <p className="text-[12px] text-muted-foreground">
+                  Sem query SQL associada (widget de template local).
+                </p>
+              )}
+              <ButtonFluid
+                variant="tertiary"
+                size="sm"
+                onClick={onRemoveSelected}
+                className="self-start"
+              >
+                <Trash2 className="mr-1 size-3.5" />
+                Remover
+              </ButtonFluid>
+            </div>
+          ) : (
+            <p className="text-[13px] text-muted-foreground">
+              Clique num widget para inspecionar.
+            </p>
+          )}
+        </section>
+
         {/* Agent state */}
         <section className="flex flex-col gap-3 rounded-xl border border-border bg-muted/40 p-3">
           <div className="flex items-center gap-2">
@@ -1040,6 +1367,7 @@ export function AiDashboardBuilder() {
   const [dashListOpen, setDashListOpen] = useState(false)
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editName, setEditName] = useState("")
+  const [selectedWidgetId, setSelectedWidgetId] = useState<string | null>(null)
 
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const stepTimerRef = useRef<ReturnType<typeof setInterval> | null>(null)
@@ -1056,6 +1384,13 @@ export function AiDashboardBuilder() {
     [activeId],
   )
 
+  /** Helper: aplica um mutador à FilterState do dashboard ativo. */
+  const updateActiveFilters = useCallback(
+    (fn: (f: FilterState) => FilterState) =>
+      updateActive((d) => ({ ...d, filters: fn(d.filters) })),
+    [updateActive],
+  )
+
   useEffect(() => {
     return () => {
       if (timerRef.current) clearTimeout(timerRef.current)
@@ -1067,6 +1402,125 @@ export function AiDashboardBuilder() {
     const el = scrollRef.current
     if (el) el.scrollTop = el.scrollHeight
   }, [active.messages.length, isThinking])
+
+  // Limpa seleção se o widget sumir (ex.: switch de dashboard / remove).
+  useEffect(() => {
+    if (selectedWidgetId && !active.widgets.some((w) => w.id === selectedWidgetId)) {
+      setSelectedWidgetId(null)
+    }
+  }, [active.widgets, selectedWidgetId])
+
+  const selectedWidget = selectedWidgetId
+    ? active.widgets.find((w) => w.id === selectedWidgetId) ?? null
+    : null
+
+  /** Adiciona o PRÓXIMO chip de DIMENSION_FILTERS que ainda não está aplicado. */
+  const addNextFilterChip = useCallback(() => {
+    genRef.current += 1
+    const id = `f-${genRef.current}`
+    updateActive((d) => {
+      const existing = new Set(d.filters.chips.map((c) => c.label))
+      const next = DIMENSION_FILTERS.find((l) => !existing.has(l))
+      if (!next) return d // todos já adicionados — no-op
+      return {
+        ...d,
+        filters: {
+          ...d.filters,
+          chips: [...d.filters.chips, { id, label: next }],
+        },
+      }
+    })
+  }, [updateActive])
+
+  /** Adiciona widget a partir de um template do ChartTemplateGallery. */
+  const addWidgetFromTemplate = useCallback(
+    (kind: string) => {
+      genRef.current += 1
+      const seq = genRef.current
+      const newWidget = buildTemplateWidget(kind, seq)
+      const newHistoryItem: QueryHistoryItem = {
+        id: `q-${seq}`,
+        sql: newWidget.query ?? "SELECT 1",
+        durationMs: newWidget.durationMs ?? 30,
+        timeLabel: "agora",
+      }
+      const templateName = TEMPLATE_NAMES[kind] ?? "widget"
+      const assistantMsg: ChatMsg = {
+        id: 7000 + seq,
+        from: "assistant",
+        text: `Adicionei um ${templateName} ao dashboard.`,
+        time: "Agora",
+      }
+      updateActive((d) => ({
+        ...d,
+        widgets: [...d.widgets, newWidget],
+        history: [newHistoryItem, ...d.history],
+        messages: [...d.messages, assistantMsg],
+      }))
+      setSelectedTemplate(kind)
+      setSelectedWidgetId(newWidget.id)
+    },
+    [updateActive],
+  )
+
+  /** Refresh determinístico: prepend history + bump de durationMs do widget. */
+  const refreshWidget = useCallback(
+    (id: string) => {
+      genRef.current += 1
+      const seq = genRef.current
+      const target = active.widgets.find((w) => w.id === id)
+      if (!target) return
+      const newDuration = (target.durationMs ?? 30) + 1
+      const newHistoryItem: QueryHistoryItem = {
+        id: `q-${seq}`,
+        sql: target.query ?? "SELECT 1",
+        durationMs: newDuration,
+        timeLabel: "agora",
+      }
+      updateActive((d) => ({
+        ...d,
+        widgets: d.widgets.map((w) =>
+          w.id === id ? { ...w, durationMs: newDuration } : w,
+        ),
+        history: [newHistoryItem, ...d.history],
+      }))
+    },
+    [active.widgets, updateActive],
+  )
+
+  /** Duplica widget com novo id e título " (cópia)", inserindo logo após o original. */
+  const duplicateWidget = useCallback(
+    (id: string) => {
+      genRef.current += 1
+      const seq = genRef.current
+      updateActive((d) => {
+        const idx = d.widgets.findIndex((w) => w.id === id)
+        if (idx === -1) return d
+        const original = d.widgets[idx]
+        const clone: CanvasWidget = {
+          ...original,
+          id: `dup-${seq}`,
+          title: `${original.title} (cópia)`,
+        }
+        const next = [...d.widgets]
+        next.splice(idx + 1, 0, clone)
+        return { ...d, widgets: next }
+      })
+    },
+    [updateActive],
+  )
+
+  /** Remove widget; se era o selecionado, limpa a seleção. */
+  const removeWidget = useCallback(
+    (id: string) => {
+      updateActive((d) => ({
+        ...d,
+        widgets: d.widgets.filter((w) => w.id !== id),
+      }))
+      setSelectedWidgetId((prev) => (prev === id ? null : prev))
+    },
+    [updateActive],
+  )
 
   const handleSend = useCallback(
     (text: string) => {
@@ -1143,6 +1597,7 @@ export function AiDashboardBuilder() {
 
   const switchDashboard = useCallback((id: string) => {
     setActiveId(id)
+    setSelectedWidgetId(null)
   }, [])
 
   const newDashboard = useCallback(() => {
@@ -1166,6 +1621,7 @@ export function AiDashboardBuilder() {
     }
     setDashboards((prev) => [...prev, fresh])
     setActiveId(id)
+    setSelectedWidgetId(null)
   }, [])
 
   const deleteDashboard = useCallback(
@@ -1175,8 +1631,9 @@ export function AiDashboardBuilder() {
       setDashboards(remaining)
       if (activeId === id) setActiveId(remaining[0].id)
       if (editingId === id) setEditingId(null)
+      if (selectedWidgetId) setSelectedWidgetId(null)
     },
-    [dashboards, activeId, editingId],
+    [dashboards, activeId, editingId, selectedWidgetId],
   )
 
   const startRename = useCallback(
@@ -1196,6 +1653,46 @@ export function AiDashboardBuilder() {
   const cancelRename = useCallback(() => setEditingId(null), [])
 
   const stepCount = active.history.length
+
+  /** Widgets filtrados para exibição no canvas (filtros aplicados em cópia). */
+  const displayed = active.widgets.map((w) => applyFilters(w, active.filters))
+
+  /** Chips de data + chips de dimensão, exibidos no DashboardFilterBar. */
+  const filterChips = (() => {
+    const dateChip =
+      active.filters.dateFrom && active.filters.dateTo
+        ? [
+            {
+              label: `${Math.max(
+                1,
+                Math.round(
+                  (+active.filters.dateTo - +active.filters.dateFrom) / DAY_MS,
+                ),
+              )} dias`,
+              onRemove: () =>
+                updateActiveFilters((f) => ({
+                  ...f,
+                  dateFrom: undefined,
+                  dateTo: undefined,
+                })),
+            },
+          ]
+        : []
+    const dimChips = active.filters.chips.map((c) => ({
+      label: c.label,
+      onRemove: () =>
+        updateActiveFilters((f) => ({
+          ...f,
+          chips: f.chips.filter((x) => x.id !== c.id),
+        })),
+    }))
+    return [...dateChip, ...dimChips]
+  })()
+
+  const allChipsApplied = (() => {
+    const existing = new Set(active.filters.chips.map((c) => c.label))
+    return DIMENSION_FILTERS.every((l) => existing.has(l))
+  })()
 
   const railProps = {
     dashboards,
@@ -1293,21 +1790,48 @@ export function AiDashboardBuilder() {
 
         {/* Filter bar */}
         <div className="shrink-0 p-3">
-          <DashboardFilterBar
-            dateFrom={active.filters.dateFrom}
-            dateTo={active.filters.dateTo}
-            dataSource={active.filters.dataSource}
-            dataSourceOptions={DATA_SOURCES}
-            activeFilters={active.filters.chips.map((c) => ({
-              label: c.label,
-              onRemove: () => undefined,
-            }))}
-          />
+          <div className="flex flex-wrap items-stretch gap-2">
+            <DashboardFilterBar
+              className="flex-1"
+              dateFrom={active.filters.dateFrom}
+              onDateFromChange={(d) =>
+                updateActiveFilters((f) => ({ ...f, dateFrom: d }))
+              }
+              dateTo={active.filters.dateTo}
+              onDateToChange={(d) =>
+                updateActiveFilters((f) => ({ ...f, dateTo: d }))
+              }
+              dataSource={active.filters.dataSource}
+              dataSourceOptions={DATA_SOURCES}
+              onDataSourceChange={(v) =>
+                updateActiveFilters((f) => ({ ...f, dataSource: v }))
+              }
+              activeFilters={filterChips}
+            />
+            <ButtonFluid
+              variant="tertiary"
+              size="sm"
+              aria-label="Adicionar filtro"
+              disabled={allChipsApplied}
+              onClick={addNextFilterChip}
+              className="self-stretch"
+            >
+              <Filter className="size-3.5" />
+              Filtro
+            </ButtonFluid>
+          </div>
         </div>
 
         {/* Canvas grid */}
         <div className="flex min-h-0 flex-1 flex-col px-3 pb-3">
-          <CanvasGrid widgets={active.widgets} />
+          <CanvasGrid
+            widgets={displayed}
+            selectedId={selectedWidgetId}
+            onSelect={setSelectedWidgetId}
+            onRefresh={refreshWidget}
+            onDuplicate={duplicateWidget}
+            onRemove={removeWidget}
+          />
         </div>
       </section>
 
@@ -1315,10 +1839,14 @@ export function AiDashboardBuilder() {
       <aside className="hidden w-72 shrink-0 flex-col border-l border-border lg:flex">
         <InspectorPanel
           selectedTemplate={selectedTemplate}
-          onSelectTemplate={setSelectedTemplate}
+          onSelectTemplate={addWidgetFromTemplate}
           queryHistory={active.history}
           stepCount={stepCount}
           elapsedMs={elapsedMs}
+          selectedWidget={selectedWidget}
+          onRemoveSelected={() => {
+            if (selectedWidgetId) removeWidget(selectedWidgetId)
+          }}
         />
       </aside>
 
@@ -1420,10 +1948,14 @@ export function AiDashboardBuilder() {
             <div className="min-h-0 flex-1">
               <InspectorPanel
                 selectedTemplate={selectedTemplate}
-                onSelectTemplate={setSelectedTemplate}
+                onSelectTemplate={addWidgetFromTemplate}
                 queryHistory={active.history}
                 stepCount={stepCount}
                 elapsedMs={elapsedMs}
+                selectedWidget={selectedWidget}
+                onRemoveSelected={() => {
+                  if (selectedWidgetId) removeWidget(selectedWidgetId)
+                }}
               />
             </div>
           </div>
