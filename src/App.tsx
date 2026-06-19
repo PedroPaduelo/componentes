@@ -41,6 +41,11 @@ const CompositionDetail = lazy(() =>
     default: m.CompositionDetail,
   }))
 )
+const CompositionLive = lazy(() =>
+  import("@/pages/CompositionLive").then((m) => ({
+    default: m.CompositionLive,
+  }))
+)
 const NotFound = lazy(() =>
   import("@/pages/NotFound").then((m) => ({ default: m.NotFound }))
 )
@@ -75,6 +80,7 @@ function App() {
           <Route path="/compositions" element={<Compositions />} />
           <Route path="/compositions/:slug" element={<CompositionDetail />} />
         </Route>
+        <Route path="/compositions/:slug/live" element={<CompositionLive />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
