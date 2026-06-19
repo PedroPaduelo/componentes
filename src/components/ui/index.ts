@@ -943,4 +943,24 @@ export type {
   ChartTemplate,
 } from "./chart-template-gallery"
 
+// Lote Tremor (charts — Recharts)
+export { AreaChartTremor } from "./area-chart-tremor"
+export type { AreaChartTremorProps } from "./area-chart-tremor"
+export { BarChartTremor } from "./bar-chart-tremor"
+export type { BarChartTremorProps } from "./bar-chart-tremor"
+export { LineChartTremor } from "./line-chart-tremor"
+export type { LineChartTremorProps } from "./line-chart-tremor"
+export { DonutChartTremor } from "./donut-chart-tremor"
+export type { DonutChartTremorProps } from "./donut-chart-tremor"
+export { ScatterChartTremor } from "./scatter-chart-tremor"
+export type { ScatterChartTremorProps } from "./scatter-chart-tremor"
+export { ComboChartTremor } from "./combo-chart-tremor"
+export type { ComboChartTremorProps } from "./combo-chart-tremor"
+export { BarListTremor } from "./bar-list-tremor"
+export type { BarListTremorProps } from "./bar-list-tremor"
+export { CategoryBarTremor } from "./category-bar-tremor"
+export type { CategoryBarTremorProps } from "./category-bar-tremor"
+export { SparkChartTremor } from "./spark-chart-tremor"
+export type { SparkChartTremorProps } from "./spark-chart-tremor"
+
 

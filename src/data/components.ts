@@ -3215,6 +3215,78 @@ export const components: ComponentMeta[] = [
       "feedback",
     ],
   },
+  {
+    slug: "area-chart-tremor",
+    name: "Area Chart (Tremor)",
+    category: "Feedback",
+    description:
+      "Gráfico de área construído com Recharts para séries temporais empilhadas ou sobrepostas. Suporta paleta de cores, eixos customizados e tooltip rico com metadados.",
+    tags: ["tremor", "chart", "grafico", "area", "recharts", "dashboard", "analytics", "feedback"],
+  },
+  {
+    slug: "bar-chart-tremor",
+    name: "Bar Chart (Tremor)",
+    category: "Feedback",
+    description:
+      "Gráfico de barras verticais com Recharts, ideal para comparar categorias. Aceita empilhamento, cores por categoria e eventos de clique com payload customizado.",
+    tags: ["tremor", "chart", "grafico", "bar", "barra", "recharts", "dashboard", "analytics", "feedback"],
+  },
+  {
+    slug: "line-chart-tremor",
+    name: "Line Chart (Tremor)",
+    category: "Feedback",
+    description:
+      "Gráfico de linhas com Recharts para séries temporais. Suporta múltiplas séries, curva suave (monotone/linear/step) e configuração de eixos categóricos.",
+    tags: ["tremor", "chart", "grafico", "line", "linha", "recharts", "dashboard", "analytics", "feedback"],
+  },
+  {
+    slug: "donut-chart-tremor",
+    name: "Donut Chart (Tremor)",
+    category: "Feedback",
+    description:
+      "Gráfico de rosca/pizza com Recharts para proporções. Variante alterna entre donut e pie; permite cores, valores centrais e labels customizados.",
+    tags: ["tremor", "chart", "grafico", "donut", "pie", "rosca", "recharts", "dashboard", "analytics", "feedback"],
+  },
+  {
+    slug: "scatter-chart-tremor",
+    name: "Scatter Chart (Tremor)",
+    category: "Feedback",
+    description:
+      "Gráfico de dispersão com Recharts para correlacionar duas variáveis numéricas. Aceita categoria por cor e customização dos eixos.",
+    tags: ["tremor", "chart", "grafico", "scatter", "dispersao", "recharts", "dashboard", "analytics", "feedback"],
+  },
+  {
+    slug: "combo-chart-tremor",
+    name: "Combo Chart (Tremor)",
+    category: "Feedback",
+    description:
+      "Combina barras e linhas no mesmo gráfico para comparar grandezas diferentes em paralelo. Categorias podem ser declaradas como string simples ou como objeto { name, type }.",
+    tags: ["tremor", "chart", "grafico", "combo", "bar", "line", "recharts", "dashboard", "analytics", "feedback"],
+  },
+  {
+    slug: "bar-list-tremor",
+    name: "Bar List (Tremor)",
+    category: "Feedback",
+    description:
+      "Lista horizontal de barras com label e valor, ideal para rankings e comparações rápidas sem ocupar a área de um gráfico completo.",
+    tags: ["tremor", "list", "lista", "bar", "barra", "ranking", "dashboard", "analytics", "feedback"],
+  },
+  {
+    slug: "category-bar-tremor",
+    name: "Category Bar (Tremor)",
+    category: "Feedback",
+    description:
+      "Barra horizontal segmentada por categoria com marcadores posicionáveis. Útil para visualizar distribuição percentual ou status em uma única faixa.",
+    tags: ["tremor", "bar", "barra", "category", "segmento", "marker", "dashboard", "analytics", "feedback"],
+  },
+  {
+    slug: "spark-chart-tremor",
+    name: "Spark Chart (Tremor)",
+    category: "Feedback",
+    description:
+      "Mini-gráfico compacto (área, barra ou linha) para inline em cards e tabelas. Suporta curva (linear/monotone/step) e variação de tipo no mesmo componente.",
+    tags: ["tremor", "chart", "grafico", "spark", "mini", "inline", "recharts", "dashboard", "analytics", "feedback"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
