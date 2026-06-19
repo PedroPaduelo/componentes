@@ -265,6 +265,8 @@ import { examplesMetricGlowCard } from "./examples-metric-glow-card"
 import { examplesLatencyHeatmap } from "./examples-latency-heatmap"
 import { examplesLineChart } from "./examples-line-chart"
 import { examplesChartWidget } from "./examples-chart-widget"
+import { examplesDashboardFilterBar } from "./examples-dashboard-filter-bar"
+import { examplesChartTemplateGallery } from "./examples-chart-template-gallery"
 
 export type Example = {
   title: string
@@ -1595,6 +1597,8 @@ export const examples: Record<string, Example[]> = {
   ...examplesLatencyHeatmap,
   ...examplesLineChart,
   ...examplesChartWidget,
+  ...examplesDashboardFilterBar,
+  ...examplesChartTemplateGallery,
 }
 
 /** Retorna os exemplos de um slug, ou `undefined` se não houver. */
