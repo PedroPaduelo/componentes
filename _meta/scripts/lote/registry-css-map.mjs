@@ -506,4 +506,40 @@ export const CSS_BLOCKS = [
   --xy-attribution-background-color: color-mix(in oklab, var(--background) 50%, transparent);
 }`,
   },
+
+  // ── Tremor Raw — animação padrão de hover (todos os slugs *-tremor) ──
+  // Animação canônica usada em cards, botões, tabs, dropdowns, list items.
+  // Recharts (deps) traz internamente `transition-all duration-300 ease-in-out`,
+  // então não precisa keyframe — só garante que a utility existe no projeto
+  // consumer e propaga o hábito Tremor pros wrappers.
+  {
+    slugs: [
+      "area-chart-tremor",
+      "bar-chart-tremor",
+      "donut-chart-tremor",
+      "line-chart-tremor",
+      "pie-chart-tremor",
+      "radar-chart-tremor",
+      "radial-bar-chart-tremor",
+      "scatter-chart-tremor",
+      "spark-chart-tremor",
+      "tracker-tremor",
+      "progress-bar-tremor",
+      "progress-circle-tremor",
+      "callout-tremor",
+      "divider-tremor",
+      "tab-navigation-tremor",
+      "date-range-picker-tremor",
+      "radio-card-group-tremor",
+      "card-tremor",
+      "calendar-tremor",
+      "select-native-tremor",
+      "label-tremor",
+      "toggle-tremor",
+    ],
+    cssText: `
+.transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
+.duration-300 { transition-duration: 300ms; }
+.ease-in-out { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }`,
+  },
 ]
