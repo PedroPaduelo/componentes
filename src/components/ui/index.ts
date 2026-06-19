@@ -926,5 +926,21 @@ export type {
 } from "./table-info-panel"
 export { WorkbenchStatusBar } from "./workbench-status-bar"
 export type { WorkbenchStatusBarProps } from "./workbench-status-bar"
+// Lote analytics dashboard
+export { LineChart } from "./line-chart"
+export type { LineChartProps, LineSeries } from "./line-chart"
+export { ChartWidget } from "./chart-widget"
+export type { ChartWidgetProps } from "./chart-widget"
+export { DashboardFilterBar } from "./dashboard-filter-bar"
+export type {
+  DashboardFilterBarProps,
+  DashboardFilterOption,
+  DashboardActiveFilter,
+} from "./dashboard-filter-bar"
+export { ChartTemplateGallery } from "./chart-template-gallery"
+export type {
+  ChartTemplateGalleryProps,
+  ChartTemplate,
+} from "./chart-template-gallery"
 
 

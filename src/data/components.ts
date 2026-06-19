@@ -3142,6 +3142,79 @@ export const components: ComponentMeta[] = [
     usage:
       "Passe `columns` como `number[][]` (coluna-maior: cada coluna é um array de valores por linha, 0..1) e, opcionalmente, `rows`. Troque a paleta com `colorScale` (recebe o valor e devolve cor CSS; default teal→âmbar→rosa) e ajuste os eixos com `rowLabels`/`colLabels` (ou `false` para esconder). Bom para a janela rolante de p95 por tick em centros de observabilidade.",
   },
+  {
+    slug: "line-chart",
+    name: "Line Chart",
+    category: "Feedback",
+    description:
+      "Gráfico de linha em SVG puro com eixos, grid tracejado, preenchimento de área translúcida e legenda. Suporta múltiplas séries temporais sobrepostas com normalização automática de escala (min/max global). Sem dependências externas — apenas SVG + classes Tailwind.",
+    tags: [
+      "chart",
+      "grafico",
+      "linha",
+      "line",
+      "svg",
+      "series",
+      "timeseries",
+      "dashboard",
+      "analytics",
+      "feedback",
+    ],
+  },
+  {
+    slug: "chart-widget",
+    name: "Chart Widget",
+    category: "Feedback",
+    description:
+      "Casca de widget para gráficos com header (título + badge de tipo + ações), body (com estado loading via Skeleton) e footer opcional (query + duração). Envolve qualquer visualização num container consistente — passe o gráfico como children.",
+    tags: [
+      "widget",
+      "card",
+      "chart",
+      "grafico",
+      "container",
+      "dashboard",
+      "analytics",
+      "feedback",
+    ],
+  },
+  {
+    slug: "dashboard-filter-bar",
+    name: "Dashboard Filter Bar",
+    category: "Feedback",
+    description:
+      "Barra de filtros para dashboards com date range pickers (de/até), seletor de fonte de dados (Select) e chips de filtros ativos removíveis (Badge com botão X). Layout flex-wrap que se adapta à largura disponível.",
+    tags: [
+      "filter",
+      "filtro",
+      "bar",
+      "date-range",
+      "select",
+      "chips",
+      "dashboard",
+      "analytics",
+      "feedback",
+    ],
+  },
+  {
+    slug: "chart-template-gallery",
+    name: "Chart Template Gallery",
+    category: "Feedback",
+    description:
+      "Galeria de templates de gráficos selecionáveis em grid 2 colunas. Cada template tem ícone, nome, descrição e preview opcional. Suporta seleção única com estado visual (borda destacada, aria-pressed). Navegação por teclado (Enter/Space).",
+    tags: [
+      "gallery",
+      "galeria",
+      "template",
+      "chart",
+      "grafico",
+      "grid",
+      "selectable",
+      "dashboard",
+      "analytics",
+      "feedback",
+    ],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
