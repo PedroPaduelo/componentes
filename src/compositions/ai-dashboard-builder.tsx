@@ -42,6 +42,8 @@ import {
   ThinkingStepsHeaderFluid,
   ThinkingStepsContentFluid,
   ThinkingStepFluid,
+  ThinkingStepSourcesFluid,
+  ThinkingStepSourceFluid,
   ChartWidget,
   KpiCard,
   BarChart,
