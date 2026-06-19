@@ -873,6 +873,37 @@
       ]
     },
     {
+      "name": "chart-template-gallery",
+      "type": "registry:ui",
+      "title": "Chart Template Gallery",
+      "description": "Galeria de templates de gráficos selecionáveis em grid 2 colunas. Cada template tem ícone, nome, descrição e preview opcional. Suporta seleção única com estado visual (borda destacada, aria-pressed). Navegação por teclado (Enter/Space).",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/chart-template-gallery.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "chart-widget",
+      "type": "registry:ui",
+      "title": "Chart Widget",
+      "description": "Casca de widget para gráficos com header (título + badge de tipo + ações), body (com estado loading via Skeleton) e footer opcional (query + duração). Envolve qualquer visualização num container consistente — passe o gráfico como children.",
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/skeleton.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/chart-widget.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "chat-message-fluid",
       "type": "registry:ui",
       "title": "Chat Message (Fluid)",
@@ -1312,6 +1343,26 @@
       "files": [
         {
           "path": "src/components/ui/cyber-glitch-text.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "dashboard-filter-bar",
+      "type": "registry:ui",
+      "title": "Dashboard Filter Bar",
+      "description": "Barra de filtros para dashboards com date range pickers (de/até), seletor de fonte de dados (Select) e chips de filtros ativos removíveis (Badge com botão X). Layout flex-wrap que se adapta à largura disponível.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/date-picker.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/select.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/dashboard-filter-bar.tsx",
           "type": "registry:ui"
         }
       ]
@@ -2876,6 +2927,18 @@
         },
         {
           "path": "src/components/ui/light-lines-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "line-chart",
+      "type": "registry:ui",
+      "title": "Line Chart",
+      "description": "Gráfico de linha em SVG puro com eixos, grid tracejado, preenchimento de área translúcida e legenda. Suporta múltiplas séries temporais sobrepostas com normalização automática de escala (min/max global). Sem dependências externas — apenas SVG + classes Tailwind.",
+      "files": [
+        {
+          "path": "src/components/ui/line-chart.tsx",
           "type": "registry:ui"
         }
       ]

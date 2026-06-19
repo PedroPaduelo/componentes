@@ -53,6 +53,8 @@ const NotFound = lazy(() =>
 function App() {
   return (
     <Routes>
+      {/* Live demo — fullscreen, sem Header/Footer/Layout */}
+      <Route path="/compositions/:slug/live" element={<CompositionLive />} />
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         {/*
@@ -80,7 +82,6 @@ function App() {
           <Route path="/compositions" element={<Compositions />} />
           <Route path="/compositions/:slug" element={<CompositionDetail />} />
         </Route>
-        <Route path="/compositions/:slug/live" element={<CompositionLive />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

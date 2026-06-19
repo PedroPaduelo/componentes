@@ -50,7 +50,7 @@ export function CompositionDetail() {
         </div>
         <div className="flex shrink-0 items-center gap-2">
           <Button asChild variant="default">
-            <a href={`./live`} target="_blank" rel="noopener noreferrer">
+            <a href={`/compositions/${composition.slug}/live`} target="_blank" rel="noopener noreferrer">
               <ExternalLink className="size-4" />
               Live demo
             </a>

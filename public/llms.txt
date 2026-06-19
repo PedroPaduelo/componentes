@@ -21,7 +21,7 @@ npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com
 
 Depois, importe de `@/components/ui/<arquivo>` (componentes) ou renderize a tela em `@/compositions/<slug>` (composições). As dependências de componentes de uma composição são instaladas automaticamente (registryDependencies).
 
-## Componentes (247)
+## Componentes (251)
 
 Componentes organizados por **grupo** (clusterização por domínio). Use o grupo para descobrir componentes relacionados.
 
@@ -318,7 +318,7 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
 - **Input Message (Fluid)** (`input-message-fluid`) — Forms. Composer de mensagem da Fluid Functionalism: textarea auto-expansível, anexos via drag-and-drop e picker, preview de imagens/PDF, slots customizáveis e botão de envio.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input-message-fluid.json`
 
-### Dashboards & Dev (44)
+### Dashboards & Dev (48)
 
 - **Data Table** (`data-table`) — Layout. Tabela de dados avançada com ordenação, paginação e busca global. Baseada em @tanstack/react-table.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/data-table.json`
@@ -408,6 +408,14 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/metric-glow-card.json`
 - **Latency Heatmap** (`latency-heatmap`) — Feedback. Grade (heatmap) de latência/intensidade em CSS grid: matriz coluna-maior em que cada célula recebe uma cor via escala configurável, com eixos opcionais (lento/rápido à esquerda, janela/agora abaixo). Totalmente desacoplado de simulação — só recebe a matriz e renderiza.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/latency-heatmap.json`
+- **Line Chart** (`line-chart`) — Feedback. Gráfico de linha em SVG puro com eixos, grid tracejado, preenchimento de área translúcida e legenda. Suporta múltiplas séries temporais sobrepostas com normalização automática de escala (min/max global). Sem dependências externas — apenas SVG + classes Tailwind.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/line-chart.json`
+- **Chart Widget** (`chart-widget`) — Feedback. Casca de widget para gráficos com header (título + badge de tipo + ações), body (com estado loading via Skeleton) e footer opcional (query + duração). Envolve qualquer visualização num container consistente — passe o gráfico como children.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/chart-widget.json`
+- **Dashboard Filter Bar** (`dashboard-filter-bar`) — Feedback. Barra de filtros para dashboards com date range pickers (de/até), seletor de fonte de dados (Select) e chips de filtros ativos removíveis (Badge com botão X). Layout flex-wrap que se adapta à largura disponível.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dashboard-filter-bar.json`
+- **Chart Template Gallery** (`chart-template-gallery`) — Feedback. Galeria de templates de gráficos selecionáveis em grid 2 colunas. Cada template tem ícone, nome, descrição e preview opcional. Suporta seleção única com estado visual (borda destacada, aria-pressed). Navegação por teclado (Enter/Space).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/chart-template-gallery.json`
 
 ### Efeitos de Texto (18)
 
@@ -546,7 +554,7 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
 - **World Map** (`world-map`) — Feedback. Mapa-múndi pontilhado da Aceternity UI (SVG gerado em runtime pela lib dotted-map) com arcos curvos que se desenham progressivamente (pathLength animado por motion) entre pares de coordenadas, e pontos pulsantes (animate SVG) nas pontas. Útil para ilustrar conexões/rotas globais. Cor das linhas configurável e fundo adaptativo ao tema (branco no claro, preto no escuro).
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/world-map.json`
 
-## Composições / blocos (41)
+## Composições / blocos (42)
 
 Cada composição é uma TELA completa instalável como um bloco único; o comando puxa a tela + todos os componentes da vitrine que ela usa.
 
@@ -630,6 +638,8 @@ Cada composição é uma TELA completa instalável como um bloco único; o coman
   - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/media-studio.json`
 - **Observability Command Center** (`observability-center`) — Aplicação. Centro de comando de observabilidade VIVO no estilo Grafana/Datadog — só que reinventado: em vez do grid de gráficos estáticos, o protagonista é um service mesh em que os PACOTES de request fluem em tempo real pelas conexões (SVG + requestAnimationFrame), coloridos por severidade (ciano = tráfego, âmbar = degradado, rosa = erro). Toda a tela é dirigida por um relógio simulado determinístico (PRNG seedado pelo tick, zero Math.random), com play/pause do live e seletor de janela (Live/5m/1h). Clicar num serviço do mesh inspeciona seus Golden Signals (latência p95, throughput, taxa de erro e saturação CPU/memória em sparklines que rolam), reconstrói o heatmap de latência e o distributed trace waterfall. Painel de SLO com gauge radial de disponibilidade e error budget, log stream ao vivo com filtro por nível (debug/info/warn/error) e contadores, e alertas/incidentes com ack. O botão "Injetar incidente" degrada o serviço selecionado e propaga a falha em cascata aos dependentes — acendendo o mesh de vermelho, disparando alertas e enchendo o log de erros. Casco em tokens shadcn com tema light/dark reativo; status bar com agregados globais.
   - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/observability-center.json`
+- **AI Dashboard Builder** (`ai-dashboard-builder`) — Aplicação. Plataforma de dashboards comandada por IA em layout de 3 painéis: chat à esquerda onde o usuário descreve o que precisa (ex.: "Vendas por região no último trimestre"), o agente escolhe um template, escreve a consulta SQL, simula a execução e renderiza o resultado como gráfico de barras, tabela de dados e KPIs no painel central — acompanhado de um painel direito de detalhes com a query gerada, metadados e ações. Tudo determinístico (sem chamadas de rede), com histórico de mensagens, indicadores de raciocínio e estado de loading simulado.
+  - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/ai-dashboard-builder.json`
 - **DBA Workbench** (`dba-workbench`) — Aplicação. Workbench IDE-like de banco de dados (estilo DBeaver / Navicat / DataGrip) construído em torno do componente DbSchemaExplorer: tabs de bancos abertos (estilo VS Code) com 2 bancos pré-abertos (Postgres da auditoria de produção + Postgres do SGT Maker), sidebar esquerda com 3 seções colapsáveis (Conexões, Favoritos, Histórico de queries SQL recentes), painel direito com info da tabela selecionada (linhas, tamanho, colunas com badges PK/FK, índices, foreign keys), status bar com conexão ativa e query time da última ação, topbar com badge de engine e ações globais (Refresh, Export DDL, Query, Settings). Tudo determinístico (PRNG seedado) — sem Math.random. Clique em uma tabela na árvore central pra popular o painel direito; clique no ícone de estrela pra favoritar/desfavoritar.
   - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dba-workbench.json`
 

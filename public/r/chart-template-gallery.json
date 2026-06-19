@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "chart-template-gallery",
+  "title": "Chart Template Gallery",
+  "description": "Galeria de templates de gráficos selecionáveis em grid 2 colunas. Cada template tem ícone, nome, descrição e preview opcional. Suporta seleção única com estado visual (borda destacada, aria-pressed). Navegação por teclado (Enter/Space).",
+  "dependencies": [
+    "lucide-react@^0.468.0"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/chart-template-gallery.tsx",
+      "content": "import * as React from \"react\"\nimport type { LucideIcon } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\ninterface ChartTemplate {\n  id: string\n  name: string\n  icon?: LucideIcon\n  description: string\n  preview?: React.ReactNode\n}\n\ninterface ChartTemplateGalleryProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"onSelect\"> {\n  templates: ChartTemplate[]\n  selected?: string\n  onSelect?: (id: string) => void\n}\n\nfunction ChartTemplateGallery({\n  templates,\n  selected,\n  onSelect,\n  className,\n  ...props\n}: ChartTemplateGalleryProps) {\n  return (\n    <div\n      data-slot=\"chart-template-gallery\"\n      className={cn(\"grid grid-cols-2 gap-3\", className)}\n      {...props}\n    >\n      {templates.map((template) => {\n        const Icon = template.icon\n        const isSelected = template.id === selected\n\n        return (\n          <div\n            key={template.id}\n            role=\"button\"\n            tabIndex={0}\n            aria-label={template.name}\n            aria-pressed={isSelected}\n            data-state={isSelected ? \"selected\" : \"unselected\"}\n            onClick={() => onSelect?.(template.id)}\n            onKeyDown={(e) => {\n              if (e.key === \"Enter\" || e.key === \" \") {\n                e.preventDefault()\n                onSelect?.(template.id)\n              }\n            }}\n            className={cn(\n              \"group flex cursor-pointer flex-col gap-2 rounded-lg border p-3 transition-colors\",\n              \"hover:bg-accent hover:text-accent-foreground\",\n              \"focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring\",\n              isSelected && \"border-primary bg-accent text-accent-foreground\",\n              !isSelected && \"border-border\"\n            )}\n          >\n            <div className=\"flex items-center gap-2\">\n              {Icon ? (\n                <Icon className=\"size-4 shrink-0 text-muted-foreground\" />\n              ) : null}\n              <span className=\"text-sm font-medium leading-none\">\n                {template.name}\n              </span>\n            </div>\n\n            {template.description ? (\n              <p className=\"text-muted-foreground line-clamp-2 text-xs\">\n                {template.description}\n              </p>\n            ) : null}\n\n            {template.preview ? (\n              <div className=\"text-muted-foreground mt-1 overflow-hidden\">\n                {template.preview}\n              </div>\n            ) : null}\n          </div>\n        )\n      })}\n    </div>\n  )\n}\n\nexport { ChartTemplateGallery }\nexport type {\n  ChartTemplate,\n  ChartTemplateGalleryProps,\n}\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}
