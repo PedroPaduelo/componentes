@@ -170,4 +170,9 @@ export const compositionScreens: Record<
   "dba-workbench": lazy(() =>
     import("./dba-workbench").then((m) => ({ default: m.DbaWorkbench }))
   ),
+  "ai-dashboard-builder": lazy(() =>
+    import("./ai-dashboard-builder").then((m) => ({
+      default: m.AiDashboardBuilder,
+    }))
+  ),
 }

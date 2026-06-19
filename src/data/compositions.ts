@@ -446,6 +446,22 @@ export const compositions: Composition[] = [
     wide: true,
   },
   {
+    slug: "ai-dashboard-builder",
+    name: "AI Dashboard Builder",
+    description:
+      "Plataforma de dashboards comandada por IA em layout de 3 painéis: chat à esquerda onde o usuário descreve o que precisa (ex.: \"Vendas por região no último trimestre\"), o agente escolhe um template, escreve a consulta SQL, simula a execução e renderiza o resultado como gráfico de barras, tabela de dados e KPIs no painel central — acompanhado de um painel direito de detalhes com a query gerada, metadados e ações. Tudo determinístico (sem chamadas de rede), com histórico de mensagens, indicadores de raciocínio e estado de loading simulado.",
+    tags: [
+      "dashboard",
+      "ia",
+      "chat",
+      "sql",
+      "gráfico",
+      "app",
+      "interativo",
+    ],
+    category: "Aplicação",
+  },
+  {
     slug: "dba-workbench",
     name: "DBA Workbench",
     description:
