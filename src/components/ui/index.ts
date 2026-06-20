@@ -963,4 +963,14 @@ export type { CategoryBarTremorProps } from "./category-bar-tremor"
 export { SparkChartTremor } from "./spark-chart-tremor"
 export type { SparkChartTremorProps } from "./spark-chart-tremor"
 
+// Lote Tremor (KPI)
+export { TrackerTremor } from "./tracker-tremor"
+export type { TrackerTremorProps } from "./tracker-tremor"
+export { ProgressBarTremor } from "./progress-bar-tremor"
+export type { ProgressBarTremorProps } from "./progress-bar-tremor"
+export { ProgressCircleTremor } from "./progress-circle-tremor"
+export type { ProgressCircleTremorProps } from "./progress-circle-tremor"
+export { CalloutTremor } from "./callout-tremor"
+export type { CalloutTremorProps } from "./callout-tremor"
+
 

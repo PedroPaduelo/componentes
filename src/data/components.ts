@@ -3287,6 +3287,38 @@ export const components: ComponentMeta[] = [
       "Mini-gráfico compacto (área, barra ou linha) para inline em cards e tabelas. Suporta curva (linear/monotone/step) e variação de tipo no mesmo componente.",
     tags: ["tremor", "chart", "grafico", "spark", "mini", "inline", "recharts", "dashboard", "analytics", "feedback"],
   },
+  {
+    slug: "tracker-tremor",
+    name: "Tracker (Tremor)",
+    category: "Feedback",
+    description:
+      "Indicador de progresso horizontal da Tremor Raw: barra com pontos coloridos marcando eventos no caminho, ideal para funis, etapas de processo e checkpoints em dashboards analíticos.",
+    tags: ["tremor", "kpi", "tracker", "progresso", "funil", "etapas", "dashboard", "feedback"],
+  },
+  {
+    slug: "progress-bar-tremor",
+    name: "Progress Bar (Tremor)",
+    category: "Feedback",
+    description:
+      "Barra de progresso horizontal da Tremor Raw com variantes de cor, suporte a label e tooltip, ideal para metas, conclusão de tarefas e indicadores de saturação em dashboards.",
+    tags: ["tremor", "progress", "barra", "progresso", "meta", "dashboard", "feedback"],
+  },
+  {
+    slug: "progress-circle-tremor",
+    name: "Progress Circle (Tremor)",
+    category: "Feedback",
+    description:
+      "Indicador circular de progresso da Tremor Raw: arco proporcional ao valor, com miolo configurável (texto/children) e variantes de cor para destacar conclusão de metas em dashboards.",
+    tags: ["tremor", "progress", "circulo", "arco", "meta", "dashboard", "feedback"],
+  },
+  {
+    slug: "callout-tremor",
+    name: "Callout (Tremor)",
+    category: "Feedback",
+    description:
+      "Bloco de destaque da Tremor Raw com ícone, título e texto: ideal para anotações contextuais, insights e avisos curtos ao lado de métricas em dashboards analíticos.",
+    tags: ["tremor", "callout", "destaque", "anotacao", "insight", "dashboard", "feedback"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
