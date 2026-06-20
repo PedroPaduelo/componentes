@@ -46,6 +46,11 @@ const CompositionLive = lazy(() =>
     default: m.CompositionLive,
   }))
 )
+const TremorTestMisc = lazy(() =>
+  import("@/pages/tremor-test-misc").then((m) => ({
+    default: m.TremorTestMisc,
+  }))
+)
 const NotFound = lazy(() =>
   import("@/pages/NotFound").then((m) => ({ default: m.NotFound }))
 )
@@ -55,6 +60,8 @@ function App() {
     <Routes>
       {/* Live demo — fullscreen, sem Header/Footer/Layout */}
       <Route path="/compositions/:slug/live" element={<CompositionLive />} />
+      {/* Harness Tremor misc — fullscreen, sem Layout (validador Playwright) */}
+      <Route path="/tremor-test-misc" element={<TremorTestMisc />} />
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         {/*
