@@ -6,6 +6,7 @@ import {
   filterFamilies,
   popularTags,
 } from "@/lib/family-filter"
+import { getGroup, GROUPS } from "@/data/groups"
 import { ComponentCard } from "@/components/catalog/ComponentCard"
 import { SearchInput } from "@/components/catalog/SearchInput"
 import {
@@ -15,6 +16,11 @@ import {
   TagFilter,
   type CategoryFilterValue,
 } from "@/components/catalog/CategoryFilter"
+import {
+  ALL_GROUPS,
+  GroupFilter,
+  type GroupFilterValue,
+} from "@/components/catalog/GroupFilter"
 import { EmptyState } from "@/components/catalog/EmptyState"
 
 export function Home() {
@@ -53,6 +59,7 @@ export function Home() {
   const [category, setCategory] = useState<CategoryFilterValue>(validCategory)
   const [origin, setOrigin] = useState<ComponentOrigin | null>(validOrigin)
   const [tag, setTag] = useState<string | null>(null)
+  const [group, setGroup] = useState<GroupFilterValue>(ALL_GROUPS)
 
   // Sincroniza quando o breadcrumb muda o query param (ex.: user clica num
   // link de categoria fora da Home e volta).
@@ -68,9 +75,18 @@ export function Home() {
 
   const topTags = useMemo(() => popularTags(families, 8), [families])
 
+  // Filtro por grupo é LOCAL da Home (não compartilhado via family-filter.ts)
+  // — não toca na lógica pura compartilhada com a sidebar/overview.
+  const groupFiltered = useMemo(() => {
+    if (group === ALL_GROUPS) return families
+    return families.filter((f) =>
+      f.variants.some((v) => getGroup(v.slug) === group),
+    )
+  }, [families, group])
+
   const filtered = useMemo(
-    () => filterFamilies(families, query, category, origin, tag),
-    [families, query, category, origin, tag]
+    () => filterFamilies(groupFiltered, query, category, origin, tag),
+    [groupFiltered, query, category, origin, tag],
   )
 
   // Contagens por categoria respeitando a busca/origem/tag atuais (mas não a categoria selecionada).
@@ -114,17 +130,36 @@ export function Home() {
     return map
   }, [families, query, category, origin])
 
+  // Opções de grupo já ordenadas por `order` (primitivos → aplicações → visual),
+  // com a contagem de famílias atualizada pela busca/categoria/origem/tag
+  // selecionados — sem considerar o próprio filtro de grupo.
+  const groupOptions = useMemo(() => {
+    const base = filterFamilies(families, query, category, origin, tag)
+    return GROUPS.map((g) => {
+      const count = base.filter((f) =>
+        f.variants.some((v) => getGroup(v.slug) === g.id),
+      ).length
+      return { id: g.id, label: g.label, count }
+    })
+  }, [families, query, category, origin, tag])
+
+  const groupTotalCount = useMemo(() => {
+    return filterFamilies(families, query, category, origin, tag).length
+  }, [families, query, category, origin, tag])
+
   const hasActiveFilters =
     query !== "" ||
     category !== ALL_CATEGORIES ||
     origin !== null ||
-    tag !== null
+    tag !== null ||
+    group !== ALL_GROUPS
 
   function resetFilters() {
     setQuery("")
     setCategory(ALL_CATEGORIES)
     setOrigin(null)
     setTag(null)
+    setGroup(ALL_GROUPS)
   }
 
   return (
@@ -176,6 +211,13 @@ export function Home() {
           value={tag}
           onChange={setTag}
           counts={tagCounts}
+        />
+
+        <GroupFilter
+          value={group}
+          onChange={setGroup}
+          options={groupOptions}
+          totalCount={groupTotalCount}
         />
       </section>
 
