@@ -22,7 +22,9 @@
 import { chromium } from "playwright"
 import { outPath } from "./_shots.mjs"
 
-const BASE = "http://localhost:5173"
+// Por padrão valida o dev server canônico (porta 5173). `VITRINE_BASE_URL`
+// permite apontar para outra origem (ex.: outra porta em CI) sem editar o script.
+const BASE = process.env.VITRINE_BASE_URL ?? "http://localhost:5173"
 
 let failures = 0
 function check(label, cond, extra = "") {
@@ -92,7 +94,7 @@ async function visitGroup(groupId, expectWord) {
 
   try {
     await link.click()
-    await page.waitForURL(`**/components/grupo/${groupId}`, { timeout: 15000 })
+    await page.waitForURL(`**/components/grupo/${groupId}`, { timeout: 20000 })
   } catch (err) {
     check(`${groupId}: clicar no link navega pra /components/grupo/${groupId}`, false, err.message)
     return
@@ -101,7 +103,10 @@ async function visitGroup(groupId, expectWord) {
 
   let h1 = ""
   try {
-    await page.waitForSelector("article h1", { timeout: 15000 })
+    // `attached` (não `visible`): só precisamos do texto/contagem do header, e
+    // páginas pesadas (charts/data) podem demorar a pintar. Timeout generoso pra
+    // cobrir o cold-start do dev (chunk lazy da GroupDetail + barrel de examples).
+    await page.waitForSelector("article h1", { state: "attached", timeout: 30000 })
     h1 = ((await page.locator("article h1").first().textContent()) ?? "").trim()
   } catch (err) {
     check(`${groupId}: <h1> da group-page renderizado`, false, err.message)
