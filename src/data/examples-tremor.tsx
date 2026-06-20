@@ -1,10 +1,19 @@
 /**
- * Examples Tremor — examples para os 9 charts do lote Tremor.
+ * Examples Tremor — examples para os 22 componentes do lote Tremor.
  *
- * Cada chart Tremor recebe ao menos 1 Example realista (dados em formato
- * long-format, valueFormatter em BRL/%, paleta da `AvailableChartColors`).
- * Alguns ganham um segundo Example para destacar variantes-chave (stacked,
- * bar vs line no combo, pie vs donut, click-to-filter no BarList, etc.).
+ * Distribuição por grupo (reflete a Onda 1-5 do plano Tremor):
+ *   - 9 charts (Area/Bar/Line/Donut/Scatter/Combo/CategoryBar/BarList/Spark)
+ *   - 4 KPI  (Tracker/ProgressBar/ProgressCircle/Callout)
+ *   - 2 UI   (Divider/TabNavigation)
+ *   - 2 inputs (DateRangePicker/RadioCardGroup)
+ *   - 5 finais (Card/Calendar/SelectNative/Label/Toggle)
+ *
+ * Cada componente Tremor recebe ao menos 1 Example realista. Charts usam
+ * dados em formato long-format, valueFormatter em BRL/%, paleta da
+ * `AvailableChartColors`; alguns ganham um segundo Example para destacar
+ * variantes-chave (stacked, bar vs line no combo, pie vs donut,
+ * click-to-filter no BarList, etc.). UI/inputs mostram variantes visuais
+ * ou pareamentos com label/htmlFor.
  *
  * Segue o padrão dos outros `examples-*.tsx` — mesclado em `examples.tsx`
  * via spread do `examplesTremor`.
@@ -14,22 +23,27 @@ import {
   AreaChartTremor,
   BarChartTremor,
   BarListTremor,
+  CalendarTremor,
   CalloutTremor,
+  CardTremor,
   CategoryBarTremor,
   ComboChartTremor,
   DateRangePickerTremor,
   DividerTremor,
   DonutChartTremor,
+  LabelTremor,
   LineChartTremor,
   ProgressBarTremor,
   ProgressCircleTremor,
   RadioCardGroupTremor,
   ScatterChartTremor,
+  SelectNativeTremor,
   SparkChartTremor,
   TabNavigationTremor,
+  ToggleTremor,
   TrackerTremor,
 } from "@/components/ui"
-import { CreditCard, Home, Info, Settings, Users, Wallet, Zap } from "lucide-react"
+import { CreditCard, Home, Info, Mail, Settings, Users, Wallet, Zap } from "lucide-react"
 
 import type { Example } from "./examples"
 
@@ -1421,6 +1435,403 @@ export function Demo() {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                              card-tremor                                   */
+/* -------------------------------------------------------------------------- */
+
+const cardBasicExample: Example = {
+  title: "Card simples",
+  description:
+    "CardTremor é o container base do sistema visual Tremor — borda gray-200/gray-900, fundo branco/[#090E1A], padding generoso. Equivalente direto ao `<Card>` shadcn mas com a paleta exata da Tremor Raw.",
+  code: `import { CardTremor } from "@/components/ui/card-tremor"
+
+export function Demo() {
+  return (
+    <CardTremor>
+      <h3 className="text-base font-semibold text-gray-900 dark:text-gray-50">
+        Receita mensal
+      </h3>
+      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+        R$ 18.240,00 em novembro — alta de 12% em relação a outubro.
+      </p>
+    </CardTremor>
+  )
+}`,
+  render: (
+    <CardTremor>
+      <h3 className="text-base font-semibold text-gray-900 dark:text-gray-50">
+        Receita mensal
+      </h3>
+      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
+        R$ 18.240,00 em novembro — alta de 12% em relação a outubro.
+      </p>
+    </CardTremor>
+  ),
+}
+
+const cardAsLinkExample: Example = {
+  title: "Card clicável (asChild)",
+  description:
+    "Com `asChild` o card vira o elemento filho (preserva semântica de link). Útil para cards de listagem que navegam para uma página de detalhe.",
+  code: `import { CardTremor } from "@/components/ui/card-tremor"
+
+export function Demo() {
+  return (
+    <CardTremor asChild>
+      <a href="#relatorio-q4">
+        <h3 className="text-base font-semibold text-gray-900 dark:text-gray-50">
+          Relatório Q4 →
+        </h3>
+        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+          Consolidado de receita, custos e margem por unidade de negócio.
+        </p>
+      </a>
+    </CardTremor>
+  )
+}`,
+  render: (
+    <CardTremor asChild>
+      <a href="#relatorio-q4" className="block">
+        <h3 className="text-base font-semibold text-gray-900 dark:text-gray-50">
+          Relatório Q4 →
+        </h3>
+        <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+          Consolidado de receita, custos e margem por unidade de negócio.
+        </p>
+      </a>
+    </CardTremor>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
+/*                            calendar-tremor                                 */
+/* -------------------------------------------------------------------------- */
+
+const calendarBasicExample: Example = {
+  title: "Seleção única (mode single)",
+  description:
+    "CalendarTremor em modo `single` com a data pré-selecionada no dia 15 do mês atual. Callback `onSelect` no-op (demo estática) — em uso real, plugue seu próprio state para guardar a seleção.",
+  code: `import { useState } from "react"
+import { CalendarTremor } from "@/components/ui/calendar-tremor"
+
+export function Demo() {
+  const today = new Date()
+  const [selected, setSelected] = useState<Date | undefined>(new Date(today.getFullYear(), today.getMonth(), 15))
+  return (
+    <CalendarTremor
+      mode="single"
+      selected={selected}
+      onSelect={setSelected}
+    />
+  )
+}`,
+  render: (() => {
+    const today = new Date()
+    const initial = new Date(today.getFullYear(), today.getMonth(), 15)
+    return (
+      <div className="w-fit">
+        <CalendarTremor
+          mode="single"
+          selected={initial}
+          onSelect={() => {
+            /* demo estática — consumidor real pluga state */
+          }}
+        />
+      </div>
+    )
+  })(),
+}
+
+const calendarDisabledExample: Example = {
+  title: "Com dias bloqueados (Matcher)",
+  description:
+    "Usa a prop `disabled` do react-day-picker para bloquear fins de semana — útil em agendamentos comerciais. `numberOfMonths={2}` mostra dois meses lado a lado.",
+  code: `import { CalendarTremor } from "@/components/ui/calendar-tremor"
+
+export function Demo() {
+  return (
+    <CalendarTremor
+      mode="single"
+      selected={new Date()}
+      onSelect={() => {}}
+      disabled={[
+        { dayOfWeek: [0, 6] }, // bloqueia sábado e domingo
+        { before: new Date() }, // bloqueia datas passadas
+      ]}
+      numberOfMonths={2}
+    />
+  )
+}`,
+  render: (
+    <div className="w-fit overflow-x-auto">
+      <CalendarTremor
+        mode="single"
+        selected={new Date()}
+        onSelect={() => {
+          /* demo estática */
+        }}
+        disabled={[
+          { dayOfWeek: [0, 6] },
+          { before: new Date() },
+        ]}
+        numberOfMonths={2}
+      />
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
+/*                         select-native-tremor                               */
+/* -------------------------------------------------------------------------- */
+
+const PLAN_OPTIONS = [
+  { value: "free", label: "Free — 1 usuário, 100 req/mês" },
+  { value: "pro", label: "Pro — 10 usuários, 10k req/mês" },
+  { value: "enterprise", label: "Enterprise — SLA 99.9%, dedicado" },
+]
+
+const selectNativeBasicExample: Example = {
+  title: "Escolha de plano",
+  description:
+    "SelectNativeTremor com 3 options (Free/Pro/Enterprise) e placeholder exibido enquanto nada está selecionado. Dropdown nativo do navegador com chevron Tremor overlay — leve e acessível sem portal.",
+  code: `import { SelectNativeTremor } from "@/components/ui/select-native-tremor"
+import type { SelectNativeTremorOption } from "@/components/ui/select-native-tremor"
+
+const options: SelectNativeTremorOption[] = [
+  { value: "free", label: "Free — 1 usuário, 100 req/mês" },
+  { value: "pro", label: "Pro — 10 usuários, 10k req/mês" },
+  { value: "enterprise", label: "Enterprise — SLA 99.9%, dedicado" },
+]
+
+export function Demo() {
+  return (
+    <SelectNativeTremor
+      options={options}
+      placeholder="Escolha um plano"
+      name="plan"
+      required
+    />
+  )
+}`,
+  render: (
+    <div className="w-full max-w-sm">
+      <SelectNativeTremor
+        options={PLAN_OPTIONS}
+        placeholder="Escolha um plano"
+        name="plan"
+        required
+      />
+    </div>
+  ),
+}
+
+const selectNativeControlledExample: Example = {
+  title: "Pareado com label",
+  description:
+    "Select associado a um LabelTremor via `htmlFor` — padrão recomendado para formulários acessíveis (clique no label foca o select). `value` controlado com `Pro` selecionado; em uso real, plugue seu state via `onChange`.",
+  code: `import { useState } from "react"
+import { LabelTremor } from "@/components/ui/label-tremor"
+import { SelectNativeTremor } from "@/components/ui/select-native-tremor"
+
+export function Demo() {
+  const [plan, setPlan] = useState("pro")
+  return (
+    <div className="flex flex-col gap-2">
+      <LabelTremor htmlFor="plan-select">Plano atual</LabelTremor>
+      <SelectNativeTremor
+        id="plan-select"
+        value={plan}
+        onChange={(e) => setPlan(e.target.value)}
+        options={[
+          { value: "free", label: "Free" },
+          { value: "pro", label: "Pro" },
+          { value: "enterprise", label: "Enterprise" },
+        ]}
+      />
+    </div>
+  )
+}`,
+  render: (
+    <div className="flex w-full max-w-sm flex-col gap-2">
+      <LabelTremor htmlFor="plan-select-demo">Plano atual</LabelTremor>
+      <SelectNativeTremor
+        id="plan-select-demo"
+        value="pro"
+        options={[
+          { value: "free", label: "Free" },
+          { value: "pro", label: "Pro" },
+          { value: "enterprise", label: "Enterprise" },
+        ]}
+      />
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              label-tremor                                  */
+/* -------------------------------------------------------------------------- */
+
+const labelBasicExample: Example = {
+  title: "Label pareado com input",
+  description:
+    "LabelTremor em par com um `<input>` via `htmlFor` — associação explícita para acessibilidade (clique no label foca o input). Tipografia `text-sm font-medium` consistente com os demais wrappers Tremor.",
+  code: `import { LabelTremor } from "@/components/ui/label-tremor"
+
+export function Demo() {
+  return (
+    <div className="flex flex-col gap-2">
+      <LabelTremor htmlFor="email-demo">E-mail de contato</LabelTremor>
+      <input
+        id="email-demo"
+        type="email"
+        placeholder="voce@empresa.com"
+        className="h-9 rounded-md border border-gray-200 bg-white px-3 text-sm dark:border-gray-800 dark:bg-[#090E1A]"
+      />
+    </div>
+  )
+}`,
+  render: (
+    <div className="flex w-full max-w-sm flex-col gap-2">
+      <LabelTremor htmlFor="email-demo">E-mail de contato</LabelTremor>
+      <input
+        id="email-demo"
+        type="email"
+        placeholder="voce@empresa.com"
+        className="h-9 rounded-md border border-gray-200 bg-white px-3 text-sm text-gray-900 dark:border-gray-800 dark:bg-[#090E1A] dark:text-gray-50"
+      />
+    </div>
+  ),
+}
+
+const labelInlineExample: Example = {
+  title: "Label inline (checkbox)",
+  description:
+    "Usado como label de um checkbox — aninhamento HTML associa implicitamente (sem precisar de `htmlFor`). Demonstra o uso mais comum em filtros/toggles.",
+  code: `import { Mail } from "lucide-react"
+import { LabelTremor } from "@/components/ui/label-tremor"
+
+export function Demo() {
+  return (
+    <LabelTremor className="flex items-center gap-2">
+      <input
+        type="checkbox"
+        defaultChecked
+        className="size-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
+      />
+      <Mail className="size-4 text-gray-500" />
+      Receber alertas por e-mail
+    </LabelTremor>
+  )
+}`,
+  render: (
+    <LabelTremor className="flex items-center gap-2">
+      <input
+        type="checkbox"
+        defaultChecked
+        className="size-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500 dark:border-gray-700"
+      />
+      <Mail className="size-4 text-gray-500" />
+      Receber alertas por e-mail
+    </LabelTremor>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
+/*                             toggle-tremor                                  */
+/* -------------------------------------------------------------------------- */
+
+const toggleBasicExample: Example = {
+  title: "Default (não-controlado)",
+  description:
+    "ToggleTremor com `defaultPressed={false}` e `variant=\"default\"`. Estado interno via `useState` — cliques alternam o `aria-pressed` e a cor azul do estado pressed.",
+  code: `import { ToggleTremor } from "@/components/ui/toggle-tremor"
+
+export function Demo() {
+  return <ToggleTremor defaultPressed={false}>Notificações</ToggleTremor>
+}`,
+  render: (
+    <div className="flex items-center gap-3">
+      <ToggleTremor defaultPressed={false}>Notificações</ToggleTremor>
+      <span className="text-sm text-gray-600 dark:text-gray-400">
+        Modo não-controlado — estado interno
+      </span>
+    </div>
+  ),
+}
+
+const toggleVariantsExample: Example = {
+  title: "As 4 variants",
+  description:
+    "Comparativo visual das 4 variants semânticas. Cada uma fica com sua cor cheia SOMENTE quando pressionada — unpressed sempre usa branco/[#090E1A] com borda cinza.",
+  code: `import { ToggleTremor } from "@/components/ui/toggle-tremor"
+
+export function Demo() {
+  return (
+    <div className="flex flex-wrap gap-2">
+      <ToggleTremor defaultPressed variant="default">Default</ToggleTremor>
+      <ToggleTremor defaultPressed variant="success">Success</ToggleTremor>
+      <ToggleTremor defaultPressed variant="warning">Warning</ToggleTremor>
+      <ToggleTremor defaultPressed variant="error">Error</ToggleTremor>
+    </div>
+  )
+}`,
+  render: (
+    <div className="flex flex-wrap gap-2">
+      <ToggleTremor defaultPressed variant="default">
+        Default
+      </ToggleTremor>
+      <ToggleTremor defaultPressed variant="success">
+        Success
+      </ToggleTremor>
+      <ToggleTremor defaultPressed variant="warning">
+        Warning
+      </ToggleTremor>
+      <ToggleTremor defaultPressed variant="error">
+        Error
+      </ToggleTremor>
+    </div>
+  ),
+}
+
+const toggleControlledExample: Example = {
+  title: "Controlado (pressed + onPressedChange)",
+  description:
+    "Modo controlado — `pressed` vem de fora (state do consumidor) e `onPressedChange` reage ao clique. Use quando precisar sincronizar com outras peças de UI ou persistir o estado. Render estático abaixo mostra o estado ligado; copie o snippet para ter um toggle interativo.",
+  code: `import { useState } from "react"
+import { ToggleTremor } from "@/components/ui/toggle-tremor"
+
+export function Demo() {
+  const [on, setOn] = useState(true)
+  return (
+    <div className="flex items-center gap-3">
+      <ToggleTremor
+        variant="success"
+        pressed={on}
+        onPressedChange={setOn}
+      >
+        Auto-save
+      </ToggleTremor>
+      <span className="text-sm text-gray-600 dark:text-gray-400">
+        {on ? "Ativo" : "Inativo"}
+      </span>
+    </div>
+  )
+}`,
+  // Render estático: o componente com useState exigiria um wrapper interno
+  // (o que dispararia a regra react-refresh/only-export-components neste
+  // arquivo). O exemplo controlado fica demonstrado apenas no `code`.
+  render: (
+    <div className="flex items-center gap-3">
+      <ToggleTremor variant="success" defaultPressed>
+        Auto-save
+      </ToggleTremor>
+      <span className="text-sm text-gray-600 dark:text-gray-400">
+        Ativo
+      </span>
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  mapa                                       */
 /* -------------------------------------------------------------------------- */
 
@@ -1445,4 +1856,9 @@ export const examplesTremor: Record<string, Example[]> = {
   "tab-navigation-tremor": [tabNavBasicExample, tabNavWithIconsExample],
   "date-range-picker-tremor": [dateRangeBasicExample, dateRangePresetsExample],
   "radio-card-group-tremor": [radioCardBasicExample, radioCardPaymentExample],
+  "card-tremor": [cardBasicExample, cardAsLinkExample],
+  "calendar-tremor": [calendarBasicExample, calendarDisabledExample],
+  "select-native-tremor": [selectNativeBasicExample, selectNativeControlledExample],
+  "label-tremor": [labelBasicExample, labelInlineExample],
+  "toggle-tremor": [toggleBasicExample, toggleVariantsExample, toggleControlledExample],
 }
