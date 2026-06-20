@@ -16,10 +16,11 @@
 
 import {
   AppWindow,
+  BarChart3,
   Bot,
   Globe,
-  LayoutDashboard,
   LayoutGrid,
+  LineChart,
   MessageSquare,
   MousePointerClick,
   Palette,
@@ -53,7 +54,8 @@ export const GROUP_ICONS: Record<GroupId, LucideIcon> = {
   "layout-containers": LayoutGrid,
   "feedback-status": MessageSquare,
   "chat-ai": Bot,
-  "dashboards-dev": LayoutDashboard,
+  "dashboards-charts": LineChart,
+  "dashboards-data": BarChart3,
   "text-effects": Type,
   "backgrounds-fx": Sparkles,
   "globes-maps": Globe,
