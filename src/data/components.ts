@@ -3335,6 +3335,22 @@ export const components: ComponentMeta[] = [
       "Nav horizontal de abas estilo admin da Tremor Raw: estado ativo sublinhado, ícone opcional por item, modo controlado/não-controlado via `value`/`defaultValue`/`onValueChange`. Diferente do `tabs` shadcn (que traz painéis de conteúdo), esta é apenas a faixa de navegação.",
     tags: ["tremor", "tabs", "navegacao", "navbar", "admin", "layout"],
   },
+  {
+    slug: "date-range-picker-tremor",
+    name: "Date Range Picker (Tremor)",
+    category: "Forms",
+    description:
+      "Seletor de intervalo de datas (from/to) da Tremor Raw: calendário duplo, presets rápidos (Last 7 days, Month to date, etc.) e formatação localizada via date-fns. Ideal para dashboards de analytics com filtros temporais.",
+    tags: ["tremor", "input", "date", "range", "calendario", "intervalo", "dashboard", "presets"],
+  },
+  {
+    slug: "radio-card-group-tremor",
+    name: "Radio Card Group (Tremor)",
+    category: "Forms",
+    description:
+      "Radio group onde cada opção é um card selecionável da Tremor Raw, com ícone + título + descrição. Mantém a acessibilidade de radiogroup (navegação por setas). Ideal para escolha de plano, método de pagamento ou tipo de assinatura.",
+    tags: ["tremor", "input", "radio", "card", "selecao", "plano", "pagamento"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

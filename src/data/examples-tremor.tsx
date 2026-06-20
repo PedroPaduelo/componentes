@@ -17,17 +17,19 @@ import {
   CalloutTremor,
   CategoryBarTremor,
   ComboChartTremor,
+  DateRangePickerTremor,
   DividerTremor,
   DonutChartTremor,
   LineChartTremor,
   ProgressBarTremor,
   ProgressCircleTremor,
+  RadioCardGroupTremor,
   ScatterChartTremor,
   SparkChartTremor,
   TabNavigationTremor,
   TrackerTremor,
 } from "@/components/ui"
-import { Home, Info, Settings, Users } from "lucide-react"
+import { CreditCard, Home, Info, Settings, Users, Wallet, Zap } from "lucide-react"
 
 import type { Example } from "./examples"
 
@@ -1223,6 +1225,202 @@ export function Demo() {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                          date-range-picker-tremor                           */
+/* -------------------------------------------------------------------------- */
+
+const dateRangeBasicExample: Example = {
+  title: "Intervalo customizado",
+  description:
+    "DateRangePickerTremor com `value` controlado (intervalo de 7 dias). Calendário duplo (2 meses), texto formatado em pt-BR via date-fns e botão de limpar quando há valor. Callback ignorado (demo estática) — em uso real, plugue seu próprio state.",
+  code: `import { useState } from "react"
+import { DateRangePickerTremor } from "@/components/ui/date-range-picker-tremor"
+import type { DateRangePickerTremorValue } from "@/components/ui/date-range-picker-tremor"
+
+export function Demo() {
+  const today = new Date()
+  const weekAgo = new Date()
+  weekAgo.setDate(weekAgo.getDate() - 6)
+  const [value, setValue] = useState<DateRangePickerTremorValue>({
+    from: weekAgo,
+    to: today,
+  })
+  return (
+    <DateRangePickerTremor
+      value={value}
+      onValueChange={setValue}
+      placeholder="Selecione um período"
+    />
+  )
+}`,
+  render: (() => {
+    const today = new Date()
+    const weekAgo = new Date()
+    weekAgo.setDate(weekAgo.getDate() - 6)
+    return (
+      <div className="w-full max-w-md">
+        <DateRangePickerTremor
+          value={{ from: weekAgo, to: today }}
+          onValueChange={() => {
+            /* demo estática — consumidor real pluga state */
+          }}
+          placeholder="Selecione um período"
+        />
+      </div>
+    )
+  })(),
+}
+
+const dateRangePresetsExample: Example = {
+  title: "Com presets rápidos",
+  description:
+    "Lista de presets (Today / Last 7 days / Month to date) passada via prop `presets` — ao clicar, o intervalo é aplicado e o preset fica destacado no Select.",
+  code: `import { DateRangePickerTremor } from "@/components/ui/date-range-picker-tremor"
+import type { DateRangePickerTremorPreset } from "@/components/ui/date-range-picker-tremor"
+
+const presets: DateRangePickerTremorPreset[] = [
+  { label: "Today", from: () => new Date(), to: () => new Date() },
+  {
+    label: "Last 7 days",
+    from: () => {
+      const d = new Date()
+      d.setDate(d.getDate() - 6)
+      return d
+    },
+    to: () => new Date(),
+  },
+  {
+    label: "Month to date",
+    from: () => new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+    to: () => new Date(),
+  },
+]
+
+export function Demo() {
+  return (
+    <DateRangePickerTremor
+      presets={presets}
+      placeholder="Selecione um período"
+    />
+  )
+}`,
+  render: (
+    <div className="w-full max-w-md">
+      <DateRangePickerTremor
+        presets={[
+          { label: "Today", from: () => new Date(), to: () => new Date() },
+          {
+            label: "Last 7 days",
+            from: () => {
+              const d = new Date()
+              d.setDate(d.getDate() - 6)
+              return d
+            },
+            to: () => new Date(),
+          },
+          {
+            label: "Month to date",
+            from: () =>
+              new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+            to: () => new Date(),
+          },
+        ]}
+        placeholder="Selecione um período"
+      />
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
+/*                          radio-card-group-tremor                            */
+/* -------------------------------------------------------------------------- */
+
+const radioCardBasicExample: Example = {
+  title: "Escolha de plano",
+  description:
+    "RadioCardGroupTremor com 3 planos (Free, Pro, Business). Cada card mostra ícone + label + descrição; o selecionado recebe borda e ring azuis.",
+  code: `import { CreditCard, Wallet, Zap } from "lucide-react"
+import { RadioCardGroupTremor } from "@/components/ui/radio-card-group-tremor"
+import type { RadioCardGroupTremorItem } from "@/components/ui/radio-card-group-tremor"
+
+const items: RadioCardGroupTremorItem[] = [
+  { value: "free", label: "Free", description: "1 usuário, 100 requests/mês", icon: Wallet },
+  { value: "pro", label: "Pro", description: "10 usuários, 10k requests/mês", icon: Zap },
+  { value: "biz", label: "Business", description: "Ilimitado, SLA 99.9%", icon: CreditCard },
+]
+
+export function Demo() {
+  return <RadioCardGroupTremor defaultValue="pro" items={items} />
+}`,
+  render: (
+    <div className="w-full max-w-md">
+      <RadioCardGroupTremor
+        defaultValue="pro"
+        items={[
+          {
+            value: "free",
+            label: "Free",
+            description: "1 usuário, 100 requests/mês",
+            icon: Wallet,
+          },
+          {
+            value: "pro",
+            label: "Pro",
+            description: "10 usuários, 10k requests/mês",
+            icon: Zap,
+          },
+          {
+            value: "biz",
+            label: "Business",
+            description: "Ilimitado, SLA 99.9%",
+            icon: CreditCard,
+          },
+        ]}
+      />
+    </div>
+  ),
+}
+
+const radioCardPaymentExample: Example = {
+  title: "Método de pagamento",
+  description:
+    "Card de pagamento com item `disabled` (Pix indisponível para a conta). Demonstra como `disabled` esmaece o card e bloqueia cliques mantendo a estrutura visual.",
+  code: `import { CreditCard, Wallet } from "lucide-react"
+import { RadioCardGroupTremor } from "@/components/ui/radio-card-group-tremor"
+import type { RadioCardGroupTremorItem } from "@/components/ui/radio-card-group-tremor"
+
+const items: RadioCardGroupTremorItem[] = [
+  { value: "card", label: "Cartão de crédito", description: "Visa, Master, Elo", icon: CreditCard },
+  { value: "pix", label: "Pix", description: "Indisponível para esta conta", icon: Wallet, disabled: true },
+]
+
+export function Demo() {
+  return <RadioCardGroupTremor defaultValue="card" items={items} />
+}`,
+  render: (
+    <div className="w-full max-w-md">
+      <RadioCardGroupTremor
+        defaultValue="card"
+        items={[
+          {
+            value: "card",
+            label: "Cartão de crédito",
+            description: "Visa, Master, Elo",
+            icon: CreditCard,
+          },
+          {
+            value: "pix",
+            label: "Pix",
+            description: "Indisponível para esta conta",
+            icon: Wallet,
+            disabled: true,
+          },
+        ]}
+      />
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  mapa                                       */
 /* -------------------------------------------------------------------------- */
 
@@ -1245,4 +1443,6 @@ export const examplesTremor: Record<string, Example[]> = {
   "callout-tremor": [calloutInfoExample, calloutSuccessExample],
   "divider-tremor": [dividerBasicExample, dividerWithTextExample, dividerVerticalExample],
   "tab-navigation-tremor": [tabNavBasicExample, tabNavWithIconsExample],
+  "date-range-picker-tremor": [dateRangeBasicExample, dateRangePresetsExample],
+  "radio-card-group-tremor": [radioCardBasicExample, radioCardPaymentExample],
 }
