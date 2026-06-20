@@ -132,23 +132,24 @@ try {
 
     // Banner "Filtrado" (role=status) confirma o filtro ativo e deve ser
     // coerente com a quantidade de cards renderizada (sem hardcode de número).
-    const statusText = await page
-      .locator("[role=status]")
-      .first()
-      .innerText()
-      .catch(() => "")
-    check(
-      "banner 'Filtrado' de dashboard presente",
-      /filtrad/i.test(statusText),
-      JSON.stringify(statusText.slice(0, 80)),
-    )
-    const bannerMatch = statusText.match(/(\d+)\s+composi/i)
-    if (bannerMatch) {
-      check(
-        "contagem do banner == cards renderizados",
-        Number(bannerMatch[1]) === filteredCards,
-        `banner=${bannerMatch[1]} cards=${filteredCards}`,
-      )
+    // Filtramos por TEXTO porque o app tem outros [role=status] efêmeros — ex.:
+    // o RouteFallback (spinner do Suspense, role=status sem texto) que aparece
+    // enquanto o chunk de /compositions carrega após o clique. Pegar `.first()`
+    // cru poderia casar o spinner vazio; o filtro por /filtrad/i mira o banner.
+    const banner = page.locator("[role=status]").filter({ hasText: /filtrad/i })
+    await banner.first().waitFor({ state: "visible", timeout: 10000 }).catch(() => {})
+    const bannerCount = await banner.count()
+    check("banner 'Filtrado' de dashboard ativo", bannerCount >= 1, `matches=${bannerCount}`)
+    if (bannerCount >= 1) {
+      const statusText = await banner.first().innerText().catch(() => "")
+      const bannerMatch = statusText.match(/(\d+)\s+composi/i)
+      if (bannerMatch) {
+        check(
+          "contagem do banner == cards renderizados",
+          Number(bannerMatch[1]) === filteredCards,
+          `banner=${bannerMatch[1]} cards=${filteredCards}`,
+        )
+      }
     }
 
     await shot(page, "dashboard-compositions-filtered").catch(() => {})
