@@ -3351,6 +3351,46 @@ export const components: ComponentMeta[] = [
       "Radio group onde cada opção é um card selecionável da Tremor Raw, com ícone + título + descrição. Mantém a acessibilidade de radiogroup (navegação por setas). Ideal para escolha de plano, método de pagamento ou tipo de assinatura.",
     tags: ["tremor", "input", "radio", "card", "selecao", "plano", "pagamento"],
   },
+  {
+    slug: "card-tremor",
+    name: "Card (Tremor)",
+    category: "Layout",
+    description:
+      "Container/card da Tremor Raw com fundo, borda e cantos arredondados padronizados. Casca visual para agrupar blocos de dashboard (header + conteúdo + footer) com tipografia consistente.",
+    tags: ["tremor", "card", "container", "panel", "layout"],
+  },
+  {
+    slug: "calendar-tremor",
+    name: "Calendar (Tremor)",
+    category: "Forms",
+    description:
+      "Wrapper do Calendar shadcn (react-day-picker v9) com a casca visual e cores da Tremor Raw: borda, foco ring e tokens azul/tremor-id para que o validador Playwright identifique a variante Tremor dentro do ecossistema Vitrine.",
+    tags: ["tremor", "calendar", "calendario", "data", "date", "picker", "wrapper"],
+  },
+  {
+    slug: "select-native-tremor",
+    name: "Select Native (Tremor)",
+    category: "Forms",
+    description:
+      "Wrapper do <select> HTML nativo estilizado com a casca da Tremor Raw (foco ring, borda, opções com tema). Ideal para selects simples que não precisam do peso de um popover/combobox, mantendo a mesma identidade visual Tremor.",
+    tags: ["tremor", "select", "native", "formulario", "input"],
+  },
+  {
+    slug: "label-tremor",
+    name: "Label (Tremor)",
+    category: "Forms",
+    description:
+      "Wrapper do <label> HTML estilizado com tipografia e cor da Tremor Raw. Pequeno e proposital: serve para padronizar rótulos de formulários dentro de dashboards Tremor sem precisar do label do shadcn (que traz FormControl/FormMessage).",
+    tags: ["tremor", "label", "rotulo", "formulario"],
+  },
+  {
+    slug: "toggle-tremor",
+    name: "Toggle (Tremor)",
+    category: "Forms",
+    description:
+      "Toggle/switch da Tremor Raw (input + span visual animado) com foco ring e estados checked/unchecked na paleta azul Tremor. Wrapper leve do <input type='checkbox'> que cobre o caso clássico de on/off em filtros e preferências.",
+    tags: ["tremor", "toggle", "switch", "checkbox", "formulario", "on-off"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

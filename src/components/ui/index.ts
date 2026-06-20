@@ -998,4 +998,16 @@ export type {
   RadioCardGroupTremorCardProps,
 } from "./radio-card-group-tremor"
 
+// Lote Tremor (utilities + wrappers finais)
+export { CardTremor } from "./card-tremor"
+export type { CardTremorProps } from "./card-tremor"
+export { CalendarTremor } from "./calendar-tremor"
+export type { CalendarTremorProps } from "./calendar-tremor"
+export { SelectNativeTremor } from "./select-native-tremor"
+export type { SelectNativeTremorProps, SelectNativeTremorOption } from "./select-native-tremor"
+export { LabelTremor } from "./label-tremor"
+export type { LabelTremorProps } from "./label-tremor"
+export { ToggleTremor } from "./toggle-tremor"
+export type { ToggleTremorProps } from "./toggle-tremor"
+
 

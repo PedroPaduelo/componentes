@@ -225,6 +225,7 @@ export const DEFAULT_GROUP: GroupId = "feedback-status"
 export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   // — Forms & Inputs: campos, seleção e captura de dados —
   calendar: "forms-inputs",
+  "calendar-tremor": "forms-inputs",
   checkbox: "forms-inputs",
   "checkbox-group-fluid": "forms-inputs",
   "color-picker-fluid": "forms-inputs",
@@ -241,6 +242,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "input-group-fluid": "forms-inputs",
   "input-otp": "forms-inputs",
   keyboard: "forms-inputs",
+  "label-tremor": "forms-inputs",
   "middle-truncation": "forms-inputs",
   "placeholders-and-vanish-input": "forms-inputs",
   "preference-row": "forms-inputs",
@@ -250,12 +252,14 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "react-wheel-picker": "forms-inputs",
   select: "forms-inputs",
   "select-fluid": "forms-inputs",
+  "select-native-tremor": "forms-inputs",
   "slide-to-unlock": "forms-inputs",
   slider: "forms-inputs",
   "slider-fluid": "forms-inputs",
   switch: "forms-inputs",
   "switch-fluid": "forms-inputs",
   textarea: "forms-inputs",
+  "toggle-tremor": "forms-inputs",
 
   // — Actions & Navegação: gatilhos de ação, menus, abas, navbars —
   "animated-button": "actions-navigation",
@@ -308,6 +312,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "aspect-ratio": "layout-containers",
   "bento-grid": "layout-containers",
   card: "layout-containers",
+  "card-tremor": "layout-containers",
   "card-hover-effect": "layout-containers",
   "card-spotlight": "layout-containers",
   "card-stack": "layout-containers",
