@@ -17,15 +17,16 @@
  * - O vínculo slug → grupo vive em `SLUG_GROUP_MAP` (mapa de derivação externo),
  *   mantendo o registry (`components.ts`) como única fonte da verdade dos itens.
  *
- * A taxonomia abaixo (9 grupos, agrupados em 3 domínios macro) vem do mapa de
+ * A taxonomia abaixo (10 grupos, agrupados em 3 domínios macro) vem do mapa de
  * arquitetura do explorer. Cada grupo é a futura unidade de página/seção.
  */
 
 import {
+  BarChart3,
   Bot,
   Globe,
-  LayoutDashboard,
   LayoutGrid,
+  LineChart,
   MessageSquare,
   MousePointerClick,
   Sparkles,
@@ -56,7 +57,7 @@ export type DomainId = (typeof DOMAIN_IDS)[number]
 /* -------------------------------------------------------------------------- */
 
 /**
- * Ids canônicos dos 9 grupos da vitrine (união literal `as const`).
+ * Ids canônicos dos 10 grupos da vitrine (união literal `as const`).
  *
  * São URL-safe (kebab-case) porque viram o contrato da futura rota de grupo
  * (ex.: `/components/grupo/forms-inputs`). Estáveis — não renomear sem migração.
@@ -67,7 +68,8 @@ export const GROUP_IDS = [
   "layout-containers",
   "feedback-status",
   "chat-ai",
-  "dashboards-dev",
+  "dashboards-charts",
+  "dashboards-data",
   "text-effects",
   "backgrounds-fx",
   "globes-maps",
@@ -93,8 +95,8 @@ export interface Group {
 }
 
 /**
- * Os 9 grupos da taxonomia do explorer, JÁ ORDENADOS por domínio:
- * primitivos (1–4) → aplicações (5–6) → visual (7–9).
+ * Os 10 grupos da taxonomia do explorer, JÁ ORDENADOS por domínio:
+ * primitivos (1–4) → aplicações (5–7) → visual (8–10).
  */
 export const GROUPS: Group[] = [
   // — Domínio: primitivos de UI —
@@ -146,13 +148,22 @@ export const GROUPS: Group[] = [
     icon: Bot,
   },
   {
-    id: "dashboards-dev",
-    label: "Dashboards & Dev",
+    id: "dashboards-charts",
+    label: "Dashboards & Charts",
     domain: "aplicacoes",
     description:
-      "Superfícies de dados e dev tools: tabelas, grids de overview, timelines, feeds, terminais e blocos de código.",
+      "Visualizações de dados: gráficos de área, barra, linha, pizza, dispersão, sparkline, combo, listas de barras e barras horizontais.",
     order: 6,
-    icon: LayoutDashboard,
+    icon: LineChart,
+  },
+  {
+    id: "dashboards-data",
+    label: "Dashboards & Data",
+    domain: "aplicacoes",
+    description:
+      "Superfícies de dados e dev tools: KPIs, tabelas, timelines, feeds, observability, trace, logs, terminais e blocos de código.",
+    order: 7,
+    icon: BarChart3,
   },
 
   // — Domínio: visual & efeitos —
@@ -212,7 +223,7 @@ export const DEFAULT_GROUP: GroupId = "feedback-status"
  * Mapa de derivação `slug do componente → grupo`.
  *
  * COBERTURA: mapeia TODOS os 214 slugs de `components.ts`, cada um para 1 dos
- * 9 `GroupId`. A vinculação fica AQUI (e não em `ComponentMeta`) para manter a
+ * 10 `GroupId`. A vinculação fica AQUI (e não em `ComponentMeta`) para manter a
  * camada de grupos aditiva e desacoplada do registry e dos parsers `_meta`.
  * Slugs futuros sem entrada caem em `DEFAULT_GROUP`.
  *
@@ -381,68 +392,69 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "thinking-indicator-fluid": "chat-ai",
   "thinking-steps-fluid": "chat-ai",
 
-  // — Dashboards & Dev: tabelas, overview, timelines, feeds, terminais —
-  "activity-feed": "dashboards-dev",
-  "area-chart-tremor": "dashboards-dev",
-  "bar-chart": "dashboards-dev",
-  "bar-chart-tremor": "dashboards-dev",
-  "bar-list-tremor": "dashboards-dev",
-  "callout-tremor": "dashboards-dev",
-  "category-bar-tremor": "dashboards-dev",
-  "chart-template-gallery": "dashboards-dev",
-  "chart-widget": "dashboards-dev",
-  "code-block": "dashboards-dev",
-  "code-block-command": "dashboards-dev",
-  "combo-chart-tremor": "dashboards-dev",
-  "connection-list": "dashboards-dev",
-  "container-resource-panel": "dashboards-dev",
-  "dashboard-filter-bar": "dashboards-dev",
-  "data-table": "dashboards-dev",
-  "db-overview-grid": "dashboards-dev",
-  "db-schema-explorer": "dashboards-dev",
-  "detail-stat-cell": "dashboards-dev",
-  "donut-breakdown": "dashboards-dev",
-  "donut-chart": "dashboards-dev",
-  "donut-chart-tremor": "dashboards-dev",
-  "ecg-strip": "dashboards-dev",
-  "error-tracker-feed": "dashboards-dev",
-  "favorites-list": "dashboards-dev",
-  "fleet-server-grid": "dashboards-dev",
-  "github-contributions": "dashboards-dev",
-  "h-bar-chart": "dashboards-dev",
-  "incident-timeline": "dashboards-dev",
-  "invoice-table": "dashboards-dev",
-  "kpi-card": "dashboards-dev",
-  "latency-heatmap": "dashboards-dev",
-  "leaderboard-list": "dashboards-dev",
-  "line-chart": "dashboards-dev",
-  "line-chart-tremor": "dashboards-dev",
-  "log-stream": "dashboards-dev",
-  "metric-glow-card": "dashboards-dev",
-  "progress-bar-tremor": "dashboards-dev",
-  "progress-circle-tremor": "dashboards-dev",
-  "query-history-list": "dashboards-dev",
-  "radial-gauge": "dashboards-dev",
-  "react-flow": "dashboards-dev",
-  "request-flow-inspector": "dashboards-dev",
-  "scatter-chart-tremor": "dashboards-dev",
-  "server-overview-card": "dashboards-dev",
-  "service-mesh": "dashboards-dev",
-  "signal-card": "dashboards-dev",
-  "slow-query-list": "dashboards-dev",
-  "spark-chart-tremor": "dashboards-dev",
-  sparkline: "dashboards-dev",
-  "stat-tile": "dashboards-dev",
-  table: "dashboards-dev",
-  "table-fluid": "dashboards-dev",
-  "table-info-panel": "dashboards-dev",
-  terminal: "dashboards-dev",
-  "tracker-tremor": "dashboards-dev",
-  timeline: "dashboards-dev",
-  "trace-waterfall": "dashboards-dev",
-  "upgrade-card": "dashboards-dev",
-  "user-activity-stream": "dashboards-dev",
-  "user-list-item": "dashboards-dev",
+  // — Dashboards & Charts: gráficos de barra, linha, pizza, dispersão, sparkline —\n  "area-chart-tremor": "dashboards-charts",
+  "bar-chart": "dashboards-charts",
+  "bar-chart-tremor": "dashboards-charts",
+  "bar-list-tremor": "dashboards-charts",
+  "category-bar-tremor": "dashboards-charts",
+  "combo-chart-tremor": "dashboards-charts",
+  "donut-breakdown": "dashboards-charts",
+  "donut-chart": "dashboards-charts",
+  "donut-chart-tremor": "dashboards-charts",
+  "h-bar-chart": "dashboards-charts",
+  "line-chart": "dashboards-charts",
+  "line-chart-tremor": "dashboards-charts",
+  "scatter-chart-tremor": "dashboards-charts",
+  "spark-chart-tremor": "dashboards-charts",
+  sparkline: "dashboards-charts",
+
+  // — Dashboards & Data: KPIs, tabelas, observability, trace, logs, dev tools —
+  "activity-feed": "dashboards-data",
+  "callout-tremor": "dashboards-data",
+  "chart-template-gallery": "dashboards-data",
+  "chart-widget": "dashboards-data",
+  "code-block": "dashboards-data",
+  "code-block-command": "dashboards-data",
+  "connection-list": "dashboards-data",
+  "container-resource-panel": "dashboards-data",
+  "dashboard-filter-bar": "dashboards-data",
+  "data-table": "dashboards-data",
+  "db-overview-grid": "dashboards-data",
+  "db-schema-explorer": "dashboards-data",
+  "detail-stat-cell": "dashboards-data",
+  "ecg-strip": "dashboards-data",
+  "error-tracker-feed": "dashboards-data",
+  "favorites-list": "dashboards-data",
+  "fleet-server-grid": "dashboards-data",
+  "github-contributions": "dashboards-data",
+  "incident-timeline": "dashboards-data",
+  "invoice-table": "dashboards-data",
+  "kpi-card": "dashboards-data",
+  "latency-heatmap": "dashboards-data",
+  "leaderboard-list": "dashboards-data",
+  "log-stream": "dashboards-data",
+  "metric-glow-card": "dashboards-data",
+  "progress-bar-tremor": "dashboards-data",
+  "progress-circle-tremor": "dashboards-data",
+  "query-history-list": "dashboards-data",
+  "radial-gauge": "dashboards-data",
+  "react-flow": "dashboards-data",
+  "request-flow-inspector": "dashboards-data",
+  "server-overview-card": "dashboards-data",
+  "service-mesh": "dashboards-data",
+  "signal-card": "dashboards-data",
+  "slow-query-list": "dashboards-data",
+  "stat-tile": "dashboards-data",
+  table: "dashboards-data",
+  "table-fluid": "dashboards-data",
+  "table-info-panel": "dashboards-data",
+  terminal: "dashboards-data",
+  "tracker-tremor": "dashboards-data",
+  timeline: "dashboards-data",
+  "trace-waterfall": "dashboards-data",
+  "upgrade-card": "dashboards-data",
+  "user-activity-stream": "dashboards-data",
+  "user-list-item": "dashboards-data",
 
   // — Efeitos de Texto: flip, typewriter, gradiente, brilho, reveal —
   "canvas-text": "text-effects",
@@ -540,7 +552,7 @@ export interface GroupWithCount extends Group {
 }
 
 /**
- * Lista os 9 grupos JÁ ORDENADOS por `order` (primitivos → aplicações → visual),
+ * Lista os 10 grupos JÁ ORDENADOS por `order` (primitivos → aplicações → visual),
  * cada um anotado com a contagem de componentes e de famílias do registry.
  *
  * Usado pela navegação/sidebar para renderizar as seções com seus totais sem
