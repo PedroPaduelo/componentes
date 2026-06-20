@@ -973,4 +973,14 @@ export type { ProgressCircleTremorProps } from "./progress-circle-tremor"
 export { CalloutTremor } from "./callout-tremor"
 export type { CalloutTremorProps } from "./callout-tremor"
 
+// Lote Tremor (UI)
+export { DividerTremor } from "./divider-tremor"
+export type { DividerTremorProps } from "./divider-tremor"
+export { TabNavigationTremor } from "./tab-navigation-tremor"
+export type {
+  TabNavigationTremorProps,
+  TabNavigationTremorItem,
+  TabNavigationTremorLinkProps,
+} from "./tab-navigation-tremor"
+
 

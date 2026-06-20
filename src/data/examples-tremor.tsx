@@ -14,13 +14,20 @@ import {
   AreaChartTremor,
   BarChartTremor,
   BarListTremor,
+  CalloutTremor,
   CategoryBarTremor,
   ComboChartTremor,
+  DividerTremor,
   DonutChartTremor,
   LineChartTremor,
+  ProgressBarTremor,
+  ProgressCircleTremor,
   ScatterChartTremor,
   SparkChartTremor,
+  TabNavigationTremor,
+  TrackerTremor,
 } from "@/components/ui"
+import { Home, Info, Settings, Users } from "lucide-react"
 
 import type { Example } from "./examples"
 
@@ -697,6 +704,525 @@ export function Demo() {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                            tracker-tremor                                 */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * 365 dias de "atividade" — um objeto por dia com `color` Tremor-like
+ * (5 níveis de intensidade) e `tooltip` para o hover card.
+ */
+function generateYearTracker(): {
+  key: string
+  color: string
+  tooltip: string
+}[] {
+  const levels = [
+    "bg-gray-200 dark:bg-gray-700",
+    "bg-emerald-200 dark:bg-emerald-900",
+    "bg-emerald-400 dark:bg-emerald-700",
+    "bg-emerald-500 dark:bg-emerald-500",
+    "bg-emerald-700 dark:bg-emerald-300",
+  ]
+  // Padrão pseudo-aleatório determinístico (mesma seed ⇒ mesmo dataset).
+  const blocks: { key: string; color: string; tooltip: string }[] = []
+  let seed = 42
+  const rand = () => {
+    seed = (seed * 9301 + 49297) % 233280
+    return seed / 233280
+  }
+  const start = new Date("2025-01-01")
+  for (let i = 0; i < 365; i++) {
+    const date = new Date(start)
+    date.setDate(start.getDate() + i)
+    const iso = date.toISOString().slice(0, 10)
+    const level = Math.floor(rand() * 5)
+    const count = [0, 1, 3, 6, 11][level]
+    blocks.push({
+      key: iso,
+      color: levels[level],
+      tooltip: `${count} contribuição${count === 1 ? "" : "s"} em ${iso}`,
+    })
+  }
+  return blocks
+}
+
+const TRACKER_YEAR = generateYearTracker()
+
+const trackerYearExample: Example = {
+  title: "365 dias de atividade",
+  description:
+    "Faixa completa de um ano no estilo GitHub contributions. Hover em qualquer bloco revela data e contagem via HoverCard.",
+  code: `import { TrackerTremor } from "@/components/ui/tracker-tremor"
+
+const blocks = Array.from({ length: 365 }, (_, i) => ({
+  key: \`2025-01-\${i}\`,
+  color: i % 7 === 0 ? "bg-emerald-500" : "bg-gray-200",
+  tooltip: \`\${i} contribuições\`,
+}))
+
+export function Demo() {
+  return <TrackerTremor data={blocks} hoverEffect />
+}`,
+  render: (
+    <div className="w-full">
+      <TrackerTremor data={TRACKER_YEAR} hoverEffect />
+    </div>
+  ),
+}
+
+const trackerCompactExample: Example = {
+  title: "Faixa curta (30 dias)",
+  description:
+    "Versão reduzida — útil para KPIs de uso recente dentro de um card.",
+  code: `import { TrackerTremor } from "@/components/ui/tracker-tremor"
+
+export function Demo() {
+  return (
+    <TrackerTremor
+      data={[
+        { key: "1", color: "bg-emerald-500", tooltip: "12 ações" },
+        { key: "2", color: "bg-emerald-400", tooltip: "8 ações" },
+        { key: "3", color: "bg-gray-200", tooltip: "0 ações" },
+        { key: "4", color: "bg-emerald-700", tooltip: "21 ações" },
+      ]}
+    />
+  )
+}`,
+  render: (
+    <div className="w-full max-w-md">
+      <TrackerTremor
+        data={[
+          {
+            key: "1",
+            color: "bg-emerald-500 dark:bg-emerald-400",
+            tooltip: "12 ações",
+          },
+          {
+            key: "2",
+            color: "bg-emerald-400 dark:bg-emerald-500",
+            tooltip: "8 ações",
+          },
+          {
+            key: "3",
+            color: "bg-gray-200 dark:bg-gray-700",
+            tooltip: "0 ações",
+          },
+          {
+            key: "4",
+            color: "bg-emerald-700 dark:bg-emerald-300",
+            tooltip: "21 ações",
+          },
+        ]}
+      />
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
+/*                          progress-bar-tremor                               */
+/* -------------------------------------------------------------------------- */
+
+const progressBarBasicExample: Example = {
+  title: "Básico (75% success)",
+  description:
+    "Variante `success` em 75/100 com `label` à direita. `showAnimation` interpolado anima a largura.",
+  code: `import { ProgressBarTremor } from "@/components/ui/progress-bar-tremor"
+
+export function Demo() {
+  return (
+    <ProgressBarTremor
+      value={75}
+      max={100}
+      variant="success"
+      label="75%"
+      showAnimation
+    />
+  )
+}`,
+  render: (
+    <div className="w-full">
+      <ProgressBarTremor
+        value={75}
+        max={100}
+        variant="success"
+        label="75%"
+        showAnimation
+      />
+    </div>
+  ),
+}
+
+const progressBarVariantsExample: Example = {
+  title: "Todas as variants",
+  description:
+    "5 variants semânticas lado a lado — default, neutral, warning, error, success.",
+  code: `import { ProgressBarTremor } from "@/components/ui/progress-bar-tremor"
+
+export function Demo() {
+  return (
+    <div className="flex flex-col gap-3">
+      <ProgressBarTremor value={62} variant="default" label="62%" />
+      <ProgressBarTremor value={40} variant="neutral" label="40%" />
+      <ProgressBarTremor value={85} variant="warning" label="85%" />
+      <ProgressBarTremor value={92} variant="error" label="92%" />
+      <ProgressBarTremor value={48} variant="success" label="48%" />
+    </div>
+  )
+}`,
+  render: (
+    <div className="flex w-full flex-col gap-3">
+      <ProgressBarTremor value={62} variant="default" label="62%" />
+      <ProgressBarTremor value={40} variant="neutral" label="40%" />
+      <ProgressBarTremor value={85} variant="warning" label="85%" />
+      <ProgressBarTremor value={92} variant="error" label="92%" />
+      <ProgressBarTremor value={48} variant="success" label="48%" />
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
+/*                          progress-circle-tremor                            */
+/* -------------------------------------------------------------------------- */
+
+const progressCircleBasicExample: Example = {
+  title: "80% com label central",
+  description:
+    "Anel completo (360°) com texto `80%` centralizado via prop `children`.",
+  code: `import { ProgressCircleTremor } from "@/components/ui/progress-circle-tremor"
+
+export function Demo() {
+  return (
+    <ProgressCircleTremor value={80} max={100} radius={40}>
+      <span className="text-sm font-semibold text-gray-900 dark:text-gray-50">
+        80%
+      </span>
+    </ProgressCircleTremor>
+  )
+}`,
+  render: (
+    <div className="flex items-center gap-4">
+      <ProgressCircleTremor value={80} max={100} radius={40}>
+        <span className="text-sm font-semibold text-gray-900 dark:text-gray-50">
+          80%
+        </span>
+      </ProgressCircleTremor>
+      <span className="text-sm text-muted-foreground">
+        Conversão do funil
+      </span>
+    </div>
+  ),
+}
+
+const progressCircleVariantsExample: Example = {
+  title: "Comparativo de variants",
+  description:
+    "As 5 variants em 60% para comparar visualmente a paleta.",
+  code: `import { ProgressCircleTremor } from "@/components/ui/progress-circle-tremor"
+
+export function Demo() {
+  return (
+    <div className="flex items-center gap-6">
+      <ProgressCircleTremor value={60} variant="default" radius={32} />
+      <ProgressCircleTremor value={60} variant="neutral" radius={32} />
+      <ProgressCircleTremor value={60} variant="warning" radius={32} />
+      <ProgressCircleTremor value={60} variant="error" radius={32} />
+      <ProgressCircleTremor value={60} variant="success" radius={32} />
+    </div>
+  )
+}`,
+  render: (
+    <div className="flex flex-wrap items-center gap-6">
+      <ProgressCircleTremor value={60} variant="default" radius={32} />
+      <ProgressCircleTremor value={60} variant="neutral" radius={32} />
+      <ProgressCircleTremor value={60} variant="warning" radius={32} />
+      <ProgressCircleTremor value={60} variant="error" radius={32} />
+      <ProgressCircleTremor value={60} variant="success" radius={32} />
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
+/*                             callout-tremor                                 */
+/* -------------------------------------------------------------------------- */
+
+const calloutInfoExample: Example = {
+  title: "Info (default)",
+  description:
+    "Banner destacado azul com ícone `Info` do lucide — útil para dicas e avisos contextuais.",
+  code: `import { CalloutTremor } from "@/components/ui/callout-tremor"
+import { Info } from "lucide-react"
+
+export function Demo() {
+  return (
+    <CalloutTremor
+      title="Atualização disponível"
+      icon={Info}
+      variant="info"
+    >
+      A versão 2.4 traz suporte a filtros aninhados. Reinicie o servidor
+      para aplicar.
+    </CalloutTremor>
+  )
+}`,
+  render: (
+    <CalloutTremor
+      title="Atualização disponível"
+      icon={Info}
+      variant="info"
+    >
+      A versão 2.4 traz suporte a filtros aninhados. Reinicie o servidor
+      para aplicar.
+    </CalloutTremor>
+  ),
+}
+
+const calloutSuccessExample: Example = {
+  title: "Success / Warning / Error",
+  description:
+    "Mesma API com as 3 variants semânticas principais — útil para feedback inline.",
+  code: `import { CalloutTremor } from "@/components/ui/callout-tremor"
+import { CheckCircle2, AlertTriangle, XCircle } from "lucide-react"
+
+export function Demo() {
+  return (
+    <div className="flex flex-col gap-3">
+      <CalloutTremor title="Deploy concluído" icon={CheckCircle2} variant="success">
+        Build #482 publicado em produção.
+      </CalloutTremor>
+      <CalloutTremor title="Atenção" icon={AlertTriangle} variant="warning">
+        3 clientes não foram migrados — verifique a lista.
+      </CalloutTremor>
+      <CalloutTremor title="Falha no job" icon={XCircle} variant="error">
+        O worker parou às 14:02. Veja os logs.
+      </CalloutTremor>
+    </div>
+  )
+}`,
+  render: (
+    <div className="flex w-full flex-col gap-3">
+      <CalloutTremor
+        title="Deploy concluído"
+        icon={
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mr-1.5 size-5 shrink-0"
+            aria-hidden
+          >
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+            <polyline points="22 4 12 14.01 9 11.01" />
+          </svg>
+        }
+        variant="success"
+      >
+        Build #482 publicado em produção.
+      </CalloutTremor>
+      <CalloutTremor
+        title="Atenção"
+        icon={
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mr-1.5 size-5 shrink-0"
+            aria-hidden
+          >
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        }
+        variant="warning"
+      >
+        3 clientes não foram migrados — verifique a lista.
+      </CalloutTremor>
+      <CalloutTremor
+        title="Falha no job"
+        icon={
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="mr-1.5 size-5 shrink-0"
+            aria-hidden
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="15" y1="9" x2="9" y2="15" />
+            <line x1="9" y1="9" x2="15" y2="15" />
+          </svg>
+        }
+        variant="error"
+      >
+        O worker parou às 14:02. Veja os logs.
+      </CalloutTremor>
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
+/*                            divider-tremor                                 */
+/* -------------------------------------------------------------------------- */
+
+const dividerBasicExample: Example = {
+  title: "Linha simples (default)",
+  description:
+    "Divider horizontal minimalista da Tremor Raw: uma linha cinza clara de borda a borda. Ideal para separar seções em cards de dashboard.",
+  code: `import { DividerTremor } from "@/components/ui/divider-tremor"
+
+export function Demo() {
+  return <DividerTremor />
+}`,
+  render: <DividerTremor />,
+}
+
+const dividerWithTextExample: Example = {
+  title: "Com texto central",
+  description:
+    "Variante com label entre dois traços — útil para sinalizar mudança de contexto (ex.: 'OU', 'Ações', 'Metadados').",
+  code: `import { DividerTremor } from "@/components/ui/divider-tremor"
+
+export function Demo() {
+  return (
+    <div className="w-full">
+      <p className="text-sm">Configurações principais</p>
+      <DividerTremor className="my-3">OU</DividerTremor>
+      <p className="text-sm">Configurações avançadas</p>
+    </div>
+  )
+}`,
+  render: (
+    <div className="w-full">
+      <p className="text-sm text-gray-700 dark:text-gray-300">
+        Configurações principais
+      </p>
+      <DividerTremor className="my-3">OU</DividerTremor>
+      <p className="text-sm text-gray-700 dark:text-gray-300">
+        Configurações avançadas
+      </p>
+    </div>
+  ),
+}
+
+const dividerVerticalExample: Example = {
+  title: "Vertical (em flex row)",
+  description:
+    "Orientação vertical — renderiza um traço na altura do container, útil para separar itens lado a lado em um flex row.",
+  code: `import { DividerTremor } from "@/components/ui/divider-tremor"
+
+export function Demo() {
+  return (
+    <div className="flex h-12 items-center gap-3">
+      <span className="text-sm">Item A</span>
+      <DividerTremor orientation="vertical" />
+      <span className="text-sm">Item B</span>
+      <DividerTremor orientation="vertical" />
+      <span className="text-sm">Item C</span>
+    </div>
+  )
+}`,
+  render: (
+    <div className="flex h-12 items-center gap-3">
+      <span className="text-sm text-gray-700 dark:text-gray-300">Item A</span>
+      <DividerTremor orientation="vertical" />
+      <span className="text-sm text-gray-700 dark:text-gray-300">Item B</span>
+      <DividerTremor orientation="vertical" />
+      <span className="text-sm text-gray-700 dark:text-gray-300">Item C</span>
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
+/*                         tab-navigation-tremor                              */
+/* -------------------------------------------------------------------------- */
+
+const tabNavBasicExample: Example = {
+  title: "Nav de abas (default)",
+  description:
+    "TabNavigationTremor com 3 abas em modo não-controlado (`defaultValue`). A aba ativa recebe sublinhado azul.",
+  code: `import { TabNavigationTremor } from "@/components/ui/tab-navigation-tremor"
+
+export function Demo() {
+  return (
+    <TabNavigationTremor
+      defaultValue="overview"
+      items={[
+        { value: "overview", label: "Visão geral" },
+        { value: "reports", label: "Relatórios" },
+        { value: "alerts", label: "Alertas" },
+      ]}
+    />
+  )
+}`,
+  render: (
+    <div className="w-full">
+      <TabNavigationTremor
+        defaultValue="overview"
+        items={[
+          { value: "overview", label: "Visão geral" },
+          { value: "reports", label: "Relatórios" },
+          { value: "alerts", label: "Alertas" },
+        ]}
+      />
+    </div>
+  ),
+}
+
+const tabNavWithIconsExample: Example = {
+  title: "Com ícones + controlado",
+  description:
+    "Modo controlado (`value` + `onValueChange`) e ícones opcionais à esquerda do label. Estado gerenciado externamente — ideal para integrar com URL/router.",
+  code: `import { useState } from "react"
+import { Home, Settings, Users } from "lucide-react"
+import { TabNavigationTremor } from "@/components/ui/tab-navigation-tremor"
+
+export function Demo() {
+  const [tab, setTab] = useState("home")
+  return (
+    <TabNavigationTremor
+      value={tab}
+      onValueChange={setTab}
+      items={[
+        { value: "home", label: "Início", icon: Home },
+        { value: "team", label: "Equipe", icon: Users },
+        { value: "settings", label: "Ajustes", icon: Settings },
+        { value: "billing", label: "Cobrança", disabled: true },
+      ]}
+    />
+  )
+}`,
+  render: (
+    <div className="w-full">
+      <TabNavigationTremor
+        defaultValue="home"
+        onValueChange={(value) => {
+          // demo: clique na aba — consumidor real integra com useState/router
+          void value
+        }}
+        items={[
+          { value: "home", label: "Início", icon: Home },
+          { value: "team", label: "Equipe", icon: Users },
+          { value: "settings", label: "Ajustes", icon: Settings },
+          { value: "billing", label: "Cobrança", disabled: true },
+        ]}
+      />
+    </div>
+  ),
+}
+
+/* -------------------------------------------------------------------------- */
 /*                                  mapa                                       */
 /* -------------------------------------------------------------------------- */
 
@@ -710,4 +1236,13 @@ export const examplesTremor: Record<string, Example[]> = {
   "category-bar-tremor": [categoryBarBasicExample],
   "bar-list-tremor": [barListBasicExample, barListClickableExample],
   "spark-chart-tremor": [sparkAreaExample, sparkBarExample],
+  "tracker-tremor": [trackerYearExample, trackerCompactExample],
+  "progress-bar-tremor": [progressBarBasicExample, progressBarVariantsExample],
+  "progress-circle-tremor": [
+    progressCircleBasicExample,
+    progressCircleVariantsExample,
+  ],
+  "callout-tremor": [calloutInfoExample, calloutSuccessExample],
+  "divider-tremor": [dividerBasicExample, dividerWithTextExample, dividerVerticalExample],
+  "tab-navigation-tremor": [tabNavBasicExample, tabNavWithIconsExample],
 }

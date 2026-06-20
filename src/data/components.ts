@@ -3319,6 +3319,22 @@ export const components: ComponentMeta[] = [
       "Bloco de destaque da Tremor Raw com ícone, título e texto: ideal para anotações contextuais, insights e avisos curtos ao lado de métricas em dashboards analíticos.",
     tags: ["tremor", "callout", "destaque", "anotacao", "insight", "dashboard", "feedback"],
   },
+  {
+    slug: "divider-tremor",
+    name: "Divider (Tremor)",
+    category: "Layout",
+    description:
+      "Linha divisória horizontal/vertical da Tremor Raw com variante intermediária (texto entre dois traços). Versão minimalista do separator shadcn, ideal para seções em dashboards.",
+    tags: ["tremor", "divider", "linha", "separador", "layout"],
+  },
+  {
+    slug: "tab-navigation-tremor",
+    name: "Tab Navigation (Tremor)",
+    category: "Layout",
+    description:
+      "Nav horizontal de abas estilo admin da Tremor Raw: estado ativo sublinhado, ícone opcional por item, modo controlado/não-controlado via `value`/`defaultValue`/`onValueChange`. Diferente do `tabs` shadcn (que traz painéis de conteúdo), esta é apenas a faixa de navegação.",
+    tags: ["tremor", "tabs", "navegacao", "navbar", "admin", "layout"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
