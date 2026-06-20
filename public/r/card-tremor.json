@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "card-tremor",
+  "title": "Card (Tremor)",
+  "description": "Container/card da Tremor Raw com fundo, borda e cantos arredondados padronizados. Casca visual para agrupar blocos de dashboard (header + conteúdo + footer) com tipografia consistente.",
+  "dependencies": [
+    "@radix-ui/react-slot@^1.2.3"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/card-tremor.tsx",
+      "content": "import * as React from \"react\"\n\nimport { Slot } from \"@radix-ui/react-slot\"\n\nimport { cn } from \"@/lib/utils\"\n\ninterface CardTremorProps extends React.ComponentProps<\"div\"> {\n  asChild?: boolean\n}\n\nconst CardTremor = React.forwardRef<HTMLDivElement, CardTremorProps>(\n  ({ className, asChild, ...props }, forwardedRef) => {\n    const Component = asChild ? Slot : \"div\"\n    return (\n      <Component\n        ref={forwardedRef}\n        data-slot=\"card-tremor\"\n        tremor-id=\"tremor-raw\"\n        className={cn(\n          // base\n          \"relative w-full rounded-lg border p-6 text-left shadow-xs\",\n          // background color\n          \"bg-white dark:bg-[#090E1A]\",\n          // border color\n          \"border-gray-200 dark:border-gray-900\",\n          className,\n        )}\n        {...props}\n      />\n    )\n  },\n)\n\nCardTremor.displayName = \"CardTremor\"\n\nexport { CardTremor, type CardTremorProps }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    ".transition-all": {
+      "transition-property": "all",
+      "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    ".duration-300": {
+      "transition-duration": "300ms"
+    },
+    ".ease-in-out": {
+      "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+    }
+  },
+  "type": "registry:ui"
+}

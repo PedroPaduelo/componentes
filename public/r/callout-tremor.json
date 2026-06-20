@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "callout-tremor",
+  "title": "Callout (Tremor)",
+  "description": "Bloco de destaque da Tremor Raw com ícone, título e texto: ideal para anotações contextuais, insights e avisos curtos ao lado de métricas em dashboards analíticos.",
+  "dependencies": [
+    "class-variance-authority@^0.7.1"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/callout-tremor.tsx",
+      "content": "/**\n * Tremor Callout [v1.0.0] — banner destacado com ícone + título + texto.\n *\n * Bloco de destaque compacto, similar a um `Alert` shadcn mas com layout\n * horizontal (ícone à esquerda + título + texto à direita) e 5 variants\n * semânticas de cor (default/info/success/warning/error).\n *\n * Adaptado do Tremor Raw (Apache-2.0):\n * https://github.com/tremorlabs/tremor/blob/main/src/components/Callout/Callout.tsx\n *\n * Adaptações para Vitrine UI:\n *   - `\"use client\"` REMOVIDO (não usamos Next.js).\n *   - `tv()` (tailwind-variants) → `cva` (`callout-tremor-variants.ts`).\n *   - `cx` → `cn` de `@/lib/utils`.\n *   - `forwardRef` REMOVIDO: o Tremor upstream usa forwardRef, mas nenhum\n *     caso de uso da Vitrine (Catálogo, Docs, Composições) precisa de ref\n *     programático num banner de callout. Mantém o componente como função\n *     simples (alinhado com `bar-list-tremor.tsx`).\n *   - `variant: \"neutral\"` do Tremor → `\"info\"` (alinhado com a task\n *     `cmqljj9v1030pp30i63l2t8z2` e com a nomenclatura shadcn).\n *   - `icon: React.ElementType | React.ReactElement` → o discriminator\n *     Tremor original (`typeof Icon === \"function\"`) não cobre SVGs\n *     funcionais modernos (Function Component); usamos `isValidElement`\n *     para discriminar ReactNode vs componente. Quando for ElementType\n *     (ex.: `Info` do lucide), renderizamos `<Icon className=\"size-5\" />`\n *     conforme a task exige.\n *\n * @see https://www.tremor.so/docs/components/callout\n */\n\nimport * as React from \"react\"\nimport { isValidElement } from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nimport {\n  calloutTremorVariants,\n  type CalloutTremorVariant,\n} from \"./callout-tremor-variants\"\n\nexport interface CalloutTremorProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"children\"> {\n  /** Título em destaque (linha 1, com ícone à esquerda). */\n  title: string\n  /** Conteúdo secundário (linha 2, abaixo do título). */\n  children?: React.ReactNode\n  /**\n   * Ícone exibido à esquerda do título. Aceita:\n   * - um Component (ElementType) — ex.: `Info` do lucide-react\n   * - um ReactNode — ex.: `<MyCustomIcon />` ou `<svg>`\n   */\n  icon?: React.ElementType | React.ReactNode\n  /** Cor semântica do banner. Default: `\"default\"`. */\n  variant?: CalloutTremorVariant\n}\n\nexport function CalloutTremor({\n  title,\n  icon: Icon,\n  className,\n  variant,\n  children,\n  ...props\n}: CalloutTremorProps) {\n  return (\n    <div\n      className={cn(calloutTremorVariants({ variant }), className)}\n      data-slot=\"callout-tremor\"\n      tremor-id=\"tremor-raw\"\n      {...props}\n    >\n      <div className=\"flex items-start\">\n        {Icon ? (\n          isValidElement(Icon) ? (\n            Icon\n          ) : (\n            (() => {\n              const IconComponent = Icon as React.ComponentType<{\n                className?: string\n                \"aria-hidden\"?: boolean\n              }>\n              return (\n                <IconComponent\n                  className=\"mr-1.5 size-5 shrink-0\"\n                  aria-hidden={true}\n                />\n              )\n            })()\n          )\n        ) : null}\n        <span className=\"font-semibold\">{title}</span>\n      </div>\n      {children ? (\n        <div className=\"mt-2 overflow-y-auto\">{children}</div>\n      ) : null}\n    </div>\n  )\n}\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/callout-tremor-variants.ts",
+      "content": "import { cva, type VariantProps } from \"class-variance-authority\"\n\n/**\n * CalloutTremor — variants de cor para o banner de destaque.\n *\n * Portado de https://github.com/tremorlabs/tremor/blob/main/src/components/Callout/Callout.tsx\n * (Tremor Raw v3, Apache-2.0). O Tremor original usa `tv()` (tailwind-variants);\n * aqui usamos `cva` (class-variance-authority) que é o padrão da Vitrine UI.\n *\n * NOTA: o Tremor upstream chama o variant neutro de `\"neutral\"` — a task\n * pede `\"info\"` como nome semântico (mais comum em design systems shadcn).\n * Mapeamento interno: `info === default/neutral` (azul).\n *\n * Strings literais (NÃO interpolar) — Tailwind v4 não detecta classes\n * em template literals.\n */\nexport const calloutTremorVariants = cva(\n  \"flex flex-col overflow-hidden rounded-md p-4 text-sm\",\n  {\n    variants: {\n      variant: {\n        default: [\n          \"text-blue-900 dark:text-blue-400\",\n          \"bg-blue-50 dark:bg-blue-950/70\",\n        ],\n        info: [\n          \"text-blue-900 dark:text-blue-400\",\n          \"bg-blue-50 dark:bg-blue-950/70\",\n        ],\n        success: [\n          \"text-emerald-900 dark:text-emerald-500\",\n          \"bg-emerald-50 dark:bg-emerald-950/70\",\n        ],\n        warning: [\n          \"text-yellow-900 dark:text-yellow-500\",\n          \"bg-yellow-50 dark:bg-yellow-950/70\",\n        ],\n        error: [\n          \"text-red-900 dark:text-red-500\",\n          \"bg-red-50 dark:bg-red-950/70\",\n        ],\n      },\n    },\n    defaultVariants: {\n      variant: \"default\",\n    },\n  },\n)\n\nexport type CalloutTremorVariants = VariantProps<typeof calloutTremorVariants>\n\n/** Variants aceitas (literal union) para uso no types da `CalloutTremorProps`. */\nexport type CalloutTremorVariant = NonNullable<\n  CalloutTremorVariants[\"variant\"]\n>\n",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    ".transition-all": {
+      "transition-property": "all",
+      "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    ".duration-300": {
+      "transition-duration": "300ms"
+    },
+    ".ease-in-out": {
+      "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+    }
+  },
+  "type": "registry:ui"
+}

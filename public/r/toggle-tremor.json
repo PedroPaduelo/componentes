@@ -1,0 +1,37 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "toggle-tremor",
+  "title": "Toggle (Tremor)",
+  "description": "Toggle/switch da Tremor Raw (input + span visual animado) com foco ring e estados checked/unchecked na paleta azul Tremor. Wrapper leve do <input type='checkbox'> que cobre o caso clássico de on/off em filtros e preferências.",
+  "dependencies": [
+    "class-variance-authority@^0.7.1"
+  ],
+  "registryDependencies": [
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/toggle-tremor.tsx",
+      "content": "/**\n * Tremor Toggle (par 2/2) — `<button>` com `aria-pressed` + variants de cor.\n *\n * DIFERENTE do nosso `toggle.tsx` (Radix `@radix-ui/react-toggle`):\n *   - Sem Radix — botão HTML nativo com estado gerenciado internamente\n *     (`useState` + prop opcional `defaultPressed`/`pressed`/`onPressedChange`).\n *   - Cor semântica aplicada SÓ quando PRESSED (`default`/`success`/`warning`/`error`).\n *     Unpressed sempre usa branco/#090E1A + borda cinza.\n *   - `aria-pressed` reflete o estado para acessibilidade (WAI-ARIA pattern).\n *\n * Adaptado de\n * https://github.com/tremorlabs/tremor/blob/main/src/components/Toggle/Toggle.tsx\n * (Apache-2.0) — versão simplificada para um único botão (sem\n * `ToggleGroup`/`ToggleGroupItem`).\n *\n * Adaptações para Vitrine UI:\n *   - `\"use client\"` REMOVIDO (não usamos Next.js).\n *   - Sem `@radix-ui/react-toggle` (a AC pede `<button>` nativo com\n *     `aria-pressed`).\n *   - Estado controlado / não-controlado:\n *       - `pressed?: boolean` + `onPressedChange?: (p: boolean) => void`\n *         → modo CONTROLADO.\n *       - `defaultPressed?: boolean` → modo NÃO-CONTROLADO (useState interno).\n *   - Variants em `toggle-tremor-variants.ts` (cva).\n *   - Re-exports centralizados em `toggle-tremor.ts` (barrel — workaround\n *     para `react-refresh/only-export-components`).\n *\n * @see https://www.tremor.so/docs/components/toggle\n */\n\nimport * as React from \"react\"\n\nimport { cx as cn, focusRing } from \"@/lib/tremor-utils\"\n\nimport {\n  toggleTremorVariants,\n  type ToggleTremorVariant,\n} from \"./toggle-tremor-variants\"\n\nexport interface ToggleTremorProps\n  extends Omit<\n    React.ButtonHTMLAttributes<HTMLButtonElement>,\n    \"defaultChecked\"\n  > {\n  /** Variante de cor aplicada quando o toggle está PRESSED. */\n  variant?: ToggleTremorVariant\n  /**\n   * Estado controlado (modo CONTROLADO). Quando definido, o componente\n   * ignora o estado interno e usa este valor. Use em conjunto com\n   * `onPressedChange` para reagir a mudanças.\n   */\n  pressed?: boolean\n  /**\n   * Estado inicial (modo NÃO-CONTROLADO). Quando omitido, começa\n   * unpressed (`false`).\n   */\n  defaultPressed?: boolean\n  /**\n   * Callback disparado sempre que o estado pressed muda (após clique do\n   * usuário). Recebe o próximo valor.\n   */\n  onPressedChange?: (pressed: boolean) => void\n}\n\nexport function ToggleTremor({\n  className,\n  variant,\n  pressed: controlledPressed,\n  defaultPressed = false,\n  onPressedChange,\n  onClick,\n  type,\n  disabled,\n  ...props\n}: ToggleTremorProps): React.JSX.Element {\n  // Estado interno para o modo não-controlado.\n  const [internalPressed, setInternalPressed] = React.useState<boolean>(\n    defaultPressed,\n  )\n\n  // Decide qual valor usar: controlado tem prioridade sobre interno.\n  const isControlled = controlledPressed !== undefined\n  const pressed = isControlled ? controlledPressed : internalPressed\n\n  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {\n    if (disabled) return\n    const next = !pressed\n    if (!isControlled) {\n      setInternalPressed(next)\n    }\n    onPressedChange?.(next)\n    onClick?.(event)\n  }\n\n  return (\n    <button\n      // `type=\"button\"` por padrão para evitar submit acidental em forms.\n      type={type ?? \"button\"}\n      data-slot=\"toggle-tremor\"\n      data-state={pressed ? \"on\" : \"off\"}\n      tremor-id=\"tremor-raw\"\n      aria-pressed={pressed}\n      disabled={disabled}\n      onClick={handleClick}\n      className={cn(\n        // base\n        \"inline-flex items-center justify-center rounded-md border px-3 py-1.5 text-sm font-medium shadow-xs transition-colors\",\n        // unpressed: bg branco + borda cinza (FIXO, independente da variant)\n        \"bg-white dark:bg-[#090E1A]\",\n        \"border-gray-200 dark:border-gray-800\",\n        \"text-gray-700 dark:text-gray-300\",\n        // hover sutil só no estado unpressed (pressed já tem cor cheia)\n        !pressed && \"hover:bg-gray-50 dark:hover:bg-[#0E1424]\",\n        // pressed: cor da variant (sobrepõe bg/border/text do unpressed)\n        pressed && toggleTremorVariants({ variant }),\n        // disabled\n        \"disabled:pointer-events-none disabled:opacity-50\",\n        // focus\n        focusRing,\n        className,\n      )}\n      {...props}\n    />\n  )\n}",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/toggle-tremor-variants.ts",
+      "content": "import { cva, type VariantProps } from \"class-variance-authority\"\n\n/**\n * ToggleTremor — variants de cor para o estado PRESSED do botão toggle.\n *\n * Estado UNPRESSED é fixo (branco no light / #090E1A no dark com borda\n * cinza) — não há variants para ele, só para o \"ligado\". Isso casa com\n * a AC da task:\n *\n *   pressed   (default) → `bg-blue-500 text-white`\n *   pressed   (success) → `bg-emerald-500 text-white`\n *   pressed   (warning) → `bg-amber-500 text-white`\n *   pressed   (error)   → `bg-red-500 text-white`\n *   unpressed           → `bg-white dark:bg-[#090E1A]\n *                          border border-gray-200 dark:border-gray-800`\n *\n * Strings literais (NÃO interpolar) — Tailwind v4 não detecta classes\n * em template literals.\n */\nexport const toggleTremorVariants = cva(\"\", {\n  variants: {\n    variant: {\n      default: [\"bg-blue-500 text-white\"],\n      success: [\"bg-emerald-500 text-white\"],\n      warning: [\"bg-amber-500 text-white\"],\n      error: [\"bg-red-500 text-white\"],\n    },\n  },\n  defaultVariants: {\n    variant: \"default\",\n  },\n})\n\nexport type ToggleTremorVariants = VariantProps<typeof toggleTremorVariants>\n\n/** Variants aceitas (literal union) para uso no types da `ToggleTremorProps`. */\nexport type ToggleTremorVariant = NonNullable<\n  ToggleTremorVariants[\"variant\"]\n>",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    ".transition-all": {
+      "transition-property": "all",
+      "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    ".duration-300": {
+      "transition-duration": "300ms"
+    },
+    ".ease-in-out": {
+      "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+    }
+  },
+  "type": "registry:ui"
+}

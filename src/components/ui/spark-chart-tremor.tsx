@@ -28,7 +28,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts"
-import type { AxisDomain } from "recharts/types/util/types"
+import type { AxisDomainItem } from "recharts/types/util/types"
 
 import {
   AvailableChartColors,
@@ -80,7 +80,7 @@ const SparkChartTremor = React.forwardRef<HTMLDivElement, SparkChartTremorProps>
 
     const primaryColor = colors[0] ?? "blue"
     const chartData = toChartData(data)
-    const yAxisDomain = getYAxisDomain(data) as [AxisDomain, AxisDomain]
+    const yAxisDomain = getYAxisDomain(data) as [AxisDomainItem, AxisDomainItem]
     const gradientId = React.useId()
     const strokeClass = getColorClassName(primaryColor, "stroke")
     const fillClass = getColorClassName(primaryColor, "fill")

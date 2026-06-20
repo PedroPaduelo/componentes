@@ -1,0 +1,26 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "divider-tremor",
+  "title": "Divider (Tremor)",
+  "description": "Linha divisória horizontal/vertical da Tremor Raw com variante intermediária (texto entre dois traços). Versão minimalista do separator shadcn, ideal para seções em dashboards.",
+  "files": [
+    {
+      "path": "src/components/ui/divider-tremor.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport interface DividerTremorProps extends React.HTMLAttributes<HTMLDivElement> {\n  /**\n   * Texto central exibido entre as duas linhas do divider horizontal.\n   * Se omitido, renderiza apenas a linha.\n   */\n  children?: React.ReactNode\n  /**\n   * Orientação do divider. `'horizontal'` (padrão) renderiza uma linha\n   * na largura do container; `'vertical'` renderiza uma linha na altura\n   * do container (útil em flex rows).\n   */\n  orientation?: \"horizontal\" | \"vertical\"\n}\n\nconst DividerTremor = React.forwardRef<HTMLDivElement, DividerTremorProps>(\n  ({ className, children, orientation = \"horizontal\", ...props }, ref) => {\n    if (orientation === \"vertical\") {\n      return (\n        <div\n          ref={ref}\n          data-slot=\"divider-tremor\"\n          data-orientation=\"vertical\"\n          tremor-id=\"tremor-raw\"\n          className={cn(\"self-stretch flex items-center\", className)}\n          {...props}\n        >\n          <hr className=\"self-stretch border-l h-full border-gray-200 dark:border-gray-800\" />\n        </div>\n      )\n    }\n\n    if (children) {\n      return (\n        <div\n          ref={ref}\n          data-slot=\"divider-tremor\"\n          data-orientation=\"horizontal\"\n          tremor-id=\"tremor-raw\"\n          className={cn(\n            \"flex items-center gap-3 text-sm text-gray-500 dark:text-gray-500\",\n            className,\n          )}\n          {...props}\n        >\n          <hr className=\"flex-1 border-gray-200 dark:border-gray-800\" />\n          <span className=\"whitespace-nowrap text-inherit\">{children}</span>\n          <hr className=\"flex-1 border-gray-200 dark:border-gray-800\" />\n        </div>\n      )\n    }\n\n    return (\n      <div\n        ref={ref}\n        data-slot=\"divider-tremor\"\n        data-orientation=\"horizontal\"\n        tremor-id=\"tremor-raw\"\n        className={cn(\"flex w-full items-center\", className)}\n        {...props}\n      >\n        <hr className=\"w-full border-gray-200 dark:border-gray-800\" />\n      </div>\n    )\n  },\n)\nDividerTremor.displayName = \"DividerTremor\"\n\nexport { DividerTremor }\n",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    ".transition-all": {
+      "transition-property": "all",
+      "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    ".duration-300": {
+      "transition-duration": "300ms"
+    },
+    ".ease-in-out": {
+      "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+    }
+  },
+  "type": "registry:ui"
+}

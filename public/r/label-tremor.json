@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "label-tremor",
+  "title": "Label (Tremor)",
+  "description": "Wrapper do <label> HTML estilizado com tipografia e cor da Tremor Raw. Pequeno e proposital: serve para padronizar rótulos de formulários dentro de dashboards Tremor sem precisar do label do shadcn (que traz FormControl/FormMessage).",
+  "registryDependencies": [
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/label-tremor.tsx",
+      "content": "/**\n * Tremor Label [v0.0.2] — `<label>` estilizado Tremor Raw.\n *\n * Adaptado de\n * https://github.com/tremorlabs/tremor/blob/main/src/components/Label/Label.tsx\n * (Apache-2.0).\n *\n * Adaptações para Vitrine UI:\n *   - Sem dependência de `@radix-ui/react-label` — a tag `<label>` nativa do\n *     HTML já fornece toda a semântica necessária (associação implícita\n *     por aninhamento ou explícita via `htmlFor`). Isso evita arrastar\n *     `@radix-ui/react-label` como dependência nova só por um wrapper.\n *   - Sem `disabled` no `LabelHTMLAttributes` (HTML `<label>` não tem\n *     `disabled` próprio — quem controla o estado disabled é o input\n *     associado, e a AC pede apenas `htmlFor` + spread). Mantemos a\n *     tipagem nativa do React.\n *   - `cx` → `cn` de `@/lib/utils` (mesma semântica: clsx + tailwind-merge).\n *   - `focusRing` aplicado (consistente com a AC e com o restante dos\n *     wrappers Tremor da Vitrine).\n *\n * @see https://www.tremor.so/docs/components/label\n */\n\nimport * as React from \"react\"\n\nimport { cx as cn, focusRing } from \"@/lib/tremor-utils\"\n\nexport type LabelTremorProps = React.LabelHTMLAttributes<HTMLLabelElement>\n\nexport function LabelTremor({\n  className,\n  ...props\n}: LabelTremorProps): React.JSX.Element {\n  return (\n    <label\n      data-slot=\"label-tremor\"\n      tremor-id=\"tremor-raw\"\n      className={cn(\n        // base\n        \"text-sm font-medium leading-none\",\n        // text color\n        \"text-gray-900 dark:text-gray-50\",\n        // focus\n        focusRing,\n        className,\n      )}\n      {...props}\n    />\n  )\n}",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    ".transition-all": {
+      "transition-property": "all",
+      "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    ".duration-300": {
+      "transition-duration": "300ms"
+    },
+    ".ease-in-out": {
+      "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+    }
+  },
+  "type": "registry:ui"
+}

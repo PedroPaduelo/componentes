@@ -1,0 +1,34 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "progress-bar-tremor",
+  "title": "Progress Bar (Tremor)",
+  "description": "Barra de progresso horizontal da Tremor Raw com variantes de cor, suporte a label e tooltip, ideal para metas, conclusão de tarefas e indicadores de saturação em dashboards.",
+  "dependencies": [
+    "class-variance-authority@^0.7.1"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/progress-bar-tremor.tsx",
+      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nimport {\n  progressBarTremorBackgroundVariants,\n  progressBarTremorBarVariants,\n  type ProgressBarTremorVariants,\n} from \"./progress-bar-tremor-variants\"\n\n/**\n * ProgressBarTremor — barra de progresso horizontal com 5 variantes de cor\n * (default / neutral / warning / error / success) e label opcional à direita.\n *\n * Adaptação Tremor Raw → Vitrine UI:\n * - Removido `\"use client\"` (não usamos Next.js na Vitrine).\n * - `tv()` do Tremor com `slots: { background, bar }` foi quebrado em dois\n *   `cva()` independentes (`progressBarTremorBackgroundVariants` +\n *   `progressBarTremorBarVariants`) porque o `class-variance-authority` que\n *   já usamos não tem slots — mesma estratégia aplicada nos demais\n *   componentes Tremor adaptados.\n * - `cx` do Tremor → `cn` da Vitrine (`@/lib/utils`).\n * - `forwardRef` removido: nenhum caso de uso (Catálogo, Docs, Composições)\n *   precisa de ref programático na barra — segue o padrão de\n *   `bar-list-tremor.tsx` e `callout-tremor.tsx`.\n * - Mantido `tremor-id=\"tremor-raw\"` no JSX raiz para que o validador\n *   Playwright consiga distinguir ProgressBarTremor do `Progress` (Radix)\n *   já existente.\n *\n * @see https://www.tremor.so/docs/visualizations/progress-bar\n * @see https://github.com/tremorlabs/tremor/blob/main/src/components/ProgressBar/ProgressBar.tsx\n */\n\nexport type ProgressBarTremorVariant = NonNullable<\n  ProgressBarTremorVariants[\"variant\"]\n>\n\nexport interface ProgressBarTremorProps\n  extends Omit<React.HTMLAttributes<HTMLDivElement>, \"children\">,\n    ProgressBarTremorVariants {\n  /** Valor atual da barra. Clampado em `[0, max]`. Default: `0`. */\n  value?: number\n  /** Valor máximo da barra. Default: `100`. */\n  max?: number\n  /** Quando `true`, anima a largura com `transition-all duration-300 ease-in-out`. */\n  showAnimation?: boolean\n  /** Rótulo opcional exibido à direita da barra. */\n  label?: string\n}\n\nfunction ProgressBarTremor({\n  value = 0,\n  max = 100,\n  label,\n  showAnimation = false,\n  variant,\n  className,\n  ...props\n}: ProgressBarTremorProps) {\n  const safeValue = Math.min(max, Math.max(value, 0))\n  const width = max ? `${(safeValue / max) * 100}%` : `${safeValue}%`\n\n  return (\n    <div\n      data-slot=\"progress-bar-tremor\"\n      className={cn(\"flex w-full items-center\", className)}\n      role=\"progressbar\"\n      aria-label=\"Progress bar\"\n      aria-valuenow={value}\n      aria-valuemax={max}\n      tremor-id=\"tremor-raw\"\n      {...props}\n    >\n      <div\n        className={cn(\n          \"relative flex h-2 w-full items-center rounded-full\",\n          progressBarTremorBackgroundVariants({ variant }),\n        )}\n      >\n        <div\n          className={cn(\n            \"h-full flex-col rounded-full\",\n            progressBarTremorBarVariants({ variant }),\n            showAnimation &&\n              \"transform-gpu transition-all duration-300 ease-in-out\",\n          )}\n          style={{ width }}\n        />\n      </div>\n      {label ? (\n        <span\n          className={cn(\n            \"ml-2 whitespace-nowrap text-sm font-medium leading-none\",\n            \"text-gray-900 dark:text-gray-50\",\n          )}\n        >\n          {label}\n        </span>\n      ) : null}\n    </div>\n  )\n}\n\nProgressBarTremor.displayName = \"ProgressBarTremor\"\n\nexport { ProgressBarTremor }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/progress-bar-tremor-variants.ts",
+      "content": "import { cva, type VariantProps } from \"class-variance-authority\"\n\n/**\n * ProgressBarTremor — variants de cor para o \"slot\" background (trilho) e\n * \"slot\" bar (preenchimento) da barra de progresso.\n *\n * Portado de https://github.com/tremorlabs/tremor/blob/main/src/components/ProgressBar/ProgressBar.tsx\n * (Tremor Raw v3, Apache-2.0). O Tremor original usa `tv()` (tailwind-variants)\n * com `slots: { background, bar }`; aqui usamos dois `cva()` independentes\n * porque o `class-variance-authority` da Vitrine não tem slots nativos.\n *\n * Strings literais (NÃO interpolar) — Tailwind v4 não detecta classes\n * em template literals.\n */\n\nexport const progressBarTremorBackgroundVariants = cva(\"\", {\n  variants: {\n    variant: {\n      default: \"bg-blue-200 dark:bg-blue-500/30\",\n      neutral: \"bg-gray-200 dark:bg-gray-500/40\",\n      warning: \"bg-yellow-200 dark:bg-yellow-500/30\",\n      error: \"bg-red-200 dark:bg-red-500/30\",\n      success: \"bg-emerald-200 dark:bg-emerald-500/30\",\n    },\n  },\n  defaultVariants: {\n    variant: \"default\",\n  },\n})\n\nexport const progressBarTremorBarVariants = cva(\"\", {\n  variants: {\n    variant: {\n      default: \"bg-blue-500 dark:bg-blue-500\",\n      neutral: \"bg-gray-500 dark:bg-gray-500\",\n      warning: \"bg-yellow-500 dark:bg-yellow-500\",\n      error: \"bg-red-500 dark:bg-red-500\",\n      success: \"bg-emerald-500 dark:bg-emerald-500\",\n    },\n  },\n  defaultVariants: {\n    variant: \"default\",\n  },\n})\n\nexport type ProgressBarTremorVariants = VariantProps<\n  typeof progressBarTremorBarVariants\n>\n",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    ".transition-all": {
+      "transition-property": "all",
+      "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    ".duration-300": {
+      "transition-duration": "300ms"
+    },
+    ".ease-in-out": {
+      "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+    }
+  },
+  "type": "registry:ui"
+}

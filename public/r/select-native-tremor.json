@@ -1,0 +1,29 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "select-native-tremor",
+  "title": "Select Native (Tremor)",
+  "description": "Wrapper do <select> HTML nativo estilizado com a casca da Tremor Raw (foco ring, borda, opções com tema). Ideal para selects simples que não precisam do peso de um popover/combobox, mantendo a mesma identidade visual Tremor.",
+  "dependencies": [
+    "lucide-react@^0.468.0"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/select-native-tremor.tsx",
+      "content": "\"use client\"\n\nimport * as React from \"react\"\nimport { ChevronDown } from \"lucide-react\"\n\nimport { cn } from \"@/lib/utils\"\n\nexport type SelectNativeTremorOption = {\n  value: string\n  label: string\n}\n\nexport type SelectNativeTremorProps = {\n  /** Opções a renderizar. Cada `option` vira um `<option>`. */\n  options: SelectNativeTremorOption[]\n  /** Valor controlado. */\n  value?: string\n  /** Callback de mudança (passa o novo value). */\n  onChange?: (event: React.ChangeEvent<HTMLSelectElement>) => void\n  /** Placeholder — renderizado como `<option>` desabilitado e selecionado quando vazio. */\n  placeholder?: string\n  /** Desabilita o select. */\n  disabled?: boolean\n  /** Nome do campo (formulários). */\n  name?: string\n  /** id do campo (formulários). */\n  id?: string\n  /** required HTML. */\n  required?: boolean\n  /** Classes extras. */\n  className?: string\n}\n\nfunction SelectNativeTremor({\n  options,\n  value,\n  onChange,\n  placeholder,\n  disabled,\n  name,\n  id,\n  required,\n  className,\n}: SelectNativeTremorProps) {\n  const hasValue = value !== undefined && value !== \"\"\n  return (\n    <div\n      data-slot=\"select-native-tremor\"\n      data-tremor-id=\"tremor-raw\"\n      className={cn(\"relative w-full\", className)}\n    >\n      <select\n        value={value ?? \"\"}\n        onChange={onChange}\n        disabled={disabled}\n        name={name}\n        id={id}\n        required={required}\n        className={cn(\n          \"block w-full appearance-none rounded-md border bg-white dark:bg-[#090E1A] border-gray-200 dark:border-gray-800 h-9 px-3 text-sm\",\n          // text color\n          \"text-gray-900 dark:text-gray-50\",\n          // placeholder / option color\n          \"placeholder-gray-400 dark:placeholder-gray-500\",\n          // hover\n          \"hover:bg-gray-50 dark:hover:bg-gray-950/50\",\n          // disabled\n          \"disabled:pointer-events-none\",\n          \"disabled:bg-gray-100 disabled:text-gray-400\",\n          \"dark:disabled:border-gray-700 dark:disabled:bg-gray-800 dark:disabled:text-gray-500\",\n          // focus (Tremor-like)\n          \"outline-hidden focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-white\",\n          \"dark:focus:ring-blue-700 dark:focus:ring-offset-gray-950\",\n        )}\n      >\n        {placeholder !== undefined && (\n          <option value=\"\" disabled={!hasValue ? undefined : true}>\n            {placeholder}\n          </option>\n        )}\n        {options.map((opt) => (\n          <option key={opt.value} value={opt.value}>\n            {opt.label}\n          </option>\n        ))}\n      </select>\n      <ChevronDown\n        aria-hidden=\"true\"\n        className=\"pointer-events-none absolute right-2 top-1/2 size-4 -translate-y-1/2 text-gray-500 dark:text-gray-400\"\n      />\n    </div>\n  )\n}\nSelectNativeTremor.displayName = \"SelectNativeTremor\"\n\nexport { SelectNativeTremor }",
+      "type": "registry:ui"
+    }
+  ],
+  "css": {
+    ".transition-all": {
+      "transition-property": "all",
+      "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    ".duration-300": {
+      "transition-duration": "300ms"
+    },
+    ".ease-in-out": {
+      "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+    }
+  },
+  "type": "registry:ui"
+}
