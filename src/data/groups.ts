@@ -392,7 +392,8 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "thinking-indicator-fluid": "chat-ai",
   "thinking-steps-fluid": "chat-ai",
 
-  // — Dashboards & Charts: gráficos de barra, linha, pizza, dispersão, sparkline —\n  "area-chart-tremor": "dashboards-charts",
+  // — Dashboards & Charts: gráficos de barra, linha, pizza, dispersão, sparkline —
+  "area-chart-tremor": "dashboards-charts",
   "bar-chart": "dashboards-charts",
   "bar-chart-tremor": "dashboards-charts",
   "bar-list-tremor": "dashboards-charts",
