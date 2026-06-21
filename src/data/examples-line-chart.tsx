@@ -73,9 +73,9 @@ export function Demo() {
 }
 
 const minimalExample: Example = {
-  title: "Sem área, grid, legenda e tooltip",
+  title: "Sem área, grid e legenda",
   description:
-    "Apenas as linhas poligonais — showArea/showGrid/showLegend/showTooltip desativados para máxima densidade.",
+    "Apenas as linhas poligonais — showArea/showGrid/showLegend desativados para máxima densidade. O tooltip continua ativo no hover.",
   code: `import { LineChart } from "@/components/ui/line-chart"
 
 export function Demo() {
@@ -89,7 +89,6 @@ export function Demo() {
         showArea={false}
         showGrid={false}
         showLegend={false}
-        showTooltip={false}
         height="h-32"
       />
     </div>
@@ -103,7 +102,6 @@ export function Demo() {
         showArea={false}
         showGrid={false}
         showLegend={false}
-        showTooltip={false}
         height="h-32"
       />
     </div>
