@@ -4,16 +4,24 @@ import { Loader2 } from "lucide-react"
 
 import { compositionScreens } from "@/compositions"
 import { getCompositionBySlug } from "@/data/compositions"
+import { cn } from "@/lib/utils"
 
 /**
  * Página minimal que renderiza SÓ a composição em full screen, sem Header,
  * Footer, padding ou bordas. Projetada para ser aberta numa aba nova via
  * o botão "Live demo" na CompositionDetail.
  *
- * O wrapper com seletor descendant `[&_[data-conversation-id]]` força o
- * container raiz da composição a ocupar toda a viewport quando renderizada
- * aqui — sem modificar a composição em si (que mantém h-[78vh] etc. na
- * página de detalhe).
+ * Dois mecanismos de "esticar para a viewport", sem modificar as composições
+ * (que mantêm h-[78vh]/h-[82vh], bordas e max-width na página de detalhe):
+ *
+ *  1. Chat: o container de conversa (`[data-conversation-id]`) vira `h-screen`
+ *     sem moldura — vence por specificity (classe + attribute).
+ *  2. Telas "app" (`wide: true` no registry — ai-ide, dba-workbench,
+ *     observability, workflow-builder, etc.): força o ROOT da composição
+ *     (filho direto; `<Suspense>` é transparente no DOM) a ocupar a tela
+ *     inteira, removendo a moldura (altura fixa, max-width, borda, sombra)
+ *     que ela usa na página de detalhe. Usa `!` (important) para vencer a
+ *     altura fixa do próprio root (ex.: `h-[82vh]` do ai-ide).
  */
 export function CompositionLive() {
   const { slug } = useParams<{ slug: string }>()
@@ -38,8 +46,16 @@ export function CompositionLive() {
   }
 
   return (
-    <div className="fixed inset-0 overflow-auto">
-      <div className="[&_[data-conversation-id]]:h-screen [&_[data-conversation-id]]:max-w-none [&_[data-conversation-id]]:rounded-none [&_[data-conversation-id]]:border-0 [&_[data-conversation-id]]:shadow-none">
+    <div className="fixed inset-0 overflow-auto bg-background">
+      <div
+        className={cn(
+          // 1. Chat: container de conversa preenche a viewport, sem moldura.
+          "[&_[data-conversation-id]]:h-screen [&_[data-conversation-id]]:max-w-none [&_[data-conversation-id]]:rounded-none [&_[data-conversation-id]]:border-0 [&_[data-conversation-id]]:shadow-none",
+          // 2. Telas app (wide): root da composição ocupa a tela inteira.
+          composition.wide &&
+            "[&>*]:!h-screen [&>*]:!max-w-none [&>*]:!rounded-none [&>*]:!border-0 [&>*]:!shadow-none",
+        )}
+      >
         <Suspense
           fallback={
             <div className="flex h-screen items-center justify-center">
