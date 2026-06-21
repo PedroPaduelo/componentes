@@ -15,7 +15,7 @@
  * - O vínculo slug → grupo vive em `SLUG_GROUP_MAP` (mapa de derivação externo),
  *   mantendo o registry (`components.ts`) como única fonte da verdade dos itens.
  *
- * A taxonomia (14 grupos, agrupados em 3 domínios macro) separa primitivos de
+ * A taxonomia (13 grupos, agrupados em 3 domínios macro) separa primitivos de
  * UI, blocos de aplicação/dados e efeitos visuais. Cada grupo é a unidade de
  * página/seção da navegação.
  */
@@ -34,7 +34,6 @@ import {
   Table,
   Terminal,
   TextCursorInput,
-  Type,
   type LucideIcon,
 } from "lucide-react"
 
@@ -60,7 +59,7 @@ export type DomainId = (typeof DOMAIN_IDS)[number]
 /* -------------------------------------------------------------------------- */
 
 /**
- * Ids canônicos dos 14 grupos da vitrine (união literal `as const`).
+ * Ids canônicos dos 13 grupos da vitrine (união literal `as const`).
  *
  * São URL-safe (kebab-case) porque viram o contrato da rota de grupo
  * (ex.: `/components/grupo/forms-inputs`). Estáveis — não renomear sem migração.
@@ -77,7 +76,6 @@ export const GROUP_IDS = [
   "dashboards-charts",
   "dashboards-data",
   "dev",
-  "text-effects",
   "backgrounds-fx",
   "globes-maps",
 ] as const
@@ -95,15 +93,15 @@ export interface Group {
   domain: DomainId
   /** Descrição curta exibida no topo da página/seção do grupo. */
   description: string
-  /** Ordem global (1..14) — já arranjada por domínio (contígua por bloco). */
+  /** Ordem global (1..13) — já arranjada por domínio (contígua por bloco). */
   order: number
   /** Ícone lucide associado ao grupo (opcional). */
   icon?: LucideIcon
 }
 
 /**
- * Os 14 grupos da taxonomia, JÁ ORDENADOS por domínio:
- * primitivos (1–7) → aplicações (8–11) → visual (12–14).
+ * Os 13 grupos da taxonomia, JÁ ORDENADOS por domínio:
+ * primitivos (1–7) → aplicações (8–11) → visual (12–13).
  */
 export const GROUPS: Group[] = [
   // — Domínio: primitivos de UI —
@@ -139,7 +137,7 @@ export const GROUPS: Group[] = [
     label: "Tipografia",
     domain: "primitivos",
     description:
-      "Tipografia base no estilo shadcn: títulos h1–h4, parágrafo, lead, blockquote, lista, código inline e textos large/small/muted.",
+      "Tudo de texto: tipografia base no estilo shadcn (títulos h1–h4, parágrafo, lead, blockquote, lista, código inline, large/small/muted) e efeitos de texto animados (flip, typewriter, geração progressiva, gradiente, brilho e revelações).",
     order: 4,
     icon: Pilcrow,
   },
@@ -211,21 +209,12 @@ export const GROUPS: Group[] = [
 
   // — Domínio: visual & efeitos —
   {
-    id: "text-effects",
-    label: "Efeitos de Texto",
-    domain: "visual",
-    description:
-      "Tipografia animada: flip, typewriter, geração progressiva, gradientes, brilho e revelações de texto.",
-    order: 12,
-    icon: Type,
-  },
-  {
     id: "backgrounds-fx",
     label: "Backgrounds & FX",
     domain: "visual",
     description:
       "Fundos e efeitos imersivos: beams, auroras, grids, partículas, spotlights, meteoros e shaders.",
-    order: 13,
+    order: 12,
     icon: Sparkles,
   },
   {
@@ -234,7 +223,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Visualizações geográficas e 3D: globos interativos (cobe/three) e mapas-múndi.",
-    order: 14,
+    order: 13,
     icon: Globe,
   },
 ]
@@ -381,8 +370,26 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   tree: "layout-containers",
   "work-experience-component": "layout-containers",
 
-  // — Tipografia: estilos de texto base (shadcn) —
+  // — Tipografia: texto base (shadcn) + efeitos de texto animados —
   typography: "typography",
+  "canvas-text": "typography",
+  "colourful-text": "typography",
+  "container-cover": "typography",
+  "container-text-flip": "typography",
+  "cyber-glitch-text": "typography",
+  "encrypted-text": "typography",
+  "flip-fade-text": "typography",
+  "flip-text": "typography",
+  "flip-words": "typography",
+  "fluid-gradient-text": "typography",
+  "layout-text-flip": "typography",
+  "shimmering-text": "typography",
+  "squiggly-text": "typography",
+  "text-flipping-board": "typography",
+  "text-generate-effect": "typography",
+  "text-hover-effect": "typography",
+  "text-reveal-card": "typography",
+  "typewriter-effect": "typography",
 
   // — Cards: conteúdo, métrica e efeitos decorativos —
   card: "cards",
@@ -498,26 +505,6 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   timeline: "dashboards-data",
   "trace-waterfall": "dashboards-data",
   "user-activity-stream": "dashboards-data",
-
-  // — Efeitos de Texto: flip, typewriter, gradiente, brilho, reveal —
-  "canvas-text": "text-effects",
-  "colourful-text": "text-effects",
-  "container-cover": "text-effects",
-  "container-text-flip": "text-effects",
-  "cyber-glitch-text": "text-effects",
-  "encrypted-text": "text-effects",
-  "flip-fade-text": "text-effects",
-  "flip-text": "text-effects",
-  "flip-words": "text-effects",
-  "fluid-gradient-text": "text-effects",
-  "layout-text-flip": "text-effects",
-  "shimmering-text": "text-effects",
-  "squiggly-text": "text-effects",
-  "text-flipping-board": "text-effects",
-  "text-generate-effect": "text-effects",
-  "text-hover-effect": "text-effects",
-  "text-reveal-card": "text-effects",
-  "typewriter-effect": "text-effects",
 
   // — Backgrounds & FX: beams, auroras, partículas, spotlights, shaders —
   "3d-marquee": "backgrounds-fx",
