@@ -78,6 +78,7 @@ function numbersOfRings(arcs: GlobeArc[], maxRings: number): number[] {
 
 function GitHubGlobe({ arcs, globeConfig, className, ...props }: GitHubGlobeProps) {
   const containerRef = React.useRef<HTMLDivElement | null>(null)
+  const [unsupported, setUnsupported] = React.useState(false)
   const data = React.useMemo(() => arcs ?? DEFAULT_ARCS, [arcs])
   const config = React.useMemo<Required<GlobeConfig>>(
     () => ({ ...DEFAULT_CONFIG, ...globeConfig }),
@@ -97,10 +98,18 @@ function GitHubGlobe({ arcs, globeConfig, className, ...props }: GitHubGlobeProp
     const camera = new THREE.PerspectiveCamera(50, width / height, 180, 1800)
     camera.position.z = 300
 
-    const renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-    })
+    let renderer: THREE.WebGLRenderer
+    try {
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+      })
+    } catch {
+      // WebGL indisponível (navegador sem GPU/contexto): mostra o fallback em
+      // vez de propagar a exceção e derrubar a árvore React (tela branca).
+      setUnsupported(true)
+      return
+    }
     renderer.setSize(width, height)
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     renderer.setClearColor(0x000000, 0)
@@ -268,12 +277,25 @@ function GitHubGlobe({ arcs, globeConfig, className, ...props }: GitHubGlobeProp
       )}
       {...props}
     >
-      <div
-        ref={containerRef}
-        className="absolute inset-0 mx-auto h-full w-full max-w-full"
-        aria-hidden="true"
-      />
-      <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-black to-transparent" />
+      {unsupported ? (
+        <div className="flex flex-col items-center gap-1 px-6 text-center">
+          <p className="text-sm font-medium text-white/80">
+            Visualização 3D indisponível
+          </p>
+          <p className="text-xs text-white/50">
+            Seu navegador não suporta WebGL.
+          </p>
+        </div>
+      ) : (
+        <>
+          <div
+            ref={containerRef}
+            className="absolute inset-0 mx-auto h-full w-full max-w-full"
+            aria-hidden="true"
+          />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-black to-transparent" />
+        </>
+      )}
     </div>
   )
 }

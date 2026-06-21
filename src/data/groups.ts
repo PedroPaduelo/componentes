@@ -15,7 +15,7 @@
  * - O vínculo slug → grupo vive em `SLUG_GROUP_MAP` (mapa de derivação externo),
  *   mantendo o registry (`components.ts`) como única fonte da verdade dos itens.
  *
- * A taxonomia (13 grupos, agrupados em 3 domínios macro) separa primitivos de
+ * A taxonomia (12 grupos, agrupados em 3 domínios macro) separa primitivos de
  * UI, blocos de aplicação/dados e efeitos visuais. Cada grupo é a unidade de
  * página/seção da navegação.
  */
@@ -23,7 +23,6 @@
 import {
   BarChart3,
   Bot,
-  Globe,
   LayoutGrid,
   LineChart,
   MessageSquare,
@@ -59,7 +58,7 @@ export type DomainId = (typeof DOMAIN_IDS)[number]
 /* -------------------------------------------------------------------------- */
 
 /**
- * Ids canônicos dos 13 grupos da vitrine (união literal `as const`).
+ * Ids canônicos dos 12 grupos da vitrine (união literal `as const`).
  *
  * São URL-safe (kebab-case) porque viram o contrato da rota de grupo
  * (ex.: `/components/grupo/forms-inputs`). Estáveis — não renomear sem migração.
@@ -77,7 +76,6 @@ export const GROUP_IDS = [
   "dashboards-data",
   "dev",
   "backgrounds-fx",
-  "globes-maps",
 ] as const
 
 /** União dos ids de grupo (literal `as const`). */
@@ -93,15 +91,15 @@ export interface Group {
   domain: DomainId
   /** Descrição curta exibida no topo da página/seção do grupo. */
   description: string
-  /** Ordem global (1..13) — já arranjada por domínio (contígua por bloco). */
+  /** Ordem global (1..12) — já arranjada por domínio (contígua por bloco). */
   order: number
   /** Ícone lucide associado ao grupo (opcional). */
   icon?: LucideIcon
 }
 
 /**
- * Os 13 grupos da taxonomia, JÁ ORDENADOS por domínio:
- * primitivos (1–7) → aplicações (8–11) → visual (12–13).
+ * Os 12 grupos da taxonomia, JÁ ORDENADOS por domínio:
+ * primitivos (1–7) → aplicações (8–11) → visual (12).
  */
 export const GROUPS: Group[] = [
   // — Domínio: primitivos de UI —
@@ -202,7 +200,7 @@ export const GROUPS: Group[] = [
     label: "Dev & Código",
     domain: "aplicacoes",
     description:
-      "Ferramentas de desenvolvedor: blocos de código com highlight, comandos de instalação, terminais, gráfico de contribuições, globo e mapa-múndi.",
+      "Ferramentas de desenvolvedor: blocos de código com highlight, comandos de instalação, terminais, gráfico de contribuições, globos 3D e mapa-múndi.",
     order: 11,
     icon: Terminal,
   },
@@ -216,15 +214,6 @@ export const GROUPS: Group[] = [
       "Fundos e efeitos imersivos: beams, auroras, grids, partículas, spotlights, meteoros e shaders.",
     order: 12,
     icon: Sparkles,
-  },
-  {
-    id: "globes-maps",
-    label: "Globos & Mapas",
-    domain: "visual",
-    description:
-      "Visualização 3D: globo interativo (cobe/three).",
-    order: 13,
-    icon: Globe,
   },
 ]
 
@@ -430,7 +419,8 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "table-fluid": "tables-data",
   "user-list-item": "tables-data",
 
-  // — Dev & Código: code blocks, comandos, terminais, contribuições, globo e mapa —
+  // — Dev & Código: code, comandos, terminais, contribuições, globos 3D e mapa —
+  "3d-globe": "dev",
   "code-block": "dev",
   "code-block-command": "dev",
   "github-contributions": "dev",
@@ -552,9 +542,6 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   vortex: "backgrounds-fx",
   "wavy-background": "backgrounds-fx",
   "webcam-pixel-grid": "backgrounds-fx",
-
-  // — Globos & Mapas: globo 3D interativo (cobe/three) —
-  "3d-globe": "globes-maps",
 }
 
 /* -------------------------------------------------------------------------- */

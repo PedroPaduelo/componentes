@@ -59,6 +59,7 @@ function ThreeDGlobe({
 }: ThreeDGlobeProps) {
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
   const phiRef = React.useRef(0)
+  const [unsupported, setUnsupported] = React.useState(false)
 
   React.useEffect(() => {
     const canvas = canvasRef.current
@@ -89,7 +90,14 @@ function ThreeDGlobe({
       markers: markers.map((m) => ({ location: m.location, size: m.size })),
     }
 
-    const globe = createGlobe(canvas, options)
+    let globe: ReturnType<typeof createGlobe>
+    try {
+      globe = createGlobe(canvas, options)
+    } catch {
+      // WebGL indisponível: evita propagar a exceção e derrubar a árvore React.
+      setUnsupported(true)
+      return
+    }
 
     const render = () => {
       phiRef.current += rotationSpeed
@@ -115,15 +123,26 @@ function ThreeDGlobe({
       )}
       {...props}
     >
-      <canvas
-        ref={canvasRef}
-        className="h-full w-full"
-        style={{
-          contain: "layout paint size",
-          opacity: 0,
-          transition: "opacity 1s ease",
-        }}
-      />
+      {unsupported ? (
+        <div className="flex h-full w-full flex-col items-center justify-center gap-1 px-6 text-center">
+          <p className="text-sm font-medium text-foreground/80">
+            Visualização 3D indisponível
+          </p>
+          <p className="text-xs text-muted-foreground">
+            Seu navegador não suporta WebGL.
+          </p>
+        </div>
+      ) : (
+        <canvas
+          ref={canvasRef}
+          className="h-full w-full"
+          style={{
+            contain: "layout paint size",
+            opacity: 0,
+            transition: "opacity 1s ease",
+          }}
+        />
+      )}
     </div>
   )
 }
