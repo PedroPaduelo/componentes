@@ -202,7 +202,7 @@ export const GROUPS: Group[] = [
     label: "Dev & Código",
     domain: "aplicacoes",
     description:
-      "Ferramentas de desenvolvedor: blocos de código com highlight, comandos de instalação, terminais e gráfico de contribuições.",
+      "Ferramentas de desenvolvedor: blocos de código com highlight, comandos de instalação, terminais, gráfico de contribuições, globo e mapa-múndi.",
     order: 11,
     icon: Terminal,
   },
@@ -222,7 +222,7 @@ export const GROUPS: Group[] = [
     label: "Globos & Mapas",
     domain: "visual",
     description:
-      "Visualizações geográficas e 3D: globos interativos (cobe/three) e mapas-múndi.",
+      "Visualização 3D: globo interativo (cobe/three).",
     order: 13,
     icon: Globe,
   },
@@ -430,11 +430,13 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "table-fluid": "tables-data",
   "user-list-item": "tables-data",
 
-  // — Dev & Código: code blocks, comandos, terminais e atividade de dev —
+  // — Dev & Código: code blocks, comandos, terminais, contribuições, globo e mapa —
   "code-block": "dev",
   "code-block-command": "dev",
   "github-contributions": "dev",
+  "github-globe": "dev",
   terminal: "dev",
+  "world-map": "dev",
 
   // — Feedback & Status: badges, alertas, callouts, toasts, progress, tooltips —
   alert: "feedback-status",
@@ -551,10 +553,8 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "wavy-background": "backgrounds-fx",
   "webcam-pixel-grid": "backgrounds-fx",
 
-  // — Globos & Mapas: globos interativos (cobe/three) e mapas-múndi —
+  // — Globos & Mapas: globo 3D interativo (cobe/three) —
   "3d-globe": "globes-maps",
-  "github-globe": "globes-maps",
-  "world-map": "globes-maps",
 }
 
 /* -------------------------------------------------------------------------- */
