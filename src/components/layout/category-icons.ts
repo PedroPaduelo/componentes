@@ -26,8 +26,10 @@ import {
   Palette,
   Shapes,
   Sparkles,
+  Table,
   TextCursorInput,
   Type,
+  Wand2,
   type LucideIcon,
 } from "lucide-react"
 
@@ -47,16 +49,18 @@ export const DOMAIN_ICONS: Record<DomainId, LucideIcon> = {
   visual: Palette,
 }
 
-/** Ícone lucide associado a cada um dos 9 grupos (espelha `GROUPS` de groups.ts). */
+/** Ícone lucide associado a cada um dos 12 grupos (espelha `GROUPS` de groups.ts). */
 export const GROUP_ICONS: Record<GroupId, LucideIcon> = {
   "forms-inputs": TextCursorInput,
   "actions-navigation": MousePointerClick,
   "layout-containers": LayoutGrid,
+  "tables-data": Table,
   "feedback-status": MessageSquare,
   "chat-ai": Bot,
   "dashboards-charts": LineChart,
   "dashboards-data": BarChart3,
   "text-effects": Type,
+  "card-effects": Wand2,
   "backgrounds-fx": Sparkles,
   "globes-maps": Globe,
 }
