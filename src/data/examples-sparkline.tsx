@@ -16,13 +16,13 @@ const retention = [100, 94, 88, 83, 79, 76, 74, 72, 71, 70]
 export function Demo() {
   return (
     <div className="w-full max-w-xs">
-      <Sparkline data={retention} />
+      <Sparkline data={retention} showTooltip />
     </div>
   )
 }`,
   render: (
     <div className="w-full max-w-xs">
-      <Sparkline data={RETENTION} />
+      <Sparkline data={RETENTION} showTooltip />
     </div>
   ),
 }
@@ -40,13 +40,19 @@ export function Demo() {
         data={[12, 18, 9, 22, 31, 27, 44, 38, 52, 49, 63, 71]}
         stroke="stroke-emerald-500"
         fill="fill-emerald-500/10"
+        showTooltip
       />
     </div>
   )
 }`,
   render: (
     <div className="w-full max-w-xs">
-      <Sparkline data={TRAFFIC} stroke="stroke-emerald-500" fill="fill-emerald-500/10" />
+      <Sparkline
+        data={TRAFFIC}
+        stroke="stroke-emerald-500"
+        fill="fill-emerald-500/10"
+        showTooltip
+      />
     </div>
   ),
 }

@@ -219,7 +219,7 @@ const Legend = React.forwardRef<HTMLOListElement, LegendProps>(
           ))}
         </div>
         {enableLegendSlider && (hasScroll?.right || hasScroll?.left) ? (
-          <div className="absolute top-0 right-0 bottom-0 flex h-full items-center justify-center bg-white pr-1 dark:bg-gray-950">
+          <div className="absolute top-0 right-0 bottom-0 flex h-full items-center justify-center bg-background pr-1">
             <button
               type="button"
               aria-label="Scroll legend left"
@@ -283,7 +283,7 @@ const ChartTooltip = ({
   if (active && payload && payload.length) {
     const filtered = payload.filter((item) => item.type !== "none")
     return (
-      <div className="rounded-md border border-gray-200 bg-white text-sm shadow-md dark:border-gray-800 dark:bg-gray-950">
+      <div className="rounded-md border border-border bg-popover text-popover-foreground text-sm shadow-md">
         <div className="border-inherit border-b px-4 py-2">
           <p className="font-medium text-gray-900 dark:text-gray-50">{label}</p>
         </div>
@@ -341,14 +341,22 @@ function djb2(str: string): string {
 
 const GradientDefs = ({
   categories,
+  categoryColors,
 }: {
   categories: string[]
+  categoryColors: Map<string, AvailableChartColorsKeys>
 }) => (
   <defs>
     {categories.map((category, i) => (
       <linearGradient
         key={`grad-${i}-${category}`}
         id={gradientId(category, i)}
+        // text-<cor>-500 (literal) faz o `currentColor` dos stops resolver na
+        // cor da série; sem isso a linha herdava a cor de texto padrão.
+        className={getColorClassName(
+          categoryColors.get(category) ?? "gray",
+          "text",
+        )}
         x1="0"
         y1="0"
         x2="0"
@@ -423,9 +431,13 @@ const LineChartTremor = React.forwardRef<HTMLDivElement, LineChartTremorProps>(
             data={data}
             margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
           >
-            {showGradient ? (
-              <GradientDefs categories={categories} />
-            ) : null}
+            {/* defs inline (chamada de função, NÃO <GradientDefs/>): o Recharts
+                descarta componentes custom como filhos — só renderiza elementos
+                DOM/reconhecidos. Sem isso a <defs> não entra no SVG e a linha
+                referencia um gradiente inexistente (fica invisível). */}
+            {showGradient
+              ? GradientDefs({ categories, categoryColors })
+              : null}
             {showGridLines ? (
               <CartesianGrid
                 className="stroke-1 stroke-gray-200 dark:stroke-gray-800"

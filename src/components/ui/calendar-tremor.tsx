@@ -4,7 +4,6 @@ import type { Matcher } from "react-day-picker"
 
 import { cn } from "@/lib/utils"
 import { Calendar, type CalendarProps } from "@/components/ui/calendar"
-import { focusRing } from "@/lib/tremor-utils"
 
 export type CalendarTremorProps = {
   /** Modo de seleção: data única (default) ou intervalo. */
@@ -69,8 +68,8 @@ function CalendarTremor({
       data-slot="calendar-tremor"
       data-tremor-id="tremor-raw"
       className={cn(
-        "rounded-md border border-gray-200 bg-white dark:border-gray-800 dark:bg-[#090E1A]",
-        focusRing,
+        "rounded-md border border-border bg-background",
+        "focus-within:outline-none focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 focus-within:ring-offset-background",
         className,
       )}
     >
@@ -85,32 +84,32 @@ function CalendarTremor({
           disabled,
         } as CalendarProps)}
         classNames={{
-          // head/head_cell mais discreto (Tremor: gray-400/gray-600)
-          head_cell:
-            "w-9 font-medium text-sm sm:text-xs text-center text-gray-400 dark:text-gray-600 pb-2",
+          // weekday (v8: head_cell) discreto, via token de tema
+          weekday:
+            "w-9 font-medium text-sm sm:text-xs text-center text-muted-foreground pb-2",
           // mês com padding mais generoso
-          month: "space-y-4 p-3",
-          // nav do shadcn já tem botões outline; só ajusto espaçamento
-          nav: "gap-1 flex items-center rounded-full size-full justify-between p-4",
-          // dias quadrados size-9, focus z-10
-          day: cn(
-            "size-9 rounded-sm text-sm focus:z-10",
-            "text-gray-900 dark:text-gray-50",
-            "hover:bg-gray-200 dark:hover:bg-gray-700",
+          month: "flex flex-col gap-4 p-3",
+          // dias quadrados size-9 (v9: day = <td>, day_button = <button>)
+          day: "relative size-9 p-0 text-center text-sm focus-within:relative focus-within:z-20 [&[data-selected=true]]:bg-transparent",
+          day_button: cn(
+            "inline-flex items-center justify-center size-9 rounded-sm text-sm font-normal focus:z-10",
+            "text-foreground",
+            "transition-colors hover:bg-accent hover:text-accent-foreground",
           ),
-          // range middle Tremor
-          day_range_middle: cn(
-            "rounded-none",
-            "aria-selected:bg-gray-100 aria-selected:text-gray-900",
-            "dark:aria-selected:bg-gray-900 dark:aria-selected:text-gray-50",
-          ),
-          day_range_start: "rounded-r-none rounded-l",
-          day_range_end: "rounded-l-none rounded-r",
-          day_selected: cn(
+          // selecionado: cor primária do tema (segue light/dark)
+          selected: cn(
             "rounded-sm",
-            "aria-selected:bg-blue-500 aria-selected:text-white",
-            "dark:aria-selected:bg-blue-500 dark:aria-selected:text-white",
+            "[&>button]:!bg-primary [&>button]:!text-primary-foreground",
+            "[&>button:hover]:!bg-primary [&>button:hover]:!text-primary-foreground",
           ),
+          // range middle (v8: day_range_middle) via accent do tema
+          range_middle: cn(
+            "!rounded-none",
+            "[&>button]:!bg-accent [&>button]:!text-accent-foreground",
+            "[&>button:hover]:!bg-accent [&>button:hover]:!text-accent-foreground",
+          ),
+          range_start: "!rounded-r-none rounded-l-sm",
+          range_end: "!rounded-l-none rounded-r-sm",
           ...(classNames as Record<string, string> | undefined),
         }}
       />

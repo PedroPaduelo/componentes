@@ -25,6 +25,7 @@ import {
   BarChart as RechartsBarChart,
   LineChart as RechartsLineChart,
   ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
 } from "recharts"
@@ -56,6 +57,30 @@ export interface SparkChartTremorProps
   connectNulls?: boolean
   /** Curva usada em `type="area"` e `type="line"`. Default: `"linear"`. */
   curveType?: SparkCurveType
+  /** Mostra um tooltip ao passar o mouse. Default: `true`. */
+  showTooltip?: boolean
+  /** Formata o valor exibido no tooltip. Default: `String(value)`. */
+  valueFormatter?: (value: number) => string
+}
+
+/** Tooltip compacto do spark chart (apenas o valor do ponto). */
+const SparkTooltip = ({
+  active,
+  payload,
+  valueFormatter,
+}: {
+  active?: boolean
+  payload?: Array<{ value?: number | string }>
+  valueFormatter: (value: number) => string
+}) => {
+  if (!active || !payload || payload.length === 0) return null
+  const raw = payload[0]?.value
+  const value = typeof raw === "number" ? raw : Number(raw) || 0
+  return (
+    <div className="rounded-md border border-border bg-popover px-2 py-1 text-xs font-medium tabular-nums text-popover-foreground shadow-md">
+      {valueFormatter(value)}
+    </div>
+  )
 }
 
 /**
@@ -74,6 +99,8 @@ const SparkChartTremor = React.forwardRef<HTMLDivElement, SparkChartTremorProps>
       showAnimation = true,
       connectNulls = false,
       curveType = "linear",
+      showTooltip = true,
+      valueFormatter = (value: number) => String(value),
       className,
       ...other
     } = props
@@ -86,6 +113,23 @@ const SparkChartTremor = React.forwardRef<HTMLDivElement, SparkChartTremorProps>
     const fillClass = getColorClassName(primaryColor, "fill")
 
     const commonMargin = { bottom: 1, left: 1, right: 1, top: 1 }
+
+    // Elemento <Tooltip> reaproveitado pelos 3 tipos de chart.
+    const tooltipEl = showTooltip ? (
+      <Tooltip
+        cursor={{ stroke: "#9ca3af", strokeWidth: 1 }}
+        isAnimationActive={false}
+        wrapperStyle={{ outline: "none", zIndex: 50 }}
+        allowEscapeViewBox={{ x: true, y: true }}
+        content={({ active, payload }) => (
+          <SparkTooltip
+            active={active}
+            payload={payload as Array<{ value?: number | string }>}
+            valueFormatter={valueFormatter}
+          />
+        )}
+      />
+    ) : null
 
     return (
       <div
@@ -102,6 +146,7 @@ const SparkChartTremor = React.forwardRef<HTMLDivElement, SparkChartTremorProps>
                 <RechartsBarChart data={chartData} margin={commonMargin}>
                   <XAxis hide dataKey="index" />
                   <YAxis hide={true} domain={yAxisDomain} />
+                  {tooltipEl}
                   <Bar
                     className={tremorCx(fillClass)}
                     dataKey="value"
@@ -116,6 +161,7 @@ const SparkChartTremor = React.forwardRef<HTMLDivElement, SparkChartTremorProps>
                 <RechartsLineChart data={chartData} margin={commonMargin}>
                   <XAxis hide dataKey="index" />
                   <YAxis hide={true} domain={yAxisDomain} />
+                  {tooltipEl}
                   <Line
                     className={tremorCx(strokeClass)}
                     dataKey="value"
@@ -138,6 +184,7 @@ const SparkChartTremor = React.forwardRef<HTMLDivElement, SparkChartTremorProps>
               <RechartsAreaChart data={chartData} margin={commonMargin}>
                 <XAxis hide dataKey="index" />
                 <YAxis hide={true} domain={yAxisDomain} />
+                {tooltipEl}
                 <defs>
                   <linearGradient
                     className={tremorCx(strokeClass)}

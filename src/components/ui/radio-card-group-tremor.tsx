@@ -34,7 +34,7 @@
 import * as React from "react"
 import * as RadioGroupPrimitive from "@radix-ui/react-radio-group"
 
-import { cx, focusRing } from "@/lib/tremor-utils"
+import { cx } from "@/lib/tremor-utils"
 
 /**
  * Item individual do card. `value` é a chave semântica que identifica a
@@ -93,17 +93,21 @@ const RadioCardGroupTremorCard = React.forwardRef<
       className={cx(
         // base
         "group relative flex w-full rounded-md border p-4 text-left shadow-xs transition focus:outline-hidden",
-        // background color
-        "bg-white dark:bg-gray-950",
-        // border color
+        // background color (token de tema)
+        "bg-card text-card-foreground",
+        // border color (controlado via `selected`)
         selected
-          ? "border-blue-500 ring-2 ring-blue-500/20 dark:border-blue-500"
-          : "border-gray-200 hover:border-gray-300 dark:border-gray-800 dark:hover:border-gray-700",
+          ? "border-primary ring-2 ring-primary/20"
+          : "border-border hover:border-muted-foreground/40",
+        // não-controlado: reflete o estado REAL do Radix (data-state) — sem
+        // isso, com defaultValue (value=undefined) nenhum card destacava.
+        "data-[state=checked]:border-primary data-[state=checked]:ring-2 data-[state=checked]:ring-primary/20",
         // disabled
         disabled
-          ? "cursor-not-allowed border-gray-100 bg-gray-50 opacity-60 shadow-none dark:border-gray-800 dark:bg-gray-900"
+          ? "cursor-not-allowed border-border bg-muted opacity-60 shadow-none"
           : "cursor-pointer",
-        focusRing,
+        // focus ring do tema (substitui o focusRing azul do Tremor)
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
         className,
       )}
       {...props}
@@ -115,17 +119,17 @@ const RadioCardGroupTremorCard = React.forwardRef<
         }>
         return (
           <IconComponent
-            className="mr-3 size-5 shrink-0 text-gray-400 group-data-[state=checked]:text-blue-500 dark:text-gray-500 dark:group-data-[state=checked]:text-blue-500"
+            className="mr-3 size-5 shrink-0 text-muted-foreground group-data-[state=checked]:text-primary"
             aria-hidden={true}
           />
         )
       })() : null}
       <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span className="text-sm font-medium text-gray-900 dark:text-gray-50">
+        <span className="text-sm font-medium text-foreground">
           {label}
         </span>
         {description ? (
-          <span className="text-xs text-gray-500 dark:text-gray-400">
+          <span className="text-xs text-muted-foreground">
             {description}
           </span>
         ) : null}
@@ -136,12 +140,14 @@ const RadioCardGroupTremorCard = React.forwardRef<
         className={cx(
           "ml-3 flex size-4 shrink-0 items-center justify-center rounded-full border transition",
           selected
-            ? "border-blue-500 bg-blue-500"
-            : "border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-950",
+            ? "border-primary bg-primary"
+            : "border-border bg-card",
+          // não-controlado: acompanha o data-state do Radix Item (group)
+          "group-data-[state=checked]:border-primary group-data-[state=checked]:bg-primary",
         )}
       >
         <RadioGroupPrimitive.Indicator>
-          <span className="size-1.5 rounded-full bg-white" />
+          <span className="size-1.5 rounded-full bg-primary-foreground" />
         </RadioGroupPrimitive.Indicator>
       </span>
       {children}

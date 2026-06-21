@@ -135,7 +135,7 @@ const ChartTooltip = ({
 }: ChartTooltipProps) => {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-md border border-gray-200 bg-white text-sm shadow-md dark:border-gray-800 dark:bg-gray-950">
+      <div className="rounded-md border border-border bg-popover text-popover-foreground text-sm shadow-md">
         <div className="border-inherit border-b px-4 py-2">
           <p className="font-medium text-gray-900 dark:text-gray-50">{label}</p>
         </div>

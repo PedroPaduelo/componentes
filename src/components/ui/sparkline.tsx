@@ -32,6 +32,14 @@ export interface SparklineProps
   width?: number
   /** Altura do viewBox (sistema de coordenadas). Default: 56. */
   height?: number
+  /**
+   * Habilita tooltip interativo (marcador + valor no hover). Default: `false`
+   * — mantém o uso decorativo em cards inalterado. Quando `true`, o root vira
+   * um `<span>` posicionado contendo o `<svg>` + overlay HTML.
+   */
+  showTooltip?: boolean
+  /** Formata o valor exibido no tooltip. Default: `String(value)`. */
+  valueFormatter?: (value: number) => string
 }
 
 function Sparkline({
@@ -41,6 +49,8 @@ function Sparkline({
   strokeWidth = 2,
   width = 240,
   height = 56,
+  showTooltip = false,
+  valueFormatter = (value: number) => String(value),
   className,
   ...props
 }: SparklineProps) {
@@ -50,18 +60,21 @@ function Sparkline({
   const min = Math.min(...data)
   const span = Math.max(max - min, 1)
   const step = data.length > 1 ? w / (data.length - 1) : w
-  const coords = data.map((p, i) => {
+  const pts = data.map((p, i) => {
     const x = i * step
     const y = h - ((p - min) / span) * (h - 8) - 4
-    return `${x.toFixed(1)},${y.toFixed(1)}`
+    return { x, y }
   })
-  const linePoints = coords.join(" ")
+  const linePoints = pts.map((p) => `${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ")
   const areaPoints = `0,${h} ${linePoints} ${w},${h}`
-  return (
+
+  const [hoverIdx, setHoverIdx] = React.useState<number | null>(null)
+
+  const svg = (
     <svg
-      data-slot="sparkline"
+      data-slot={showTooltip ? undefined : "sparkline"}
       viewBox={`0 0 ${w} ${h}`}
-      className={cn("h-14 w-full", className)}
+      className={showTooltip ? "block h-full w-full" : cn("h-14 w-full", className)}
       preserveAspectRatio="none"
       role="img"
       aria-label="Tendência"
@@ -77,6 +90,50 @@ function Sparkline({
         strokeLinejoin="round"
       />
     </svg>
+  )
+
+  if (!showTooltip) return svg
+
+  const onMove = (e: React.MouseEvent<HTMLElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect()
+    const rel = (e.clientX - rect.left) / Math.max(rect.width, 1)
+    const idx = Math.round(rel * (data.length - 1))
+    setHoverIdx(Math.min(Math.max(idx, 0), data.length - 1))
+  }
+
+  const active = hoverIdx != null ? pts[hoverIdx] : null
+  const xPct = active ? (active.x / w) * 100 : 0
+  const yPct = active ? (active.y / h) * 100 : 0
+  // stroke-<x> → bg-<x> (classes literais; consumidores passam cores literais).
+  const dotBg = stroke.replace("stroke-", "bg-")
+
+  return (
+    <span
+      data-slot="sparkline"
+      className={cn("relative block h-14 w-full", className)}
+      onMouseMove={onMove}
+      onMouseLeave={() => setHoverIdx(null)}
+    >
+      {svg}
+      {active && hoverIdx != null ? (
+        <>
+          <span
+            aria-hidden="true"
+            className={cn(
+              "pointer-events-none absolute z-10 size-2 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-background",
+              dotBg,
+            )}
+            style={{ left: `${xPct}%`, top: `${yPct}%` }}
+          />
+          <span
+            className="pointer-events-none absolute z-20 -translate-x-1/2 -translate-y-[calc(100%+10px)] whitespace-nowrap rounded-md border border-border bg-popover px-2 py-1 text-xs font-medium tabular-nums text-popover-foreground shadow-md"
+            style={{ left: `${xPct}%`, top: `${yPct}%` }}
+          >
+            {valueFormatter(data[hoverIdx])}
+          </span>
+        </>
+      ) : null}
+    </span>
   )
 }
 

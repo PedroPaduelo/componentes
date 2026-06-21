@@ -206,8 +206,8 @@ function ComboTooltip({
     <div
       className={cx(
         "rounded-md border text-sm shadow-md",
-        "border-gray-200 dark:border-gray-800",
-        "bg-white dark:bg-gray-950",
+        "border-border",
+        "bg-popover text-popover-foreground",
       )}
     >
       <div className="border-inherit border-b px-4 py-2">
@@ -278,14 +278,16 @@ const ComboChartTremor = React.forwardRef<HTMLDivElement, ComboChartTremorProps>
       [normalized],
     )
 
-    const barCategoryColors = React.useMemo(
-      () => constructCategoryColors(barNames, colors),
-      [barNames, colors],
+    // Um único mapa de cores sobre TODAS as categorias (na ordem declarada),
+    // para que bar e line recebam cores distintas. Antes bar e line eram
+    // coloridos por mapas separados — ambos começavam no índice 0 da paleta e
+    // saíam com a mesma cor (ex.: tudo azul).
+    const categoryColors = React.useMemo(
+      () => constructCategoryColors(normalized.map((c) => c.name), colors),
+      [normalized, colors],
     )
-    const lineCategoryColors = React.useMemo(
-      () => constructCategoryColors(lineNames, colors),
-      [lineNames, colors],
-    )
+    const barCategoryColors = categoryColors
+    const lineCategoryColors = categoryColors
 
     const [activeLegend, setActiveLegend] = React.useState<string | undefined>()
     const [activeBar, setActiveBar] = React.useState<
@@ -309,11 +311,23 @@ const ComboChartTremor = React.forwardRef<HTMLDivElement, ComboChartTremorProps>
       return { barValues: b, lineValues: l }
     }, [data, barNames, lineNames])
 
-    // Um único Y axis no ComboChart simplificado: usa o range combinado de
-    // bar + line para que ambos caibam confortavelmente.
-    const yAxisDomain = React.useMemo(
-      () => getYAxisDomainCombo([...barValues, ...lineValues], undefined, undefined),
-      [barValues, lineValues],
+    // Combo biaxial: bar e line costumam ter magnitudes MUITO diferentes
+    // (ex.: receita ~10k vs pedidos ~200). Com um eixo único a série menor fica
+    // achatada no zero (em cima das labels do X). Por isso cada tipo ganha seu
+    // próprio eixo Y com domínio independente: barras à esquerda, linha à direita.
+    const biaxial = barNames.length > 0 && lineNames.length > 0
+    const barDomain = React.useMemo(
+      () =>
+        getYAxisDomainCombo(
+          biaxial ? barValues : [...barValues, ...lineValues],
+          undefined,
+          undefined,
+        ),
+      [barValues, lineValues, biaxial],
+    )
+    const lineDomain = React.useMemo(
+      () => getYAxisDomainCombo(lineValues, undefined, undefined),
+      [lineValues],
     )
 
     function onBarClick(barData: unknown) {
@@ -369,15 +383,30 @@ const ComboChartTremor = React.forwardRef<HTMLDivElement, ComboChartTremorProps>
               minTickGap={5}
             />
             <YAxis
+              yAxisId="left"
               width={56}
               className={cx("text-xs", "fill-gray-500 dark:fill-gray-500")}
               tickLine={false}
               axisLine={false}
               type="number"
-              domain={yAxisDomain}
+              domain={barDomain}
               tickFormatter={valueFormatter}
               allowDecimals
             />
+            {biaxial ? (
+              <YAxis
+                yAxisId="right"
+                orientation="right"
+                width={56}
+                className={cx("text-xs", "fill-gray-500 dark:fill-gray-500")}
+                tickLine={false}
+                axisLine={false}
+                type="number"
+                domain={lineDomain}
+                tickFormatter={valueFormatter}
+                allowDecimals
+              />
+            ) : null}
             <Tooltip
               wrapperStyle={{ outline: "none" }}
               isAnimationActive={showAnimation}
@@ -483,6 +512,7 @@ const ComboChartTremor = React.forwardRef<HTMLDivElement, ComboChartTremorProps>
               return (
                 <Bar
                   key={`bar-${name}`}
+                  yAxisId="left"
                   dataKey={name}
                   name={name}
                   type="linear"
@@ -507,6 +537,7 @@ const ComboChartTremor = React.forwardRef<HTMLDivElement, ComboChartTremorProps>
               return (
                 <Line
                   key={`line-${name}`}
+                  yAxisId={biaxial ? "right" : "left"}
                   type="linear"
                   dataKey={name}
                   name={name}

@@ -100,37 +100,49 @@ export type AvailableChartColorsKeys = (typeof AvailableChartColors)[number]
  * Mapa: nome da cor → classe `fill-<x>-500`.
  * Strings literares (NÃO interpolar). Ex.: `getColorClassName("blue", "fill")` → `"fill-blue-500"`.
  */
-const COLOR_CLASS_NAMES: Record<AvailableChartColorsKeys, { fill: string; stroke: string }> = {
-  blue: { fill: "fill-blue-500", stroke: "stroke-blue-500" },
-  emerald: { fill: "fill-emerald-500", stroke: "stroke-emerald-500" },
-  violet: { fill: "fill-violet-500", stroke: "stroke-violet-500" },
-  amber: { fill: "fill-amber-500", stroke: "stroke-amber-500" },
-  gray: { fill: "fill-gray-500", stroke: "stroke-gray-500" },
-  red: { fill: "fill-red-500", stroke: "stroke-red-500" },
-  yellow: { fill: "fill-yellow-500", stroke: "stroke-yellow-500" },
-  indigo: { fill: "fill-indigo-500", stroke: "stroke-indigo-500" },
-  cyan: { fill: "fill-cyan-500", stroke: "stroke-cyan-500" },
-  pink: { fill: "fill-pink-500", stroke: "stroke-pink-500" },
-  lime: { fill: "fill-lime-500", stroke: "stroke-lime-500" },
-  fuchsia: { fill: "fill-fuchsia-500", stroke: "stroke-fuchsia-500" },
-  rose: { fill: "fill-rose-500", stroke: "stroke-rose-500" },
-  sky: { fill: "fill-sky-500", stroke: "stroke-sky-500" },
-  slate: { fill: "fill-slate-500", stroke: "stroke-slate-500" },
-  zinc: { fill: "fill-zinc-500", stroke: "stroke-zinc-500" },
-  neutral: { fill: "fill-neutral-500", stroke: "stroke-neutral-500" },
-  stone: { fill: "fill-stone-500", stroke: "stroke-stone-500" },
+type ColorClassEntry = {
+  fill: string
+  stroke: string
+  bg: string
+  text: string
+}
+
+const COLOR_CLASS_NAMES: Record<AvailableChartColorsKeys, ColorClassEntry> = {
+  blue: { fill: "fill-blue-500", stroke: "stroke-blue-500", bg: "bg-blue-500", text: "text-blue-500" },
+  emerald: { fill: "fill-emerald-500", stroke: "stroke-emerald-500", bg: "bg-emerald-500", text: "text-emerald-500" },
+  violet: { fill: "fill-violet-500", stroke: "stroke-violet-500", bg: "bg-violet-500", text: "text-violet-500" },
+  amber: { fill: "fill-amber-500", stroke: "stroke-amber-500", bg: "bg-amber-500", text: "text-amber-500" },
+  gray: { fill: "fill-gray-500", stroke: "stroke-gray-500", bg: "bg-gray-500", text: "text-gray-500" },
+  red: { fill: "fill-red-500", stroke: "stroke-red-500", bg: "bg-red-500", text: "text-red-500" },
+  yellow: { fill: "fill-yellow-500", stroke: "stroke-yellow-500", bg: "bg-yellow-500", text: "text-yellow-500" },
+  indigo: { fill: "fill-indigo-500", stroke: "stroke-indigo-500", bg: "bg-indigo-500", text: "text-indigo-500" },
+  cyan: { fill: "fill-cyan-500", stroke: "stroke-cyan-500", bg: "bg-cyan-500", text: "text-cyan-500" },
+  pink: { fill: "fill-pink-500", stroke: "stroke-pink-500", bg: "bg-pink-500", text: "text-pink-500" },
+  lime: { fill: "fill-lime-500", stroke: "stroke-lime-500", bg: "bg-lime-500", text: "text-lime-500" },
+  fuchsia: { fill: "fill-fuchsia-500", stroke: "stroke-fuchsia-500", bg: "bg-fuchsia-500", text: "text-fuchsia-500" },
+  rose: { fill: "fill-rose-500", stroke: "stroke-rose-500", bg: "bg-rose-500", text: "text-rose-500" },
+  sky: { fill: "fill-sky-500", stroke: "stroke-sky-500", bg: "bg-sky-500", text: "text-sky-500" },
+  slate: { fill: "fill-slate-500", stroke: "stroke-slate-500", bg: "bg-slate-500", text: "text-slate-500" },
+  zinc: { fill: "fill-zinc-500", stroke: "stroke-zinc-500", bg: "bg-zinc-500", text: "text-zinc-500" },
+  neutral: { fill: "fill-neutral-500", stroke: "stroke-neutral-500", bg: "bg-neutral-500", text: "text-neutral-500" },
+  stone: { fill: "fill-stone-500", stroke: "stroke-stone-500", bg: "bg-stone-500", text: "text-stone-500" },
 }
 
 /**
- * Retorna a classe Tailwind (`fill-<x>-500` ou `stroke-<x>-500`) correspondente
- * à cor Tremor informada. Faz fallback para `"gray"` se a cor for inválida.
+ * Retorna a classe Tailwind literal (`fill-/stroke-/bg-/text-<x>-500`)
+ * correspondente à cor Tremor informada. Faz fallback para `"gray"` se a cor
+ * for inválida.
+ *
+ * IMPORTANTE: as classes são strings literais no mapa acima porque o Tailwind v4
+ * NÃO detecta classes montadas por interpolação (`bg-${color}-500`). Sempre use
+ * esta função em vez de template literals para garantir que o CSS seja gerado.
  */
 export const getColorClassName = (
   color: AvailableChartColorsKeys,
-  type: "fill" | "stroke",
+  type: "fill" | "stroke" | "bg" | "text",
 ): string => {
   const entry = COLOR_CLASS_NAMES[color] ?? COLOR_CLASS_NAMES.gray
-  return type === "fill" ? entry.fill : entry.stroke
+  return entry[type]
 }
 
 /**

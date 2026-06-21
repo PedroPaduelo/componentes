@@ -45,13 +45,17 @@ import {
 // Helpers locais
 // ────────────────────────────────────────────────────────────────────────────
 
-/** Cor Tremor → classe Tailwind `bg-<x>-500` (usada no dot da legend / tooltip). */
+/**
+ * Cor Tremor → classe `bg-<x>-500` (dot da legend / tooltip).
+ * Usa o mapa literal de `tremor-utils` porque o Tailwind v4 NÃO gera classes
+ * montadas por interpolação (`bg-${color}-500`).
+ */
 const getBgClass = (color: AvailableChartColorsKeys) =>
-  `bg-${color}-500` as const
+  getColorClassName(color, "bg")
 
-/** Cor Tremor → classe Tailwind `text-<x>-500` (usada no gradient via `currentColor`). */
+/** Cor Tremor → classe `text-<x>-500` (gradient via `currentColor`). */
 const getTextClass = (color: AvailableChartColorsKeys) =>
-  `text-${color}-500` as const
+  getColorClassName(color, "text")
 
 /** Detecta se uma chave tem um único valor único em toda a série. */
 const hasOnlyOneValueForKey = (
@@ -293,7 +297,7 @@ const Legend = React.forwardRef<HTMLOListElement, LegendProps>((props, ref) => {
       {enableLegendSlider && (hasScroll?.right || hasScroll?.left) ? (
         <div
           className={cx(
-            "absolute top-0 right-0 bottom-0 flex h-full items-center justify-center pr-1 bg-white dark:bg-gray-950",
+            "absolute top-0 right-0 bottom-0 flex h-full items-center justify-center pr-1 bg-background",
           )}
         >
           <ScrollButton
@@ -397,7 +401,7 @@ const ChartTooltip = ({
     return (
       <div
         className={cx(
-          "rounded-md border text-sm shadow-md border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950",
+          "rounded-md border text-sm shadow-md border-border bg-popover text-popover-foreground",
         )}
       >
         <div className="border-b border-inherit px-4 py-2">
@@ -810,31 +814,42 @@ const AreaChartTremor = React.forwardRef<HTMLDivElement, AreaChartTremorProps>(
                 }
               />
             ) : null}
+            {/* defs achatadas: o Recharts NÃO detecta filhos dentro de
+                <Fragment>. Antes cada série era <Fragment><defs/><Area/></Fragment>
+                e NENHUMA <Area> (nem a legenda, que deriva das séries) era
+                desenhada. Agora: uma <defs> única + as <Area> num array plano. */}
+            <defs>
+              {categories.map((category) => {
+                const categoryId = `${areaId}-${category.replace(/[^a-zA-Z0-9]/g, "")}`
+                return (
+                  <linearGradient
+                    key={category}
+                    className={getTextClass(
+                      categoryColors.get(category) ??
+                        ("gray" as AvailableChartColorsKeys),
+                    )}
+                    id={categoryId}
+                    x1="0"
+                    y1="0"
+                    x2="0"
+                    y2="1"
+                  >
+                    {getFillContent({
+                      fillType: fill,
+                      activeDot,
+                      activeLegend,
+                      category,
+                    })}
+                  </linearGradient>
+                )
+              })}
+            </defs>
             {categories.map((category) => {
               const categoryId = `${areaId}-${category.replace(/[^a-zA-Z0-9]/g, "")}`
               const categoryColor =
                 categoryColors.get(category) ??
                 ("gray" as AvailableChartColorsKeys)
               return (
-                <React.Fragment key={category}>
-                  <defs key={category}>
-                    <linearGradient
-                      key={category}
-                      className={getTextClass(categoryColor)}
-                      id={categoryId}
-                      x1="0"
-                      y1="0"
-                      x2="0"
-                      y2="1"
-                    >
-                      {getFillContent({
-                        fillType: fill,
-                        activeDot,
-                        activeLegend,
-                        category,
-                      })}
-                    </linearGradient>
-                  </defs>
                   <Area
                     className={getColorClassName(categoryColor, "stroke")}
                     strokeOpacity={
@@ -954,7 +969,6 @@ const AreaChartTremor = React.forwardRef<HTMLDivElement, AreaChartTremorProps>(
                     stackId={stacked ? "stack" : undefined}
                     fill={`url(#${categoryId})`}
                   />
-                </React.Fragment>
               )
             })}
             {/* hidden lines to increase clickable target area when onValueChange is set */}

@@ -165,8 +165,8 @@ const ChartTooltip = ({
     <div
       className={cx(
         "rounded-md border text-sm shadow-md",
-        "border-gray-200 dark:border-gray-800",
-        "bg-white dark:bg-gray-950",
+        "border-border",
+        "bg-popover text-popover-foreground",
       )}
     >
       <div className="border-inherit border-b px-4 py-2">
@@ -413,7 +413,7 @@ const LegendList = React.forwardRef<HTMLOListElement, LegendListProps>((props, r
         <div
           className={cx(
             "absolute top-0 right-0 bottom-0 flex h-full items-center justify-center pr-1",
-            "bg-white dark:bg-gray-950",
+            "bg-background",
           )}
         >
           <ScrollButton
