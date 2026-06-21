@@ -34,7 +34,6 @@ import {
   Terminal,
   TextCursorInput,
   Type,
-  Wand2,
   type LucideIcon,
 } from "lucide-react"
 
@@ -77,7 +76,6 @@ export const GROUP_IDS = [
   "dashboards-data",
   "dev",
   "text-effects",
-  "card-effects",
   "backgrounds-fx",
   "globes-maps",
 ] as const
@@ -103,7 +101,7 @@ export interface Group {
 
 /**
  * Os 13 grupos da taxonomia, JÁ ORDENADOS por domínio:
- * primitivos (1–6) → aplicações (7–9) → visual (10–13).
+ * primitivos (1–6) → aplicações (7–10) → visual (11–13).
  */
 export const GROUPS: Group[] = [
   // — Domínio: primitivos de UI —
@@ -139,7 +137,7 @@ export const GROUPS: Group[] = [
     label: "Cards",
     domain: "primitivos",
     description:
-      "Cards de conteúdo e métrica: card base, KPI/stat cards, tiles de métrica e cards de overview/upgrade.",
+      "Todos os cards: card base, KPI/stat cards e tiles de métrica, além de cards decorativos (3D, glare, spotlight, comet, wobble, hover e stacks animados).",
     order: 4,
     icon: SquareStack,
   },
@@ -211,21 +209,12 @@ export const GROUPS: Group[] = [
     icon: Type,
   },
   {
-    id: "card-effects",
-    label: "Efeitos de Card",
-    domain: "visual",
-    description:
-      "Cards decorativos e interativos: 3D, glare, spotlight, comet, wobble, hover e empilhamentos animados.",
-    order: 12,
-    icon: Wand2,
-  },
-  {
     id: "backgrounds-fx",
     label: "Backgrounds & FX",
     domain: "visual",
     description:
       "Fundos e efeitos imersivos: beams, auroras, grids, partículas, spotlights, meteoros e shaders.",
-    order: 13,
+    order: 12,
     icon: Sparkles,
   },
   {
@@ -234,7 +223,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Visualizações geográficas e 3D: globos interativos (cobe/three) e mapas-múndi.",
-    order: 14,
+    order: 13,
     icon: Globe,
   },
 ]
@@ -381,7 +370,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   tree: "layout-containers",
   "work-experience-component": "layout-containers",
 
-  // — Cards: card base, KPI/stat cards, tiles de métrica, overview/upgrade —
+  // — Cards: conteúdo, métrica e efeitos decorativos —
   card: "cards",
   "card-tremor": "cards",
   "detail-stat-cell": "cards",
@@ -392,6 +381,21 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "stat-tile": "cards",
   "table-info-panel": "cards",
   "upgrade-card": "cards",
+  // efeitos de card (decorativos / animados)
+  "3d-card-effect": "cards",
+  "3d-pin": "cards",
+  "card-hover-effect": "cards",
+  "card-spotlight": "cards",
+  "card-stack": "cards",
+  "comet-card": "cards",
+  "direction-aware-hover": "cards",
+  "draggable-card": "cards",
+  "evervault-card": "cards",
+  "focus-cards": "cards",
+  "glare-card": "cards",
+  "glow-card-grid": "cards",
+  "glowing-stars-effect": "cards",
+  "wobble-card": "cards",
 
   // — Tabelas & Dados: tabelas e listas —
   "activity-feed": "tables-data",
@@ -500,22 +504,6 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "text-hover-effect": "text-effects",
   "text-reveal-card": "text-effects",
   "typewriter-effect": "text-effects",
-
-  // — Efeitos de Card: 3D, glare, spotlight, comet, wobble, hover, stacks —
-  "3d-card-effect": "card-effects",
-  "3d-pin": "card-effects",
-  "card-hover-effect": "card-effects",
-  "card-spotlight": "card-effects",
-  "card-stack": "card-effects",
-  "comet-card": "card-effects",
-  "direction-aware-hover": "card-effects",
-  "draggable-card": "card-effects",
-  "evervault-card": "card-effects",
-  "focus-cards": "card-effects",
-  "glare-card": "card-effects",
-  "glow-card-grid": "card-effects",
-  "glowing-stars-effect": "card-effects",
-  "wobble-card": "card-effects",
 
   // — Backgrounds & FX: beams, auroras, partículas, spotlights, shaders —
   "3d-marquee": "backgrounds-fx",

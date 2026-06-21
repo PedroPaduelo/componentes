@@ -31,7 +31,6 @@ import {
   Terminal,
   TextCursorInput,
   Type,
-  Wand2,
   type LucideIcon,
 } from "lucide-react"
 
@@ -64,7 +63,6 @@ export const GROUP_ICONS: Record<GroupId, LucideIcon> = {
   "dashboards-data": BarChart3,
   "dev": Terminal,
   "text-effects": Type,
-  "card-effects": Wand2,
   "backgrounds-fx": Sparkles,
   "globes-maps": Globe,
 }
