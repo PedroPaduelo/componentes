@@ -20,7 +20,7 @@ const REVENUE = [
 const basicExample: Example = {
   title: "Receita por mês",
   description:
-    "Série de 12 meses normalizada ao maior valor. Cor padrão (bg-primary) e altura proporcional.",
+    "Série de 12 meses normalizada ao maior valor. Cor padrão (bg-primary) e altura proporcional. Passe o mouse para ver o tooltip com o valor da barra.",
   code: `import { BarChart } from "@/components/ui/bar-chart"
 
 const revenue = [

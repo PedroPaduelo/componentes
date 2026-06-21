@@ -13,7 +13,7 @@ const total = PLAN_MIX.reduce((acc, s) => acc + s.value, 0)
 const withLabelExample: Example = {
   title: "Distribuição de planos",
   description:
-    "Mix da base de clientes com rótulo central sobreposto via wrapper relativo.",
+    "Mix da base de clientes com rótulo central sobreposto via wrapper relativo. No hover sobre um arco, o tooltip mostra o segmento, o valor e a participação (%).",
   code: `import { DonutChart } from "@/components/ui/donut-chart"
 
 const segments = [

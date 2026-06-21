@@ -13,7 +13,7 @@ const CHANNELS = [
 const basicExample: Example = {
   title: "Canais de aquisição",
   description:
-    "Ranking de canais normalizado ao maior valor. Rótulo à esquerda, valor à direita.",
+    "Ranking de canais normalizado ao maior valor. Rótulo à esquerda, valor à direita. No hover, o tooltip mostra o valor e a participação (%) no total.",
   code: `import { HBarChart } from "@/components/ui/h-bar-chart"
 
 const channels = [
