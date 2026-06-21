@@ -167,6 +167,11 @@ export const compositionScreens: Record<
       default: m.ObservabilityCenter,
     }))
   ),
+  "slow-query-list": lazy(() =>
+    import("./slow-query-list").then((m) => ({
+      default: m.SlowQueryListScreen,
+    }))
+  ),
   "db-schema-explorer": lazy(() =>
     import("./db-schema-explorer").then((m) => ({
       default: m.DbSchemaExplorerScreen,

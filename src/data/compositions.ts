@@ -462,6 +462,22 @@ export const compositions: Composition[] = [
     category: "Aplicação",
   },
   {
+    slug: "slow-query-list",
+    name: "Slow Query Monitor",
+    description:
+      "Diagnóstico de queries SQL lentas (estilo pgAdmin / DataDog DBM / pganalyze): seletor de banco, lista com tempo, SQL destacada, plano do EXPLAIN em árvore, locks ativos e sugestões automáticas (índice faltante, rewrite, vacuum). Filtros por threshold/severidade e agrupamento por tabela.",
+    tags: [
+      "database",
+      "sql",
+      "slow-query",
+      "observability",
+      "explain",
+      "devtools",
+      "app",
+    ],
+    category: "Aplicação",
+  },
+  {
     slug: "db-schema-explorer",
     name: "DB Schema Explorer",
     description:

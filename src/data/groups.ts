@@ -31,6 +31,7 @@ import {
   Sparkles,
   SquareStack,
   Table,
+  Terminal,
   TextCursorInput,
   Type,
   Wand2,
@@ -74,6 +75,7 @@ export const GROUP_IDS = [
   "chat-ai",
   "dashboards-charts",
   "dashboards-data",
+  "dev",
   "text-effects",
   "card-effects",
   "backgrounds-fx",
@@ -188,6 +190,15 @@ export const GROUPS: Group[] = [
     order: 9,
     icon: BarChart3,
   },
+  {
+    id: "dev",
+    label: "Dev & Código",
+    domain: "aplicacoes",
+    description:
+      "Ferramentas de desenvolvedor: blocos de código com highlight, comandos de instalação e terminais.",
+    order: 10,
+    icon: Terminal,
+  },
 
   // — Domínio: visual & efeitos —
   {
@@ -196,7 +207,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Tipografia animada: flip, typewriter, geração progressiva, gradientes, brilho e revelações de texto.",
-    order: 10,
+    order: 11,
     icon: Type,
   },
   {
@@ -205,7 +216,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Cards decorativos e interativos: 3D, glare, spotlight, comet, wobble, hover e empilhamentos animados.",
-    order: 11,
+    order: 12,
     icon: Wand2,
   },
   {
@@ -214,7 +225,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Fundos e efeitos imersivos: beams, auroras, grids, partículas, spotlights, meteoros e shaders.",
-    order: 12,
+    order: 13,
     icon: Sparkles,
   },
   {
@@ -223,7 +234,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Visualizações geográficas e 3D: globos interativos (cobe/three) e mapas-múndi.",
-    order: 13,
+    order: 14,
     icon: Globe,
   },
 ]
@@ -379,24 +390,25 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "server-overview-card": "cards",
   "signal-card": "cards",
   "stat-tile": "cards",
+  "table-info-panel": "cards",
   "upgrade-card": "cards",
 
-  // — Tabelas & Dados: tabelas, listas, code blocks, terminais —
+  // — Tabelas & Dados: tabelas e listas —
   "activity-feed": "tables-data",
-  "code-block": "tables-data",
-  "code-block-command": "tables-data",
   "connection-list": "tables-data",
   "data-table": "tables-data",
   "favorites-list": "tables-data",
   "invoice-table": "tables-data",
   "leaderboard-list": "tables-data",
   "query-history-list": "tables-data",
-  "slow-query-list": "tables-data",
   table: "tables-data",
   "table-fluid": "tables-data",
-  "table-info-panel": "tables-data",
-  terminal: "tables-data",
   "user-list-item": "tables-data",
+
+  // — Dev & Código: code blocks, comandos e terminais —
+  "code-block": "dev",
+  "code-block-command": "dev",
+  terminal: "dev",
 
   // — Feedback & Status: badges, alertas, callouts, toasts, progress, tooltips —
   alert: "feedback-status",

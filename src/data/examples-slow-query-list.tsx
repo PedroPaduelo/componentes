@@ -18,7 +18,7 @@ import type { SlowQuery } from "@/components/ui/slow-query-list-types"
  * 6 queries do banco `audit_db` — mistura de warning/critical, plans
  * com Seq Scan problemático, lock contention e algumas sugestões.
  */
-const auditQueries: SlowQuery[] = [
+export const auditQueries: SlowQuery[] = [
   {
     id: "audit-001",
     t: "2026-06-15T14:32:18Z",
@@ -295,7 +295,7 @@ WHERE expires_at < NOW() - INTERVAL '30 days';`,
 
 /* ------------------------------------------------------------------ 2. SGT Maker */
 
-const sgtQueries: SlowQuery[] = [
+export const sgtQueries: SlowQuery[] = [
   {
     id: "sgt-001",
     t: "2026-06-15T15:02:10Z",

@@ -226,7 +226,6 @@ import { examplesRequestFlowInspector } from "./examples-request-flow-inspector"
 import { examplesErrorTrackerFeed } from "./examples-error-tracker-feed"
 import { examplesServerOverviewCard } from "./examples-server-overview-card"
 import { examplesContainerResourcePanel } from "./examples-container-resource-panel"
-import { examplesSlowQueryList } from "./examples-slow-query-list"
 import { examplesUserActivityStream } from "./examples-user-activity-stream"
 import { examplesIncidentTimeline } from "./examples-incident-timeline"
 import { examplesBarChart } from "./examples-bar-chart"
@@ -1555,7 +1554,6 @@ export const examples: Record<string, Example[]> = {
   ...examplesRequestFlowInspector,
   ...examplesServerOverviewCard,
   ...examplesContainerResourcePanel,
-  ...examplesSlowQueryList,
   ...examplesUserActivityStream,
   // Lote Observabilidade
   ...examplesDbOverviewGrid,
