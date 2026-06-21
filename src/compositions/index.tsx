@@ -167,6 +167,11 @@ export const compositionScreens: Record<
       default: m.ObservabilityCenter,
     }))
   ),
+  "db-schema-explorer": lazy(() =>
+    import("./db-schema-explorer").then((m) => ({
+      default: m.DbSchemaExplorerScreen,
+    }))
+  ),
   "dba-workbench": lazy(() =>
     import("./dba-workbench").then((m) => ({ default: m.DbaWorkbench }))
   ),

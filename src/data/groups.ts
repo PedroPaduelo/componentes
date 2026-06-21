@@ -441,7 +441,6 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "container-resource-panel": "dashboards-data",
   "dashboard-filter-bar": "dashboards-data",
   "db-overview-grid": "dashboards-data",
-  "db-schema-explorer": "dashboards-data",
   "ecg-strip": "dashboards-data",
   "error-tracker-feed": "dashboards-data",
   "fleet-server-grid": "dashboards-data",

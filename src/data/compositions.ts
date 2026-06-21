@@ -462,6 +462,23 @@ export const compositions: Composition[] = [
     category: "Aplicação",
   },
   {
+    slug: "db-schema-explorer",
+    name: "DB Schema Explorer",
+    description:
+      "Explorador de schema de banco no estilo DBeaver/Navicat: seletor de conexão, árvore lateral (banco → schemas → tabelas) com busca em tempo real, painel de detalhe com 4 abas (Columns / Indexes / Foreign keys / DDL) e referência FK clicável que salta para a tabela alvo.",
+    tags: [
+      "database",
+      "schema",
+      "postgres",
+      "dbeaver",
+      "navicat",
+      "devtools",
+      "app",
+    ],
+    category: "Aplicação",
+    wide: true,
+  },
+  {
     slug: "dba-workbench",
     name: "DBA Workbench",
     description:
