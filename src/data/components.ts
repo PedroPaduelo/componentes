@@ -3369,6 +3369,38 @@ export const components: ComponentMeta[] = [
       "Toggle/switch da Tremor Raw (input + span visual animado) com foco ring e estados checked/unchecked na paleta azul Tremor. Wrapper leve do <input type='checkbox'> que cobre o caso clássico de on/off em filtros e preferências.",
     tags: ["tremor", "toggle", "switch", "checkbox", "formulario", "on-off"],
   },
+  {
+    slug: "button-group",
+    name: "Button Group",
+    category: "Actions",
+    description:
+      "Agrupa botões e inputs relacionados numa única unidade visual, com cantos e bordas unificados (horizontal ou vertical).",
+    tags: ["button", "group", "grupo", "toolbar", "ação", "shadcn"],
+  },
+  {
+    slug: "empty",
+    name: "Empty",
+    category: "Feedback",
+    description:
+      "Estado vazio (empty state) com ícone, título, descrição e ação — para listas e telas ainda sem conteúdo.",
+    tags: ["empty", "estado-vazio", "placeholder", "sem-dados", "shadcn"],
+  },
+  {
+    slug: "item",
+    name: "Item",
+    category: "Layout",
+    description:
+      "Primitivo de linha/lista flexível com mídia, conteúdo, título, descrição e ações — base para listas e cards compactos.",
+    tags: ["item", "lista", "linha", "list-item", "shadcn"],
+  },
+  {
+    slug: "tooltip",
+    name: "Tooltip",
+    category: "Feedback",
+    description:
+      "Dica contextual exibida ao passar o mouse ou focar um gatilho. Baseado em @radix-ui/react-tooltip.",
+    tags: ["tooltip", "dica", "hover", "overlay", "shadcn"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */

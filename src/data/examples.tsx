@@ -73,6 +73,7 @@ import { examplesFluid } from "@/data/examples-fluid"
 import { examplesCyber } from "@/data/examples-cyber"
 import { animatedButtonExamples } from "@/data/examples-animated"
 import { examplesFlipText } from "@/data/examples-flip-text"
+import { examplesShadcn } from "@/data/examples-shadcn"
 import { examplesFloatingDock } from "@/data/examples-floating-dock"
 import { examplesFlipFadeText } from "@/data/examples-flip-fade-text"
 import { examplesLightLines } from "@/data/examples-light-lines"
@@ -1393,6 +1394,7 @@ export const examples: Record<string, Example[]> = {
   ],
   "work-experience-component": [workExperienceTimelineExample, workExperienceCardExample],
   // Lote chanhdai (arquivos separados, merge por spread)
+  ...examplesShadcn,
   ...examplesChanhdaiA,
   ...examplesChanhdaiB,
   ...examplesChanhdaiC,

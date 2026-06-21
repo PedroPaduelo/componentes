@@ -300,6 +300,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   breadcrumb: "actions-navigation",
   button: "actions-navigation",
   "button-fluid": "actions-navigation",
+  "button-group": "actions-navigation",
   "chevrons-up-down-icon": "actions-navigation",
   command: "actions-navigation",
   "context-menu": "actions-navigation",
@@ -425,6 +426,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "data-table": "tables-data",
   "favorites-list": "tables-data",
   "invoice-table": "tables-data",
+  item: "tables-data",
   "leaderboard-list": "tables-data",
   "query-history-list": "tables-data",
   table: "tables-data",
@@ -454,15 +456,17 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   toast: "feedback-status",
   "tracker-tremor": "feedback-status",
 
-  // — Exibição de Dados: avatares, badges, tooltips, previews e números —
+  // — Exibição de Dados: avatares, badges, tooltips, previews, empty e números —
   "animated-number": "data-display",
   "animated-tooltip": "data-display",
   avatar: "data-display",
   badge: "data-display",
   "badge-fluid": "data-display",
+  empty: "data-display",
   "hover-card": "data-display",
   "images-badge": "data-display",
   "link-preview": "data-display",
+  tooltip: "data-display",
   "tooltip-card": "data-display",
   "tooltip-fluid": "data-display",
 

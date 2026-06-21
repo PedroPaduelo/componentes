@@ -1,5 +1,31 @@
 export { Button } from "./button"
 export { Badge } from "./badge"
+// Lote shadcn primitivos (button-group, empty, item)
+export {
+  ButtonGroup,
+  ButtonGroupSeparator,
+  ButtonGroupText,
+} from "./button-group"
+export {
+  Empty,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyContent,
+} from "./empty"
+export {
+  Item,
+  ItemMedia,
+  ItemContent,
+  ItemActions,
+  ItemGroup,
+  ItemSeparator,
+  ItemTitle,
+  ItemDescription,
+  ItemHeader,
+  ItemFooter,
+} from "./item"
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card"
 export { Checkbox } from "./checkbox"
 export { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./dialog"
