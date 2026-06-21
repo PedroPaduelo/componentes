@@ -1,7 +1,7 @@
 /**
  * Camada de dados de GRUPOS (clusterização) — dados puros, sem UI.
  *
- * Objetivo (UX Vitrine v2): o catálogo é ~1 página por slug (273 componentes),
+ * Objetivo (UX Vitrine v2): o catálogo é ~1 página por slug (272 componentes),
  * o que fragmenta a navegação. Este módulo introduz uma unidade conceitual de
  * PÁGINA — o "grupo" — que clusteriza componentes afins por domínio (ex.: todos
  * os inputs numa única seção "Forms & Inputs").
@@ -15,7 +15,7 @@
  * - O vínculo slug → grupo vive em `SLUG_GROUP_MAP` (mapa de derivação externo),
  *   mantendo o registry (`components.ts`) como única fonte da verdade dos itens.
  *
- * A taxonomia (12 grupos, agrupados em 3 domínios macro) separa primitivos de
+ * A taxonomia (13 grupos, agrupados em 3 domínios macro) separa primitivos de
  * UI, blocos de aplicação/dados e efeitos visuais. Cada grupo é a unidade de
  * página/seção da navegação.
  */
@@ -29,6 +29,7 @@ import {
   MessageSquare,
   MousePointerClick,
   Sparkles,
+  SquareStack,
   Table,
   TextCursorInput,
   Type,
@@ -58,7 +59,7 @@ export type DomainId = (typeof DOMAIN_IDS)[number]
 /* -------------------------------------------------------------------------- */
 
 /**
- * Ids canônicos dos 12 grupos da vitrine (união literal `as const`).
+ * Ids canônicos dos 13 grupos da vitrine (união literal `as const`).
  *
  * São URL-safe (kebab-case) porque viram o contrato da rota de grupo
  * (ex.: `/components/grupo/forms-inputs`). Estáveis — não renomear sem migração.
@@ -67,6 +68,7 @@ export const GROUP_IDS = [
   "forms-inputs",
   "actions-navigation",
   "layout-containers",
+  "cards",
   "tables-data",
   "feedback-status",
   "chat-ai",
@@ -91,15 +93,15 @@ export interface Group {
   domain: DomainId
   /** Descrição curta exibida no topo da página/seção do grupo. */
   description: string
-  /** Ordem global (1..12) — já arranjada por domínio (contígua por bloco). */
+  /** Ordem global (1..13) — já arranjada por domínio (contígua por bloco). */
   order: number
   /** Ícone lucide associado ao grupo (opcional). */
   icon?: LucideIcon
 }
 
 /**
- * Os 12 grupos da taxonomia, JÁ ORDENADOS por domínio:
- * primitivos (1–5) → aplicações (6–8) → visual (9–12).
+ * Os 13 grupos da taxonomia, JÁ ORDENADOS por domínio:
+ * primitivos (1–6) → aplicações (7–9) → visual (10–13).
  */
 export const GROUPS: Group[] = [
   // — Domínio: primitivos de UI —
@@ -126,17 +128,26 @@ export const GROUPS: Group[] = [
     label: "Layout & Containers",
     domain: "primitivos",
     description:
-      "Estrutura visual: cards, grids, carrosséis, modais, drawers, painéis redimensionáveis e separadores.",
+      "Estrutura visual: grids, carrosséis, modais, drawers, painéis redimensionáveis, accordions e separadores.",
     order: 3,
     icon: LayoutGrid,
+  },
+  {
+    id: "cards",
+    label: "Cards",
+    domain: "primitivos",
+    description:
+      "Cards de conteúdo e métrica: card base, KPI/stat cards, tiles de métrica e cards de overview/upgrade.",
+    order: 4,
+    icon: SquareStack,
   },
   {
     id: "tables-data",
     label: "Tabelas & Dados",
     domain: "primitivos",
     description:
-      "Exibição de dados primitiva: tabelas, listas, KPIs/stat cards, code blocks e terminais.",
-    order: 4,
+      "Exibição de dados primitiva: tabelas, listas, code blocks e terminais.",
+    order: 5,
     icon: Table,
   },
   {
@@ -145,7 +156,7 @@ export const GROUPS: Group[] = [
     domain: "primitivos",
     description:
       "Comunicação de estado: badges, alertas, callouts, toasts, progress, skeletons, tooltips e indicadores de carregamento.",
-    order: 5,
+    order: 6,
     icon: MessageSquare,
   },
 
@@ -156,7 +167,7 @@ export const GROUPS: Group[] = [
     domain: "aplicacoes",
     description:
       "Blocos de conversa e IA: mensagens, indicadores de raciocínio, prompts e fluxos de pergunta ao usuário.",
-    order: 6,
+    order: 7,
     icon: Bot,
   },
   {
@@ -165,7 +176,7 @@ export const GROUPS: Group[] = [
     domain: "aplicacoes",
     description:
       "Visualizações de dados: gráficos de área, barra, linha, pizza, dispersão, sparkline, combo, medidores e listas de barras.",
-    order: 7,
+    order: 8,
     icon: LineChart,
   },
   {
@@ -174,7 +185,7 @@ export const GROUPS: Group[] = [
     domain: "aplicacoes",
     description:
       "Blocos prontos de dashboard e observability: feeds, timelines, trace/latency, logs, server/DB grids, gráficos compostos e dev tools.",
-    order: 8,
+    order: 9,
     icon: BarChart3,
   },
 
@@ -185,7 +196,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Tipografia animada: flip, typewriter, geração progressiva, gradientes, brilho e revelações de texto.",
-    order: 9,
+    order: 10,
     icon: Type,
   },
   {
@@ -194,7 +205,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Cards decorativos e interativos: 3D, glare, spotlight, comet, wobble, hover e empilhamentos animados.",
-    order: 10,
+    order: 11,
     icon: Wand2,
   },
   {
@@ -203,7 +214,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Fundos e efeitos imersivos: beams, auroras, grids, partículas, spotlights, meteoros e shaders.",
-    order: 11,
+    order: 12,
     icon: Sparkles,
   },
   {
@@ -212,7 +223,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Visualizações geográficas e 3D: globos interativos (cobe/three) e mapas-múndi.",
-    order: 12,
+    order: 13,
     icon: Globe,
   },
 ]
@@ -323,7 +334,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "toc-minimap": "actions-navigation",
   toggle: "actions-navigation",
 
-  // — Layout & Containers: cards (reais), grids, carrosséis, modais, drawers —
+  // — Layout & Containers: grids, carrosséis, modais, drawers, accordions —
   accordion: "layout-containers",
   "accordion-fluid": "layout-containers",
   "alert-dialog": "layout-containers",
@@ -332,8 +343,6 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "apple-cards-carousel": "layout-containers",
   "aspect-ratio": "layout-containers",
   "bento-grid": "layout-containers",
-  card: "layout-containers",
-  "card-tremor": "layout-containers",
   carousel: "layout-containers",
   collapsible: "layout-containers",
   "collapsible-section": "layout-containers",
@@ -361,23 +370,28 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   tree: "layout-containers",
   "work-experience-component": "layout-containers",
 
-  // — Tabelas & Dados: tabelas, listas, KPIs/stat, code blocks, terminais —
+  // — Cards: card base, KPI/stat cards, tiles de métrica, overview/upgrade —
+  card: "cards",
+  "card-tremor": "cards",
+  "detail-stat-cell": "cards",
+  "kpi-card": "cards",
+  "metric-glow-card": "cards",
+  "server-overview-card": "cards",
+  "signal-card": "cards",
+  "stat-tile": "cards",
+  "upgrade-card": "cards",
+
+  // — Tabelas & Dados: tabelas, listas, code blocks, terminais —
   "activity-feed": "tables-data",
   "code-block": "tables-data",
   "code-block-command": "tables-data",
   "connection-list": "tables-data",
   "data-table": "tables-data",
-  "detail-stat-cell": "tables-data",
   "favorites-list": "tables-data",
   "invoice-table": "tables-data",
-  "kpi-card": "tables-data",
   "leaderboard-list": "tables-data",
-  "metric-glow-card": "tables-data",
   "query-history-list": "tables-data",
-  "server-overview-card": "tables-data",
-  "signal-card": "tables-data",
   "slow-query-list": "tables-data",
-  "stat-tile": "tables-data",
   table: "tables-data",
   "table-fluid": "tables-data",
   "table-info-panel": "tables-data",
@@ -453,7 +467,6 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "service-mesh": "dashboards-data",
   timeline: "dashboards-data",
   "trace-waterfall": "dashboards-data",
-  "upgrade-card": "dashboards-data",
   "user-activity-stream": "dashboards-data",
 
   // — Efeitos de Texto: flip, typewriter, gradiente, brilho, reveal —
