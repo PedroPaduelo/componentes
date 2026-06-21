@@ -3,6 +3,7 @@ import * as THREE from "three"
 import ThreeGlobe from "three-globe"
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 
+import { useTheme } from "@/components/theme/use-theme"
 import { cn } from "@/lib/utils"
 import type {
   GitHubGlobeProps,
@@ -33,6 +34,16 @@ const DEFAULT_CONFIG: Required<GlobeConfig> = {
   autoRotateSpeed: 0.5,
   initialPositionLat: 22.3193,
   initialPositionLng: 114.1694,
+}
+
+// Overrides aplicados no tema light (o consumidor pode sobrepor via globeConfig).
+const LIGHT_OVERRIDES: Partial<GlobeConfig> = {
+  globeColor: "#a3b3d9",
+  emissive: "#c7d2fe",
+  emissiveIntensity: 0.2,
+  polygonColor: "rgba(30,41,59,0.55)",
+  atmosphereColor: "#93c5fd",
+  ambientLight: "#1d4ed8",
 }
 
 const ARC_COLORS = ["#06b6d4", "#3b82f6", "#6366f1"]
@@ -79,10 +90,16 @@ function numbersOfRings(arcs: GlobeArc[], maxRings: number): number[] {
 function GitHubGlobe({ arcs, globeConfig, className, ...props }: GitHubGlobeProps) {
   const containerRef = React.useRef<HTMLDivElement | null>(null)
   const [unsupported, setUnsupported] = React.useState(false)
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme !== "light"
   const data = React.useMemo(() => arcs ?? DEFAULT_ARCS, [arcs])
   const config = React.useMemo<Required<GlobeConfig>>(
-    () => ({ ...DEFAULT_CONFIG, ...globeConfig }),
-    [globeConfig],
+    () => ({
+      ...DEFAULT_CONFIG,
+      ...(isDark ? {} : LIGHT_OVERRIDES),
+      ...globeConfig,
+    }),
+    [globeConfig, isDark],
   )
 
   React.useEffect(() => {
@@ -272,17 +289,17 @@ function GitHubGlobe({ arcs, globeConfig, className, ...props }: GitHubGlobeProp
     <div
       data-slot="github-globe"
       className={cn(
-        "relative flex h-[28rem] w-full items-center justify-center overflow-hidden rounded-2xl bg-black",
+        "relative flex h-[28rem] w-full items-center justify-center overflow-hidden rounded-2xl border border-border bg-card",
         className,
       )}
       {...props}
     >
       {unsupported ? (
         <div className="flex flex-col items-center gap-1 px-6 text-center">
-          <p className="text-sm font-medium text-white/80">
+          <p className="text-sm font-medium text-foreground/80">
             Visualização 3D indisponível
           </p>
-          <p className="text-xs text-white/50">
+          <p className="text-xs text-muted-foreground">
             Seu navegador não suporta WebGL.
           </p>
         </div>
@@ -293,7 +310,7 @@ function GitHubGlobe({ arcs, globeConfig, className, ...props }: GitHubGlobeProp
             className="absolute inset-0 mx-auto h-full w-full max-w-full"
             aria-hidden="true"
           />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-black to-transparent" />
+          <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-40 bg-gradient-to-t from-card to-transparent" />
         </>
       )}
     </div>

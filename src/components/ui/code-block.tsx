@@ -97,12 +97,14 @@ const LANG_ALIAS: Record<string, keyof typeof KEYWORDS_BY_LANG> = {
   md: "bash", markdown: "bash", yaml: "bash", yml: "bash",
 }
 
+// Cores de sintaxe com variantes light/dark: tons -600 em fundo claro,
+// tons -400/-300 no escuro. O texto neutro herda `text-foreground` do container.
 const TOKEN_COLOR: Record<TokenType, string> = {
-  comment: "text-zinc-500 italic",
-  string: "text-emerald-300",
-  keyword: "text-rose-300",
-  number: "text-amber-300",
-  function: "text-sky-300",
+  comment: "text-muted-foreground italic",
+  string: "text-emerald-600 dark:text-emerald-300",
+  keyword: "text-rose-600 dark:text-rose-300",
+  number: "text-amber-600 dark:text-amber-300",
+  function: "text-sky-600 dark:text-sky-300",
   text: "",
 }
 
@@ -237,12 +239,12 @@ function HighlightedCode({
             data-highlighted={highlighted ? "true" : "false"}
             className={cn(
               "block w-full px-4",
-              highlighted && "bg-white/[0.06]",
+              highlighted && "bg-foreground/[0.06]",
             )}
           >
             <span
               aria-hidden
-              className="mr-4 inline-block w-6 select-none text-right text-zinc-600"
+              className="mr-4 inline-block w-6 select-none text-right text-muted-foreground/60"
             >
               {lineNumber}
             </span>
@@ -295,8 +297,8 @@ function InlineCopyButton({
       className={cn(
         "flex items-center gap-1 rounded px-1.5 py-1 text-xs font-sans transition-colors",
         copied
-          ? "text-emerald-300"
-          : "text-zinc-400 hover:text-zinc-100",
+          ? "text-emerald-600 dark:text-emerald-400"
+          : "text-muted-foreground hover:text-foreground",
       )}
     >
       <motion.span
@@ -330,7 +332,7 @@ function CodeBlockTabs({
     <div
       data-slot="code-block-tabs"
       role="tablist"
-      className="flex items-center justify-between border-b border-slate-800/80"
+      className="flex items-center justify-between border-b border-border"
     >
       <div className="flex min-w-0 overflow-x-auto">
         {tabs.map((tab, i) => {
@@ -347,15 +349,15 @@ function CodeBlockTabs({
               className={cn(
                 "relative px-3 py-2 text-xs font-sans transition-colors",
                 selected
-                  ? "text-zinc-100"
-                  : "text-zinc-400 hover:text-zinc-200",
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground",
               )}
             >
               {tab.name}
               {selected ? (
                 <motion.span
                   layoutId="code-block-tab-indicator"
-                  className="absolute inset-x-0 -bottom-px h-0.5 bg-zinc-100"
+                  className="absolute inset-x-0 -bottom-px h-0.5 bg-foreground"
                   transition={{ type: "spring", stiffness: 400, damping: 32 }}
                 />
               ) : null}
@@ -403,7 +405,7 @@ function CodeBlock({
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
       className={cn(
-        "relative w-full overflow-hidden rounded-lg border border-slate-800 bg-slate-900 font-mono text-sm text-zinc-100",
+        "relative w-full overflow-hidden rounded-lg border border-border bg-card font-mono text-sm text-foreground",
         className,
       )}
       {...hostProps}
@@ -418,9 +420,9 @@ function CodeBlock({
       ) : filename ? (
         <div
           data-slot="code-block-header"
-          className="flex items-center justify-between border-b border-slate-800/80 px-4 py-2"
+          className="flex items-center justify-between border-b border-border px-4 py-2"
         >
-          <div className="text-xs font-sans text-zinc-400">{filename}</div>
+          <div className="text-xs font-sans text-muted-foreground">{filename}</div>
           <InlineCopyButton value={safeCode} onCopy={onCopy} />
         </div>
       ) : null}

@@ -82,16 +82,18 @@ function tokenizeBash(text: string): Token[] {
   return tokens
 }
 
+// Cores de sintaxe com variantes light/dark (tons -600 no claro, -400/-300 no
+// escuro). `comment` e `default` herdam os tokens neutros do tema.
 const tokenColors: Record<TokenType, string> = {
-  command: "text-emerald-400",
-  flag: "text-sky-400",
-  string: "text-amber-300",
-  number: "text-purple-400",
-  operator: "text-red-400",
-  path: "text-cyan-300",
-  variable: "text-pink-400",
-  comment: "text-neutral-500",
-  default: "text-neutral-300",
+  command: "text-emerald-600 dark:text-emerald-400",
+  flag: "text-sky-600 dark:text-sky-400",
+  string: "text-amber-600 dark:text-amber-300",
+  number: "text-purple-600 dark:text-purple-400",
+  operator: "text-red-600 dark:text-red-400",
+  path: "text-cyan-600 dark:text-cyan-300",
+  variable: "text-pink-600 dark:text-pink-400",
+  comment: "text-muted-foreground",
+  default: "text-foreground",
 }
 
 function SyntaxHighlightedText({ text }: { text: string }) {
@@ -281,11 +283,11 @@ export function Terminal({
   }, [lines, phase])
 
   const prompt = (
-    <span className="text-neutral-500">
-      <span className="text-sky-500">{username}</span>
-      <span className="text-emerald-600">:</span>
-      <span className="text-sky-400">~</span>
-      <span className="text-neutral-500">$</span>{" "}
+    <span className="text-muted-foreground">
+      <span className="text-sky-600 dark:text-sky-400">{username}</span>
+      <span className="text-emerald-600 dark:text-emerald-400">:</span>
+      <span className="text-sky-600 dark:text-sky-400">~</span>
+      <span className="text-muted-foreground">$</span>{" "}
     </span>
   )
 
@@ -295,16 +297,16 @@ export function Terminal({
       data-slot="terminal"
       className={cn("mx-auto w-full max-w-xl px-4 font-mono text-xs", className)}
     >
-      <div className="overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900 shadow-2xl">
+      <div className="overflow-hidden rounded-lg border border-border bg-card shadow-2xl">
         {/* Title Bar */}
-        <div className="flex items-center gap-2 bg-neutral-800 px-4 py-3">
+        <div className="flex items-center gap-2 bg-muted px-4 py-3">
           <div className="flex items-center gap-1.5">
             <div className="h-3 w-3 rounded-full bg-red-500 transition-colors hover:bg-red-600" />
             <div className="h-3 w-3 rounded-full bg-yellow-500 transition-colors hover:bg-yellow-600" />
             <div className="h-3 w-3 rounded-full bg-green-500 transition-colors hover:bg-green-600" />
           </div>
           <div className="flex-1 text-center">
-            <span className="truncate text-xs text-neutral-400">
+            <span className="truncate text-xs text-muted-foreground">
               {username} — bash
             </span>
           </div>
@@ -324,7 +326,7 @@ export function Terminal({
                   <SyntaxHighlightedText text={line.content} />
                 </span>
               ) : (
-                <span className="text-neutral-400">{line.content}</span>
+                <span className="text-muted-foreground">{line.content}</span>
               )}
             </div>
           ))}
@@ -333,7 +335,7 @@ export function Terminal({
             <div className="leading-relaxed whitespace-pre-wrap">
               {prompt}
               <SyntaxHighlightedText text={currentText} />
-              <span className="ml-0.5 inline-block h-4 w-2 bg-neutral-300 align-middle" />
+              <span className="ml-0.5 inline-block h-4 w-2 bg-foreground align-middle" />
             </div>
           )}
 
@@ -344,7 +346,7 @@ export function Terminal({
               {prompt}
               <span
                 className={cn(
-                  "inline-block h-4 w-2 bg-neutral-300 align-middle transition-opacity duration-100",
+                  "inline-block h-4 w-2 bg-foreground align-middle transition-opacity duration-100",
                   !cursorVisible && "opacity-0",
                 )}
               />

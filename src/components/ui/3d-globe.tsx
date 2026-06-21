@@ -1,6 +1,7 @@
 import * as React from "react"
 import createGlobe, { type COBEOptions } from "cobe"
 
+import { useTheme } from "@/components/theme/use-theme"
 import { cn } from "@/lib/utils"
 
 type RGB = [number, number, number]
@@ -18,11 +19,11 @@ export type ThreeDGlobeProps = Omit<
 > & {
   /** Markers plotted on the surface (`[lat, lng]` in degrees + size). */
   markers?: ThreeDGlobeMarker[]
-  /** Base globe color as RGB in the `0..1` range. */
+  /** Base globe color as RGB in the `0..1` range. Overrides the theme default. */
   baseColor?: RGB
-  /** Marker color as RGB in the `0..1` range. */
+  /** Marker color as RGB in the `0..1` range. Overrides the theme default. */
   markerColor?: RGB
-  /** Glow/atmosphere color as RGB in the `0..1` range. */
+  /** Glow/atmosphere color as RGB in the `0..1` range. Overrides the theme default. */
   glowColor?: RGB
   /** Auto-rotation speed (radians per frame). Set `0` to disable. */
   rotationSpeed?: number
@@ -41,18 +42,21 @@ const DEFAULT_MARKERS: ThreeDGlobeMarker[] = [
   { location: [28.61, 77.21], size: 0.06 }, // New Delhi
 ]
 
-// Brand-dark colors: the dark globe + cyan markers are the component's visual
-// signature (Aceternity style), so they stay fixed regardless of theme.
-const DEFAULT_BASE_COLOR: RGB = [0.25, 0.25, 0.32]
-const DEFAULT_MARKER_COLOR: RGB = [0.4, 0.85, 1]
-const DEFAULT_GLOW_COLOR: RGB = [0.16, 0.18, 0.26]
+// Paletas por tema: o globo acompanha o light/dark do app. Se o consumidor
+// passar `baseColor`/`markerColor`/`glowColor`, o valor dele tem prioridade.
+const DARK_BASE_COLOR: RGB = [0.25, 0.25, 0.32]
+const DARK_MARKER_COLOR: RGB = [0.4, 0.85, 1]
+const DARK_GLOW_COLOR: RGB = [0.16, 0.18, 0.26]
+const LIGHT_BASE_COLOR: RGB = [0.92, 0.92, 0.96]
+const LIGHT_MARKER_COLOR: RGB = [0.13, 0.5, 0.92]
+const LIGHT_GLOW_COLOR: RGB = [0.86, 0.89, 0.96]
 const DEFAULT_ROTATION_SPEED = 0.004
 
 function ThreeDGlobe({
   markers = DEFAULT_MARKERS,
-  baseColor = DEFAULT_BASE_COLOR,
-  markerColor = DEFAULT_MARKER_COLOR,
-  glowColor = DEFAULT_GLOW_COLOR,
+  baseColor,
+  markerColor,
+  glowColor,
   rotationSpeed = DEFAULT_ROTATION_SPEED,
   className,
   ...props
@@ -60,6 +64,13 @@ function ThreeDGlobe({
   const canvasRef = React.useRef<HTMLCanvasElement>(null)
   const phiRef = React.useRef(0)
   const [unsupported, setUnsupported] = React.useState(false)
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme !== "light"
+  // Cor explícita do consumidor vence; senão segue o tema do app.
+  const resolvedBase = baseColor ?? (isDark ? DARK_BASE_COLOR : LIGHT_BASE_COLOR)
+  const resolvedMarker =
+    markerColor ?? (isDark ? DARK_MARKER_COLOR : LIGHT_MARKER_COLOR)
+  const resolvedGlow = glowColor ?? (isDark ? DARK_GLOW_COLOR : LIGHT_GLOW_COLOR)
 
   React.useEffect(() => {
     const canvas = canvasRef.current
@@ -80,13 +91,13 @@ function ThreeDGlobe({
       height: width * 2,
       phi: 0,
       theta: 0.3,
-      dark: 1,
+      dark: isDark ? 1 : 0,
       diffuse: 1.2,
       mapSamples: 16000,
-      mapBrightness: 6,
-      baseColor,
-      markerColor,
-      glowColor,
+      mapBrightness: isDark ? 6 : 8,
+      baseColor: resolvedBase,
+      markerColor: resolvedMarker,
+      glowColor: resolvedGlow,
       markers: markers.map((m) => ({ location: m.location, size: m.size })),
     }
 
@@ -112,7 +123,7 @@ function ThreeDGlobe({
       window.removeEventListener("resize", onResize)
       globe.destroy()
     }
-  }, [markers, baseColor, markerColor, glowColor, rotationSpeed])
+  }, [markers, resolvedBase, resolvedMarker, resolvedGlow, isDark, rotationSpeed])
 
   return (
     <div
