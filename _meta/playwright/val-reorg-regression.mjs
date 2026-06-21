@@ -2,13 +2,13 @@
 //
 // Depois de A1·B1·C1·C2·D1·E1 várias superfícies foram tocadas (taxonomia de
 // 10 grupos + 2 sub-grupos de dashboard, rota índice `/components` como
-// overview, rota `/dashboard`, filtro de grupo na Home, filtro runtime de
+// overview, filtro de grupo na Home, filtro runtime de
 // composições `?category=dashboard`, deep-links de componente redirecionando
 // para a group-page). Este é o SMOKE TEST FINAL que re-percorre o caminho feliz
 // inteiro num único validador, garantindo que nada quebrou ponta-a-ponta.
 //
 // NÃO é um teste focado: a cobertura granular de cada feature vive nos testes
-// dedicados (val-home-group-filter, val-sidebar-groups, val-dashboard-route).
+// dedicados (val-home-group-filter, val-sidebar-groups).
 // Aqui cada cenário faz 2–4 asserções de alto nível só para provar que a
 // superfície renderiza e responde. Por isso as contagens são TOLERANTES de
 // propósito (`>=`, `contains`) — a taxonomia/registry evolui (hoje: 257
@@ -19,12 +19,10 @@
 // Cenários (cada um isolado num try/catch que identifica QUAL falhou):
 //   1. `/`                                   → grid de famílias + filtro de grupo.
 //   2. `/components`                         → overview com os 10 cards de grupo.
-//   3. `/dashboard`                          → 2 sub-grupos + CTA composições.
 //   4. `/components/grupo/dashboards-charts` → <h1> "Dashboards & Charts" + famílias.
 //   5. `/components/area-chart-tremor`       → redireciona p/ a âncora na group-page.
 //   6. `/compositions?category=dashboard`    → grid filtrado (dashboard-like).
 //   7. `/compositions/dba-workbench`         → deep-link sem filtro renderiza.
-//   8. Header "Dashboard"                    → navega para `/dashboard`.
 //
 // Process.exit(0) quando TODOS passam; exit(1) com o(s) cenário(s) que falhou
 // no resumo final. Se o servidor-alvo estiver fora do ar, o preflight aborta
@@ -46,7 +44,7 @@
 import { chromium } from "playwright"
 
 // Alvo configurável: aceita VITRINE_BASE_URL (val-sidebar-groups,
-// val-home-group-filter) e BASE_URL (val-dashboard-route); default :5173.
+// val-home-group-filter) e BASE_URL; default :5173.
 const BASE =
   process.env.VITRINE_BASE_URL ?? process.env.BASE_URL ?? "http://localhost:5173"
 
@@ -215,31 +213,6 @@ try {
     await page.close()
   })
 
-  // ── 3. /dashboard: 2 sub-grupos + CTA composições ────────────────────────
-  await scenario("3. /dashboard renderiza overview (2 sub-grupos + CTA composições)", async () => {
-    const page = await ctx.newPage()
-    await goto(page, "/dashboard")
-
-    const h1 = ((await page.locator("h1").first().textContent()) ?? "").trim()
-    check("<h1> contém 'Dashboard'", /dashboard/i.test(h1), `h1="${h1}"`)
-
-    const charts = await page
-      .locator('a[href$="/components/grupo/dashboards-charts"]')
-      .count()
-    const data = await page
-      .locator('a[href$="/components/grupo/dashboards-data"]')
-      .count()
-    check("card → /components/grupo/dashboards-charts", charts >= 1, `count=${charts}`)
-    check("card → /components/grupo/dashboards-data", data >= 1, `count=${data}`)
-
-    const cta = await page
-      .locator('a[href*="/compositions?category=dashboard"]')
-      .count()
-    check("CTA → /compositions?category=dashboard", cta >= 1, `count=${cta}`)
-
-    await page.close()
-  })
-
   // ── 4. group-page dashboards-charts: <h1> + famílias ─────────────────────
   await scenario("4. /components/grupo/dashboards-charts: <h1> 'Dashboards & Charts' + famílias", async () => {
     const page = await ctx.newPage()
@@ -343,36 +316,6 @@ try {
     check("seção 'Instalar este bloco' presente", installHeading >= 1, `count=${installHeading}`)
 
     check("sem pageerror fatal ao montar", pageErrors.length === 0, pageErrors.slice(0, 3).join(" | "))
-
-    await page.close()
-  })
-
-  // ── 8. header link "Dashboard" → /dashboard ──────────────────────────────
-  await scenario("8. Header: clicar em 'Dashboard' navega para /dashboard", async () => {
-    const page = await ctx.newPage()
-    await goto(page, "/")
-
-    // Nav desktop (sm+) visível em 1440px. O Sheet mobile só monta quando
-    // aberto, então não há link "Dashboard" duplicado no DOM agora.
-    const link = page.locator("header nav a", { hasText: "Dashboard" }).first()
-    check("link 'Dashboard' presente no header", (await link.count()) >= 1)
-
-    await link.click()
-    await page.waitForURL(/\/dashboard$/, { timeout: 15000 })
-    check("URL é /dashboard após o clique", /\/dashboard$/.test(page.url()), page.url())
-
-    // DashboardIndex é lazy (React.lazy): a URL troca de imediato mas o chunk
-    // da rota pode ainda estar carregando — nesse meio-tempo a Home segue
-    // montada. Espera o <h1> da rota destino ("Dashboard") substituir o da Home
-    // ("Catálogo de componentes") antes de ler.
-    await page
-      .waitForFunction(
-        () => /dashboard/i.test(document.querySelector("h1")?.textContent ?? ""),
-        { timeout: 15000 },
-      )
-      .catch(() => {})
-    const h1 = ((await page.locator("h1").first().textContent()) ?? "").trim()
-    check("<h1> 'Dashboard' na página destino", /dashboard/i.test(h1), `h1="${h1}"`)
 
     await page.close()
   })

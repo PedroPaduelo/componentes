@@ -33,11 +33,6 @@ const InstallGuide = lazy(() =>
 const AiIndex = lazy(() =>
   import("@/pages/AiIndex").then((m) => ({ default: m.AiIndex }))
 )
-const DashboardIndex = lazy(() =>
-  import("@/pages/DashboardIndex").then((m) => ({
-    default: m.DashboardIndex,
-  }))
-)
 const Compositions = lazy(() =>
   import("@/pages/Compositions").then((m) => ({ default: m.Compositions }))
 )
@@ -86,7 +81,6 @@ function App() {
         </Route>
         <Route path="/instalacao" element={<InstallGuide />} />
         <Route path="/ai" element={<AiIndex />} />
-        <Route path="/dashboard" element={<DashboardIndex />} />
         {/*
           Área de composições: mesma estrutura de docs (sidebar + conteúdo
           central), agrupando as telas por categoria.

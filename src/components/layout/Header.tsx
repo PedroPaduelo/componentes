@@ -22,7 +22,6 @@ type HeaderProps = {
 const navItems = [
   { to: "/", label: "Início" },
   { to: "/components", label: "Componentes" },
-  { to: "/dashboard", label: "Dashboard" },
   { to: "/compositions", label: "Composições" },
   { to: "/instalacao", label: "Instalação" },
   { to: "/ai", label: "Para IA" },
