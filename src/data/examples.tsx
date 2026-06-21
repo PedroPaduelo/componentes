@@ -124,6 +124,7 @@ import { examplesAuroraBackground } from "@/data/examples-aurora-background"
 import { examplesHeroHighlight } from "@/data/examples-hero-highlight"
 import { examplesGlowingEffect } from "@/data/examples-glowing-effect"
 import { examplesTypewriterEffect } from "@/data/examples-typewriter-effect"
+import { examplesTypography } from "./examples-typography"
 import { examplesFlipWords } from "@/data/examples-flip-words"
 import { examplesTextRevealCard } from "@/data/examples-text-reveal-card"
 import { examplesEvervaultCard } from "@/data/examples-evervault-card"
@@ -1465,6 +1466,7 @@ export const examples: Record<string, Example[]> = {
   ...examplesGlowingStarsEffect,
   ...examplesHeroHighlight,
   ...examplesTypewriterEffect,
+  ...examplesTypography,
   ...examplesFlipWords,
   ...examplesTextGenerateEffect,
   ...examplesTextRevealCard,

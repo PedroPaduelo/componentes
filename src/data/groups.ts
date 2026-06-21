@@ -15,7 +15,7 @@
  * - O vínculo slug → grupo vive em `SLUG_GROUP_MAP` (mapa de derivação externo),
  *   mantendo o registry (`components.ts`) como única fonte da verdade dos itens.
  *
- * A taxonomia (13 grupos, agrupados em 3 domínios macro) separa primitivos de
+ * A taxonomia (14 grupos, agrupados em 3 domínios macro) separa primitivos de
  * UI, blocos de aplicação/dados e efeitos visuais. Cada grupo é a unidade de
  * página/seção da navegação.
  */
@@ -28,6 +28,7 @@ import {
   LineChart,
   MessageSquare,
   MousePointerClick,
+  Pilcrow,
   Sparkles,
   SquareStack,
   Table,
@@ -59,7 +60,7 @@ export type DomainId = (typeof DOMAIN_IDS)[number]
 /* -------------------------------------------------------------------------- */
 
 /**
- * Ids canônicos dos 13 grupos da vitrine (união literal `as const`).
+ * Ids canônicos dos 14 grupos da vitrine (união literal `as const`).
  *
  * São URL-safe (kebab-case) porque viram o contrato da rota de grupo
  * (ex.: `/components/grupo/forms-inputs`). Estáveis — não renomear sem migração.
@@ -68,6 +69,7 @@ export const GROUP_IDS = [
   "forms-inputs",
   "actions-navigation",
   "layout-containers",
+  "typography",
   "cards",
   "tables-data",
   "feedback-status",
@@ -93,15 +95,15 @@ export interface Group {
   domain: DomainId
   /** Descrição curta exibida no topo da página/seção do grupo. */
   description: string
-  /** Ordem global (1..13) — já arranjada por domínio (contígua por bloco). */
+  /** Ordem global (1..14) — já arranjada por domínio (contígua por bloco). */
   order: number
   /** Ícone lucide associado ao grupo (opcional). */
   icon?: LucideIcon
 }
 
 /**
- * Os 13 grupos da taxonomia, JÁ ORDENADOS por domínio:
- * primitivos (1–6) → aplicações (7–10) → visual (11–13).
+ * Os 14 grupos da taxonomia, JÁ ORDENADOS por domínio:
+ * primitivos (1–7) → aplicações (8–11) → visual (12–14).
  */
 export const GROUPS: Group[] = [
   // — Domínio: primitivos de UI —
@@ -133,12 +135,21 @@ export const GROUPS: Group[] = [
     icon: LayoutGrid,
   },
   {
+    id: "typography",
+    label: "Tipografia",
+    domain: "primitivos",
+    description:
+      "Tipografia base no estilo shadcn: títulos h1–h4, parágrafo, lead, blockquote, lista, código inline e textos large/small/muted.",
+    order: 4,
+    icon: Pilcrow,
+  },
+  {
     id: "cards",
     label: "Cards",
     domain: "primitivos",
     description:
       "Todos os cards: card base, KPI/stat cards e tiles de métrica, além de cards decorativos (3D, glare, spotlight, comet, wobble, hover e stacks animados).",
-    order: 4,
+    order: 5,
     icon: SquareStack,
   },
   {
@@ -147,7 +158,7 @@ export const GROUPS: Group[] = [
     domain: "primitivos",
     description:
       "Exibição de dados primitiva: tabelas, listas, code blocks e terminais.",
-    order: 5,
+    order: 6,
     icon: Table,
   },
   {
@@ -156,7 +167,7 @@ export const GROUPS: Group[] = [
     domain: "primitivos",
     description:
       "Comunicação de estado: badges, alertas, callouts, toasts, progress, skeletons, tooltips e indicadores de carregamento.",
-    order: 6,
+    order: 7,
     icon: MessageSquare,
   },
 
@@ -167,7 +178,7 @@ export const GROUPS: Group[] = [
     domain: "aplicacoes",
     description:
       "Blocos de conversa e IA: mensagens, indicadores de raciocínio, prompts e fluxos de pergunta ao usuário.",
-    order: 7,
+    order: 8,
     icon: Bot,
   },
   {
@@ -176,7 +187,7 @@ export const GROUPS: Group[] = [
     domain: "aplicacoes",
     description:
       "Visualizações de dados: gráficos de área, barra, linha, pizza, dispersão, sparkline, combo, medidores e listas de barras.",
-    order: 8,
+    order: 9,
     icon: LineChart,
   },
   {
@@ -185,7 +196,7 @@ export const GROUPS: Group[] = [
     domain: "aplicacoes",
     description:
       "Blocos prontos de dashboard e observability: feeds, timelines, trace/latency, logs, server/DB grids, gráficos compostos e dev tools.",
-    order: 9,
+    order: 10,
     icon: BarChart3,
   },
   {
@@ -193,8 +204,8 @@ export const GROUPS: Group[] = [
     label: "Dev & Código",
     domain: "aplicacoes",
     description:
-      "Ferramentas de desenvolvedor: blocos de código com highlight, comandos de instalação e terminais.",
-    order: 10,
+      "Ferramentas de desenvolvedor: blocos de código com highlight, comandos de instalação, terminais e gráfico de contribuições.",
+    order: 11,
     icon: Terminal,
   },
 
@@ -205,7 +216,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Tipografia animada: flip, typewriter, geração progressiva, gradientes, brilho e revelações de texto.",
-    order: 11,
+    order: 12,
     icon: Type,
   },
   {
@@ -214,7 +225,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Fundos e efeitos imersivos: beams, auroras, grids, partículas, spotlights, meteoros e shaders.",
-    order: 12,
+    order: 13,
     icon: Sparkles,
   },
   {
@@ -223,7 +234,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Visualizações geográficas e 3D: globos interativos (cobe/three) e mapas-múndi.",
-    order: 13,
+    order: 14,
     icon: Globe,
   },
 ]
@@ -370,6 +381,9 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   tree: "layout-containers",
   "work-experience-component": "layout-containers",
 
+  // — Tipografia: estilos de texto base (shadcn) —
+  typography: "typography",
+
   // — Cards: conteúdo, métrica e efeitos decorativos —
   card: "cards",
   "card-tremor": "cards",
@@ -409,9 +423,10 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "table-fluid": "tables-data",
   "user-list-item": "tables-data",
 
-  // — Dev & Código: code blocks, comandos e terminais —
+  // — Dev & Código: code blocks, comandos, terminais e atividade de dev —
   "code-block": "dev",
   "code-block-command": "dev",
+  "github-contributions": "dev",
   terminal: "dev",
 
   // — Feedback & Status: badges, alertas, callouts, toasts, progress, tooltips —
@@ -474,7 +489,6 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "ecg-strip": "dashboards-data",
   "error-tracker-feed": "dashboards-data",
   "fleet-server-grid": "dashboards-data",
-  "github-contributions": "dashboards-data",
   "incident-timeline": "dashboards-data",
   "latency-heatmap": "dashboards-data",
   "log-stream": "dashboards-data",

@@ -1009,5 +1009,8 @@ export { LabelTremor } from "./label-tremor"
 export type { LabelTremorProps } from "./label-tremor"
 export { ToggleTremor } from "./toggle-tremor"
 export type { ToggleTremorProps } from "./toggle-tremor"
+export { Typography } from "./typography"
+export type { TypographyProps } from "./typography"
+export { typographyVariants } from "./typography-variants"
 
 

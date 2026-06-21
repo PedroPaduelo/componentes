@@ -40,6 +40,25 @@ export interface ComponentMeta {
  */
 export const components: ComponentMeta[] = [
   {
+    slug: "typography",
+    name: "Typography",
+    category: "Layout",
+    description:
+      "Estilos de tipografia base no estilo shadcn: títulos h1–h4, parágrafo, lead, blockquote, lista, código inline e textos large/small/muted. Um componente com `variant` que renderiza o elemento HTML semântico adequado.",
+    tags: [
+      "tipografia",
+      "typography",
+      "heading",
+      "título",
+      "prose",
+      "texto",
+      "blockquote",
+      "shadcn",
+    ],
+    usage:
+      'Use `<Typography variant="h1">…</Typography>` — cada variante mapeia para o elemento certo (h1–h4, p, blockquote, ul, code, small). Encadeie títulos + parágrafos para compor prose/artigos. `asChild` aplica os estilos a um elemento próprio (ex.: um Link).',
+  },
+  {
     slug: "button",
     name: "Button",
     category: "Actions",
