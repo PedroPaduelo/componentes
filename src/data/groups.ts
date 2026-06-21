@@ -15,7 +15,7 @@
  * - O vínculo slug → grupo vive em `SLUG_GROUP_MAP` (mapa de derivação externo),
  *   mantendo o registry (`components.ts`) como única fonte da verdade dos itens.
  *
- * A taxonomia (12 grupos, agrupados em 3 domínios macro) separa primitivos de
+ * A taxonomia (13 grupos, agrupados em 3 domínios macro) separa primitivos de
  * UI, blocos de aplicação/dados e efeitos visuais. Cada grupo é a unidade de
  * página/seção da navegação.
  */
@@ -23,6 +23,7 @@
 import {
   BarChart3,
   Bot,
+  IdCard,
   LayoutGrid,
   LineChart,
   MessageSquare,
@@ -58,7 +59,7 @@ export type DomainId = (typeof DOMAIN_IDS)[number]
 /* -------------------------------------------------------------------------- */
 
 /**
- * Ids canônicos dos 12 grupos da vitrine (união literal `as const`).
+ * Ids canônicos dos 13 grupos da vitrine (união literal `as const`).
  *
  * São URL-safe (kebab-case) porque viram o contrato da rota de grupo
  * (ex.: `/components/grupo/forms-inputs`). Estáveis — não renomear sem migração.
@@ -71,6 +72,7 @@ export const GROUP_IDS = [
   "cards",
   "tables-data",
   "feedback-status",
+  "data-display",
   "chat-ai",
   "dashboards-charts",
   "dashboards-data",
@@ -91,15 +93,15 @@ export interface Group {
   domain: DomainId
   /** Descrição curta exibida no topo da página/seção do grupo. */
   description: string
-  /** Ordem global (1..12) — já arranjada por domínio (contígua por bloco). */
+  /** Ordem global (1..13) — já arranjada por domínio (contígua por bloco). */
   order: number
   /** Ícone lucide associado ao grupo (opcional). */
   icon?: LucideIcon
 }
 
 /**
- * Os 12 grupos da taxonomia, JÁ ORDENADOS por domínio:
- * primitivos (1–7) → aplicações (8–11) → visual (12).
+ * Os 13 grupos da taxonomia, JÁ ORDENADOS por domínio:
+ * primitivos (1–8) → aplicações (9–12) → visual (13).
  */
 export const GROUPS: Group[] = [
   // — Domínio: primitivos de UI —
@@ -126,7 +128,7 @@ export const GROUPS: Group[] = [
     label: "Layout & Containers",
     domain: "primitivos",
     description:
-      "Estrutura visual: grids, carrosséis, modais, drawers, painéis redimensionáveis, accordions e separadores.",
+      "Estrutura visual: grids, carrosséis, modais, drawers, painéis redimensionáveis, accordions, banners e separadores.",
     order: 3,
     icon: LayoutGrid,
   },
@@ -162,9 +164,18 @@ export const GROUPS: Group[] = [
     label: "Feedback & Status",
     domain: "primitivos",
     description:
-      "Comunicação de estado: badges, alertas, callouts, toasts, progress, skeletons, tooltips e indicadores de carregamento.",
+      "Comunicação de estado e processo: alertas, callouts, toasts, barras e círculos de progresso, trackers, skeletons e indicadores de carregamento.",
     order: 7,
     icon: MessageSquare,
+  },
+  {
+    id: "data-display",
+    label: "Exibição de Dados",
+    domain: "primitivos",
+    description:
+      "Exibição de informação e identidade: avatares, badges, tooltips, hover-cards, previews de link e números animados.",
+    order: 8,
+    icon: IdCard,
   },
 
   // — Domínio: aplicações & dados —
@@ -174,7 +185,7 @@ export const GROUPS: Group[] = [
     domain: "aplicacoes",
     description:
       "Blocos de conversa e IA: mensagens, indicadores de raciocínio, prompts e fluxos de pergunta ao usuário.",
-    order: 8,
+    order: 9,
     icon: Bot,
   },
   {
@@ -183,7 +194,7 @@ export const GROUPS: Group[] = [
     domain: "aplicacoes",
     description:
       "Visualizações de dados: gráficos de área, barra, linha, pizza, dispersão, sparkline, combo, medidores e listas de barras.",
-    order: 9,
+    order: 10,
     icon: LineChart,
   },
   {
@@ -191,8 +202,8 @@ export const GROUPS: Group[] = [
     label: "Dashboards & Data",
     domain: "aplicacoes",
     description:
-      "Blocos prontos de dashboard e observability: feeds, timelines, trace/latency, logs, server/DB grids, gráficos compostos e dev tools.",
-    order: 10,
+      "Blocos prontos de dashboard e observability: feeds, timelines, trace/latency, logs, server/DB grids, barras de status e dev tools.",
+    order: 11,
     icon: BarChart3,
   },
   {
@@ -201,7 +212,7 @@ export const GROUPS: Group[] = [
     domain: "aplicacoes",
     description:
       "Ferramentas de desenvolvedor: blocos de código com highlight, comandos de instalação, terminais, gráfico de contribuições, globos 3D e mapa-múndi.",
-    order: 11,
+    order: 12,
     icon: Terminal,
   },
 
@@ -212,7 +223,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Fundos e efeitos imersivos: beams, auroras, grids, partículas, spotlights, meteoros e shaders.",
-    order: 12,
+    order: 13,
     icon: Sparkles,
   },
 ]
@@ -323,7 +334,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "toc-minimap": "actions-navigation",
   toggle: "actions-navigation",
 
-  // — Layout & Containers: grids, carrosséis, modais, drawers, accordions —
+  // — Layout & Containers: grids, carrosséis, modais, drawers, accordions, banners —
   accordion: "layout-containers",
   "accordion-fluid": "layout-containers",
   "alert-dialog": "layout-containers",
@@ -354,6 +365,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "scroll-fade-effect": "layout-containers",
   separator: "layout-containers",
   sheet: "layout-containers",
+  "sticky-banner": "layout-containers",
   "sticky-scroll-reveal": "layout-containers",
   "team-section-with-scales": "layout-containers",
   tree: "layout-containers",
@@ -428,17 +440,9 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   terminal: "dev",
   "world-map": "dev",
 
-  // — Feedback & Status: badges, alertas, callouts, toasts, progress, tooltips —
+  // — Feedback & Status: alertas, toasts, progresso, loaders, skeletons —
   alert: "feedback-status",
-  "animated-number": "feedback-status",
-  "animated-tooltip": "feedback-status",
-  avatar: "feedback-status",
-  badge: "feedback-status",
-  "badge-fluid": "feedback-status",
   "callout-tremor": "feedback-status",
-  "hover-card": "feedback-status",
-  "images-badge": "feedback-status",
-  "link-preview": "feedback-status",
   loader: "feedback-status",
   "mobius-loop-icon": "feedback-status",
   "multi-step-loader": "feedback-status",
@@ -447,12 +451,20 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "progress-circle-tremor": "feedback-status",
   skeleton: "feedback-status",
   sonner: "feedback-status",
-  "sticky-banner": "feedback-status",
   toast: "feedback-status",
-  "tooltip-card": "feedback-status",
-  "tooltip-fluid": "feedback-status",
   "tracker-tremor": "feedback-status",
-  "workbench-status-bar": "feedback-status",
+
+  // — Exibição de Dados: avatares, badges, tooltips, previews e números —
+  "animated-number": "data-display",
+  "animated-tooltip": "data-display",
+  avatar: "data-display",
+  badge: "data-display",
+  "badge-fluid": "data-display",
+  "hover-card": "data-display",
+  "images-badge": "data-display",
+  "link-preview": "data-display",
+  "tooltip-card": "data-display",
+  "tooltip-fluid": "data-display",
 
   // — Chat & IA: mensagens, raciocínio, prompts, perguntas ao usuário —
   "ask-user-questions-fluid": "chat-ai",
@@ -497,6 +509,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   timeline: "dashboards-data",
   "trace-waterfall": "dashboards-data",
   "user-activity-stream": "dashboards-data",
+  "workbench-status-bar": "dashboards-data",
 
   // — Backgrounds & FX: beams, auroras, partículas, spotlights, shaders —
   "3d-marquee": "backgrounds-fx",

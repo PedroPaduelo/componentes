@@ -18,6 +18,7 @@ import {
   AppWindow,
   BarChart3,
   Bot,
+  IdCard,
   LayoutGrid,
   LineChart,
   MessageSquare,
@@ -49,7 +50,7 @@ export const DOMAIN_ICONS: Record<DomainId, LucideIcon> = {
   visual: Palette,
 }
 
-/** Ícone lucide associado a cada um dos 12 grupos (espelha `GROUPS` de groups.ts). */
+/** Ícone lucide associado a cada um dos 13 grupos (espelha `GROUPS` de groups.ts). */
 export const GROUP_ICONS: Record<GroupId, LucideIcon> = {
   "forms-inputs": TextCursorInput,
   "actions-navigation": MousePointerClick,
@@ -58,6 +59,7 @@ export const GROUP_ICONS: Record<GroupId, LucideIcon> = {
   "cards": SquareStack,
   "tables-data": Table,
   "feedback-status": MessageSquare,
+  "data-display": IdCard,
   "chat-ai": Bot,
   "dashboards-charts": LineChart,
   "dashboards-data": BarChart3,
