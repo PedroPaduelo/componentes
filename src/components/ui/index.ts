@@ -26,6 +26,30 @@ export {
   ItemHeader,
   ItemFooter,
 } from "./item"
+export { Label } from "./label"
+export {
+  Field,
+  FieldLabel,
+  FieldDescription,
+  FieldError,
+  FieldGroup,
+  FieldLegend,
+  FieldSeparator,
+  FieldSet,
+  FieldContent,
+  FieldTitle,
+} from "./field"
+export { ToggleGroup, ToggleGroupItem } from "./toggle-group"
+export { Kbd, KbdGroup } from "./kbd"
+export { Spinner } from "./spinner"
+export {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupText,
+  InputGroupInput,
+  InputGroupTextarea,
+} from "./input-group"
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card"
 export { Checkbox } from "./checkbox"
 export { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./dialog"

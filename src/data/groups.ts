@@ -258,6 +258,9 @@ export const DEFAULT_GROUP: GroupId = "feedback-status"
  */
 export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   // — Forms & Inputs: campos, seleção e captura de dados —
+  label: "forms-inputs",
+  field: "forms-inputs",
+  "input-group": "forms-inputs",
   calendar: "forms-inputs",
   "calendar-tremor": "forms-inputs",
   checkbox: "forms-inputs",
@@ -296,6 +299,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "toggle-tremor": "forms-inputs",
 
   // — Actions & Navegação: gatilhos de ação, menus, abas, navbars —
+  "toggle-group": "actions-navigation",
   "animated-button": "actions-navigation",
   breadcrumb: "actions-navigation",
   button: "actions-navigation",
@@ -444,6 +448,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
 
   // — Feedback & Status: alertas, toasts, progresso, loaders, skeletons —
   alert: "feedback-status",
+  spinner: "feedback-status",
   "callout-tremor": "feedback-status",
   loader: "feedback-status",
   "mobius-loop-icon": "feedback-status",
@@ -456,7 +461,8 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   toast: "feedback-status",
   "tracker-tremor": "feedback-status",
 
-  // — Exibição de Dados: avatares, badges, tooltips, previews, empty e números —
+  // — Exibição de Dados: avatares, badges, tooltips, previews, empty, kbd e números —
+  kbd: "data-display",
   "animated-number": "data-display",
   "animated-tooltip": "data-display",
   avatar: "data-display",

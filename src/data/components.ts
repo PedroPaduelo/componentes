@@ -3401,6 +3401,54 @@ export const components: ComponentMeta[] = [
       "Dica contextual exibida ao passar o mouse ou focar um gatilho. Baseado em @radix-ui/react-tooltip.",
     tags: ["tooltip", "dica", "hover", "overlay", "shadcn"],
   },
+  {
+    slug: "label",
+    name: "Label",
+    category: "Forms",
+    description:
+      "Rótulo acessível para campos de formulário. Baseado em @radix-ui/react-label.",
+    tags: ["label", "rótulo", "formulário", "acessibilidade", "shadcn"],
+  },
+  {
+    slug: "field",
+    name: "Field",
+    category: "Forms",
+    description:
+      "Wrapper de campo de formulário: agrupa label, controle, descrição e mensagem de erro com espaçamento consistente.",
+    tags: ["field", "campo", "formulário", "form", "shadcn"],
+  },
+  {
+    slug: "input-group",
+    name: "Input Group",
+    category: "Forms",
+    description:
+      "Input com addons (ícones, botões ou texto) à esquerda, à direita ou em bloco, integrados visualmente ao campo.",
+    tags: ["input", "group", "addon", "ícone", "formulário", "shadcn"],
+  },
+  {
+    slug: "toggle-group",
+    name: "Toggle Group",
+    category: "Actions",
+    description:
+      "Grupo de botões de alternância com seleção única ou múltipla. Baseado em @radix-ui/react-toggle-group.",
+    tags: ["toggle", "group", "grupo", "seleção", "shadcn"],
+  },
+  {
+    slug: "kbd",
+    name: "Kbd",
+    category: "Feedback",
+    description:
+      "Representação visual de teclas e atalhos de teclado (ex.: ⌘ K). Use KbdGroup para combinações.",
+    tags: ["kbd", "tecla", "atalho", "teclado", "shortcut", "shadcn"],
+  },
+  {
+    slug: "spinner",
+    name: "Spinner",
+    category: "Feedback",
+    description:
+      "Indicador de carregamento giratório minimalista, baseado no ícone Loader2 do lucide.",
+    tags: ["spinner", "loading", "loader", "carregando", "shadcn"],
+  },
 ]
 
 /** Busca um componente pelo slug (usado na Task 3 — página de detalhe). */
