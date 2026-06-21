@@ -15,7 +15,7 @@ const TRAFFIC_SERIES = [
 const basicExample: Example = {
   title: "Tráfego por hora",
   description:
-    "Série simples de 12 pontos com área preenchida, grid e eixos. A escala Y é normalizada ao min/max dos dados.",
+    "Série simples de 12 pontos com área preenchida, grid e eixos. A escala Y é normalizada ao min/max dos dados. Passe o mouse para ver o tooltip com o valor do ponto.",
   code: `import { LineChart } from "@/components/ui/line-chart"
 
 export function Demo() {
@@ -43,7 +43,7 @@ export function Demo() {
 const multiSeriesExample: Example = {
   title: "Múltiplas séries",
   description:
-    "Duas séries concorrentes normalizadas pelo mesmo min/max global, com legenda e cores distintas.",
+    "Duas séries concorrentes normalizadas pelo mesmo min/max global, com legenda e cores distintas. O tooltip mostra os valores de todas as séries no índice sob o cursor.",
   code: `import { LineChart } from "@/components/ui/line-chart"
 
 export function Demo() {
@@ -73,9 +73,9 @@ export function Demo() {
 }
 
 const minimalExample: Example = {
-  title: "Sem área, grid e legenda",
+  title: "Sem área, grid, legenda e tooltip",
   description:
-    "Apenas as linhas poligonais — showArea/showGrid/showLegend desativados para máxima densidade.",
+    "Apenas as linhas poligonais — showArea/showGrid/showLegend/showTooltip desativados para máxima densidade.",
   code: `import { LineChart } from "@/components/ui/line-chart"
 
 export function Demo() {
@@ -89,6 +89,7 @@ export function Demo() {
         showArea={false}
         showGrid={false}
         showLegend={false}
+        showTooltip={false}
         height="h-32"
       />
     </div>
@@ -102,6 +103,7 @@ export function Demo() {
         showArea={false}
         showGrid={false}
         showLegend={false}
+        showTooltip={false}
         height="h-32"
       />
     </div>
