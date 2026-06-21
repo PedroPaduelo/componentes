@@ -39,41 +39,6 @@ export function filterCompositions(
   return list.filter((c) => compositionHaystack(c).includes(q))
 }
 
-/**
- * Regex de slugs que são dashboards / "dashboards-like" (workbench DBA,
- * observability, workflow builder, etc.). Casa os 7 slugs canônicos
- * validados pelo orquestrador:
- *   - saas-dashboard
- *   - saas-dashboard-pro
- *   - interactive-dashboard
- *   - workflow-builder
- *   - observability-center
- *   - ai-dashboard-builder
- *   - dba-workbench
- *
- * Mantido aberto o suficiente para absorver composições futuras cujo slug
- * carregue "dashboard", "dba-workbench", "observ", "workflow",
- * "interactive" ou "builder" (a revisão manual de tags continua valendo
- * como rede de segurança).
- */
-const DASHBOARD_SLUG_RE =
-  /(dashboard|dba-workbench|observ|workflow|interactive|builder)/
-
-/**
- * Predicado de composição dashboard-like. Usado pelo filtro runtime
- * `?category=dashboard` em `/compositions` (REORG task D1) — NÃO altera o
- * registry de composições (categoria formal continua "Aplicação" / etc.).
- *
- * Critério:
- *  1. tag `"dashboard"` presente (contrato atual do registry), OU
- *  2. slug casa o regex `DASHBOARD_SLUG_RE` (cobre workbench, observability,
- *     workflow, builder etc. que não carregam a tag).
- */
-export function isDashboardComposition(c: Composition): boolean {
-  if (c.tags.includes("dashboard")) return true
-  return DASHBOARD_SLUG_RE.test(c.slug)
-}
-
 /** Um grupo da navegação: uma categoria + as composições que pertencem a ela. */
 export type CompositionGroup = {
   category: string

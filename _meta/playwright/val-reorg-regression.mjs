@@ -2,8 +2,7 @@
 //
 // Depois de A1·B1·C1·C2·D1·E1 várias superfícies foram tocadas (taxonomia de
 // 10 grupos + 2 sub-grupos de dashboard, rota índice `/components` como
-// overview, filtro de grupo na Home, filtro runtime de
-// composições `?category=dashboard`, deep-links de componente redirecionando
+// overview, filtro de grupo na Home, deep-links de componente redirecionando
 // para a group-page). Este é o SMOKE TEST FINAL que re-percorre o caminho feliz
 // inteiro num único validador, garantindo que nada quebrou ponta-a-ponta.
 //
@@ -21,7 +20,6 @@
 //   2. `/components`                         → overview com os 10 cards de grupo.
 //   4. `/components/grupo/dashboards-charts` → <h1> "Dashboards & Charts" + famílias.
 //   5. `/components/area-chart-tremor`       → redireciona p/ a âncora na group-page.
-//   6. `/compositions?category=dashboard`    → grid filtrado (dashboard-like).
 //   7. `/compositions/dba-workbench`         → deep-link sem filtro renderiza.
 //
 // Process.exit(0) quando TODOS passam; exit(1) com o(s) cenário(s) que falhou
@@ -266,32 +264,6 @@ try {
     // A seção-âncora existe de fato na group-page de destino (id=<slug>).
     const sec = await page.locator("#area-chart-tremor").count()
     check("group-page tem a seção #area-chart-tremor", sec >= 1, `count=${sec}`)
-
-    await page.close()
-  })
-
-  // ── 6. filtro runtime de composições (?category=dashboard) ───────────────
-  await scenario("6. /compositions?category=dashboard renderiza o grid filtrado", async () => {
-    const page = await ctx.newPage()
-    await goto(page, "/compositions?category=dashboard")
-    await page.waitForSelector("[data-slot=card]", { timeout: 15000 }).catch(() => {})
-
-    const filtered = await countContentSlots(page, "card")
-    check("filtro dashboard renderiza >= 5 composições (hoje 7)", filtered >= 5, `cards=${filtered}`)
-
-    // Banner "Filtrado" (role=status, com o texto "Filtrado…") confirma o
-    // filtro ativo. Filtramos por texto p/ não casar o spinner do Suspense.
-    const banner = page.locator("[role=status]").filter({ hasText: /filtrad/i })
-    check("banner 'Filtrado' de dashboard ativo", (await banner.count()) >= 1)
-
-    // O filtro de fato ESTREITA o catálogo (filtrados < total).
-    await goto(page, "/compositions")
-    const total = await countContentSlots(page, "card")
-    check(
-      "filtro estreita o catálogo (filtrados < total)",
-      filtered < total && filtered >= 1,
-      `filtrados=${filtered} total=${total}`,
-    )
 
     await page.close()
   })
