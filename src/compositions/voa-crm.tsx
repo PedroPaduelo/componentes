@@ -109,6 +109,15 @@ import type { BadgeColor } from "@/components/ui"
 import { useTheme } from "@/components/theme/use-theme"
 import { springs } from "@/lib/springs"
 import { cn } from "@/lib/utils"
+import {
+  ContatosSection,
+  PipelineSection,
+  CampanhasSection,
+  TemplatesSection,
+  AutomacaoSection,
+  RelatoriosSection,
+  ConfiguracoesSection,
+} from "./voa-crm-sections"
 
 /* -------------------------------------------------------------------------- */
 /*                               formatters                                   */
@@ -850,7 +859,7 @@ function AppSidebar({
                 data-active={isActive ? "true" : undefined}
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
-                  "flex w-full items-center gap-3 rounded-lg px-2.5 py-2 text-sm font-medium transition-colors",
+                  "flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-sm font-medium transition-colors",
                   collapsed && "justify-center",
                   isActive
                     ? "bg-primary/10 text-primary"
@@ -2206,8 +2215,6 @@ export function VoaCrm() {
     })
   }
 
-  const totalUnread = contacts.reduce((acc, c) => acc + c.unread, 0)
-
   return (
     <div
       data-slot="voa-crm"
@@ -2245,12 +2252,21 @@ export function VoaCrm() {
             onOpenWhatsapp={() => setConnPanelOpen(true)}
           />
         </>
-      ) : (
-        <GenericSection
-          nav={nav}
-          totalUnread={totalUnread}
-        />
-      )}
+      ) : nav === "contatos" ? (
+        <ContatosSection />
+      ) : nav === "pipeline" ? (
+        <PipelineSection />
+      ) : nav === "campanhas" ? (
+        <CampanhasSection />
+      ) : nav === "templates" ? (
+        <TemplatesSection />
+      ) : nav === "automacao" ? (
+        <AutomacaoSection />
+      ) : nav === "relatorios" ? (
+        <RelatoriosSection />
+      ) : nav === "configuracoes" ? (
+        <ConfiguracoesSection />
+      ) : null}
 
       {/* Painel de conexão WhatsApp (Sheet lateral direita) */}
       <WhatsAppConnectionPanel
@@ -2278,67 +2294,12 @@ export function VoaCrm() {
 }
 
 /* -------------------------------------------------------------------------- */
-/*                       placeholder de outras seções                          */
+/*                       (removido — ver voa-crm-sections.tsx)                */
 /* -------------------------------------------------------------------------- */
 
-function GenericSection({
-  nav,
-  totalUnread,
-}: {
-  nav: NavId
-  totalUnread: number
-}) {
-  const titles: Record<NavId, string> = {
-    conversas: "Conversas",
-    contatos: "Contatos",
-    pipeline: "Pipeline de vendas",
-    campanhas: "Campanhas",
-    templates: "Templates de mensagem",
-    automacao: "Automação",
-    relatorios: "Relatórios",
-    configuracoes: "Configurações",
-  }
-  const descriptions: Record<NavId, string> = {
-    conversas:
-      "Atendimento multicanal com WhatsApp Business no centro da operação.",
-    contatos:
-      "Base unificada de clientes e leads, segmentada por tag e valor.",
-    pipeline:
-      "Funil de vendas com estágios de reserva, pagamento e pós-venda.",
-    campanhas:
-      "Disparos em massa via WhatsApp, e-mail e SMS com ROI mensurável.",
-    templates:
-      "Mensagens-modelo aprovadas pelo WhatsApp para envio rápido.",
-    automacao:
-      "Fluxos automatizados para follow-up, lembretes e nutrição de leads.",
-    relatorios:
-      "Métricas de atendimento, conversão e performance do time.",
-    configuracoes:
-      "Preferências da conta, integrações e gestão de equipe.",
-  }
-  return (
-    <section className="flex min-w-0 flex-1 flex-col items-center justify-center gap-4 bg-background p-10 text-center">
-      <div className="flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-        <Sparkles className="size-6" />
-      </div>
-      <div>
-        <h2 className="text-xl font-semibold text-foreground">
-          {titles[nav]}
-        </h2>
-        <p className="mt-1 max-w-md text-sm text-muted-foreground">
-          {descriptions[nav]}
-        </p>
-      </div>
-      <p className="text-[11px] text-muted-foreground">
-        Esta seção é uma vitrine do painel lateral — volte para
-        <strong className="px-1 font-medium text-foreground">
-          Conversas
-        </strong>
-        pra ver o atendimento WhatsApp em ação.
-      </p>
-      <BadgeFluid color="gray" size="sm" className="tabular-nums">
-        {totalUnread} mensagens não lidas no inbox
-      </BadgeFluid>
-    </section>
-  )
+void function _removedGenericSection() {
+  const titles: Record<string, string> = {}
+  const descriptions: Record<string, string> = {}
+  void titles
+  void descriptions
 }
