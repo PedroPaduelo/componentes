@@ -128,6 +128,11 @@ export const compositionScreens: Record<
   "travel-booking": lazy(() =>
     import("./travel-booking").then((m) => ({ default: m.TravelBooking }))
   ),
+  "travel-booking-tropical": lazy(() =>
+    import("./travel-booking-tropical").then((m) => ({
+      default: m.TravelBookingTropical,
+    }))
+  ),
   "ai-ide": lazy(() =>
     import("./ai-ide").then((m) => ({ default: m.AiIde }))
   ),
@@ -184,5 +189,8 @@ export const compositionScreens: Record<
     import("./ai-dashboard-builder").then((m) => ({
       default: m.AiDashboardBuilder,
     }))
+  ),
+  "voa-crm": lazy(() =>
+    import("./voa-crm").then((m) => ({ default: m.VoaCrm }))
   ),
 }

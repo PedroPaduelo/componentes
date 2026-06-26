@@ -249,8 +249,38 @@ export const compositions: Composition[] = [
     slug: "travel-booking",
     name: "Reserva de Viagem",
     description:
-      "Landing de viagens com busca interativa (destino, datas e hóspedes), destinos populares em FocusCards, mapa-múndi com rotas, depoimentos animados e faixa de benefícios.",
-    tags: ["viagem", "booking", "busca", "mapa", "marketing"],
+      "Landing de passagens Brasil & Mundo com busca interativa (Nordeste em foco, mas com Caribe/Europa/Américas), FocusCards de destinos do Nordeste, mapa-múndi com rotas saindo de SP, AnimatedTestimonials e bento com GlowingEffect.",
+    tags: [
+      "viagem",
+      "booking",
+      "busca",
+      "mapa",
+      "marketing",
+      "nordeste",
+      "brasil",
+      "vortex",
+    ],
+    category: "Marketing",
+  },
+  {
+    slug: "travel-booking-tropical",
+    name: "Reserva de Viagem — Tropical WOU",
+    description:
+      "Versão premium da landing de passagens com densidade máxima de efeitos da Vitrine: hero em AuroraBackground + HeroHighlight + TextHoverEffect gigante 'BRASIL' + FlipWords + ContainerTextFlip, ParallaxHeroImages2 dos destinos Nordestinos, Vortex dourado nos números, WorldMap saindo do Brasil, BentoGrid com GlowingEffect e CTA final em CardSpotlight + SparklesCore. Foco Nordeste + mundo.",
+    tags: [
+      "viagem",
+      "booking",
+      "busca",
+      "mapa",
+      "marketing",
+      "nordeste",
+      "brasil",
+      "vortex",
+      "aurora",
+      "parallax",
+      "wou",
+      "showcase",
+    ],
     category: "Marketing",
   },
   {
@@ -515,6 +545,26 @@ export const compositions: Composition[] = [
     ],
     category: "Aplicação",
     wide: true,
+  },
+  {
+    slug: "voa-crm",
+    name: "VoaCRM — CRM para Agência de Turismo",
+    description:
+      "CRM completo para agência de viagens em 5 áreas navegáveis: Painel com 4 KPI cards (reservas, receita, ticket médio, taxa de ocupação), gráfico de receita por destino e próximas viagens confirmadas; Clientes em tabela com busca, filtros por status (Lead/Prospect/Cliente/VIP) e cadastro em diálogo; Reservas agrupadas por status (Confirmada/Pendente/Cancelada) em cards com passageiro, destino, datas, valor e ações (Confirmar, Reagendar, Reembolsar); Pipeline Kanban com 5 estágios de negociação de pacotes (Novo lead → Em negociação → Cotação enviada → Aguardando pagamento → Fechado) com cards arrastáveis entre colunas e toast de confirmação; e Campanhas com 3 canais (E-mail/WhatsApp/Ads), métricas (Alcance, Conversões, ROI), status ativo/pausado e ação de pausar/retomar.",
+    tags: [
+      "crm",
+      "turismo",
+      "viagem",
+      "clientes",
+      "reservas",
+      "pipeline",
+      "kanban",
+      "campanhas",
+      "marketing",
+      "app",
+      "interativo",
+    ],
+    category: "Aplicação",
   },
 ]
 
