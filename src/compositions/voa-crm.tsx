@@ -1,102 +1,117 @@
 /**
- * Composição "VoaCRM — CRM para Agência de Turismo".
+ * Composição "VoaCRM — CRM com WhatsApp Business".
  *
- * Tela completa de CRM voltada para o segmento de viagens, montada SÓ com
- * componentes do barrel `@/components/ui`. Estado real via `useState`:
+ * Tela profissional de CRM para agência de turismo com FOCO NO ATENDIMENTO
+ * VIA WHATSAPP BUSINESS. Layout em 3 colunas estilo WhatsApp Web Profissional:
  *
- *   • Sidebar fixa com 5 áreas (Painel, Clientes, Reservas, Pipeline, Campanhas).
- *     Cada troca de seção mostra uma sub-tela diferente no conteúdo principal,
- *     mantendo a navegação consistente.
+ *   1) SIDEBAR FIXA (esquerda, ~64px collapsed / 260px expanded) com:
+ *      - Logo + nome do workspace.
+ *      - Card de CONEXÃO WHATSAPP BUSINESS (bolinha de status + nome do
+ *        número conectado + botão "Gerenciar") — sempre visível.
+ *      - Nav vertical: Conversas, Contatos, Pipeline, Campanhas,
+ *        Templates, Automação, Relatórios, Configurações.
+ *      - Perfil do agente logado no rodapé.
  *
- *   • PAINEL (default): 4 KPI cards (Reservas no mês, Receita, Ticket médio,
- *     Taxa de ocupação) + gráfico de receita por destino (barras horizontais
- *     em SVG puro) + tabela "Próximas viagens" com passageiro, destino, data,
- *     status e valor.
+ *   2) LISTA DE CONVERSAS (central, ~360px) estilo WhatsApp Web:
+ *      - Header "Conversas" + busca + filtros em pílulas (Todas / Não
+ *        lidas / Aguardando / Finalizadas) + botão "Nova conversa".
+ *      - Cada item: avatar, nome, presença (online/ausente), snippet da
+ *        última mensagem com ticks, hora, badge de não-lidas, etiqueta
+ *        de tag (Reserva, Pagamento, Suporte, VIP) e indicador de fixada.
  *
- *   • CLIENTES: tabela com avatar + nome + cidade/UF + status (Lead, Prospect,
- *     Cliente, VIP via BadgeFluid), gasto total e ações. Busca controlada +
- *     filtro por status via Tabs.
+ *   3) THREAD DO CHAT (principal):
+ *      - Header com avatar do contato, nome, telefone, status de
+ *        conexão, indicador "digitando…" e ações (ligar, video, info).
+ *      - Mensagens agrupadas por dia (Hoje / Ontem / data) com bubbles
+ *        estilo WhatsApp (cliente à esquerda cinza, agente à direita
+ *        verde), status ticks (enviada/entregue/lida), respostas
+ *        rápidas e anexos.
+ *      - Composer com anexos, emojis, gravação de áudio (mock),
+ *        quick replies e envio.
  *
- *   • RESERVAS: lista em cards agrupados por status (Confirmada · Pendente ·
- *     Cancelada), com passageiro, destino, datas, valor, e ações via
- *     DropdownMenu (Confirmar, Reagendar, Reembolsar, Detalhes).
+ * Seção "Conexão WhatsApp" abre um painel detalhado com QR Code
+ * mockado (SVG gerado), status do pareamento, número conectado,
+ * métricas (mensagens hoje / conversas abertas / tempo médio de
+ * resposta) e ações (Reconectar, Desconectar, Testar conexão).
  *
- *   • PIPELINE: quadro Kanban (estilo component-playground) com 5 estágios
- *     de negociação de pacotes (Novo lead → Em negociação → Cotação enviada
- *     → Aguardando pagamento → Fechado). Cards arrastáveis entre colunas,
- *     com toast confirmando a movimentação.
+ * Pipeline e Contatos ficam como visões rápidas acessíveis pela nav
+ * lateral — foco continua sendo o chat.
  *
- *   • CAMPANHAS: cards de campanhas ativas (E-mail, WhatsApp, Ads) com
- *     métricas (Alcance, Conversões, ROI), badge de status e switch de
- *     pausar/retomar.
- *
- * Componentes do catálogo usados (~14): Card, Button, ButtonFluid, BadgeFluid,
- * Input, Avatar/AvatarFallback, Separator, ScrollArea, Tabs/TabsList/TabsTrigger,
- * Select/SelectContent/SelectItem/SelectTrigger/SelectValue, Dialog/*,
- * DropdownMenu/*, RadioGroup/RadioGroupItem, Toaster (sonner).
+ * Componentes do catálogo usados (~18): Card, Button, ButtonFluid,
+ * BadgeFluid, Input, Avatar/AvatarFallback, Separator, ScrollArea,
+ * Tabs/TabsList/TabsTrigger, Select/*, Dialog/*, DropdownMenu/*,
+ * Popover/PopoverTrigger/PopoverContent, SwitchFluid, TooltipFluid,
+ * Sheet/SheetContent/SheetHeader/SheetTitle, Toaster (sonner).
  */
 import * as React from "react"
+import { AnimatePresence, motion } from "motion/react"
 import { toast } from "sonner"
 import {
-  Plane,
-  Search,
-  Bell,
+  MessageSquare,
   Users,
-  MoreHorizontal,
-  Plus,
-  LayoutDashboard,
-  CalendarDays,
-  MapPin,
-  Wallet,
-  TrendingUp,
-  Star,
-  Mail,
-  MessageCircle,
+  Briefcase,
   Megaphone,
-  Pause,
-  Play,
-  Trash2,
-  ArrowRight,
-  Clock,
-  LayoutGrid,
-  Inbox,
+  FileText,
+  Workflow,
+  BarChart3,
+  Settings,
+  Search,
+  Plus,
+  Phone,
+  Video,
+  MoreVertical,
+  Paperclip,
+  Smile,
+  Send,
+  Mic,
+  Pin,
+  Check,
+  CheckCheck,
+  Image as ImageIcon,
+  File as FileIcon,
+  MapPin,
+  CalendarDays,
+  CreditCard,
+  Star,
+  Plane,
+  QrCode,
+  Wifi,
+  WifiOff,
+  RefreshCw,
+  Power,
+  ShieldCheck,
+  ChevronLeft,
+  ChevronRight,
   Sparkles,
+  X,
+  Clock,
 } from "lucide-react"
 
 import {
   Card,
   Button,
+  ButtonFluid,
   BadgeFluid,
   Input,
-  Avatar,
-  AvatarFallback,
-  Separator,
   ScrollArea,
   Tabs,
   TabsList,
   TabsTrigger,
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  RadioGroup,
-  RadioGroupItem,
+  SwitchFluid,
+  TooltipFluid,
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
   Toaster,
 } from "@/components/ui"
 import type { BadgeColor } from "@/components/ui"
 import { useTheme } from "@/components/theme/use-theme"
+import { springs } from "@/lib/springs"
 import { cn } from "@/lib/utils"
 
 /* -------------------------------------------------------------------------- */
-/*                          formatters / constantes                           */
+/*                               formatters                                   */
 /* -------------------------------------------------------------------------- */
 
 const BRL = new Intl.NumberFormat("pt-BR", {
@@ -104,1632 +119,2226 @@ const BRL = new Intl.NumberFormat("pt-BR", {
   currency: "BRL",
   maximumFractionDigits: 0,
 })
-const BRL_CENT = new Intl.NumberFormat("pt-BR", {
-  style: "currency",
-  currency: "BRL",
-  maximumFractionDigits: 2,
-})
-const COMPACT = new Intl.NumberFormat("pt-BR", { notation: "compact" })
 
 /* -------------------------------------------------------------------------- */
-/*                                   modelo                                   */
+/*                                  modelo                                    */
 /* -------------------------------------------------------------------------- */
 
-type ClientStatus = "lead" | "prospect" | "cliente" | "vip"
-type BookingStatus = "confirmada" | "pendente" | "cancelada"
-type PipelineStage =
-  | "novo-lead"
-  | "em-negociacao"
-  | "cotacao-enviada"
-  | "aguardando-pagamento"
-  | "fechado"
+type Presence = "online" | "typing" | "away" | "offline"
+type Ticks = "sent" | "delivered" | "read"
+type DayKey = "hoje" | "ontem" | "anterior"
+type MessageKind = "text" | "image" | "audio" | "document" | "location"
+type ChannelKind = "whatsapp" | "instagram" | "facebook"
+type ConnStatus = "connected" | "connecting" | "disconnected"
 
-interface Client {
+interface NavItem {
+  id: NavId
+  label: string
+  icon: React.ComponentType<{ className?: string }>
+  badge?: string
+}
+
+type NavId =
+  | "conversas"
+  | "contatos"
+  | "pipeline"
+  | "campanhas"
+  | "templates"
+  | "automacao"
+  | "relatorios"
+  | "configuracoes"
+
+interface Contact {
   id: string
   name: string
-  email: string
-  city: string
-  state: string
-  status: ClientStatus
-  totalSpent: number
-  initials: string
-  /** classe literal Tailwind (sem interpolação) para o avatar */
+  phone: string
+  avatarSeed: string
   avatarClass: string
-  lastTrip?: string
+  presence: Presence
+  channel: ChannelKind
+  tag: "reserva" | "pagamento" | "suporte" | "vip" | "lead"
+  pinned: boolean
+  unread: number
+  /** cidade/UF opcional pra header do chat */
+  location?: string
+  /** se é cliente com gasto ou potencial */
+  customerValue?: number
 }
 
-interface Booking {
+interface Message {
   id: string
-  clientId: string
-  destination: string
-  country: string
-  startDate: string
-  endDate: string
-  pax: number
-  amount: number
-  status: BookingStatus
+  from: "me" | "them"
+  kind: MessageKind
+  text?: string
+  /** para anexos — só metadado (mockado) */
+  meta?: {
+    title?: string
+    duration?: string
+    address?: string
+    fileSize?: string
+  }
+  time: string
+  ticks?: Ticks
+  /** chave de dia pra agrupar */
+  day: DayKey
 }
 
-interface PipelineDeal {
-  id: string
-  clientId: string
-  packageTitle: string
-  destination: string
-  value: number
-  stage: PipelineStage
-  ownerId: string
-  expectedClose: string
+interface QuickReply {
+  emoji: string
+  text: string
 }
 
-interface Campaign {
-  id: string
-  name: string
-  channel: "email" | "whatsapp" | "ads"
-  status: "ativa" | "pausada"
-  reach: number
-  conversions: number
-  roi: number
-  budget: number
-}
-
-type SectionId = "painel" | "clientes" | "reservas" | "pipeline" | "campanhas"
-
-/* -------------------------------------------------------------------------- */
-/*                            meta tabelas (UI)                               */
-/* -------------------------------------------------------------------------- */
-
-const SECTION_META: Record<
-  SectionId,
-  { label: string; icon: React.ComponentType<{ className?: string }> }
-> = {
-  painel: { label: "Painel", icon: LayoutDashboard },
-  clientes: { label: "Clientes", icon: Users },
-  reservas: { label: "Reservas", icon: CalendarDays },
-  pipeline: { label: "Pipeline", icon: LayoutGrid },
-  campanhas: { label: "Campanhas", icon: Megaphone },
-}
-
-const STATUS_META: Record<
-  ClientStatus,
+const TAG_META: Record<
+  Contact["tag"],
   { label: string; color: BadgeColor }
 > = {
+  reserva: { label: "Reserva", color: "blue" },
+  pagamento: { label: "Pagamento", color: "amber" },
+  suporte: { label: "Suporte", color: "violet" },
+  vip: { label: "VIP", color: "green" },
   lead: { label: "Lead", color: "gray" },
-  prospect: { label: "Prospect", color: "blue" },
-  cliente: { label: "Cliente", color: "green" },
-  vip: { label: "VIP", color: "amber" },
 }
 
-const BOOKING_META: Record<
-  BookingStatus,
-  { label: string; color: BadgeColor }
-> = {
-  confirmada: { label: "Confirmada", color: "green" },
-  pendente: { label: "Pendente", color: "amber" },
-  cancelada: { label: "Cancelada", color: "red" },
+const PRESENCE_META: Record<Presence, { color: string; label: string }> = {
+  online: { color: "bg-emerald-500", label: "Online" },
+  typing: { color: "bg-sky-500", label: "Digitando…" },
+  away: { color: "bg-amber-500", label: "Ausente" },
+  offline: { color: "bg-muted-foreground/40", label: "Visto por último hoje" },
 }
 
-const STAGE_META: Record<PipelineStage, { label: string; accent: string }> = {
-  "novo-lead": { label: "Novo lead", accent: "bg-slate-500" },
-  "em-negociacao": { label: "Em negociação", accent: "bg-blue-500" },
-  "cotacao-enviada": { label: "Cotação enviada", accent: "bg-violet-500" },
-  "aguardando-pagamento": { label: "Aguardando pgto.", accent: "bg-amber-500" },
-  fechado: { label: "Fechado", accent: "bg-emerald-500" },
+const CHANNEL_META: Record<ChannelKind, { label: string; emoji: string; color: string }> = {
+  whatsapp: { label: "WhatsApp", emoji: "💬", color: "text-emerald-600 dark:text-emerald-400" },
+  instagram: { label: "Instagram", emoji: "📸", color: "text-pink-600 dark:text-pink-400" },
+  facebook: { label: "Facebook", emoji: "📘", color: "text-blue-600 dark:text-blue-400" },
 }
 
-const STAGE_ORDER: PipelineStage[] = [
-  "novo-lead",
-  "em-negociacao",
-  "cotacao-enviada",
-  "aguardando-pagamento",
-  "fechado",
+const NAV_ITEMS: NavItem[] = [
+  { id: "conversas", label: "Conversas", icon: MessageSquare },
+  { id: "contatos", label: "Contatos", icon: Users },
+  { id: "pipeline", label: "Pipeline", icon: Briefcase },
+  { id: "campanhas", label: "Campanhas", icon: Megaphone },
+  { id: "templates", label: "Templates", icon: FileText },
+  { id: "automacao", label: "Automação", icon: Workflow },
+  { id: "relatorios", label: "Relatórios", icon: BarChart3 },
+  { id: "configuracoes", label: "Configurações", icon: Settings },
 ]
 
-const CHANNEL_META: Record<
-  Campaign["channel"],
-  { label: string; icon: React.ComponentType<{ className?: string }> }
-> = {
-  email: { label: "E-mail", icon: Mail },
-  whatsapp: { label: "WhatsApp", icon: MessageCircle },
-  ads: { label: "Ads", icon: Megaphone },
-}
-
 /* -------------------------------------------------------------------------- */
-/*                              seed data                                     */
+/*                                seed data                                    */
 /* -------------------------------------------------------------------------- */
 
-const CLIENTS: Client[] = [
+const CONTACTS: Contact[] = [
   {
     id: "marina",
     name: "Marina Albuquerque",
-    email: "marina.alb@example.com",
-    city: "Florianópolis",
-    state: "SC",
-    status: "vip",
-    totalSpent: 47800,
-    initials: "MA",
+    phone: "+55 48 99812-4421",
+    avatarSeed: "marina-alb",
     avatarClass: "bg-amber-500/15 text-amber-700 dark:text-amber-400",
-    lastTrip: "Lisboa · Jun/26",
+    presence: "online",
+    channel: "whatsapp",
+    tag: "vip",
+    pinned: true,
+    unread: 3,
+    location: "Florianópolis, SC",
+    customerValue: 47800,
   },
   {
     id: "renato",
     name: "Renato Pacheco",
-    email: "renato.p@example.com",
-    city: "Curitiba",
-    state: "PR",
-    status: "cliente",
-    totalSpent: 18250,
-    initials: "RP",
-    avatarClass: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
-    lastTrip: "Cancún · Mar/26",
+    phone: "+55 41 99745-1102",
+    avatarSeed: "renato-pach",
+    avatarClass: "bg-blue-500/15 text-blue-700 dark:text-blue-400",
+    presence: "typing",
+    channel: "whatsapp",
+    tag: "reserva",
+    pinned: true,
+    unread: 0,
+    location: "Curitiba, PR",
+    customerValue: 18250,
   },
   {
     id: "beatriz",
     name: "Beatriz Lemos",
-    email: "bia.lemos@example.com",
-    city: "Belo Horizonte",
-    state: "MG",
-    status: "cliente",
-    totalSpent: 9640,
-    initials: "BL",
-    avatarClass: "bg-blue-500/15 text-blue-700 dark:text-blue-400",
-    lastTrip: "Fernando de Noronha · Fev/26",
+    phone: "+55 31 98230-0921",
+    avatarSeed: "beatriz-lem",
+    avatarClass: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+    presence: "online",
+    channel: "whatsapp",
+    tag: "pagamento",
+    pinned: false,
+    unread: 1,
+    location: "Belo Horizonte, MG",
+    customerValue: 9640,
   },
   {
     id: "tiago",
     name: "Tiago Vasconcelos",
-    email: "tiago.vc@example.com",
-    city: "Recife",
-    state: "PE",
-    status: "prospect",
-    totalSpent: 0,
-    initials: "TV",
+    phone: "+55 81 98911-7740",
+    avatarSeed: "tiago-vasc",
     avatarClass: "bg-violet-500/15 text-violet-700 dark:text-violet-400",
+    presence: "away",
+    channel: "whatsapp",
+    tag: "lead",
+    pinned: false,
+    unread: 0,
+    location: "Recife, PE",
   },
   {
     id: "camila",
     name: "Camila Rocha",
-    email: "camila.r@example.com",
-    city: "Porto Alegre",
-    state: "RS",
-    status: "prospect",
-    totalSpent: 0,
-    initials: "CR",
+    phone: "+55 51 99872-2244",
+    avatarSeed: "camila-roch",
     avatarClass: "bg-rose-500/15 text-rose-700 dark:text-rose-400",
+    presence: "online",
+    channel: "instagram",
+    tag: "reserva",
+    pinned: false,
+    unread: 2,
+    location: "Porto Alegre, RS",
   },
   {
     id: "pedro",
     name: "Pedro Henrique Sales",
-    email: "pedro.hs@example.com",
-    city: "São Paulo",
-    state: "SP",
-    status: "lead",
-    totalSpent: 0,
-    initials: "PS",
+    phone: "+55 11 98123-9090",
+    avatarSeed: "pedro-sales",
     avatarClass: "bg-slate-500/15 text-slate-700 dark:text-slate-300",
-  },
-  {
-    id: "livia",
-    name: "Lívia Mendonça",
-    email: "livia.m@example.com",
-    city: "Salvador",
-    state: "BA",
-    status: "lead",
-    totalSpent: 0,
-    initials: "LM",
-    avatarClass: "bg-teal-500/15 text-teal-700 dark:text-teal-400",
+    presence: "offline",
+    channel: "whatsapp",
+    tag: "suporte",
+    pinned: false,
+    unread: 0,
+    location: "São Paulo, SP",
   },
   {
     id: "gustavo",
     name: "Gustavo Bertelli",
-    email: "gustavo.b@example.com",
-    city: "Campinas",
-    state: "SP",
-    status: "vip",
-    totalSpent: 62100,
-    initials: "GB",
+    phone: "+55 19 98765-3322",
+    avatarSeed: "gustavo-bert",
     avatarClass: "bg-amber-500/15 text-amber-700 dark:text-amber-400",
-    lastTrip: "Tóquio · Mai/26",
-  },
-]
-
-const CLIENT_BY_ID: Record<string, Client> = Object.fromEntries(
-  CLIENTS.map((c) => [c.id, c])
-)
-
-const BOOKINGS: Booking[] = [
-  {
-    id: "b1",
-    clientId: "marina",
-    destination: "Lisboa",
-    country: "Portugal",
-    startDate: "12/07/2026",
-    endDate: "22/07/2026",
-    pax: 2,
-    amount: 18900,
-    status: "confirmada",
-  },
-  {
-    id: "b2",
-    clientId: "renato",
-    destination: "Cancún",
-    country: "México",
-    startDate: "03/08/2026",
-    endDate: "12/08/2026",
-    pax: 4,
-    amount: 22600,
-    status: "pendente",
-  },
-  {
-    id: "b3",
-    clientId: "beatriz",
-    destination: "Patagônia",
-    country: "Argentina",
-    startDate: "20/09/2026",
-    endDate: "30/09/2026",
-    pax: 2,
-    amount: 14800,
-    status: "confirmada",
-  },
-  {
-    id: "b4",
-    clientId: "gustavo",
-    destination: "Tóquio",
-    country: "Japão",
-    startDate: "05/10/2026",
-    endDate: "18/10/2026",
-    pax: 3,
-    amount: 41200,
-    status: "confirmada",
-  },
-  {
-    id: "b5",
-    clientId: "camila",
-    destination: "Bariloche",
-    country: "Argentina",
-    startDate: "15/07/2026",
-    endDate: "22/07/2026",
-    pax: 2,
-    amount: 8200,
-    status: "pendente",
-  },
-  {
-    id: "b6",
-    clientId: "tiago",
-    destination: "Maceió",
-    country: "Brasil",
-    startDate: "01/06/2026",
-    endDate: "07/06/2026",
-    pax: 2,
-    amount: 4900,
-    status: "cancelada",
-  },
-]
-
-const DEALS: PipelineDeal[] = [
-  {
-    id: "d1",
-    clientId: "tiago",
-    packageTitle: "Pacote Maceió · All inclusive",
-    destination: "Maceió, BR",
-    value: 5400,
-    stage: "novo-lead",
-    ownerId: "ana",
-    expectedClose: "20/07",
-  },
-  {
-    id: "d2",
-    clientId: "camila",
-    packageTitle: "Bariloche · Inverno 2026",
-    destination: "Bariloche, AR",
-    value: 8200,
-    stage: "novo-lead",
-    ownerId: "bruno",
-    expectedClose: "10/07",
-  },
-  {
-    id: "d3",
-    clientId: "pedro",
-    packageTitle: "Europa 12 dias · SP outbound",
-    destination: "Roma, IT",
-    value: 14800,
-    stage: "em-negociacao",
-    ownerId: "carla",
-    expectedClose: "25/08",
-  },
-  {
-    id: "d4",
-    clientId: "livia",
-    packageTitle: "Lua de mel · Maldivas",
-    destination: "Malé, MV",
-    value: 32600,
-    stage: "cotacao-enviada",
-    ownerId: "diego",
-    expectedClose: "15/09",
-  },
-  {
-    id: "d5",
-    clientId: "beatriz",
-    packageTitle: "Patagônia · Trekking",
-    destination: "El Calafate, AR",
-    value: 14800,
-    stage: "aguardando-pagamento",
-    ownerId: "ana",
-    expectedClose: "30/06",
-  },
-  {
-    id: "d6",
-    clientId: "renato",
-    packageTitle: "Cancún · Resort 5★",
-    destination: "Cancún, MX",
-    value: 22600,
-    stage: "fechado",
-    ownerId: "bruno",
-    expectedClose: "—",
-  },
-  {
-    id: "d7",
-    clientId: "marina",
-    packageTitle: "Lisboa · Réveillon 2026",
-    destination: "Lisboa, PT",
-    value: 18900,
-    stage: "fechado",
-    ownerId: "carla",
-    expectedClose: "—",
-  },
-]
-
-const CAMPAIGNS: Campaign[] = [
-  {
-    id: "c1",
-    name: "Réveillon na Europa",
-    channel: "email",
-    status: "ativa",
-    reach: 12480,
-    conversions: 187,
-    roi: 312,
-    budget: 4500,
-  },
-  {
-    id: "c2",
-    name: "Pacote All Inclusive BR",
+    presence: "online",
     channel: "whatsapp",
-    status: "ativa",
-    reach: 6230,
-    conversions: 92,
-    roi: 248,
-    budget: 1800,
+    tag: "vip",
+    pinned: false,
+    unread: 5,
+    location: "Campinas, SP",
+    customerValue: 62100,
   },
   {
-    id: "c3",
-    name: "Inverno Argentina",
-    channel: "ads",
-    status: "pausada",
-    reach: 38120,
-    conversions: 54,
-    roi: 88,
-    budget: 6200,
-  },
-  {
-    id: "c4",
-    name: "Lua de mel · Destaque",
-    channel: "email",
-    status: "ativa",
-    reach: 3210,
-    conversions: 41,
-    roi: 425,
-    budget: 900,
+    id: "livia",
+    name: "Lívia Mendonça",
+    phone: "+55 71 98890-2211",
+    avatarSeed: "livia-mend",
+    avatarClass: "bg-teal-500/15 text-teal-700 dark:text-teal-400",
+    presence: "offline",
+    channel: "whatsapp",
+    tag: "lead",
+    pinned: false,
+    unread: 0,
+    location: "Salvador, BA",
   },
 ]
 
-const OWNERS = [
-  { id: "ana", name: "Ana Lima", initials: "AL", avatarClass: "bg-rose-500/15 text-rose-700 dark:text-rose-400" },
-  { id: "bruno", name: "Bruno Sá", initials: "BS", avatarClass: "bg-blue-500/15 text-blue-700 dark:text-blue-400" },
-  { id: "carla", name: "Carla Reis", initials: "CR", avatarClass: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400" },
-  { id: "diego", name: "Diego Nunes", initials: "DN", avatarClass: "bg-violet-500/15 text-violet-700 dark:text-violet-400" },
-]
-const OWNER_BY_ID = Object.fromEntries(OWNERS.map((o) => [o.id, o]))
+/** Mapa de threads por contato. */
+const THREADS: Record<string, Message[]> = {
+  marina: [
+    { id: "m1", from: "them", kind: "text", text: "Oi! Tudo bem? 😊", time: "09:12", day: "hoje" },
+    { id: "m2", from: "me", kind: "text", text: "Oi, Marina! Tudo ótimo, e você? Em que posso ajudar?", time: "09:13", ticks: "read", day: "hoje" },
+    { id: "m3", from: "them", kind: "text", text: "Estou pensando em fechar aquela viagem pra Lisboa que a gente vinha conversando. Lembra?", time: "09:14", day: "hoje" },
+    { id: "m4", from: "me", kind: "text", text: "Lembro sim! Pacote Réveillon 2026 — Lisboa e Porto, 10 dias, hotel 4★ no centro. Posso te mandar a proposta atualizada?", time: "09:14", ticks: "read", day: "hoje" },
+    { id: "m5", from: "them", kind: "text", text: "Pode mandar! E tem como incluir o city tour em Sintra?", time: "09:15", day: "hoje" },
+    { id: "m6", from: "me", kind: "text", text: "Consigo encaixar sim. Vou montar e já te envio em alguns minutos 👍", time: "09:16", ticks: "read", day: "hoje" },
+    { id: "m7", from: "them", kind: "document", meta: { title: "Voo_TAP_LIS_12dez.pdf", fileSize: "248 KB" }, time: "14:02", day: "hoje" },
+    { id: "m8", from: "them", kind: "text", text: "Ana, segue em anexo o PDF do voo que você pediu ontem ✈️", time: "14:02", day: "hoje" },
+    { id: "m9", from: "me", kind: "text", text: "Recebi, obrigada! Vou validar os horários e te chamo aqui.", time: "14:05", ticks: "read", day: "hoje" },
+    { id: "m10", from: "them", kind: "text", text: "Perfeito! Aguardo 🙌", time: "14:08", day: "hoje" },
+    { id: "m11", from: "them", kind: "text", text: "Oi, Ana! Passando pra saber se já conseguiu validar o voo. A viagem tá ficando pra daqui 2 meses e preciso travar as datas com o hotel.", time: "10:42", day: "hoje" },
+    { id: "m12", from: "them", kind: "text", text: "Outra coisa: você consegue incluir traslado do aeroporto?", time: "10:43", day: "hoje" },
+  ],
+  renato: [
+    { id: "r1", from: "them", kind: "text", text: "Bom dia, Bruno! Tudo certo com o pacote Cancún?", time: "08:30", day: "hoje" },
+    { id: "r2", from: "me", kind: "text", text: "Bom dia, Renato! Tá tudo certo sim. Vou te mandar o link de pagamento agora.", time: "08:32", ticks: "read", day: "hoje" },
+    { id: "r3", from: "me", kind: "document", meta: { title: "Cartao_Reserva_Cancun.pdf", fileSize: "124 KB" }, time: "08:33", ticks: "read", day: "hoje" },
+    { id: "r4", from: "them", kind: "text", text: "Show!", time: "08:45", day: "hoje" },
+    { id: "r5", from: "me", kind: "text", text: "Renato, só passando pra confirmar — conseguiu gerar o boleto?", time: "13:50", ticks: "read", day: "hoje" },
+  ],
+  beatriz: [
+    { id: "b1", from: "them", kind: "text", text: "Oi! O pagamento do trecho da Patagônia não caiu ainda 😕", time: "11:05", day: "hoje" },
+    { id: "b2", from: "me", kind: "text", text: "Oi, Beatriz! Deixa eu verificar com o financeiro. Te respondo em alguns minutos.", time: "11:06", ticks: "read", day: "hoje" },
+  ],
+  tiago: [
+    { id: "t1", from: "them", kind: "text", text: "Boa tarde, vim pelo anúncio do Instagram. Quero fechar um pacote pra Maceió em julho.", time: "Ontem 16:22", day: "ontem" },
+    { id: "t2", from: "me", kind: "text", text: "Boa tarde, Tiago! Que bom te ver por aqui. Pra qual período exatamente?", time: "Ontem 16:35", ticks: "read", day: "ontem" },
+    { id: "t3", from: "them", kind: "text", text: "Entre 10 e 20 de julho, dois adultos, all inclusive.", time: "Ontem 17:01", day: "ontem" },
+    { id: "t4", from: "me", kind: "text", text: "Vou montar duas opções e te mando amanhã cedo!", time: "Ontem 17:10", ticks: "read", day: "ontem" },
+  ],
+  camila: [
+    { id: "c1", from: "them", kind: "text", text: "Oi! Vocês têm pacote pra Bariloche no inverno?", time: "09:00", day: "hoje" },
+    { id: "c2", from: "me", kind: "text", text: "Temos sim! Você já tem data e aéreo?", time: "09:02", ticks: "read", day: "hoje" },
+    { id: "c3", from: "them", kind: "text", text: "Tenho o aéreo pela Gol saindo de POA. Quero 7 noites.", time: "09:08", day: "hoje" },
+  ],
+  pedro: [
+    { id: "p1", from: "them", kind: "text", text: "Não consigo acessar minha conta no site. Pode ajudar?", time: "Terça 14:22", day: "anterior" },
+    { id: "p2", from: "me", kind: "text", text: "Claro, Pedro! Já te envio o link de redefinição de senha.", time: "Terça 14:25", ticks: "read", day: "anterior" },
+  ],
+  gustavo: [
+    { id: "g1", from: "them", kind: "text", text: "Bom dia. Gostaria de cotar uma viagem para Tóquio em outubro. 3 pessoas.", time: "07:12", day: "hoje" },
+    { id: "g2", from: "me", kind: "text", text: "Bom dia, Gustavo! Tóquio em outubro é uma escolha excelente 🍁 Já te mando opções.", time: "07:14", ticks: "read", day: "hoje" },
+    { id: "g3", from: "them", kind: "text", text: "Perfeito, manda!", time: "07:16", day: "hoje" },
+    { id: "g4", from: "them", kind: "text", text: "Vocês têm algum roteiro pronto ou monto do zero?", time: "07:30", day: "hoje" },
+    { id: "g5", from: "them", kind: "text", text: "Outra coisa: pode incluir Kyoto?", time: "07:31", day: "hoje" },
+  ],
+  livia: [
+    { id: "l1", from: "them", kind: "text", text: "Vi o post de vocês sobre lua de mel. Como faço pra cotar?", time: "Seg 10:14", day: "anterior" },
+  ],
+}
+
+/** Resposta automática por contato — pra dar vida ao chat. */
+const AUTO_REPLY: Record<string, string> = {
+  marina: "Combinado, Marina! Deixa só eu finalizar a proposta com o city tour de Sintra incluído e já te mando aqui. 💛",
+  renato: "Boa pergunta, Renato! Deixa eu puxar o status aqui e te retorno em 5 minutos.",
+  beatriz: "Já verifiquei, Beatriz — o boleto foi compensado hoje cedo. O extrato mostra liquidação às 09:42. Tudo certo! 🎉",
+  tiago: "Perfeito, Tiago! Tenho duas opções bem legais — vou montar e te mando amanhã às 9h, tá bom?",
+  camila: "Show! Com aéreo da Gol de POA e 7 noites, consigo fechar um pacote bem completo. Te mando em alguns minutos!",
+  pedro: "Já te enviei o link de redefinição, Pedro! Qualquer problema me chama aqui.",
+  gustavo: "Tenho sim, Gustavo! Tenho um roteiro Tokyo + Kyoto de 12 dias que ficou incrível no último grupo. Te mando! 🇯🇵",
+  livia: "Oi, Lívia! Que bom que gostou do post 😊 Me conta um pouquinho sobre a viagem dos sonhos de vocês que eu monto uma proposta personalizada!",
+}
+
+const QUICK_REPLIES_BY_TAG: Record<Contact["tag"], QuickReply[]> = {
+  reserva: [
+    { emoji: "✈️", text: "Vou montar uma proposta e te mando aqui" },
+    { emoji: "📅", text: "Para qual data você está pensando?" },
+    { emoji: "👥", text: "Quantas pessoas vão viajar?" },
+    { emoji: "💰", text: "Já tem orçamento em mente?" },
+  ],
+  pagamento: [
+    { emoji: "💳", text: "Vou verificar o pagamento e te retorno" },
+    { emoji: "📄", text: "Posso te mandar o boleto atualizado?" },
+    { emoji: "✅", text: "Pagamento confirmado!" },
+    { emoji: "🔁", text: "Vou emitir um novo link de pagamento" },
+  ],
+  suporte: [
+    { emoji: "🤝", text: "Claro, vou te ajudar agora" },
+    { emoji: "🔗", text: "Te envio o link de redefinição" },
+    { emoji: "📞", text: "Posso te ligar agora para entender melhor?" },
+  ],
+  vip: [
+    { emoji: "💎", text: "Vou priorizar seu atendimento agora" },
+    { emoji: "🌟", text: "Tenho uma condição especial pra você" },
+    { emoji: "📋", text: "Vou montar uma experiência personalizada" },
+  ],
+  lead: [
+    { emoji: "👋", text: "Oi! Tudo bem? Em que posso ajudar?" },
+    { emoji: "🌍", text: "Para onde você está pensando em viajar?" },
+    { emoji: "📅", text: "Tem alguma data em mente?" },
+  ],
+}
 
 /* -------------------------------------------------------------------------- */
-/*                              subcomponentes                                 */
+/*                              helper widgets                                 */
 /* -------------------------------------------------------------------------- */
 
-/** Avatar redondo com iniciais + cor determinística. */
-function ClientAvatar({
-  client,
-  size = "md",
+function avatarUrl(seed: string, size = 80) {
+  return `https://picsum.photos/seed/${seed}/${size}/${size}`
+}
+
+// (ContactAvatar foi removido — usamos ContactAvatarImage com picsum em todos os pontos)
+
+function ContactAvatarImage({
+  contact,
+  size = 40,
 }: {
-  client: Client
-  size?: "sm" | "md"
+  contact: Contact
+  size?: number
 }) {
-  const dim = size === "sm" ? "size-7 text-[10px]" : "size-9 text-[11px]"
   return (
-    <Avatar className={dim}>
-      <AvatarFallback className={cn("font-semibold", client.avatarClass)}>
-        {client.initials}
-      </AvatarFallback>
-    </Avatar>
+    <img
+      src={avatarUrl(contact.avatarSeed, size)}
+      alt={contact.name}
+      width={size}
+      height={size}
+      loading="lazy"
+      className={cn(
+        "rounded-full object-cover",
+        size <= 40 ? "size-10" : size <= 48 ? "size-12" : "size-14"
+      )}
+    />
   )
 }
 
-/** Diálogo "novo cliente" reaproveitado em qualquer seção. */
-function NewClientDialog({
-  open,
-  onOpenChange,
-  onCreate,
+function TicksIcon({
+  state,
+  className,
 }: {
-  open: boolean
-  onOpenChange: (v: boolean) => void
-  onCreate: (client: Omit<Client, "id">) => void
+  state: Ticks
+  className?: string
 }) {
-  const [name, setName] = React.useState("")
-  const [email, setEmail] = React.useState("")
-  const [city, setCity] = React.useState("")
-  const [state, setState] = React.useState("SP")
-  const [status, setStatus] = React.useState<ClientStatus>("lead")
-
-  function reset() {
-    setName("")
-    setEmail("")
-    setCity("")
-    setState("SP")
-    setStatus("lead")
+  if (state === "read") {
+    return (
+      <CheckCheck
+        size={13}
+        strokeWidth={2.2}
+        className={cn(className, "text-sky-500")}
+        aria-label="Lida"
+      />
+    )
   }
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    const trimmed = name.trim()
-    if (!trimmed) return
-    const initials = trimmed
-      .split(/\s+/)
-      .slice(0, 2)
-      .map((w) => w[0]?.toUpperCase() ?? "")
-      .join("")
-    onCreate({
-      name: trimmed,
-      email: email.trim(),
-      city: city.trim(),
-      state: state.trim().toUpperCase(),
-      status,
-      totalSpent: 0,
-      initials,
-      avatarClass: "bg-slate-500/15 text-slate-700 dark:text-slate-300",
-    })
-    reset()
-    onOpenChange(false)
+  if (state === "delivered") {
+    return (
+      <CheckCheck
+        size={13}
+        strokeWidth={2}
+        className={className}
+        aria-label="Entregue"
+      />
+    )
   }
-
   return (
-    <Dialog
-      open={open}
-      onOpenChange={(next) => {
-        if (!next) reset()
-        onOpenChange(next)
-      }}
-    >
-      <DialogContent className="sm:max-w-md">
-        <form onSubmit={handleSubmit}>
-          <DialogHeader>
-            <DialogTitle>Novo cliente</DialogTitle>
-            <DialogDescription>
-              Cadastro rápido — você completa os detalhes depois.
-            </DialogDescription>
-          </DialogHeader>
+    <Check size={13} strokeWidth={2} className={className} aria-label="Enviada" />
+  )
+}
 
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <label htmlFor="crm-c-name" className="text-sm font-medium text-foreground">
-                Nome completo
-              </label>
-              <Input
-                id="crm-c-name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Ex.: Mariana Albuquerque"
-                autoFocus
+function PresenceDot({ presence }: { presence: Presence }) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "absolute -bottom-0.5 -right-0.5 size-3 rounded-full ring-2 ring-card",
+        PRESENCE_META[presence].color
+      )}
+    />
+  )
+}
+
+function ChatBubble({ message }: { message: Message }) {
+  const isMe = message.from === "me"
+  if (message.kind === "image") {
+    return (
+      <div
+        className={cn(
+          "flex w-full",
+          isMe ? "justify-end" : "justify-start"
+        )}
+      >
+        <div
+          className={cn(
+            "max-w-[75%] overflow-hidden rounded-2xl shadow-sm",
+            isMe
+              ? "rounded-br-md bg-emerald-100 dark:bg-emerald-900/30"
+              : "rounded-bl-md bg-muted"
+          )}
+        >
+          <div className="flex items-center gap-2 bg-gradient-to-br from-sky-400 to-violet-500 px-4 py-8 text-white">
+            <ImageIcon className="size-5" />
+            <span className="text-sm font-medium">Imagem enviada</span>
+          </div>
+          <div
+            className={cn(
+              "flex items-center justify-end gap-1 px-2.5 py-1",
+              isMe ? "text-emerald-900 dark:text-emerald-200" : "text-muted-foreground"
+            )}
+          >
+            <span className="text-[11px]">{message.time}</span>
+            {isMe && message.ticks && (
+              <TicksIcon state={message.ticks} className="text-emerald-700 dark:text-emerald-300" />
+            )}
+          </div>
+        </div>
+      </div>
+    )
+  }
+  if (message.kind === "audio") {
+    return (
+      <div className={cn("flex w-full", isMe ? "justify-end" : "justify-start")}>
+        <div
+          className={cn(
+            "flex max-w-[75%] items-center gap-3 rounded-2xl px-3 py-2 shadow-sm",
+            isMe
+              ? "rounded-br-md bg-emerald-100 dark:bg-emerald-900/30"
+              : "rounded-bl-md bg-muted"
+          )}
+        >
+          <button
+            type="button"
+            className="flex size-9 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white"
+            aria-label="Tocar áudio"
+          >
+            <Mic className="size-4" />
+          </button>
+          <div className="flex flex-1 items-center gap-0.5">
+            {Array.from({ length: 28 }).map((_, i) => (
+              <span
+                key={i}
+                style={{ height: `${20 + Math.sin(i * 1.3) * 16}px` }}
+                className={cn(
+                  "w-0.5 rounded-full",
+                  isMe
+                    ? "bg-emerald-700/60 dark:bg-emerald-300/60"
+                    : "bg-foreground/30"
+                )}
               />
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div className="grid gap-2">
-                <label htmlFor="crm-c-city" className="text-sm font-medium text-foreground">
-                  Cidade
-                </label>
-                <Input
-                  id="crm-c-city"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  placeholder="Ex.: Florianópolis"
-                />
-              </div>
-              <div className="grid gap-2">
-                <label htmlFor="crm-c-state" className="text-sm font-medium text-foreground">
-                  UF
-                </label>
-                <Input
-                  id="crm-c-state"
-                  value={state}
-                  onChange={(e) => setState(e.target.value)}
-                  placeholder="SP"
-                  maxLength={2}
-                />
-              </div>
-            </div>
-
-            <div className="grid gap-2">
-              <label htmlFor="crm-c-email" className="text-sm font-medium text-foreground">
-                E-mail
-              </label>
-              <Input
-                id="crm-c-email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="contato@email.com"
-              />
-            </div>
-
-            <div className="grid gap-2">
-              <span className="text-sm font-medium text-foreground">Status inicial</span>
-              <RadioGroup
-                value={status}
-                onValueChange={(v) => setStatus(v as ClientStatus)}
-                className="grid grid-cols-2 gap-2 sm:grid-cols-4"
-              >
-                {(Object.keys(STATUS_META) as ClientStatus[]).map((s) => (
-                  <label
-                    key={s}
-                    htmlFor={`crm-status-${s}`}
-                    className={cn(
-                      "flex cursor-pointer items-center gap-2 rounded-md border border-border px-3 py-2 text-sm transition-colors hover:bg-accent",
-                      status === s && "border-primary bg-accent"
-                    )}
-                  >
-                    <RadioGroupItem id={`crm-status-${s}`} value={s} />
-                    <span>{STATUS_META[s].label}</span>
-                  </label>
-                ))}
-              </RadioGroup>
+            ))}
+          </div>
+          <span className="shrink-0 text-[11px] tabular-nums text-muted-foreground">
+            {message.meta?.duration ?? "0:42"}
+          </span>
+        </div>
+      </div>
+    )
+  }
+  if (message.kind === "document") {
+    return (
+      <div className={cn("flex w-full", isMe ? "justify-end" : "justify-start")}>
+        <div
+          className={cn(
+            "flex max-w-[75%] items-center gap-3 rounded-2xl px-3 py-2.5 shadow-sm",
+            isMe
+              ? "rounded-br-md bg-emerald-100 dark:bg-emerald-900/30"
+              : "rounded-bl-md bg-muted"
+          )}
+        >
+          <span className="flex size-10 items-center justify-center rounded-md bg-rose-500/15 text-rose-600 dark:text-rose-400">
+            <FileIcon className="size-5" />
+          </span>
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-medium text-foreground">
+              {message.meta?.title ?? "Documento.pdf"}
+            </p>
+            <p className="text-[11px] text-muted-foreground">
+              {message.meta?.fileSize ?? "124 KB"} · PDF
+            </p>
+          </div>
+          <span
+            className={cn(
+              "flex shrink-0 items-center gap-1 text-[11px]",
+              isMe ? "text-emerald-900 dark:text-emerald-200" : "text-muted-foreground"
+            )}
+          >
+            {message.time}
+            {isMe && message.ticks && (
+              <TicksIcon state={message.ticks} className="text-emerald-700 dark:text-emerald-300" />
+            )}
+          </span>
+        </div>
+      </div>
+    )
+  }
+  if (message.kind === "location") {
+    return (
+      <div className={cn("flex w-full", isMe ? "justify-end" : "justify-start")}>
+        <div
+          className={cn(
+            "overflow-hidden rounded-2xl shadow-sm",
+            isMe
+              ? "rounded-br-md bg-emerald-100 dark:bg-emerald-900/30"
+              : "rounded-bl-md bg-muted"
+          )}
+        >
+          <div className="flex h-32 w-72 items-center justify-center bg-gradient-to-br from-emerald-400 via-sky-400 to-blue-500">
+            <div className="flex size-12 items-center justify-center rounded-full bg-white shadow-lg">
+              <MapPin className="size-6 text-rose-500" />
             </div>
           </div>
-
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => onOpenChange(false)}
-            >
-              Cancelar
-            </Button>
-            <Button type="submit" disabled={!name.trim()}>
-              Cadastrar
-            </Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </Dialog>
-  )
-}
-
-/* -------------------------------------------------------------------------- */
-/*                                  PAINEL                                     */
-/* -------------------------------------------------------------------------- */
-
-const REVENUE_BY_DESTINATION: { dest: string; value: number }[] = [
-  { dest: "Lisboa", value: 86400 },
-  { dest: "Cancún", value: 72100 },
-  { dest: "Tóquio", value: 65800 },
-  { dest: "Patagônia", value: 41200 },
-  { dest: "Bariloche", value: 38900 },
-  { dest: "Maceió", value: 27400 },
-  { dest: "Noronha", value: 22100 },
-]
-
-function RevenueByDestination() {
-  const max = Math.max(...REVENUE_BY_DESTINATION.map((r) => r.value))
-  return (
-    <Card className="gap-0 p-5">
-      <header className="mb-4 flex items-center justify-between">
-        <div>
-          <h3 className="text-sm font-semibold text-foreground">
-            Receita por destino (últimos 90 dias)
-          </h3>
-          <p className="text-xs text-muted-foreground">
-            Top 7 destinos em receita bruta
-          </p>
-        </div>
-        <Sparkles className="size-4 text-muted-foreground" />
-      </header>
-      <div className="flex flex-col gap-3">
-        {REVENUE_BY_DESTINATION.map((row) => {
-          const pct = (row.value / max) * 100
-          return (
-            <div key={row.dest} className="flex items-center gap-3">
-              <span className="w-24 shrink-0 truncate text-sm text-foreground">
-                {row.dest}
-              </span>
-              <div className="relative h-7 flex-1 overflow-hidden rounded-md bg-muted">
-                <div
-                  className="absolute inset-y-0 left-0 rounded-md bg-gradient-to-r from-sky-500 to-violet-500"
-                  style={{ width: `${pct}%` }}
-                  aria-hidden
-                />
-              </div>
-              <span className="w-24 shrink-0 text-right text-sm font-medium tabular-nums text-foreground">
-                {BRL.format(row.value)}
-              </span>
-            </div>
-          )
-        })}
-      </div>
-    </Card>
-  )
-}
-
-function PainelSection() {
-  return (
-    <div className="flex flex-col gap-5">
-      {/* KPI cards */}
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <KpiCard
-          label="Reservas no mês"
-          value="48"
-          delta="+12% vs. mês anterior"
-          icon={CalendarDays}
-          accent="bg-sky-500/10 text-sky-600 dark:text-sky-400"
-        />
-        <KpiCard
-          label="Receita"
-          value={BRL.format(382400)}
-          delta="+18% vs. mês anterior"
-          icon={Wallet}
-          accent="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-        />
-        <KpiCard
-          label="Ticket médio"
-          value={BRL.format(7970)}
-          delta="+5% vs. mês anterior"
-          icon={TrendingUp}
-          accent="bg-violet-500/10 text-violet-600 dark:text-violet-400"
-        />
-        <KpiCard
-          label="Taxa de ocupação"
-          value="84%"
-          delta="+3 p.p. vs. mês anterior"
-          icon={Star}
-          accent="bg-amber-500/10 text-amber-600 dark:text-amber-400"
-        />
-      </div>
-
-      {/* Receita por destino + próximas viagens */}
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
-        <div className="lg:col-span-3">
-          <RevenueByDestination />
-        </div>
-        <Card className="gap-0 p-5 lg:col-span-2">
-          <header className="mb-4 flex items-center justify-between">
-            <div>
-              <h3 className="text-sm font-semibold text-foreground">
-                Próximas viagens
-              </h3>
-              <p className="text-xs text-muted-foreground">
-                Saídas confirmadas nos próximos 30 dias
-              </p>
-            </div>
-            <Plane className="size-4 text-muted-foreground" />
-          </header>
-          <div className="flex flex-col gap-2.5">
-            {BOOKINGS.filter((b) => b.status === "confirmada").map((b) => {
-              const c = CLIENT_BY_ID[b.clientId]
-              return (
-                <div
-                  key={b.id}
-                  className="flex items-center gap-3 rounded-lg border border-border p-2.5"
-                >
-                  <ClientAvatar client={c} size="sm" />
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-foreground">
-                      {c.name}
-                    </p>
-                    <p className="truncate text-xs text-muted-foreground">
-                      {b.destination}, {b.country} · {b.startDate}
-                    </p>
-                  </div>
-                  <span className="text-sm font-semibold tabular-nums text-foreground">
-                    {BRL.format(b.amount)}
-                  </span>
-                </div>
-              )
-            })}
+          <div className="px-3 py-2">
+            <p className="text-sm font-medium text-foreground">
+              {message.meta?.address ?? "Localização compartilhada"}
+            </p>
           </div>
-        </Card>
+        </div>
+      </div>
+    )
+  }
+  // text
+  return (
+    <div className={cn("flex w-full", isMe ? "justify-end" : "justify-start")}>
+      <div
+        className={cn(
+          "max-w-[75%] rounded-2xl px-3 py-2 shadow-sm",
+          isMe
+            ? "rounded-br-md bg-emerald-100 dark:bg-emerald-900/30"
+            : "rounded-bl-md bg-muted"
+        )}
+      >
+        <p
+          className={cn(
+            "whitespace-pre-wrap text-sm leading-relaxed",
+            isMe ? "text-foreground" : "text-foreground"
+          )}
+        >
+          {message.text}
+        </p>
+        <div
+          className={cn(
+            "mt-0.5 flex items-center justify-end gap-1",
+            isMe ? "text-emerald-900/70 dark:text-emerald-200/70" : "text-muted-foreground"
+          )}
+        >
+          <span className="text-[11px]">{message.time}</span>
+          {isMe && message.ticks && (
+            <TicksIcon
+              state={message.ticks}
+              className={cn(
+                message.ticks === "read"
+                  ? "text-sky-500"
+                  : "text-emerald-700/70 dark:text-emerald-300/70"
+              )}
+            />
+          )}
+        </div>
       </div>
     </div>
   )
 }
 
-function KpiCard({
-  label,
-  value,
-  delta,
-  icon: Icon,
-  accent,
-}: {
-  label: string
-  value: string
-  delta: string
-  icon: React.ComponentType<{ className?: string }>
-  accent: string
-}) {
+function DaySeparator({ day }: { day: DayKey }) {
+  const label =
+    day === "hoje" ? "Hoje" : day === "ontem" ? "Ontem" : "Data anterior"
   return (
-    <Card className="gap-0 p-4">
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-xs font-medium text-muted-foreground">{label}</p>
-          <p className="mt-1.5 text-2xl font-semibold tabular-nums tracking-tight text-foreground">
-            {value}
-          </p>
-          <p className="mt-1 text-[11px] text-emerald-600 dark:text-emerald-400">
-            {delta}
-          </p>
-        </div>
-        <span
-          className={cn(
-            "flex size-9 items-center justify-center rounded-lg",
-            accent
-          )}
-        >
-          <Icon className="size-4" />
-        </span>
-      </div>
-    </Card>
+    <div className="my-2 flex items-center justify-center gap-3">
+      <span className="h-px flex-1 bg-border/60" />
+      <span className="rounded-full border border-border/60 bg-card/80 px-3 py-0.5 text-[11px] font-medium text-muted-foreground shadow-sm backdrop-blur">
+        {label}
+      </span>
+      <span className="h-px flex-1 bg-border/60" />
+    </div>
   )
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                 CLIENTES                                    */
+/*                            sidebar de navegação                             */
 /* -------------------------------------------------------------------------- */
 
-type StatusFilter = "all" | ClientStatus
-
-function ClientesSection({
-  query,
+function AppSidebar({
+  active,
+  onSelect,
+  collapsed,
+  onToggleCollapsed,
+  connStatus,
+  connNumber,
+  onOpenWhatsapp,
 }: {
-  query: string
+  active: NavId
+  onSelect: (id: NavId) => void
+  collapsed: boolean
+  onToggleCollapsed: () => void
+  connStatus: ConnStatus
+  connNumber: string
+  onOpenWhatsapp: () => void
 }) {
-  const [statusFilter, setStatusFilter] = React.useState<StatusFilter>("all")
-
-  const filtered = React.useMemo(() => {
-    const q = query.trim().toLowerCase()
-    return CLIENTS.filter((c) => {
-      if (statusFilter !== "all" && c.status !== statusFilter) return false
-      if (q) {
-        const hay = `${c.name} ${c.email} ${c.city} ${c.state}`.toLowerCase()
-        if (!hay.includes(q)) return false
-      }
-      return true
-    })
-  }, [query, statusFilter])
-
-  const counts = React.useMemo(() => {
-    const c: Record<StatusFilter, number> = {
-      all: CLIENTS.length,
-      lead: 0,
-      prospect: 0,
-      cliente: 0,
-      vip: 0,
-    }
-    for (const cli of CLIENTS) c[cli.status] += 1
-    return c
-  }, [])
+  const statusMeta = {
+    connected: {
+      label: "Conectado",
+      color: "bg-emerald-500",
+      icon: Wifi,
+      tone: "text-emerald-600 dark:text-emerald-400",
+    },
+    connecting: {
+      label: "Conectando…",
+      color: "bg-amber-500",
+      icon: RefreshCw,
+      tone: "text-amber-600 dark:text-amber-400",
+    },
+    disconnected: {
+      label: "Desconectado",
+      color: "bg-muted-foreground/40",
+      icon: WifiOff,
+      tone: "text-muted-foreground",
+    },
+  }[connStatus]
 
   return (
-    <Card className="gap-0 overflow-hidden p-0">
-      <header className="flex flex-col gap-3 border-b border-border p-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h3 className="text-sm font-semibold text-foreground">
-            Base de clientes
-          </h3>
-          <p className="text-xs text-muted-foreground">
-            {filtered.length} de {CLIENTS.length} clientes
-          </p>
+    <aside
+      data-slot="crm-sidebar"
+      className={cn(
+        "flex h-full shrink-0 flex-col border-r border-border bg-card text-card-foreground transition-all duration-200",
+        collapsed ? "w-[72px]" : "w-[260px]"
+      )}
+    >
+      {/* Logo + workspace */}
+      <div
+        className={cn(
+          "flex shrink-0 items-center border-b border-border px-3 py-3.5",
+          collapsed ? "justify-center" : "gap-3"
+        )}
+      >
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+          <Plane className="size-4" />
+        </span>
+        {!collapsed && (
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-sm font-semibold tracking-tight">
+              VoaCRM
+            </p>
+            <p className="truncate text-[11px] text-muted-foreground">
+              Aurora Viagens · Pro
+            </p>
+          </div>
+        )}
+        {!collapsed && (
+          <Button
+            variant="ghost"
+            size="icon-xs"
+            onClick={onToggleCollapsed}
+            aria-label="Recolher sidebar"
+          >
+            <ChevronLeft className="size-3.5" />
+          </Button>
+        )}
+      </div>
+
+      {/* Card de conexão WhatsApp */}
+      <div className="border-b border-border p-3">
+        {collapsed ? (
+          <TooltipFluid content={`WhatsApp · ${statusMeta.label}`} side="right">
+            <button
+              type="button"
+              onClick={onOpenWhatsapp}
+              aria-label="Gerenciar conexão WhatsApp"
+              className="relative mx-auto flex size-10 items-center justify-center rounded-lg border border-border bg-background hover:bg-accent"
+            >
+              <QrCode className={cn("size-4", statusMeta.tone)} />
+              <span
+                aria-hidden
+                className={cn(
+                  "absolute right-1.5 top-1.5 size-2 rounded-full ring-2 ring-card",
+                  statusMeta.color
+                )}
+              />
+            </button>
+          </TooltipFluid>
+        ) : (
+          <button
+            type="button"
+            onClick={onOpenWhatsapp}
+            data-slot="whatsapp-conn-card"
+            className="group flex w-full items-center gap-3 rounded-lg border border-border bg-background p-2.5 text-left transition-colors hover:border-primary/40 hover:bg-accent"
+          >
+            <span className="relative flex size-9 shrink-0 items-center justify-center rounded-lg bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+              <QrCode className="size-4" />
+              <span
+                aria-hidden
+                className={cn(
+                  "absolute -bottom-0.5 -right-0.5 size-2.5 rounded-full ring-2 ring-background",
+                  statusMeta.color
+                )}
+              />
+            </span>
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-xs font-medium text-foreground">
+                WhatsApp Business
+              </p>
+              <p className={cn("truncate text-[11px]", statusMeta.tone)}>
+                {statusMeta.label} · {connNumber}
+              </p>
+            </div>
+            <statusMeta.icon className={cn("size-3.5 shrink-0", statusMeta.tone)} />
+          </button>
+        )}
+      </div>
+
+      {/* Nav vertical */}
+      <ScrollArea className="flex-1">
+        <nav className="flex flex-col gap-0.5 p-2">
+          {NAV_ITEMS.map((item) => {
+            const Icon = item.icon
+            const isActive = active === item.id
+            const content = (
+              <button
+                type="button"
+                onClick={() => onSelect(item.id)}
+                data-section={item.id}
+                data-active={isActive ? "true" : undefined}
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  "flex w-full items-center gap-3 rounded-lg px-2.5 py-2 text-sm font-medium transition-colors",
+                  collapsed && "justify-center",
+                  isActive
+                    ? "bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                )}
+              >
+                <Icon className="size-4 shrink-0" />
+                {!collapsed && (
+                  <>
+                    <span className="flex-1 truncate">{item.label}</span>
+                    {item.badge && (
+                      <span
+                        className={cn(
+                          "shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-medium tabular-nums",
+                          isActive
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted text-muted-foreground"
+                        )}
+                      >
+                        {item.badge}
+                      </span>
+                    )}
+                  </>
+                )}
+              </button>
+            )
+            return collapsed ? (
+              <TooltipFluid
+                key={item.id}
+                content={item.label}
+                side="right"
+              >
+                {content}
+              </TooltipFluid>
+            ) : (
+              <React.Fragment key={item.id}>{content}</React.Fragment>
+            )
+          })}
+        </nav>
+      </ScrollArea>
+
+      {/* Perfil do agente */}
+      {!collapsed ? (
+        <div className="shrink-0 border-t border-border p-3">
+          <button
+            type="button"
+            className="flex w-full items-center gap-3 rounded-lg p-2 text-left transition-colors hover:bg-accent"
+          >
+            <ContactAvatarImage contact={{ ...CONTACTS[0], id: "agent", avatarSeed: "agent-ana", avatarClass: "" }} size={36} />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-sm font-medium text-foreground">
+                Ana Lima
+              </p>
+              <p className="truncate text-[11px] text-muted-foreground">
+                Agente sênior · Online
+              </p>
+            </div>
+            <Settings className="size-4 shrink-0 text-muted-foreground" />
+          </button>
+        </div>
+      ) : (
+        <div className="shrink-0 border-t border-border p-2">
+          <TooltipFluid content="Ana Lima · Online" side="right">
+            <button
+              type="button"
+              aria-label="Perfil"
+              className="mx-auto block rounded-full"
+            >
+              <ContactAvatarImage
+                contact={{
+                  ...CONTACTS[0],
+                  id: "agent",
+                  avatarSeed: "agent-ana",
+                  avatarClass: "",
+                }}
+                size={36}
+              />
+            </button>
+          </TooltipFluid>
+        </div>
+      )}
+
+      {/* Toggle collapsed */}
+      {collapsed && (
+        <div className="shrink-0 border-t border-border p-2">
+          <TooltipFluid content="Expandir sidebar" side="right">
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={onToggleCollapsed}
+              aria-label="Expandir sidebar"
+              className="mx-auto block"
+            >
+              <ChevronRight className="size-3.5" />
+            </Button>
+          </TooltipFluid>
+        </div>
+      )}
+    </aside>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+/*                             lista de conversas                              */
+/* -------------------------------------------------------------------------- */
+
+type FilterTab = "todas" | "nao-lidas" | "aguardando" | "finalizadas"
+
+function ConversationList({
+  contacts,
+  selectedId,
+  query,
+  onQueryChange,
+  tab,
+  onTabChange,
+  onSelect,
+}: {
+  contacts: Contact[]
+  selectedId: string
+  query: string
+  onQueryChange: (v: string) => void
+  tab: FilterTab
+  onTabChange: (t: FilterTab) => void
+  onSelect: (id: string) => void
+}) {
+  const visible = filterConversations(contacts, tab, query)
+  const lastMessageByContact = useLastMessageByContact()
+  const counts = {
+    todas: contacts.length,
+    "nao-lidas": contacts.filter((c) => c.unread > 0).length,
+    aguardando: contacts.filter((c) =>
+      ["reserva", "pagamento"].includes(c.tag)
+    ).length,
+    finalizadas: contacts.filter((c) => c.tag === "vip").length,
+  }
+
+  return (
+    <section
+      data-slot="crm-conversations"
+      className="flex h-full w-[360px] shrink-0 flex-col border-r border-border bg-background"
+    >
+      {/* Header */}
+      <header className="shrink-0 border-b border-border px-4 py-3">
+        <div className="flex items-center justify-between gap-2">
+          <h2 className="text-base font-semibold text-foreground">
+            Conversas
+          </h2>
+          <TooltipFluid content="Nova conversa">
+            <Button variant="ghost" size="icon-sm" aria-label="Nova conversa">
+              <Plus className="size-4" />
+            </Button>
+          </TooltipFluid>
+        </div>
+        <div className="relative mt-3">
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            value={query}
+            onChange={(e) => onQueryChange(e.target.value)}
+            placeholder="Buscar conversas ou contatos…"
+            className="pl-9"
+            aria-label="Buscar conversas"
+          />
+          {query.length > 0 && (
+            <button
+              type="button"
+              onClick={() => onQueryChange("")}
+              aria-label="Limpar busca"
+              className="absolute right-2 top-1/2 inline-flex size-6 -translate-y-1/2 items-center justify-center rounded text-muted-foreground hover:bg-accent"
+            >
+              <X className="size-3" />
+            </button>
+          )}
         </div>
         <Tabs
-          value={statusFilter}
-          onValueChange={(v) => setStatusFilter(v as StatusFilter)}
+          value={tab}
+          onValueChange={(v) => onTabChange(v as FilterTab)}
+          className="mt-3"
         >
-          <TabsList>
-            <TabsTrigger value="all">Todos ({counts.all})</TabsTrigger>
-            <TabsTrigger value="lead">Leads ({counts.lead})</TabsTrigger>
-            <TabsTrigger value="prospect">Prospects ({counts.prospect})</TabsTrigger>
-            <TabsTrigger value="cliente">Clientes ({counts.cliente})</TabsTrigger>
-            <TabsTrigger value="vip">VIP ({counts.vip})</TabsTrigger>
+          <TabsList className="w-full">
+            <TabsTrigger value="todas" className="flex-1">
+              Todas ({counts.todas})
+            </TabsTrigger>
+            <TabsTrigger value="nao-lidas" className="flex-1">
+              Não lidas ({counts["nao-lidas"]})
+            </TabsTrigger>
+            <TabsTrigger value="aguardando" className="flex-1">
+              Aguardando ({counts.aguardando})
+            </TabsTrigger>
           </TabsList>
         </Tabs>
       </header>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm">
-          <thead className="border-b border-border bg-muted/30 text-left text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
-            <tr>
-              <th className="px-4 py-2.5">Cliente</th>
-              <th className="px-4 py-2.5">Cidade / UF</th>
-              <th className="px-4 py-2.5">Status</th>
-              <th className="px-4 py-2.5 text-right">Gasto total</th>
-              <th className="px-4 py-2.5">Última viagem</th>
-              <th className="px-4 py-2.5 text-right">Ações</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filtered.length === 0 ? (
-              <tr>
-                <td
-                  colSpan={6}
-                  className="px-4 py-10 text-center text-sm text-muted-foreground"
+      {/* Lista */}
+      <div className="flex-1 overflow-y-auto">
+        {visible.length === 0 ? (
+          <EmptyListState
+            hasQuery={query.trim().length > 0}
+            tab={tab}
+            onClearQuery={() => onQueryChange("")}
+            onClearTab={() => onTabChange("todas")}
+          />
+        ) : (
+          <div className="flex flex-col">
+            {visible.map((c) => {
+              const last = lastMessageByContact[c.id]
+              const isActive = c.id === selectedId
+              return (
+                <button
+                  type="button"
+                  key={c.id}
+                  onClick={() => onSelect(c.id)}
+                  data-contact-id={c.id}
+                  data-active={isActive ? "true" : undefined}
+                  className={cn(
+                    "flex items-start gap-3 border-b border-border/40 px-3 py-3 text-left transition-colors",
+                    isActive
+                      ? "bg-accent"
+                      : "hover:bg-accent/60"
+                  )}
                 >
-                  Nenhum cliente neste filtro.
-                </td>
-              </tr>
-            ) : (
-              filtered.map((c) => {
-                const meta = STATUS_META[c.status]
-                return (
-                  <tr
-                    key={c.id}
-                    className="border-b border-border/50 last:border-b-0 transition-colors hover:bg-accent/40"
-                  >
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-3">
-                        <ClientAvatar client={c} size="sm" />
-                        <div className="min-w-0">
-                          <p className="truncate text-sm font-medium text-foreground">
-                            {c.name}
-                          </p>
-                          <p className="truncate text-[11px] text-muted-foreground">
-                            {c.email}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-4 py-3 text-sm text-foreground">
-                      {c.city}, {c.state}
-                    </td>
-                    <td className="px-4 py-3">
-                      <BadgeFluid color={meta.color} size="sm">
-                        {meta.label}
+                  <span className="relative shrink-0">
+                    <ContactAvatarImage contact={c} size={44} />
+                    <PresenceDot presence={c.presence} />
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <span className="flex min-w-0 items-center gap-1.5">
+                        {c.pinned && (
+                          <Pin
+                            size={11}
+                            strokeWidth={2.4}
+                            className="shrink-0 text-muted-foreground"
+                            aria-label="Fixada"
+                          />
+                        )}
+                        <span
+                          className={cn(
+                            "truncate text-sm",
+                            c.unread > 0
+                              ? "font-semibold text-foreground"
+                              : "font-medium text-foreground/90"
+                          )}
+                        >
+                          {c.name}
+                        </span>
+                      </span>
+                      <span
+                        className={cn(
+                          "shrink-0 text-[11px] tabular-nums",
+                          c.unread > 0
+                            ? "font-semibold text-emerald-600 dark:text-emerald-400"
+                            : "text-muted-foreground"
+                        )}
+                      >
+                        {last?.time ?? ""}
+                      </span>
+                    </div>
+                    <div className="mt-0.5 flex items-center justify-between gap-2">
+                      <span className="flex min-w-0 items-center gap-1 truncate text-[13px] text-muted-foreground">
+                        {last?.previewPrefix}
+                        <span className="truncate">{last?.text ?? ""}</span>
+                      </span>
+                      {c.unread > 0 ? (
+                        <BadgeFluid
+                          color="green"
+                          size="sm"
+                          className="shrink-0 justify-center tabular-nums"
+                        >
+                          {c.unread}
+                        </BadgeFluid>
+                      ) : null}
+                    </div>
+                    <div className="mt-1 flex items-center gap-1">
+                      <BadgeFluid
+                        color={TAG_META[c.tag].color}
+                        size="sm"
+                        className="text-[10px]"
+                      >
+                        {TAG_META[c.tag].label}
                       </BadgeFluid>
-                    </td>
-                    <td className="px-4 py-3 text-right text-sm font-medium tabular-nums text-foreground">
-                      {c.totalSpent > 0 ? BRL.format(c.totalSpent) : "—"}
-                    </td>
-                    <td className="px-4 py-3 text-sm text-muted-foreground">
-                      {c.lastTrip ?? "—"}
-                    </td>
-                    <td className="px-4 py-3 text-right">
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon-xs"
-                            aria-label={`Ações de ${c.name}`}
-                          >
-                            <MoreHorizontal />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-44">
-                          <DropdownMenuLabel>{c.name}</DropdownMenuLabel>
-                          <DropdownMenuItem>
-                            <Users className="text-muted-foreground" />
-                            Ver perfil
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <CalendarDays className="text-muted-foreground" />
-                            Nova reserva
-                          </DropdownMenuItem>
-                          <DropdownMenuItem>
-                            <Mail className="text-muted-foreground" />
-                            Enviar mensagem
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </td>
-                  </tr>
-                )
-              })
-            )}
-          </tbody>
-        </table>
+                      {c.channel !== "whatsapp" && (
+                        <span className="text-[10px] text-muted-foreground">
+                          via {CHANNEL_META[c.channel].label}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+        )}
       </div>
-    </Card>
+    </section>
   )
 }
 
-/* -------------------------------------------------------------------------- */
-/*                                 RESERVAS                                    */
-/* -------------------------------------------------------------------------- */
-
-function ReservasSection() {
-  const grouped = React.useMemo(() => {
-    const m: Record<BookingStatus, Booking[]> = {
-      confirmada: [],
-      pendente: [],
-      cancelada: [],
-    }
-    for (const b of BOOKINGS) m[b.status].push(b)
-    return m
-  }, [])
-
+function EmptyListState({
+  hasQuery,
+  tab,
+  onClearQuery,
+  onClearTab,
+}: {
+  hasQuery: boolean
+  tab: FilterTab
+  onClearQuery: () => void
+  onClearTab: () => void
+}) {
+  const title = hasQuery
+    ? "Nenhum resultado"
+    : tab === "nao-lidas"
+    ? "Tudo em dia ✨"
+    : tab === "aguardando"
+    ? "Nenhuma reserva aguardando"
+    : "Sem conversas finalizadas"
+  const body = hasQuery
+    ? "Nada combina com a busca. Tente outro termo."
+    : tab === "nao-lidas"
+    ? "Você não tem mensagens não lidas no momento."
+    : tab === "aguardando"
+    ? "Quando alguém iniciar uma reserva ou pagamento, aparece aqui."
+    : "Marque uma conversa como VIP para acompanhar aqui."
   return (
-    <div className="flex flex-col gap-5">
-      {(Object.keys(grouped) as BookingStatus[]).map((status) => {
-        const items = grouped[status]
-        const meta = BOOKING_META[status]
-        return (
-          <section key={status} className="flex flex-col gap-3">
-            <header className="flex items-center gap-2">
-              <BadgeFluid color={meta.color} size="md">
-                {meta.label}
-              </BadgeFluid>
-              <span className="text-xs text-muted-foreground">
-                {items.length} {items.length === 1 ? "reserva" : "reservas"}
-              </span>
-            </header>
-            {items.length === 0 ? (
-              <Card className="gap-0 p-6 text-center text-sm text-muted-foreground">
-                Nenhuma reserva {meta.label.toLowerCase()}.
-              </Card>
-            ) : (
-              <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
-                {items.map((b) => {
-                  const c = CLIENT_BY_ID[b.clientId]
-                  return (
-                    <Card key={b.id} className="gap-0 p-4">
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex items-center gap-3">
-                          <ClientAvatar client={c} size="sm" />
-                          <div className="min-w-0">
-                            <p className="truncate text-sm font-semibold text-foreground">
-                              {c.name}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              {b.destination}, {b.country}
-                            </p>
-                          </div>
-                        </div>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="ghost"
-                              size="icon-xs"
-                              aria-label={`Ações da reserva ${b.id}`}
-                            >
-                              <MoreHorizontal />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end" className="w-48">
-                            <DropdownMenuLabel>Reserva {b.id.toUpperCase()}</DropdownMenuLabel>
-                            <DropdownMenuItem>
-                              <ArrowRight className="text-muted-foreground" />
-                              Ver detalhes
-                            </DropdownMenuItem>
-                            {status !== "confirmada" && (
-                              <DropdownMenuItem>
-                                <Clock className="text-muted-foreground" />
-                                Reagendar
-                              </DropdownMenuItem>
-                            )}
-                            {status === "pendente" && (
-                              <DropdownMenuItem>
-                                <Wallet className="text-muted-foreground" />
-                                Confirmar pagamento
-                              </DropdownMenuItem>
-                            )}
-                            {status !== "cancelada" && (
-                              <DropdownMenuSeparator />
-                            )}
-                            {status !== "cancelada" && (
-                              <DropdownMenuItem className="text-destructive focus:text-destructive">
-                                <Trash2 />
-                                Reembolsar / cancelar
-                              </DropdownMenuItem>
-                            )}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-
-                      <Separator className="my-3" />
-
-                      <div className="grid grid-cols-3 gap-3 text-xs">
-                        <div>
-                          <p className="text-muted-foreground">Ida</p>
-                          <p className="font-medium text-foreground">{b.startDate}</p>
-                        </div>
-                        <div>
-                          <p className="text-muted-foreground">Volta</p>
-                          <p className="font-medium text-foreground">{b.endDate}</p>
-                        </div>
-                        <div>
-                          <p className="text-muted-foreground">Pax</p>
-                          <p className="font-medium text-foreground">
-                            {b.pax} {b.pax === 1 ? "pessoa" : "pessoas"}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="mt-3 flex items-center justify-between">
-                        <span className="text-xs text-muted-foreground">
-                          Total
-                        </span>
-                        <span className="text-base font-semibold tabular-nums text-foreground">
-                          {BRL_CENT.format(b.amount)}
-                        </span>
-                      </div>
-                    </Card>
-                  )
-                })}
-              </div>
-            )}
-          </section>
-        )
-      })}
+    <div className="m-auto flex max-w-xs flex-col items-center gap-3 px-4 py-16 text-center">
+      <span className="flex size-10 items-center justify-center rounded-full bg-muted text-muted-foreground">
+        <Search className="size-4" />
+      </span>
+      <div className="space-y-1">
+        <p className="text-sm font-semibold text-foreground">{title}</p>
+        <p className="text-[12.5px] leading-snug text-muted-foreground">
+          {body}
+        </p>
+      </div>
+      {(hasQuery || tab !== "todas") && (
+        <div className="flex flex-wrap items-center justify-center gap-2">
+          {hasQuery && (
+            <ButtonFluid variant="secondary" size="sm" onClick={onClearQuery}>
+              Limpar busca
+            </ButtonFluid>
+          )}
+          {tab !== "todas" && (
+            <ButtonFluid variant="tertiary" size="sm" onClick={onClearTab}>
+              Ver todas
+            </ButtonFluid>
+          )}
+        </div>
+      )}
     </div>
   )
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                 PIPELINE                                    */
+/*                              thread do chat                                 */
 /* -------------------------------------------------------------------------- */
 
-function PipelineCard({
-  deal,
-  isDragging,
-  onDragStart,
-  onDragEnd,
-  onMove,
-  onDelete,
+function ChatThread({
+  contact,
+  thread,
+  isTyping,
+  onSend,
+  onOpenWhatsapp,
 }: {
-  deal: PipelineDeal
-  isDragging: boolean
-  onDragStart: (id: string) => void
-  onDragEnd: () => void
-  onMove: (id: string, to: PipelineStage) => void
-  onDelete: (id: string) => void
+  contact: Contact
+  thread: Message[]
+  isTyping: boolean
+  onSend: (text: string) => void
+  onOpenWhatsapp: () => void
 }) {
-  const client = CLIENT_BY_ID[deal.clientId]
-  const owner = OWNER_BY_ID[deal.ownerId]
-  const moveTargets = STAGE_ORDER.filter((s) => s !== deal.stage)
+  const scrollRef = React.useRef<HTMLDivElement>(null)
+  const [value, setValue] = React.useState("")
+  const presence = isTyping ? "typing" : contact.presence
+  const presenceInfo = PRESENCE_META[presence]
+  const quickReplies = QUICK_REPLIES_BY_TAG[contact.tag]
+  const lastSeenLine = presenceInfo.label
+
+  // agrupa mensagens por dia pra inserir separadores
+  const groups = groupMessagesByDay(thread)
+
+  React.useEffect(() => {
+    const el = scrollRef.current
+    if (el) el.scrollTop = el.scrollHeight
+  }, [thread.length, isTyping])
+
+  function send() {
+    const trimmed = value.trim()
+    if (!trimmed) return
+    onSend(trimmed)
+    setValue("")
+  }
 
   return (
-    <Card
-      data-slot="pipeline-card"
-      draggable
-      onDragStart={(e) => {
-        e.dataTransfer.effectAllowed = "move"
-        e.dataTransfer.setData("text/plain", deal.id)
-        onDragStart(deal.id)
-      }}
-      onDragEnd={onDragEnd}
-      className={cn(
-        "group cursor-grab gap-0 rounded-lg border-border p-3 shadow-sm transition-all hover:border-foreground/20 hover:shadow-md active:cursor-grabbing",
-        isDragging && "opacity-50 ring-2 ring-primary/50"
-      )}
+    <section
+      data-slot="crm-thread"
+      className="flex h-full min-w-0 flex-1 flex-col bg-[radial-gradient(circle_at_top,_var(--muted)_1px,_transparent_1px)] [background-size:18px_18px]"
     >
-      <div className="flex items-start justify-between gap-2">
-        <p className="line-clamp-2 text-sm font-semibold leading-snug text-foreground">
-          {deal.packageTitle}
-        </p>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
+      {/* Header */}
+      <header className="flex shrink-0 items-center justify-between gap-3 border-b border-border bg-card/80 px-5 py-3 backdrop-blur">
+        <div className="flex min-w-0 items-center gap-3">
+          <span className="relative shrink-0">
+            <ContactAvatarImage contact={contact} size={44} />
+            <PresenceDot presence={presence} />
+          </span>
+          <div className="flex min-w-0 flex-col leading-tight">
+            <div className="flex items-center gap-2">
+              <span className="truncate text-sm font-semibold text-foreground">
+                {contact.name}
+              </span>
+              <BadgeFluid
+                color={TAG_META[contact.tag].color}
+                size="sm"
+                className="shrink-0"
+              >
+                {TAG_META[contact.tag].label}
+              </BadgeFluid>
+            </div>
+            <span
+              className={cn(
+                "flex items-center gap-1.5 text-[11px]",
+                presence === "typing"
+                  ? "text-sky-600 dark:text-sky-400"
+                  : "text-muted-foreground"
+              )}
+              aria-live="polite"
+            >
+              <span
+                aria-hidden
+                className={cn(
+                  "size-1.5 rounded-full",
+                  presenceInfo.color,
+                  presence === "typing" && "animate-pulse"
+                )}
+              />
+              {lastSeenLine}
+              <span className="text-muted-foreground/60">·</span>
+              <span className="text-muted-foreground">{contact.phone}</span>
+            </span>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-1">
+          <TooltipFluid content="Ligar">
+            <Button variant="ghost" size="icon-sm" aria-label="Ligar">
+              <Phone className="size-4" />
+            </Button>
+          </TooltipFluid>
+          <TooltipFluid content="Vídeo">
+            <Button variant="ghost" size="icon-sm" aria-label="Vídeo">
+              <Video className="size-4" />
+            </Button>
+          </TooltipFluid>
+          <TooltipFluid content="Conexão WhatsApp">
             <Button
               variant="ghost"
-              size="icon-xs"
-              className="-mr-1 -mt-1 opacity-60 transition-opacity group-hover:opacity-100"
-              aria-label={`Ações do deal ${deal.id}`}
+              size="icon-sm"
+              aria-label="Gerenciar conexão"
+              onClick={onOpenWhatsapp}
             >
-              <MoreHorizontal />
+              <QrCode className="size-4" />
             </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuLabel>Mover para</DropdownMenuLabel>
-            {moveTargets.map((s) => (
-              <DropdownMenuItem
-                key={s}
-                onClick={() => onMove(deal.id, s)}
-              >
-                <ArrowRight className="text-muted-foreground" />
-                {STAGE_META[s].label}
-              </DropdownMenuItem>
-            ))}
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => onDelete(deal.id)}
-              className="text-destructive focus:text-destructive"
+          </TooltipFluid>
+          <TooltipFluid content="Mais ações">
+            <Button variant="ghost" size="icon-sm" aria-label="Mais ações">
+              <MoreVertical className="size-4" />
+            </Button>
+          </TooltipFluid>
+        </div>
+      </header>
+
+      {/* Messages */}
+      <div
+        ref={scrollRef}
+        data-slot="crm-thread-messages"
+        className="flex flex-1 flex-col gap-1.5 overflow-y-auto px-5 py-4"
+      >
+        {groups.map((group) => (
+          <React.Fragment key={group.day}>
+            <DaySeparator day={group.day} />
+            {group.messages.map((m, idx) => {
+              const prev = group.messages[idx - 1]
+              const next = group.messages[idx + 1]
+              const showAvatar =
+                m.from === "them" && (!next || next.from !== "them")
+              const compactTop =
+                !!prev && prev.from === m.from && prev.kind === "text"
+              const compactBottom =
+                !!next && next.from === m.from && next.kind === "text"
+              return (
+                <div
+                  key={m.id}
+                  className={cn(
+                    "flex",
+                    m.from === "me" ? "justify-end" : "justify-start",
+                    compactTop && m.from === "them" && "mt-0.5"
+                  )}
+                >
+                  {m.from === "them" && showAvatar && (
+                    <ContactAvatarImage contact={contact} size={28} />
+                  )}
+                  {m.from === "them" && !showAvatar && (
+                    <span className="w-7 shrink-0" aria-hidden />
+                  )}
+                  <div className={cn("max-w-[75%]", compactBottom && "pb-0.5")}>
+                    <ChatBubble message={m} />
+                  </div>
+                </div>
+              )
+            })}
+          </React.Fragment>
+        ))}
+
+        {/* Indicador de digitação */}
+        <AnimatePresence>
+          {isTyping && (
+            <motion.div
+              key="typing"
+              layout
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 4 }}
+              transition={springs.fast}
+              className="flex items-end gap-2"
             >
-              <Trash2 />
-              Excluir
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+              <ContactAvatarImage contact={contact} size={28} />
+              <div className="rounded-2xl rounded-bl-md bg-muted px-3 py-2.5 shadow-sm">
+                <div className="flex items-center gap-1">
+                  {[0, 1, 2].map((i) => (
+                    <motion.span
+                      key={i}
+                      aria-hidden
+                      className="size-1.5 rounded-full bg-muted-foreground/70"
+                      animate={{ y: [0, -3, 0], opacity: [0.4, 1, 0.4] }}
+                      transition={{
+                        duration: 1.1,
+                        repeat: Infinity,
+                        delay: i * 0.18,
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
-      <div className="mt-2 flex items-center gap-1.5 text-xs text-muted-foreground">
-        <MapPin className="size-3" />
-        {deal.destination}
-      </div>
-
-      <div className="mt-2.5 flex items-center justify-between">
-        <span className="text-base font-semibold tabular-nums text-foreground">
-          {BRL.format(deal.value)}
-        </span>
-        <span className="flex items-center gap-1 text-[11px] text-muted-foreground">
-          <Clock className="size-3" />
-          Fecha {deal.expectedClose}
-        </span>
-      </div>
-
-      <Separator className="my-3" />
-
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <ClientAvatar client={client} size="sm" />
-          <span className="text-xs text-foreground">{client.name.split(" ")[0]}</span>
+      {/* Quick replies */}
+      <div className="shrink-0 border-t border-border bg-card/70 px-5 py-2 backdrop-blur">
+        <div className="flex items-center gap-1.5 overflow-x-auto">
+          <span className="shrink-0 text-[11px] font-medium text-muted-foreground">
+            Respostas rápidas:
+          </span>
+          {quickReplies.map((qr) => (
+            <button
+              key={qr.text}
+              type="button"
+              onClick={() => onSend(qr.text)}
+              className="inline-flex shrink-0 items-center gap-1 rounded-full border border-border bg-background px-2.5 py-1 text-[12px] text-foreground transition-colors hover:bg-accent"
+            >
+              <span>{qr.emoji}</span>
+              <span>{qr.text}</span>
+            </button>
+          ))}
         </div>
-        <Avatar className="size-5">
-          <AvatarFallback
-            className={cn(
-              "text-[9px] font-semibold",
-              owner?.avatarClass
-            )}
-            title={owner?.name}
-          >
-            {owner?.initials}
-          </AvatarFallback>
-        </Avatar>
       </div>
-    </Card>
-  )
-}
 
-function PipelineSection() {
-  const [deals, setDeals] = React.useState<PipelineDeal[]>(DEALS)
-  const [draggingId, setDraggingId] = React.useState<string | null>(null)
-  const [dragOverStage, setDragOverStage] = React.useState<PipelineStage | null>(null)
-
-  const dealsByStage = React.useMemo(() => {
-    const m: Record<PipelineStage, PipelineDeal[]> = {
-      "novo-lead": [],
-      "em-negociacao": [],
-      "cotacao-enviada": [],
-      "aguardando-pagamento": [],
-      "fechado": [],
-    }
-    for (const d of deals) m[d.stage].push(d)
-    return m
-  }, [deals])
-
-  const totalsByStage = React.useMemo(() => {
-    const t: Record<PipelineStage, number> = {
-      "novo-lead": 0,
-      "em-negociacao": 0,
-      "cotacao-enviada": 0,
-      "aguardando-pagamento": 0,
-      "fechado": 0,
-    }
-    for (const d of deals) t[d.stage] += d.value
-    return t
-  }, [deals])
-
-  const pipelineTotal = Object.values(totalsByStage).reduce((acc, v) => acc + v, 0)
-
-  function moveDeal(id: string, to: PipelineStage) {
-    const deal = deals.find((d) => d.id === id)
-    setDeals((prev) =>
-      prev.map((d) => (d.id === id ? { ...d, stage: to } : d))
-    )
-    if (deal && deal.stage !== to) {
-      toast.success("Deal movido", {
-        description: `"${deal.packageTitle}" → ${STAGE_META[to].label}.`,
-      })
-    }
-  }
-
-  function deleteDeal(id: string) {
-    const deal = deals.find((d) => d.id === id)
-    setDeals((prev) => prev.filter((d) => d.id !== id))
-    if (deal) {
-      toast("Deal excluído", {
-        description: `"${deal.packageTitle}" foi removido do pipeline.`,
-      })
-    }
-  }
-
-  function handleDrop(to: PipelineStage, droppedId: string) {
-    const id = droppedId || draggingId
-    if (id) moveDeal(id, to)
-    setDraggingId(null)
-    setDragOverStage(null)
-  }
-
-  return (
-    <div className="flex flex-col gap-4">
-      <Card className="gap-0 p-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="text-xs font-medium text-muted-foreground">
-              Pipeline aberto
-            </p>
-            <p className="mt-0.5 text-xl font-semibold tabular-nums tracking-tight text-foreground">
-              {BRL.format(pipelineTotal)}
-            </p>
+      {/* Composer */}
+      <div className="shrink-0 border-t border-border bg-card px-5 py-3">
+        <div className="flex items-end gap-2">
+          <div className="flex items-center gap-1">
+            <TooltipFluid content="Anexar arquivo">
+              <Button variant="ghost" size="icon-sm" aria-label="Anexar">
+                <Paperclip className="size-4" />
+              </Button>
+            </TooltipFluid>
+            <TooltipFluid content="Emoji">
+              <Button variant="ghost" size="icon-sm" aria-label="Emoji">
+                <Smile className="size-4" />
+              </Button>
+            </TooltipFluid>
           </div>
-          <div className="flex flex-wrap items-center gap-1.5">
-            {STAGE_ORDER.map((s) => (
-              <BadgeFluid
-                key={s}
-                color="gray"
-                size="sm"
-                className="font-medium tabular-nums"
-              >
-                {STAGE_META[s].label} · {BRL.format(totalsByStage[s])}
-              </BadgeFluid>
-            ))}
-          </div>
-        </div>
-      </Card>
-
-      <div className="flex gap-4 overflow-x-auto pb-3">
-        {STAGE_ORDER.map((stage) => {
-          const stageDeals = dealsByStage[stage]
-          const meta = STAGE_META[stage]
-          const isOver = dragOverStage === stage
-          return (
-            <section
-              key={stage}
-              data-slot="pipeline-column"
-              data-stage={stage}
-              onDragOver={(e) => {
-                e.preventDefault()
-                e.dataTransfer.dropEffect = "move"
-                if (dragOverStage !== stage) setDragOverStage(stage)
-              }}
-              onDragLeave={(e) => {
-                if (!e.currentTarget.contains(e.relatedTarget as Node)) {
-                  setDragOverStage((cur) => (cur === stage ? null : cur))
+          <div className="flex flex-1 items-end gap-2 rounded-2xl border border-border bg-background px-3 py-2">
+            <textarea
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault()
+                  send()
                 }
               }}
-              onDrop={(e) => {
-                e.preventDefault()
-                handleDrop(stage, e.dataTransfer.getData("text/plain"))
-              }}
-              className={cn(
-                "flex w-72 shrink-0 flex-col rounded-xl border border-border bg-muted/40 transition-colors",
-                isOver && "border-primary/60 bg-accent/50 ring-2 ring-primary/40"
-              )}
-            >
-              <div className="flex items-center justify-between gap-2 px-3 pb-2 pt-3">
-                <div className="flex items-center gap-2">
-                  <span
-                    className={cn("size-2.5 rounded-full", meta.accent)}
-                    aria-hidden
-                  />
-                  <h2 className="text-sm font-semibold text-foreground">
-                    {meta.label}
-                  </h2>
-                  <span className="rounded-full bg-background px-2 py-0.5 text-xs font-medium text-muted-foreground">
-                    {stageDeals.length}
-                  </span>
-                </div>
-                <span className="text-[11px] font-medium tabular-nums text-muted-foreground">
-                  {BRL.format(totalsByStage[stage])}
-                </span>
-              </div>
-
-              <ScrollArea className="h-[440px] px-3">
-                <div className="flex flex-col gap-2.5 pb-3">
-                  {stageDeals.length === 0 ? (
-                    <div className="flex flex-col items-center justify-center gap-1.5 rounded-lg border border-dashed border-border py-10 text-center">
-                      <Inbox className="size-5 text-muted-foreground/60" />
-                      <p className="text-xs text-muted-foreground">
-                        Arraste deals para cá
-                      </p>
-                    </div>
-                  ) : (
-                    stageDeals.map((deal) => (
-                      <PipelineCard
-                        key={deal.id}
-                        deal={deal}
-                        isDragging={draggingId === deal.id}
-                        onDragStart={setDraggingId}
-                        onDragEnd={() => {
-                          setDraggingId(null)
-                          setDragOverStage(null)
-                        }}
-                        onMove={moveDeal}
-                        onDelete={deleteDeal}
-                      />
-                    ))
-                  )}
-                </div>
-              </ScrollArea>
-            </section>
-          )
-        })}
+              placeholder={`Mensagem para ${contact.name.split(" ")[0]}…`}
+              aria-label="Mensagem"
+              rows={1}
+              className="max-h-32 flex-1 resize-none bg-transparent text-sm leading-relaxed text-foreground placeholder:text-muted-foreground focus:outline-none"
+            />
+            <div className="flex shrink-0 items-center gap-1">
+              <TooltipFluid content="Áudio">
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Áudio"
+                  type="button"
+                >
+                  <Mic className="size-4" />
+                </Button>
+              </TooltipFluid>
+              <Button
+                size="icon-sm"
+                onClick={send}
+                disabled={!value.trim()}
+                aria-label="Enviar"
+              >
+                <Send className="size-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+        <p className="mt-1.5 text-[10px] text-muted-foreground">
+          Enter para enviar · Shift+Enter para quebrar linha
+        </p>
       </div>
-    </div>
+    </section>
   )
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                CAMPANHAS                                    */
+/*                          painel de conexão whatsapp                         */
 /* -------------------------------------------------------------------------- */
 
-function CampanhasSection() {
-  const [campaigns, setCampaigns] = React.useState<Campaign[]>(CAMPAIGNS)
-
-  function toggleStatus(id: string) {
-    setCampaigns((prev) =>
-      prev.map((c) =>
-        c.id === id
-          ? { ...c, status: c.status === "ativa" ? "pausada" : "ativa" }
-          : c
-      )
-    )
-    const c = campaigns.find((x) => x.id === id)
-    if (c) {
-      toast.success(
-        c.status === "ativa" ? "Campanha pausada" : "Campanha reativada",
-        { description: c.name }
-      )
+function QrCodeMock({ size = 220 }: { size?: number }) {
+  // Gera um "QR" mockado visualmente — não é um QR real, é um padrão
+  // determinístico de células pra parecer um QR Code do WhatsApp Web.
+  const cells = 25
+  const cellSize = size / cells
+  // hash determinístico a partir de "voa-crm-aurora-2026" pra sempre igual
+  const seedStr = "voa-crm-aurora-2026"
+  const squares: React.ReactElement[] = []
+  for (let y = 0; y < cells; y++) {
+    for (let x = 0; x < cells; x++) {
+      // cantos com "finders" 7x7
+      const corner =
+        (x < 7 && y < 7) ||
+        (x >= cells - 7 && y < 7) ||
+        (x < 7 && y >= cells - 7)
+      const inFinder =
+        corner &&
+        ((x === 0 || x === 6 || x === cells - 7 || x === cells - 1) ||
+          (y === 0 || y === 6 || y === cells - 7 || y === cells - 1) ||
+          (x >= 2 && x <= 4 && y < 7) ||
+          (x < 7 && y >= 2 && y <= 4) ||
+          (x >= cells - 5 && x <= cells - 3 && y < 7) ||
+          (x >= cells - 7 && y >= 2 && y <= 4) ||
+          (x >= 2 && x <= 4 && y >= cells - 5 && y <= cells - 3) ||
+          (x < 7 && y >= cells - 5 && y <= cells - 3))
+      if (inFinder) {
+        squares.push(
+          <rect
+            key={`${x}-${y}`}
+            x={x * cellSize}
+            y={y * cellSize}
+            width={cellSize}
+            height={cellSize}
+            fill="currentColor"
+          />
+        )
+        continue
+      }
+      // padrão pseudo-aleatório determinístico
+      const idx = (x * 31 + y * 17 + seedStr.length * 7) % 97
+      const fill = (idx * 13 + x * 5 + y * 3 + seedStr.charCodeAt(0)) % 7 < 3
+      if (fill && !corner) {
+        squares.push(
+          <rect
+            key={`${x}-${y}`}
+            x={x * cellSize}
+            y={y * cellSize}
+            width={cellSize}
+            height={cellSize}
+            fill="currentColor"
+          />
+        )
+      }
     }
   }
-
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
-      {campaigns.map((c) => {
-        const channelMeta = CHANNEL_META[c.channel]
-        const ChannelIcon = channelMeta.icon
-        const isActive = c.status === "ativa"
-        return (
-          <Card key={c.id} className="gap-0 p-5">
-            <header className="flex items-start justify-between gap-2">
+    <svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${size} ${size}`}
+      role="img"
+      aria-label="QR Code para pareamento do WhatsApp"
+      className="text-foreground"
+    >
+      <rect width={size} height={size} fill="white" />
+      {squares}
+    </svg>
+  )
+}
+
+function WhatsAppConnectionPanel({
+  open,
+  onOpenChange,
+  status,
+  number,
+  businessName,
+  onConnect,
+  onDisconnect,
+  onReconnect,
+  onTest,
+}: {
+  open: boolean
+  onOpenChange: (v: boolean) => void
+  status: ConnStatus
+  number: string
+  businessName: string
+  onConnect: () => void
+  onDisconnect: () => void
+  onReconnect: () => void
+  onTest: () => void
+}) {
+  return (
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent
+        side="right"
+        className="w-full max-w-[480px] gap-0 overflow-y-auto border-l border-border bg-card p-0 sm:max-w-[520px]"
+      >
+        <SheetHeader className="sr-only">
+          <SheetTitle>Conexão WhatsApp Business</SheetTitle>
+        </SheetHeader>
+
+        {/* Header */}
+        <header className="flex items-center justify-between border-b border-border px-5 py-4">
+          <div className="flex items-center gap-3">
+            <span className="flex size-10 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+              <QrCode className="size-5" />
+            </span>
+            <div>
+              <h2 className="text-base font-semibold text-foreground">
+                WhatsApp Business
+              </h2>
+              <p className="text-xs text-muted-foreground">
+                Conexão oficial via API Cloud
+              </p>
+            </div>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => onOpenChange(false)}
+            aria-label="Fechar"
+          >
+            <X className="size-4" />
+          </Button>
+        </header>
+
+        <div className="flex flex-col gap-5 p-5">
+          {/* Status card */}
+          <Card className="gap-0 border-emerald-200 bg-emerald-50/40 p-4 dark:border-emerald-900/40 dark:bg-emerald-950/20">
+            <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <span
                   className={cn(
-                    "flex size-9 items-center justify-center rounded-lg",
-                    isActive
-                      ? "bg-primary/10 text-primary"
-                      : "bg-muted text-muted-foreground"
+                    "size-3 rounded-full ring-2 ring-emerald-100 dark:ring-emerald-950",
+                    status === "connected"
+                      ? "bg-emerald-500"
+                      : status === "connecting"
+                      ? "bg-amber-500 animate-pulse"
+                      : "bg-muted-foreground/40"
                   )}
-                >
-                  <ChannelIcon className="size-4" />
-                </span>
-                <div className="min-w-0">
-                  <p className="truncate text-sm font-semibold text-foreground">
-                    {c.name}
+                />
+                <div>
+                  <p className="text-sm font-semibold text-foreground">
+                    {status === "connected"
+                      ? "Conectado e operacional"
+                      : status === "connecting"
+                      ? "Aguardando pareamento…"
+                      : "Desconectado"}
                   </p>
                   <p className="text-xs text-muted-foreground">
-                    {channelMeta.label}
+                    {businessName} · {number}
                   </p>
                 </div>
               </div>
-              <BadgeFluid color={isActive ? "green" : "gray"} size="sm">
-                {isActive ? "Ativa" : "Pausada"}
-              </BadgeFluid>
-            </header>
-
-            <Separator className="my-4" />
-
-            <div className="grid grid-cols-3 gap-3 text-xs">
-              <Metric label="Alcance" value={COMPACT.format(c.reach)} />
-              <Metric label="Conversões" value={COMPACT.format(c.conversions)} />
-              <Metric label="ROI" value={`${c.roi}%`} />
-            </div>
-
-            <div className="mt-4 flex items-center justify-between border-t border-border pt-3">
-              <span className="text-xs text-muted-foreground">
-                Orçamento: {BRL.format(c.budget)}
-              </span>
-              <Button
-                variant={isActive ? "ghost" : "outline"}
-                size="sm"
-                onClick={() => toggleStatus(c.id)}
-              >
-                {isActive ? (
-                  <>
-                    <Pause />
-                    Pausar
-                  </>
-                ) : (
-                  <>
-                    <Play />
-                    Retomar
-                  </>
-                )}
-              </Button>
+              {status === "connected" && (
+                <BadgeFluid color="green" size="sm">
+                  <ShieldCheck />
+                  Verificado
+                </BadgeFluid>
+              )}
             </div>
           </Card>
-        )
-      })}
+
+          {/* QR Code (quando desconectado / conectando) */}
+          {status !== "connected" && (
+            <Card className="flex flex-col items-center gap-4 gap-0 p-6 text-center">
+              <p className="text-sm font-medium text-foreground">
+                Escaneie o QR Code com seu WhatsApp Business
+              </p>
+              <div className="rounded-lg border border-border bg-white p-3 shadow-sm">
+                <QrCodeMock size={220} />
+              </div>
+              <ol className="flex w-full max-w-sm flex-col gap-2 text-left text-xs text-muted-foreground">
+                <li className="flex gap-2">
+                  <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
+                    1
+                  </span>
+                  Abra o WhatsApp Business no celular
+                </li>
+                <li className="flex gap-2">
+                  <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
+                    2
+                  </span>
+                  Vá em Configurações → Aparelhos conectados
+                </li>
+                <li className="flex gap-2">
+                  <span className="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary text-[11px] font-semibold text-primary-foreground">
+                    3
+                  </span>
+                  Toque em "Conectar um aparelho" e aponte para esta tela
+                </li>
+              </ol>
+            </Card>
+          )}
+
+          {/* Métricas da conexão */}
+          <div className="grid grid-cols-3 gap-3">
+            <Metric
+              label="Msgs hoje"
+              value="184"
+              tone="emerald"
+              icon={MessageSquare}
+            />
+            <Metric
+              label="Conversas abertas"
+              value="27"
+              tone="sky"
+              icon={MessageSquare}
+            />
+            <Metric
+              label="TMR"
+              value="2:14"
+              tone="violet"
+              icon={Clock}
+            />
+          </div>
+
+          {/* Detalhes da conexão */}
+          <Card className="gap-0 p-4">
+            <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Detalhes da conexão
+            </p>
+            <div className="flex flex-col gap-2.5 text-sm">
+              <DetailRow label="Número" value={number} />
+              <DetailRow label="Nome comercial" value={businessName} />
+              <DetailRow
+                label="API"
+                value="WhatsApp Cloud API v18.0"
+              />
+              <DetailRow
+                label="Webhooks"
+                value="3 endpoints ativos"
+              />
+              <DetailRow
+                label="Última sincronização"
+                value="há 12 segundos"
+              />
+            </div>
+          </Card>
+
+          {/* Configurações */}
+          <Card className="gap-0 p-4">
+            <p className="mb-3 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Configurações
+            </p>
+            <div className="flex flex-col gap-3">
+              <SwitchRow
+                label="Respostas automáticas"
+                description="Responde fora do horário com mensagem padrão"
+                defaultChecked
+              />
+              <SwitchRow
+                label="Saudação automática"
+                description="Envia mensagem de boas-vindas no primeiro contato"
+                defaultChecked
+              />
+              <SwitchRow
+                label="Confirmação de leitura"
+                description="Envia tique azul duplo para os clientes"
+                defaultChecked={false}
+              />
+            </div>
+          </Card>
+
+          {/* Ações */}
+          <div className="flex flex-col gap-2">
+            {status === "connected" ? (
+              <>
+                <Button variant="outline" onClick={onTest}>
+                  <Sparkles />
+                  Testar conexão
+                </Button>
+                <Button variant="outline" onClick={onReconnect}>
+                  <RefreshCw />
+                  Reconectar
+                </Button>
+                <Button
+                  variant="ghost"
+                  onClick={onDisconnect}
+                  className="text-destructive hover:text-destructive"
+                >
+                  <Power />
+                  Desconectar
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button onClick={onConnect}>
+                  <Wifi />
+                  {status === "connecting"
+                    ? "Aguardando pareamento…"
+                    : "Conectar agora"}
+                </Button>
+                <Button variant="ghost" onClick={() => onOpenChange(false)}>
+                  Cancelar
+                </Button>
+              </>
+            )}
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
+  )
+}
+
+function Metric({
+  label,
+  value,
+  tone,
+  icon: Icon,
+}: {
+  label: string
+  value: string
+  tone: "emerald" | "sky" | "violet"
+  icon: React.ComponentType<{ className?: string }>
+}) {
+  const toneClass = {
+    emerald:
+      "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
+    sky: "bg-sky-500/10 text-sky-700 dark:text-sky-400",
+    violet:
+      "bg-violet-500/10 text-violet-700 dark:text-violet-400",
+  }[tone]
+  return (
+    <Card className="gap-0 p-3">
+      <div className="flex items-center justify-between">
+        <span className={cn("flex size-7 items-center justify-center rounded-md", toneClass)}>
+          <Icon className="size-3.5" />
+        </span>
+      </div>
+      <p className="mt-2 text-xl font-semibold tabular-nums tracking-tight text-foreground">
+        {value}
+      </p>
+      <p className="mt-0.5 text-[11px] text-muted-foreground">{label}</p>
+    </Card>
+  )
+}
+
+function DetailRow({ label, value }: { label: string; value: string }) {
+  return (
+    <div className="flex items-center justify-between gap-2 border-b border-border/40 pb-2 last:border-b-0 last:pb-0">
+      <span className="text-xs text-muted-foreground">{label}</span>
+      <span className="truncate text-right font-medium text-foreground">
+        {value}
+      </span>
     </div>
   )
 }
 
-function Metric({ label, value }: { label: string; value: string }) {
+function SwitchRow({
+  label,
+  description,
+  defaultChecked,
+}: {
+  label: string
+  description: string
+  defaultChecked?: boolean
+}) {
+  const [checked, setChecked] = React.useState(!!defaultChecked)
   return (
-    <div className="rounded-md bg-muted/40 px-2.5 py-2">
-      <p className="text-[10px] uppercase tracking-wide text-muted-foreground">
-        {label}
-      </p>
-      <p className="mt-0.5 text-base font-semibold tabular-nums text-foreground">
-        {value}
-      </p>
+    <div className="flex items-center justify-between gap-3 rounded-md border border-border/50 px-3 py-2.5">
+      <div className="min-w-0">
+        <p className="text-sm font-medium text-foreground">{label}</p>
+        <p className="text-[11px] text-muted-foreground">{description}</p>
+      </div>
+      <SwitchFluid
+        label={label}
+        checked={checked}
+        onToggle={() => setChecked((v) => !v)}
+      />
     </div>
   )
 }
 
 /* -------------------------------------------------------------------------- */
-/*                                 COMPOSIÇÃO                                  */
+/*                          painel do contato (direita)                        */
+/* -------------------------------------------------------------------------- */
+
+function ContactDetailsPane({
+  contact,
+  open,
+  onOpenChange,
+}: {
+  contact: Contact
+  open: boolean
+  onOpenChange: (v: boolean) => void
+}) {
+  const tag = TAG_META[contact.tag]
+  const channel = CHANNEL_META[contact.channel]
+  return (
+    <Sheet open={open} onOpenChange={onOpenChange}>
+      <SheetContent
+        side="right"
+        className="w-full max-w-[380px] gap-0 border-l border-border bg-card p-0"
+      >
+        <SheetHeader className="sr-only">
+          <SheetTitle>Detalhes do contato</SheetTitle>
+        </SheetHeader>
+
+        <header className="flex items-center justify-between border-b border-border px-4 py-3">
+          <h3 className="text-sm font-semibold text-foreground">
+            Detalhes do contato
+          </h3>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            onClick={() => onOpenChange(false)}
+            aria-label="Fechar detalhes"
+          >
+            <X className="size-4" />
+          </Button>
+        </header>
+
+        <div className="flex flex-col items-center gap-2 border-b border-border px-6 py-5 text-center">
+          <ContactAvatarImage contact={contact} size={96} />
+          <p className="truncate text-base font-semibold text-foreground">
+            {contact.name}
+          </p>
+          <p className="truncate text-xs text-muted-foreground">{contact.phone}</p>
+          <div className="mt-1 flex items-center gap-1.5">
+            <BadgeFluid color={tag.color} size="sm">
+              {tag.label}
+            </BadgeFluid>
+            <BadgeFluid color="gray" size="sm">
+              <span className={channel.color}>{channel.emoji}</span>{" "}
+              {channel.label}
+            </BadgeFluid>
+          </div>
+          {contact.location && (
+            <p className="mt-1 flex items-center gap-1 text-[11px] text-muted-foreground">
+              <MapPin className="size-3" />
+              {contact.location}
+            </p>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-2 border-b border-border px-4 py-3 text-sm">
+          <DetailRow label="E-mail" value={`${contact.id}@aurora.tur.br`} />
+          <DetailRow label="Telefone" value={contact.phone} />
+          <DetailRow
+            label="Última interação"
+            value={`há ${contact.unread > 0 ? "poucos" : "alguns"} minutos`}
+          />
+          <DetailRow
+            label="Total em reservas"
+            value={
+              contact.customerValue
+                ? BRL.format(contact.customerValue)
+                : "—"
+            }
+          />
+        </div>
+
+        <div className="flex flex-col gap-2 border-b border-border px-4 py-3">
+          <p className="text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+            Ações rápidas
+          </p>
+          <button
+            type="button"
+            className="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-foreground transition-colors hover:bg-accent"
+          >
+            <CalendarDays className="size-4 text-muted-foreground" />
+            Criar reserva
+          </button>
+          <button
+            type="button"
+            className="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-foreground transition-colors hover:bg-accent"
+          >
+            <CreditCard className="size-4 text-muted-foreground" />
+            Gerar link de pagamento
+          </button>
+          <button
+            type="button"
+            className="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-foreground transition-colors hover:bg-accent"
+          >
+            <Star className="size-4 text-muted-foreground" />
+            Marcar como VIP
+          </button>
+          <button
+            type="button"
+            className="flex items-center gap-2 rounded-md px-2 py-2 text-sm text-foreground transition-colors hover:bg-accent"
+          >
+            <Briefcase className="size-4 text-muted-foreground" />
+            Mover no pipeline
+          </button>
+        </div>
+
+        <div className="px-4 py-4">
+          <p className="mb-2 text-[11px] font-medium uppercase tracking-wide text-muted-foreground">
+            Última reserva
+          </p>
+          {contact.customerValue ? (
+            <Card className="gap-0 p-3">
+              <div className="flex items-center justify-between">
+                <div className="min-w-0">
+                  <p className="truncate text-sm font-semibold text-foreground">
+                    Lisboa · Réveillon 2026
+                  </p>
+                  <p className="text-[11px] text-muted-foreground">
+                    Saída 12/12 · 10 dias · 2 pax
+                  </p>
+                </div>
+                <BadgeFluid color="green" size="sm">
+                  Confirmada
+                </BadgeFluid>
+              </div>
+            </Card>
+          ) : (
+            <p className="text-xs text-muted-foreground">
+              Nenhuma reserva ainda — este contato é lead.
+            </p>
+          )}
+        </div>
+      </SheetContent>
+    </Sheet>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+/*                              helpers puros                                 */
+/* -------------------------------------------------------------------------- */
+
+function filterConversations(
+  list: Contact[],
+  tab: FilterTab,
+  query: string
+): Contact[] {
+  const q = query.trim().toLowerCase()
+  return list
+    .filter((c) => {
+      if (tab === "nao-lidas" && c.unread === 0) return false
+      if (tab === "aguardando" && !["reserva", "pagamento"].includes(c.tag))
+        return false
+      if (tab === "finalizadas" && c.tag !== "vip") return false
+      if (q) {
+        const hay = `${c.name} ${c.phone} ${c.location ?? ""}`.toLowerCase()
+        if (!hay.includes(q)) return false
+      }
+      return true
+    })
+    .sort((a, b) => {
+      if (a.pinned !== b.pinned) return a.pinned ? -1 : 1
+      return 0
+    })
+}
+
+/**
+ * Hook leve que devolve o "snippet" da última mensagem por contato —
+ * usado pela lista. Mantido fora do render para não rebuildar a cada
+ * tick do typing indicator.
+ */
+function useLastMessageByContact() {
+  return React.useMemo(() => {
+    const map: Record<
+      string,
+      { text: string; time: string; previewPrefix?: React.ReactNode }
+    > = {}
+    for (const c of CONTACTS) {
+      const thread = THREADS[c.id] ?? []
+      const last = thread[thread.length - 1]
+      if (!last) {
+        map[c.id] = { text: "Sem mensagens ainda", time: "" }
+        continue
+      }
+      const prefix =
+        last.kind === "image" ? (
+          <ImageIcon className="size-3 shrink-0" />
+        ) : last.kind === "audio" ? (
+          <Mic className="size-3 shrink-0" />
+        ) : last.kind === "document" ? (
+          <FileIcon className="size-3 shrink-0" />
+        ) : last.kind === "location" ? (
+          <MapPin className="size-3 shrink-0" />
+        ) : null
+      map[c.id] = { text: last.text ?? "(anexo)", time: last.time, previewPrefix: prefix }
+    }
+    return map
+  }, [])
+}
+
+function groupMessagesByDay(
+  messages: Message[]
+): { day: DayKey; messages: Message[] }[] {
+  const out: { day: DayKey; messages: Message[] }[] = []
+  for (const m of messages) {
+    const last = out[out.length - 1]
+    if (!last || last.day !== m.day) {
+      out.push({ day: m.day, messages: [m] })
+    } else {
+      last.messages.push(m)
+    }
+  }
+  return out
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                COMPOSIÇÃO                                   */
 /* -------------------------------------------------------------------------- */
 
 export function VoaCrm() {
   const { resolvedTheme } = useTheme()
-  const [section, setSection] = React.useState<SectionId>("painel")
+  const [nav, setNav] = React.useState<NavId>("conversas")
+  const [contacts, setContacts] = React.useState<Contact[]>(CONTACTS)
+  const [selectedId, setSelectedId] = React.useState<string>("marina")
   const [query, setQuery] = React.useState("")
-  const [newClientOpen, setNewClientOpen] = React.useState(false)
-  const [clients, setClients] = React.useState<Client[]>(CLIENTS)
+  const [tab, setTab] = React.useState<FilterTab>("todas")
+  const [sidebarCollapsed, setSidebarCollapsed] = React.useState(false)
+  const [connPanelOpen, setConnPanelOpen] = React.useState(false)
+  const [detailsOpen, setDetailsOpen] = React.useState(false)
+  const [connStatus, setConnStatus] = React.useState<ConnStatus>("connected")
+  const [connNumber] = React.useState("+55 11 4040-2525")
+  const [connName] = React.useState("Aurora Viagens")
+  const [typingContact, setTypingContact] = React.useState<string | null>(null)
+  const typingTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null)
+  const idRef = React.useRef(1000)
 
-  function createClient(data: Omit<Client, "id">) {
-    const id = `c${clients.length + 1}-${Date.now()}`
-    setClients((prev) => [{ ...data, id }, ...prev])
-    toast.success("Cliente cadastrado", {
-      description: `${data.name} adicionado(a) como ${STATUS_META[data.status].label}.`,
+  const selected = contacts.find((c) => c.id === selectedId) ?? contacts[0]
+  const thread = THREADS[selected.id] ?? []
+
+  React.useEffect(() => {
+    return () => {
+      if (typingTimer.current) clearTimeout(typingTimer.current)
+    }
+  }, [])
+
+  function selectContact(id: string) {
+    setSelectedId(id)
+    setContacts((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, unread: 0 } : c))
+    )
+  }
+
+  function sendMessage(text: string) {
+    const trimmed = text.trim()
+    if (!trimmed) return
+    idRef.current += 1
+    const time = new Date().toLocaleTimeString("pt-BR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+    const newMsg: Message = {
+      id: `m-${idRef.current}`,
+      from: "me",
+      kind: "text",
+      text: trimmed,
+      time,
+      ticks: "sent",
+      day: "hoje",
+    }
+    THREADS[selected.id] = [...(THREADS[selected.id] ?? []), newMsg]
+    // força re-render
+    setContacts((prev) => [...prev])
+
+    // ciclo de ticks: enviada → entregue → lida
+    setTimeout(() => {
+      const t = THREADS[selected.id]
+      const idx = t.findIndex((m) => m.id === newMsg.id)
+      if (idx >= 0) t[idx] = { ...t[idx], ticks: "delivered" }
+      setContacts((prev) => [...prev])
+    }, 500)
+    setTimeout(() => {
+      const t = THREADS[selected.id]
+      const idx = t.findIndex((m) => m.id === newMsg.id)
+      if (idx >= 0) t[idx] = { ...t[idx], ticks: "read" }
+      setContacts((prev) => [...prev])
+    }, 1500)
+
+    // resposta automática após um pequeno delay
+    if (typingTimer.current) clearTimeout(typingTimer.current)
+    setTypingContact(selected.id)
+    typingTimer.current = setTimeout(() => {
+      const reply = AUTO_REPLY[selected.id] ?? "Beleza, anotado!"
+      idRef.current += 1
+      const replyMsg: Message = {
+        id: `m-${idRef.current}`,
+        from: "them",
+        kind: "text",
+        text: reply,
+        time: new Date().toLocaleTimeString("pt-BR", {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+        day: "hoje",
+      }
+      THREADS[selected.id] = [...(THREADS[selected.id] ?? []), replyMsg]
+      setTypingContact(null)
+      setContacts((prev) => [...prev])
+    }, 1600)
+  }
+
+  function handleConnect() {
+    setConnStatus("connecting")
+    toast.info("Aguardando pareamento…", {
+      description: "Escaneie o QR Code com seu WhatsApp Business.",
+    })
+    setTimeout(() => {
+      setConnStatus("connected")
+      toast.success("WhatsApp Business conectado!", {
+        description: `${connName} · ${connNumber}`,
+      })
+    }, 2200)
+  }
+
+  function handleDisconnect() {
+    setConnStatus("disconnected")
+    toast("Conexão encerrada", {
+      description: "As mensagens recebidas ficarão em fila.",
     })
   }
 
-  const sectionTitle = SECTION_META[section].label
-  const totalClients = clients.length
-  const vipCount = clients.filter((c) => c.status === "vip").length
+  function handleReconnect() {
+    setConnStatus("connecting")
+    setTimeout(() => {
+      setConnStatus("connected")
+      toast.success("Reconectado", {
+        description: "Mensagens sincronizadas.",
+      })
+    }, 1800)
+  }
+
+  function handleTest() {
+    toast.success("Conexão OK", {
+      description: "Mensagem de teste enviada e recebida em 312ms.",
+    })
+  }
+
+  const totalUnread = contacts.reduce((acc, c) => acc + c.unread, 0)
 
   return (
     <div
       data-slot="voa-crm"
-      className="mx-auto flex w-full max-w-7xl flex-col gap-5 p-4 sm:p-6"
+      className="flex h-[78vh] w-full overflow-hidden rounded-2xl border border-border bg-card text-card-foreground shadow-sm"
     >
-      {/* Topbar */}
-      <header className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <span className="flex size-10 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-            <Plane className="size-5" />
-          </span>
-          <div>
-            <h1 className="text-xl font-semibold tracking-tight text-foreground">
-              VoaCRM
-            </h1>
-            <p className="text-sm text-muted-foreground">
-              {sectionTitle} · {totalClients} clientes ({vipCount} VIP)
-            </p>
-          </div>
-        </div>
+      <AppSidebar
+        active={nav}
+        onSelect={(id) => {
+          setNav(id)
+          if (id === "conexão" as NavId) setConnPanelOpen(true)
+        }}
+        collapsed={sidebarCollapsed}
+        onToggleCollapsed={() => setSidebarCollapsed((c) => !c)}
+        connStatus={connStatus}
+        connNumber={connNumber}
+        onOpenWhatsapp={() => setConnPanelOpen(true)}
+      />
 
-        <div className="flex items-center gap-2">
-          <div className="relative w-full sm:w-72">
-            <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder={
-                section === "clientes"
-                  ? "Buscar clientes…"
-                  : "Buscar no CRM…"
-              }
-              className="pl-9"
-              aria-label="Buscar"
-              disabled={section !== "clientes"}
-            />
-          </div>
-          <Button variant="ghost" size="icon-sm" aria-label="Notificações">
-            <Bell />
-          </Button>
-          <NewClientDialog
-            open={newClientOpen}
-            onOpenChange={setNewClientOpen}
-            onCreate={createClient}
+      {nav === "conversas" ? (
+        <>
+          <ConversationList
+            contacts={contacts}
+            selectedId={selected.id}
+            query={query}
+            onQueryChange={setQuery}
+            tab={tab}
+            onTabChange={setTab}
+            onSelect={selectContact}
           />
-          <Button size="sm" onClick={() => setNewClientOpen(true)}>
-            <Plus />
-            Novo cliente
-          </Button>
-        </div>
-      </header>
+          <ChatThread
+            contact={selected}
+            thread={thread}
+            isTyping={typingContact === selected.id}
+            onSend={sendMessage}
+            onOpenWhatsapp={() => setConnPanelOpen(true)}
+          />
+        </>
+      ) : (
+        <GenericSection
+          nav={nav}
+          totalUnread={totalUnread}
+        />
+      )}
 
-      {/* Sidebar de navegação em abas horizontais (também vira sidebar em desktop via overflow-x) */}
-      <nav className="-mx-1 flex items-center gap-1 overflow-x-auto px-1">
-        {(Object.keys(SECTION_META) as SectionId[]).map((id) => {
-          const meta = SECTION_META[id]
-          const Icon = meta.icon
-          const active = section === id
-          return (
-            <button
-              key={id}
-              type="button"
-              onClick={() => setSection(id)}
-              data-section={id}
-              data-active={active ? "true" : undefined}
-              className={cn(
-                "flex shrink-0 items-center gap-2 rounded-lg border px-3 py-2 text-sm font-medium transition-colors",
-                active
-                  ? "border-primary bg-primary/10 text-primary"
-                  : "border-transparent text-muted-foreground hover:border-border hover:bg-accent hover:text-foreground"
-              )}
-            >
-              <Icon className="size-4" />
-              {meta.label}
-              {id === "clientes" && (
-                <span
-                  className={cn(
-                    "rounded-full px-1.5 py-0.5 text-[10px] tabular-nums",
-                    active
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground"
-                  )}
-                >
-                  {totalClients}
-                </span>
-              )}
-              {id === "reservas" && (
-                <span
-                  className={cn(
-                    "rounded-full px-1.5 py-0.5 text-[10px] tabular-nums",
-                    active
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground"
-                  )}
-                >
-                  {BOOKINGS.length}
-                </span>
-              )}
-              {id === "pipeline" && (
-                <span
-                  className={cn(
-                    "rounded-full px-1.5 py-0.5 text-[10px] tabular-nums",
-                    active
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground"
-                  )}
-                >
-                  {DEALS.length}
-                </span>
-              )}
-              {id === "campanhas" && (
-                <span
-                  className={cn(
-                    "rounded-full px-1.5 py-0.5 text-[10px] tabular-nums",
-                    active
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-muted text-muted-foreground"
-                  )}
-                >
-                  {CAMPAIGNS.length}
-                </span>
-              )}
-            </button>
-          )
-        })}
-      </nav>
+      {/* Painel de conexão WhatsApp (Sheet lateral direita) */}
+      <WhatsAppConnectionPanel
+        open={connPanelOpen}
+        onOpenChange={setConnPanelOpen}
+        status={connStatus}
+        number={connNumber}
+        businessName={connName}
+        onConnect={handleConnect}
+        onDisconnect={handleDisconnect}
+        onReconnect={handleReconnect}
+        onTest={handleTest}
+      />
 
-      <Separator />
-
-      {/* Conteúdo */}
-      <main className="min-h-[420px]">
-        {section === "painel" && <PainelSection />}
-        {section === "clientes" && (
-          <ClientesSection query={query} />
-        )}
-        {section === "reservas" && <ReservasSection />}
-        {section === "pipeline" && <PipelineSection />}
-        {section === "campanhas" && <CampanhasSection />}
-      </main>
+      {/* Detalhes do contato (Sheet lateral direita) */}
+      <ContactDetailsPane
+        contact={selected}
+        open={detailsOpen}
+        onOpenChange={setDetailsOpen}
+      />
 
       <Toaster position="bottom-right" richColors theme={resolvedTheme} />
     </div>
+  )
+}
+
+/* -------------------------------------------------------------------------- */
+/*                       placeholder de outras seções                          */
+/* -------------------------------------------------------------------------- */
+
+function GenericSection({
+  nav,
+  totalUnread,
+}: {
+  nav: NavId
+  totalUnread: number
+}) {
+  const titles: Record<NavId, string> = {
+    conversas: "Conversas",
+    contatos: "Contatos",
+    pipeline: "Pipeline de vendas",
+    campanhas: "Campanhas",
+    templates: "Templates de mensagem",
+    automacao: "Automação",
+    relatorios: "Relatórios",
+    configuracoes: "Configurações",
+  }
+  const descriptions: Record<NavId, string> = {
+    conversas:
+      "Atendimento multicanal com WhatsApp Business no centro da operação.",
+    contatos:
+      "Base unificada de clientes e leads, segmentada por tag e valor.",
+    pipeline:
+      "Funil de vendas com estágios de reserva, pagamento e pós-venda.",
+    campanhas:
+      "Disparos em massa via WhatsApp, e-mail e SMS com ROI mensurável.",
+    templates:
+      "Mensagens-modelo aprovadas pelo WhatsApp para envio rápido.",
+    automacao:
+      "Fluxos automatizados para follow-up, lembretes e nutrição de leads.",
+    relatorios:
+      "Métricas de atendimento, conversão e performance do time.",
+    configuracoes:
+      "Preferências da conta, integrações e gestão de equipe.",
+  }
+  return (
+    <section className="flex min-w-0 flex-1 flex-col items-center justify-center gap-4 bg-background p-10 text-center">
+      <div className="flex size-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+        <Sparkles className="size-6" />
+      </div>
+      <div>
+        <h2 className="text-xl font-semibold text-foreground">
+          {titles[nav]}
+        </h2>
+        <p className="mt-1 max-w-md text-sm text-muted-foreground">
+          {descriptions[nav]}
+        </p>
+      </div>
+      <p className="text-[11px] text-muted-foreground">
+        Esta seção é uma vitrine do painel lateral — volte para
+        <strong className="px-1 font-medium text-foreground">
+          Conversas
+        </strong>
+        pra ver o atendimento WhatsApp em ação.
+      </p>
+      <BadgeFluid color="gray" size="sm" className="tabular-nums">
+        {totalUnread} mensagens não lidas no inbox
+      </BadgeFluid>
+    </section>
   )
 }
