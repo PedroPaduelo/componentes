@@ -31,7 +31,11 @@ import { cn } from "@/lib/utils"
  *     substituímos por uma lista de slugs explícita.
  */
 
-const FULLSCREEN_CHAT_SLUGS = new Set(["chat-app", "chat-inbox-pro"])
+const FULLSCREEN_CHAT_SLUGS = new Set([
+  "chat-app",
+  "chat-inbox-pro",
+  "voa-crm",
+])
 
 export function CompositionLive() {
   const { slug } = useParams<{ slug: string }>()
