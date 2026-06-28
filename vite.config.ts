@@ -61,4 +61,37 @@ export default defineConfig({
     strictPort: true,
     allowedHosts: true,
   },
+  build: {
+    // Vendors pesados viram chunks próprios e só são baixados nas rotas que os
+    // usam (globe, world-map, pdf viewer…). O outlier conhecido é `vendor-three`
+    // (~1.6MB: three + three-globe + cobe), inerente à lib e lazy-loaded. O
+    // limite fica logo acima dele pra que o aviso volte a sinalizar apenas algo
+    // realmente fora da curva (uma regressão nova), não esse caso esperado.
+    chunkSizeWarningLimit: 1700,
+    rollupOptions: {
+      output: {
+        // Code-splitting de vendor: agrupa libs pesadas em chunks estáveis e
+        // cacheáveis, separados do código de aplicação. Cada grupo só entra no
+        // grafo quando uma rota/composição lazy o importa.
+        manualChunks(id) {
+          if (!id.includes("node_modules")) return
+          if (id.includes("/three/") || id.includes("three-globe") || id.includes("/cobe/"))
+            return "vendor-three"
+          if (id.includes("pdfjs-dist")) return "vendor-pdf"
+          if (id.includes("recharts") || id.includes("/d3-") || id.includes("victory"))
+            return "vendor-charts"
+          if (id.includes("/motion/") || id.includes("framer-motion"))
+            return "vendor-motion"
+          if (id.includes("@xyflow")) return "vendor-flow"
+          if (
+            id.includes("/react/") ||
+            id.includes("/react-dom/") ||
+            id.includes("react-router") ||
+            id.includes("scheduler")
+          )
+            return "vendor-react"
+        },
+      },
+    },
+  },
 })

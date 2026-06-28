@@ -78,6 +78,11 @@ function AppleCard({ card, index, layout = false }: AppleCardProps) {
   const containerRef = React.useRef<HTMLDivElement>(null)
   const { onCardClose } = useAppleCarousel()
 
+  const handleClose = React.useCallback(() => {
+    setOpen(false)
+    onCardClose(index)
+  }, [onCardClose, index])
+
   React.useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
@@ -96,17 +101,12 @@ function AppleCard({ card, index, layout = false }: AppleCardProps) {
       window.removeEventListener("keydown", onKeyDown)
       document.body.style.overflow = "auto"
     }
-  }, [open])
+  }, [open, handleClose])
 
   useOutsideClick(containerRef, () => handleClose())
 
   const handleOpen = () => {
     setOpen(true)
-  }
-
-  const handleClose = () => {
-    setOpen(false)
-    onCardClose(index)
   }
 
   return (
