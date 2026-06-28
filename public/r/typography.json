@@ -1,0 +1,23 @@
+{
+  "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+  "name": "typography",
+  "title": "Typography",
+  "description": "Estilos de tipografia base no estilo shadcn: títulos h1–h4, parágrafo, lead, blockquote, lista, código inline e textos large/small/muted. Um componente com `variant` que renderiza o elemento HTML semântico adequado.",
+  "dependencies": [
+    "@radix-ui/react-slot@^1.2.3",
+    "class-variance-authority@^0.7.1"
+  ],
+  "files": [
+    {
+      "path": "src/components/ui/typography.tsx",
+      "content": "/**\n * Typography — primitivos de tipografia no estilo shadcn/ui.\n *\n * Um único componente com `variant` que renderiza o elemento HTML semântico\n * adequado (h1–h4, p, blockquote, ul, code, small) e aplica os estilos\n * tipográficos correspondentes. Para compor artigos/prose, encadeie títulos +\n * parágrafos. `asChild` (Radix Slot) aplica os estilos a um elemento próprio\n * (ex.: um `<Link>`), preservando a tag do filho.\n *\n * Elemento raiz com `data-slot=\"typography\"`; cores via tokens shadcn.\n */\nimport * as React from \"react\"\nimport { Slot } from \"@radix-ui/react-slot\"\nimport { type VariantProps } from \"class-variance-authority\"\n\nimport { cn } from \"@/lib/utils\"\nimport {\n  typographyTag,\n  typographyVariants,\n  type TypographyVariant,\n} from \"./typography-variants\"\n\nexport interface TypographyProps\n  extends Omit<React.HTMLAttributes<HTMLElement>, \"color\">,\n    VariantProps<typeof typographyVariants> {\n  /**\n   * Renderiza no elemento filho (Radix Slot) em vez da tag padrão da variante.\n   * Útil para aplicar os estilos a um `<a>`/`<Link>` etc.\n   */\n  asChild?: boolean\n}\n\nfunction Typography({\n  className,\n  variant,\n  asChild = false,\n  ...props\n}: TypographyProps) {\n  const resolved = (variant ?? \"p\") as TypographyVariant\n  const Comp: React.ElementType = asChild ? Slot : typographyTag[resolved]\n\n  return (\n    <Comp\n      data-slot=\"typography\"\n      className={cn(typographyVariants({ variant }), className)}\n      {...props}\n    />\n  )\n}\n\nexport { Typography }\n",
+      "type": "registry:ui"
+    },
+    {
+      "path": "src/components/ui/typography-variants.ts",
+      "content": "import { cva } from \"class-variance-authority\"\n\n/**\n * Variantes de tipografia no estilo shadcn/ui. Cada `variant` é um nível/estilo\n * tipográfico; o elemento HTML semântico correspondente vem de\n * {@link typographyTag} (h1 → `<h1>`, list → `<ul>`, inlineCode → `<code>`…).\n *\n * Classes literais Tailwind (sem interpolação) para o JIT da v4 detectar.\n * Cores via tokens shadcn (`text-muted-foreground`, `border-border`, `bg-muted`).\n */\nexport const typographyVariants = cva(\"\", {\n  variants: {\n    variant: {\n      h1: \"scroll-m-20 text-4xl font-extrabold tracking-tight text-balance lg:text-5xl\",\n      h2: \"scroll-m-20 border-b border-border pb-2 text-3xl font-semibold tracking-tight first:mt-0\",\n      h3: \"scroll-m-20 text-2xl font-semibold tracking-tight\",\n      h4: \"scroll-m-20 text-xl font-semibold tracking-tight\",\n      p: \"leading-7 [&:not(:first-child)]:mt-6\",\n      blockquote: \"mt-6 border-l-2 border-border pl-6 italic text-muted-foreground\",\n      list: \"my-6 ml-6 list-disc [&>li]:mt-2\",\n      inlineCode:\n        \"relative rounded bg-muted px-[0.3rem] py-[0.2rem] font-mono text-sm font-semibold\",\n      lead: \"text-xl text-muted-foreground\",\n      large: \"text-lg font-semibold\",\n      small: \"text-sm font-medium leading-none\",\n      muted: \"text-sm text-muted-foreground\",\n    },\n  },\n  defaultVariants: {\n    variant: \"p\",\n  },\n})\n\n/**\n * Elemento HTML padrão de cada variante. Mantém a semântica correta (headings,\n * parágrafo, lista, citação, código inline) sem o consumidor escolher a tag.\n */\nexport const typographyTag = {\n  h1: \"h1\",\n  h2: \"h2\",\n  h3: \"h3\",\n  h4: \"h4\",\n  p: \"p\",\n  blockquote: \"blockquote\",\n  list: \"ul\",\n  inlineCode: \"code\",\n  lead: \"p\",\n  large: \"div\",\n  small: \"small\",\n  muted: \"p\",\n} as const\n\n/** Nomes das variantes de tipografia disponíveis. */\nexport type TypographyVariant = keyof typeof typographyTag\n",
+      "type": "registry:ui"
+    }
+  ],
+  "type": "registry:ui"
+}

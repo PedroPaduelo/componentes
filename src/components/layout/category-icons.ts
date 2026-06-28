@@ -53,12 +53,13 @@ export const DOMAIN_ICONS: Record<DomainId, LucideIcon> = {
   visual: Palette,
 }
 
-/** Ícone lucide associado a cada um dos 16 grupos (espelha `GROUPS` de groups.ts). */
+/** Ícone lucide associado a cada um dos 17 grupos (espelha `GROUPS` de groups.ts). */
 export const GROUP_ICONS: Record<GroupId, LucideIcon> = {
   "forms-inputs": TextCursorInput,
   "actions-navigation": MousePointerClick,
   "layout-containers": LayoutGrid,
-  "typography": Pilcrow,
+  "typography-base": Pilcrow,
+  "typography-effects": Wand2,
   "cards": SquareStack,
   "tables-data": ListTree,
   "feedback-status": MessageSquare,

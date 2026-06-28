@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import { ArrowUpRight } from "lucide-react"
 
 import type { Family } from "@/data/families"
+import { GROUP_BY_ID, getGroup } from "@/data/groups"
 import {
   Card,
   CardDescription,
@@ -17,6 +18,8 @@ export function ComponentCard({ family }: { family: Family }) {
     variantCount === 1 ? "1 variante" : `${variantCount} variantes`
   // Descrição: usa a da variante representativa (primeira após ordenação).
   const description = family.variants[0]?.description ?? ""
+  // Grupo canônico (taxonomia única de /components).
+  const groupLabel = GROUP_BY_ID[getGroup(family.representativeSlug)].label
 
   return (
     <Link
@@ -34,7 +37,7 @@ export function ComponentCard({ family }: { family: Family }) {
           </div>
           <div className="mt-1 flex flex-wrap items-center gap-2">
             <Badge variant="secondary" className="w-fit">
-              {family.category}
+              {groupLabel}
             </Badge>
             <Badge variant="outline" className="w-fit">
               {variantLabel}

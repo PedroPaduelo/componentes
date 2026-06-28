@@ -4,7 +4,7 @@
   "title": "Collapsible",
   "description": "Contêiner expansível/recolhível com animação de abertura/fechamento. Baseado em @radix-ui/react-collapsible.",
   "dependencies": [
-    "@radix-ui/react-collapsible@^1.1.12"
+    "@radix-ui/react-collapsible@^1.1.14"
   ],
   "files": [
     {

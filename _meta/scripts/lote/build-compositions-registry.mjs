@@ -269,7 +269,7 @@ function parseCompositions() {
     const nameM = chunk.match(/name:\s*"((?:[^"\\]|\\.)*)"/)
     const name = nameM ? unescapeStr(nameM[1]) : slug
     let description = ""
-    const dM = chunk.match(/description:\s*([\s\S]*?)\n\s*(?:tags|category|wide):/)
+    const dM = chunk.match(/description:\s*([\s\S]*?)\n\s*(?:tags|wide):/)
     if (dM) {
       const segs = dM[1].match(/"((?:[^"\\]|\\.)*)"/g) || []
       description = segs.map((s) => unescapeStr(s.slice(1, -1))).join("")

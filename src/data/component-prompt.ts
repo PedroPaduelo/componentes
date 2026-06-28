@@ -29,6 +29,7 @@ import {
   type ComponentOrigin,
   type Family,
 } from "@/data/families"
+import { GROUP_BY_ID, getGroup } from "@/data/groups"
 
 /**
  * Gera um parágrafo curto de "quando usar / boas práticas".
@@ -85,7 +86,7 @@ function firstExample(family: Family): Example | undefined {
  * Formato exato (ver briefing):
  *
  *   # Componente: <family.name>
- *   - Categoria: <family.category>
+ *   - Grupo: <group.label>
  *   - Origem: <origins.join(", ")>
  *   - URL: https://.../components/<base>
  *   - Slug: <base>
@@ -131,7 +132,7 @@ export function buildComponentPrompt(family: Family): string {
 
   // Cabeçalho + metadados em bullet list
   lines.push(`# Componente: ${family.name}`)
-  lines.push(`- Categoria: ${family.category}`)
+  lines.push(`- Grupo: ${GROUP_BY_ID[getGroup(family.representativeSlug)].label}`)
   lines.push(`- Origem: ${family.origins.join(", ")}`)
   lines.push(`- URL: ${componentUrl(family.base)}`)
   lines.push(`- Slug: ${family.base}`)

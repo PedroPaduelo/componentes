@@ -9,19 +9,12 @@
  * dependências) sem quebrar o catálogo.
  */
 
-/** As quatro categorias da vitrine. */
-export const CATEGORIES = ["Actions", "Layout", "Forms", "Feedback"] as const
-
-export type Category = (typeof CATEGORIES)[number]
-
 /** Metadados de um componente exibido na vitrine. */
 export interface ComponentMeta {
   /** Identificador estável e URL-safe. Contrato com /components/:slug. */
   slug: string
   /** Nome de exibição. */
   name: string
-  /** Categoria (restrita às 4 categorias da vitrine). */
-  category: Category
   /** Descrição curta exibida no card. */
   description: string
   /** Palavras-chave para busca (além do nome). */
@@ -42,7 +35,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "typography",
     name: "Typography",
-    category: "Layout",
     description:
       "Estilos de tipografia base no estilo shadcn: títulos h1–h4, parágrafo, lead, blockquote, lista, código inline e textos large/small/muted. Um componente com `variant` que renderiza o elemento HTML semântico adequado.",
     tags: [
@@ -61,7 +53,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "button",
     name: "Button",
-    category: "Actions",
     description:
       "Botão acionável com variantes de estilo e tamanho para disparar ações.",
     tags: ["botão", "ação", "cta", "clique", "variantes"],
@@ -71,7 +62,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "dropdown-menu",
     name: "Dropdown Menu",
-    category: "Actions",
     description:
       "Menu suspenso acionado por um gatilho, com itens, separadores e submenus.",
     tags: ["menu", "dropdown", "ações", "contexto", "opções"],
@@ -81,7 +71,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "context-menu",
     name: "Context Menu",
-    category: "Actions",
     description:
       "Menu de contexto acionado pelo clique direito do mouse, com itens, separadores, checkboxes, radio groups e submenus.",
     tags: ["menu", "contexto", "clique direito", "ações", "popup"],
@@ -91,7 +80,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "card",
     name: "Card",
-    category: "Layout",
     description:
       "Contêiner com cabeçalho, conteúdo e rodapé para agrupar informação relacionada.",
     tags: ["cartão", "container", "layout", "painel", "superfície"],
@@ -101,7 +89,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "dialog",
     name: "Dialog",
-    category: "Layout",
     description:
       "Janela modal sobreposta ao conteúdo para fluxos focados e confirmações.",
     tags: ["modal", "diálogo", "overlay", "popup", "janela"],
@@ -111,7 +98,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "sheet",
     name: "Sheet",
-    category: "Layout",
     description:
       "Painel deslizante a partir da borda da tela para navegação ou formulários.",
     tags: ["drawer", "painel", "lateral", "deslizante", "overlay"],
@@ -121,7 +107,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "drawer",
     name: "Drawer",
-    category: "Layout",
     description:
       "Drawer que abre a partir da base da tela com handle visual, baseado em vaul. Ideal para ações contextuais em mobile.",
     tags: ["drawer", "vaul", "modal", "bottom-sheet", "mobile", "shadcn"],
@@ -129,7 +114,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "tabs",
     name: "Tabs",
-    category: "Layout",
     description:
       "Abas para alternar entre seções de conteúdo dentro de um mesmo contexto.",
     tags: ["abas", "navegação", "seções", "tabs", "alternar"],
@@ -139,7 +123,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "input",
     name: "Input",
-    category: "Forms",
     description:
       "Campo de texto para entrada de dados em formulários, com estados de foco e erro.",
     tags: ["campo", "texto", "formulário", "entrada", "input"],
@@ -149,7 +132,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "checkbox",
     name: "Checkbox",
-    category: "Forms",
     description:
       "Caixa de seleção para opções booleanas, com estados marcado e indeterminado.",
     tags: ["caixa", "seleção", "formulário", "booleano", "marcar"],
@@ -159,7 +141,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "badge",
     name: "Badge",
-    category: "Feedback",
     description:
       "Etiqueta compacta para destacar status, contagens ou rótulos contextuais.",
     tags: ["etiqueta", "status", "rótulo", "tag", "destaque"],
@@ -169,7 +150,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "tree",
     name: "Tree",
-    category: "Layout",
     description:
       "Árvore de arquivos interativa com busca, drag & drop e navegação por teclado. Baseada em @pierre/trees.",
     tags: [
@@ -186,7 +166,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "work-experience-component",
     name: "Work Experience",
-    category: "Layout",
     description:
       "Card/timeline de experiência profissional com empresa, cargo, período, descrição e tecnologias.",
     tags: [
@@ -203,7 +182,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "accordion",
     name: "Accordion",
-    category: "Layout",
     description:
       "Grupo de itens expansíveis com animação de abertura/fechamento. Baseado em @radix-ui/react-accordion.",
     tags: ["accordion", "acordeão", "expansível", "collapse", "shadcn"],
@@ -211,7 +189,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "alert",
     name: "Alert",
-    category: "Feedback",
     description:
       "Mensagem de destaque para informar, avisar ou comunicar erros. Variantes default e destrutiva.",
     tags: ["alert", "aviso", "mensagem", "erro", "destaque", "shadcn"],
@@ -219,7 +196,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "alert-dialog",
     name: "Alert Dialog",
-    category: "Feedback",
     description:
       "Diálogo modal de confirmação para ações destrutivas. Baseado em @radix-ui/react-alert-dialog.",
     tags: ["alert", "dialog", "modal", "confirmação", "destrutivo", "shadcn"],
@@ -227,7 +203,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "aspect-ratio",
     name: "Aspect Ratio",
-    category: "Layout",
     description:
       "Container que mantém proporção fixa (16:9, 4:3, 1:1, etc.) para imagens e mídia. Baseado em @radix-ui/react-aspect-ratio.",
     tags: ["aspect", "ratio", "proporção", "imagem", "container", "shadcn"],
@@ -235,7 +210,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "avatar",
     name: "Avatar",
-    category: "Feedback",
     description:
       "Imagem de perfil com fallback automático (iniciais). Baseado em @radix-ui/react-avatar.",
     tags: ["avatar", "perfil", "imagem", "fallback", "usuário", "shadcn"],
@@ -243,7 +217,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "breadcrumb",
     name: "Breadcrumb",
-    category: "Layout",
     description:
       "Trilha de navegação hierárquica com links, separadores e suporte a ellipsis com dropdown.",
     tags: ["breadcrumb", "navegação", "trilha", "hierarquia", "caminho", "shadcn"],
@@ -251,7 +224,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "sonner",
     name: "Sonner",
-    category: "Feedback",
     description:
       "Toast/notificação elegante e minimalista com suporte a ações, promises e posicionamento configurável. Baseada em sonner.",
     tags: ["toast", "notificação", "feedback", "sonner", "mensagem", "shadcn"],
@@ -259,7 +231,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "separator",
     name: "Separator",
-    category: "Layout",
     description:
       "Divisor visual horizontal ou vertical para separar conteúdo. Baseado em @radix-ui/react-separator.",
     tags: ["separator", "divisor", "linha", "separador", "shadcn"],
@@ -269,7 +240,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "resizable",
     name: "Resizable",
-    category: "Layout",
     description:
       "Painéis redimensionáveis via arraste, com suporte a direção horizontal e vertical, múltiplos painéis e handle visual. Baseado em react-resizable-panels.",
     tags: ["resizable", "painéis", "redimensionar", "drag", "layout", "shadcn"],
@@ -277,7 +247,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "calendar",
     name: "Calendar",
-    category: "Forms",
     description:
       "Componente de calendário com seleção de data única, múltipla ou intervalo. Baseado em react-day-picker.",
     tags: ["calendar", "calendário", "data", "date", "seleção", "shadcn"],
@@ -285,7 +254,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "date-picker",
     name: "Date Picker",
-    category: "Forms",
     description:
       "Seletor de data com popover e calendário integrado. Exibe a data formatada e abre o calendário ao clicar.",
     tags: ["date-picker", "data", "calendário", "seleção", "popover", "shadcn"],
@@ -293,7 +261,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "switch",
     name: "Switch",
-    category: "Forms",
     description:
       "Controle de alternância ligar/desligar para configurações e preferências. Baseado em @radix-ui/react-switch.",
     tags: ["switch", "toggle", "alternar", "formulário", "controle", "shadcn"],
@@ -301,7 +268,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "form",
     name: "Form",
-    category: "Forms",
     description:
       "Formulário com integração react-hook-form e zod, composável com FormField, FormItem, FormLabel, FormControl, FormDescription e FormMessage. Baseado em @radix-ui/react-slot e @radix-ui/react-label.",
     tags: ["form", "formulário", "validação", "zod", "react-hook-form", "shadcn"],
@@ -309,7 +275,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "navigation-menu",
     name: "Navigation Menu",
-    category: "Actions",
     description:
       "Menu de navegação horizontal com dropdowns de conteúdo rico, viewport animado e indicador de posição. Baseado em @radix-ui/react-navigation-menu.",
     tags: ["navigation", "menu", "navbar", "dropdown", "radix", "shadcn"],
@@ -317,7 +282,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "popover",
     name: "Popover",
-    category: "Actions",
     description:
       "Painel flutuante ancorado a um gatilho, com alinhamento configurável. Baseado em @radix-ui/react-popover.",
     tags: ["popover", "tooltip", "overlay", "radix", "shadcn"],
@@ -325,7 +289,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "toast",
     name: "Toast",
-    category: "Feedback",
     description:
       "Notificação temporária e não-bloqueante para confirmar ações, exibir alertas ou comunicar estados do sistema. Baseado em @radix-ui/react-toast.",
     tags: ["toast", "notificação", "feedback", "alerta", "mensagem", "shadcn"],
@@ -333,7 +296,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "slider",
     name: "Slider",
-    category: "Forms",
     description:
       "Controle deslizante para selecionar um valor ou intervalo. Suporta um ou múltiplos thumbs, steps e estado desabilitado. Baseado em @radix-ui/react-slider.",
     tags: ["slider", "range", "intervalo", "controle", "formulário", "shadcn"],
@@ -341,7 +303,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "radio-group",
     name: "Radio Group",
-    category: "Forms",
     description:
       "Grupo de opções mutuamente exclusivas com navegação por teclado. Baseado em @radix-ui/react-radio-group.",
     tags: ["radio", "seleção", "formulário", "radix", "shadcn"],
@@ -349,7 +310,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "scroll-area",
     name: "Scroll Area",
-    category: "Layout",
     description:
       "Área de rolagem customizada com scrollbar estilizado. Baseado em @radix-ui/react-scroll-area.",
     tags: ["scroll", "area", "rolagem", "scrollbar", "shadcn"],
@@ -357,7 +317,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "collapsible",
     name: "Collapsible",
-    category: "Layout",
     description:
       "Contêiner expansível/recolhível com animação de abertura/fechamento. Baseado em @radix-ui/react-collapsible.",
     tags: ["collapsible", "expansível", "collapse", "toggle", "shadcn"],
@@ -365,7 +324,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "toggle",
     name: "Toggle",
-    category: "Actions",
     description:
       "Botão de alternância com estados ligado/desligado, variantes de estilo e tamanho. Baseado em @radix-ui/react-toggle.",
     tags: ["toggle", "alternar", "switch", "botão", "estado", "shadcn"],
@@ -373,7 +331,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "command",
     name: "Command",
-    category: "Actions",
     description:
       "Palette de comandos estilo Spotlight/Alfred com busca, agrupamento, atalhos de teclado e suporte a dialog. Baseado em cmdk.",
     tags: ["command", "palette", "busca", "spotlight", "atalho", "shadcn"],
@@ -381,7 +338,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "menubar",
     name: "Menubar",
-    category: "Actions",
     description:
       "Barra de menu horizontal com menus dropdown, submenus, checkboxes, radio groups e atalhos de teclado. Baseado em @radix-ui/react-menubar.",
     tags: ["menubar", "menu", "barra", "dropdown", "submenu", "atalho", "shadcn"],
@@ -389,7 +345,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "data-table",
     name: "Data Table",
-    category: "Layout",
     description:
       "Tabela de dados avançada com ordenação, paginação e busca global. Baseada em @tanstack/react-table.",
     tags: ["table", "tabela", "dados", "paginação", "ordenação", "filtro", "shadcn"],
@@ -397,7 +352,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "textarea",
     name: "Textarea",
-    category: "Forms",
     description:
       "Campo de texto multiline para entrada de conteúdo longo como descrições, mensagens e comentários.",
     tags: ["textarea", "campo", "texto", "formulário", "multiline", "shadcn"],
@@ -405,7 +359,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "select",
     name: "Select",
-    category: "Forms",
     description:
       "Seletor de opções com trigger, conteúdo em portal, grupos, separadores e suporte a scroll. Baseado em @radix-ui/react-select.",
     tags: ["select", "seletor", "dropdown", "opções", "formulário", "shadcn"],
@@ -413,7 +366,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "progress",
     name: "Progress",
-    category: "Feedback",
     description:
       "Barra de progresso para indicar conclusão de uma tarefa ou etapa. Baseado em @radix-ui/react-progress.",
     tags: ["progress", "barra", "progresso", "indicador", "loading", "shadcn"],
@@ -421,7 +373,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "table",
     name: "Table",
-    category: "Layout",
     description:
       "Semantic HTML table with header, body, footer, rows, cells, and caption — styled with Tailwind and adaptive to light/dark.",
     tags: ["table", "tabela", "dados", "linhas", "colunas", "shadcn"],
@@ -429,7 +380,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "pagination",
     name: "Pagination",
-    category: "Layout",
     description:
       "Controles de paginação com links de página, navegação anterior/próxima e ellipsis para intervalos ocultos.",
     tags: ["pagination", "paginação", "páginas", "navegação", "shadcn"],
@@ -437,7 +387,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "skeleton",
     name: "Skeleton",
-    category: "Feedback",
     description:
       "Placeholder animado com pulse para indicar carregamento de conteúdo. Classes utilitárias customizáveis.",
     tags: ["skeleton", "loading", "placeholder", "pulse", "shadcn"],
@@ -445,7 +394,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "input-otp",
     name: "Input OTP",
-    category: "Forms",
     description:
       "Campo de entrada de código OTP (One-Time Password) com slots visuais, separador e suporte a teclado. Baseado em input-otp.",
     tags: ["otp", "código", "verificação", "2fa", "formulário", "shadcn"],
@@ -453,7 +401,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "chevrons-up-down-icon",
     name: "Chevrons Up Down Icon",
-    category: "Actions",
     description:
       "Ícone animado de dois chevrons que rotacionam suavemente — indicador visual de dropdown/select.",
     tags: ["ícone", "chevron", "dropdown", "seletor"],
@@ -461,7 +408,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "code-block-command",
     name: "Code Block Command",
-    category: "Feedback",
     description:
       "Comando shell com tokens coloridos (comando, args, flags) e botão de copiar.",
     tags: ["código", "comando", "cli", "terminal", "copy"],
@@ -469,7 +415,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "dot-grid-spotlight",
     name: "Dot Grid Spotlight",
-    category: "Feedback",
     description:
       "Background de grade de pontos com spotlight que segue o cursor do mouse.",
     tags: ["dots", "grid", "spotlight", "background", "efeito"],
@@ -477,7 +422,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "fluid-gradient-text",
     name: "Fluid Gradient Text",
-    category: "Layout",
     description:
       "Texto com gradiente animado (mesh gradient) que flui continuamente.",
     tags: ["texto", "gradiente", "animado", "efeito"],
@@ -485,7 +429,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "glow-card-grid",
     name: "Glow Card Grid",
-    category: "Layout",
     description:
       "Grid de cards com efeito glow — icon/background borrado que segue o cursor e borda com backdrop-blur.",
     tags: ["glow", "cards", "grid", "bento", "pointer", "efeito"],
@@ -493,7 +436,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "icon-swap",
     name: "Icon Swap",
-    category: "Actions",
     description:
       "Componente que troca entre dois ícones com crossfade (Sun↔Moon, Eye↔EyeOff, etc.).",
     tags: ["ícone", "swap", "crossfade", "tema"],
@@ -501,7 +443,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "react-wheel-picker",
     name: "React Wheel Picker",
-    category: "Forms",
     description:
       "Picker estilo iOS com 3 colunas (data picker) que rola como uma roda. Wrapper sobre react-wheel-picker.",
     tags: ["picker", "wheel", "data", "iOS", "rolagem"],
@@ -509,7 +450,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "shimmering-text",
     name: "Shimmering Text",
-    category: "Feedback",
     description:
       "Texto com efeito shimmer (brilho da esquerda pra direita, estilo skeleton/loading).",
     tags: ["shimmer", "skeleton", "loading", "texto", "efeito"],
@@ -517,7 +457,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "theme-toggle-effect",
     name: "Theme Toggle Effect",
-    category: "Actions",
     description:
       "Toggle de tema com animação de view transition (círculo expandindo do botão até a tela inteira).",
     tags: ["tema", "view-transition", "animação", "efeito"],
@@ -525,7 +464,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "mobius-loop-icon",
     name: "Mobius Loop Icon",
-    category: "Actions",
     description:
       "Ícono animado de loop infinito (mobius strip) com morphing SVG entre círculos e infinito.",
     tags: [
@@ -541,7 +479,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "scroll-fade-effect",
     name: "Scroll Fade Effect",
-    category: "Layout",
     description:
       "Container com fade nas bordas superior/inferior quando há conteúdo scrollável além do viewport (estilo iOS).",
     tags: ["scroll", "fade", "mask", "container", "efeito"],
@@ -549,7 +486,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "slide-to-unlock",
     name: "Slide to Unlock",
-    category: "Forms",
     description:
       "Controle estilo iOS: arrastar thumb da esquerda pra direita pra confirmar ação.",
     tags: ["slide", "unlock", "touch", "gesture", "confirmação"],
@@ -557,7 +493,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "theme-switcher",
     name: "Theme Switcher",
-    category: "Actions",
     description:
       "Seletor de tema elaborado com opções light/dark/system (e talvez accent color).",
     tags: ["tema", "switcher", "light", "dark", "system"],
@@ -565,7 +500,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "consent-manager",
     name: "Consent Manager",
-    category: "Forms",
     description:
       "Gerenciador de consentimento de cookies com categorias, switches e persistência local.",
     tags: ["cookies", "consent", "lgpd", "gdpr", "privacidade", "preferências"],
@@ -573,7 +507,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "copy-button",
     name: "Copy Button",
-    category: "Actions",
     description:
       "Botão de copiar para a área de transferência com feedback visual e fallback execCommand.",
     tags: ["copiar", "clipboard", "copy", "botão", "feedback"],
@@ -581,7 +514,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "elastic-slider",
     name: "Elastic Slider",
-    category: "Forms",
     description:
       "Slider com efeito elástico (rubber-band) ao arrastar além dos limites, estilo iOS.",
     tags: ["slider", "elastic", "range", "arrastar", "iOS", "controle"],
@@ -589,7 +521,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "github-contributions",
     name: "GitHub Contributions",
-    category: "Feedback",
     description:
       "Heatmap de contribuições estilo GitHub, com células por dia, tooltips e escalas de cor.",
     tags: ["github", "heatmap", "contribuições", "calendário", "atividade"],
@@ -597,7 +528,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "middle-truncation",
     name: "Middle Truncation",
-    category: "Forms",
     description:
       "Trunca texto no meio preservando início e fim — ideal para hashes, paths e e-mails.",
     tags: ["texto", "truncar", "ellipsis", "hash", "path", "overflow"],
@@ -605,7 +535,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "toc-minimap",
     name: "TOC Minimap",
-    category: "Layout",
     description:
       "Sumário/minimap de navegação com seção ativa via IntersectionObserver e barra de progresso.",
     tags: ["toc", "sumário", "navegação", "minimap", "scroll", "âncora"],
@@ -613,7 +542,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "carousel",
     name: "Carousel",
-    category: "Layout",
     description:
       "Carrossel de conteúdo com scroll horizontal, controles anterior/próximo e suporte a teclado. Baseado em embla-carousel-react.",
     tags: ["carousel", "slider", "carrossel", "swipe", "shadcn"],
@@ -623,7 +551,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "animated-number",
     name: "Animated Number",
-    category: "Feedback",
     description:
       "Número slot-machine (dígitos rolando 0–9) + placar com feedback de cor (verde sobe, vermelho desce) e bounce.",
     tags: ["number", "counter", "animation", "score", "slot-machine", "vengenceui"],
@@ -631,7 +558,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "cyber-glitch-text",
     name: "Cyber Glitch Text",
-    category: "Feedback",
     description:
       "Bloco de texto estilizado com scramble (decodificação hacker) e chromatic aberration RGB no hover.",
     tags: ["glitch", "hacker", "scramble", "chromatic", "efeito"],
@@ -639,7 +565,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "animated-button",
     name: "Animated Button",
-    category: "Actions",
     description:
       "Botão com borda brilhante animada e text reveal (mask gradient deslizante) — ideal para chamadas de ação (CTA).",
     tags: ["button", "animated", "shiny", "border", "reveal", "cta", "vengenceui"],
@@ -647,7 +572,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "flip-fade-text",
     name: "Flip Fade Text",
-    category: "Feedback",
     description:
       "Texto 3D flip animado por letra, ciclando por palavras com stagger configurável. Ideal para loading states e hero sections.",
     tags: ["flip", "3d", "animação", "texto", "efeito", "loading", "hero", "vengenceui"],
@@ -655,7 +579,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "flip-text",
     name: "Flip Text",
-    category: "Feedback",
     description:
       "Texto com animação 3D flip caractere-por-caractere, usando rotateX + CSS variables e delays staggered (sine wave) para efeito de onda.",
     tags: ["flip", "3d", "animação", "texto", "efeito", "wave", "stagger"],
@@ -663,7 +586,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "perspective-grid",
     name: "Perspective Grid",
-    category: "Feedback",
     description:
       "Grid 3D em perspectiva com tiles coloridos no hover — efeito de profundidade para hero/backgrounds.",
     tags: [
@@ -679,7 +601,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "glass-dock",
     name: "Glass Dock",
-    category: "Actions",
     description:
       "MacOS-inspired glassmorphic dock com scale magnification on hover.",
     tags: ["dock", "macos", "glassmorphism", "navigation", "hover", "magnify"],
@@ -687,7 +608,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "creepy-button",
     name: "Creepy Button",
-    category: "Actions",
     description:
       "Botão interativo com olhos que seguem o cursor (pupil tracking), animação de piscar periódica e cover que rotaciona em hover.",
     tags: [
@@ -703,7 +623,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "light-lines",
     name: "Light Lines",
-    category: "Feedback",
     description:
       "Background animado de \"light trails\" em linhas verticais: SVG com 17 luzes que sobem/descem em loop infinito via requestAnimationFrame, sobre linhas estáticas e gradiente configurável.",
     tags: ["background", "animation", "svg", "hero", "lights", "vengenceui"],
@@ -713,7 +632,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "button-fluid",
     name: "Button (Fluid)",
-    category: "Actions",
     description:
       "Botão animado da Fluid Functionalism com variantes, ícones, spinner de loading e transições fluidas no hover.",
     tags: ["fluid", "button", "botão", "ações", "loading", "ícone"],
@@ -721,7 +639,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "badge-fluid",
     name: "Badge (Fluid)",
-    category: "Feedback",
     description:
       "Selo/etiqueta da Fluid Functionalism com variantes solid e dot, paleta de cores e três tamanhos.",
     tags: ["fluid", "badge", "selo", "etiqueta", "status", "tag"],
@@ -729,7 +646,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "slider-fluid",
     name: "Slider (Fluid)",
-    category: "Forms",
     description:
       "Slider da Fluid Functionalism com thumb animado, faixa (range), step dots, tooltip de valor e edição inline.",
     tags: ["fluid", "slider", "range", "controle", "valor", "formulário"],
@@ -737,7 +653,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "switch-fluid",
     name: "Switch (Fluid)",
-    category: "Forms",
     description:
       "Switch da Fluid Functionalism com thumb que estica no hover/press e suporte a arraste para alternar.",
     tags: ["fluid", "switch", "toggle", "alternar", "formulário", "controle"],
@@ -745,7 +660,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "tooltip-fluid",
     name: "Tooltip (Fluid)",
-    category: "Feedback",
     description:
       "Tooltip da Fluid Functionalism com animação de entrada/saída via motion e posicionamento em quatro lados.",
     tags: ["fluid", "tooltip", "dica", "popover", "hover", "feedback"],
@@ -753,7 +667,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "hover-card",
     name: "Hover Card",
-    category: "Feedback",
     description:
       "Card flutuante com conteúdo rico que aparece ao passar o mouse sobre um gatilho. Baseado em @radix-ui/react-hover-card.",
     tags: ["hover", "card", "preview", "popover", "tooltip", "shadcn"],
@@ -761,7 +674,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "table-fluid",
     name: "Table (Fluid)",
-    category: "Layout",
     description:
       "Tabela da Fluid Functionalism com destaque de linha por proximidade do cursor e transições suaves.",
     tags: ["fluid", "table", "tabela", "dados", "linhas", "layout"],
@@ -771,7 +683,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "file-thumbnail-fluid",
     name: "File Thumbnail (Fluid)",
-    category: "Feedback",
     description:
       "Miniatura quadrada de arquivo da Fluid Functionalism: pré-visualiza imagens e a primeira página de PDFs (via pdfjs) com spinner enquanto carrega.",
     tags: ["fluid", "file", "arquivo", "thumbnail", "preview", "pdf", "imagem"],
@@ -779,7 +690,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "thinking-indicator-fluid",
     name: "Thinking Indicator (Fluid)",
-    category: "Feedback",
     description:
       "Indicador de processamento da Fluid Functionalism com ícone morfando entre formas e texto com efeito shimmer que alterna palavras.",
     tags: ["fluid", "thinking", "loading", "indicador", "shimmer", "ia"],
@@ -787,7 +697,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "input-group-fluid",
     name: "Input Group (Fluid)",
-    category: "Forms",
     description:
       "Grupo de campos de texto da Fluid Functionalism com destaque por proximidade do cursor, ícones, foco animado e mensagens de erro.",
     tags: ["fluid", "input", "campo", "formulário", "grupo", "erro"],
@@ -795,7 +704,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "input-copy-fluid",
     name: "Input Copy (Fluid)",
-    category: "Forms",
     description:
       "Campo somente leitura da Fluid Functionalism para exibir e copiar um valor, com variantes ícone (tooltip) e botão e animação de check.",
     tags: ["fluid", "input", "copiar", "clipboard", "copy", "formulário"],
@@ -803,7 +711,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "tabs-subtle-fluid",
     name: "Tabs Subtle (Fluid)",
-    category: "Layout",
     description:
       "Abas sutis da Fluid Functionalism com pílula selecionada animada, hover por proximidade, anel de foco e modo de rótulo só na ativa.",
     tags: ["fluid", "tabs", "abas", "navegação", "layout", "pílula"],
@@ -811,7 +718,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "dropdown-fluid",
     name: "Dropdown (Fluid)",
-    category: "Actions",
     description:
       "Menu dropdown da Fluid Functionalism com itens (MenuItem) selecionáveis, destaque por proximidade, check animado e elevação de superfície.",
     tags: ["fluid", "dropdown", "menu", "ações", "popover", "seleção"],
@@ -819,7 +725,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "accordion-fluid",
     name: "Accordion (Fluid)",
-    category: "Layout",
     description:
       "Accordion da Fluid Functionalism com expansão animada por mola, destaque por proximidade do cursor, anel de foco e modos single/multiple.",
     tags: ["fluid", "accordion", "acordeão", "expansível", "collapse", "layout"],
@@ -827,7 +732,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "radio-group-fluid",
     name: "Radio Group (Fluid)",
-    category: "Forms",
     description:
       "Grupo de opções exclusivas da Fluid Functionalism com fundo selecionado animado, destaque por proximidade, navegação por teclado e ponto animado.",
     tags: ["fluid", "radio", "rádio", "seleção", "opções", "formulário"],
@@ -835,7 +739,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "checkbox-group-fluid",
     name: "Checkbox Group (Fluid)",
-    category: "Forms",
     description:
       "Grupo de caixas de seleção da Fluid Functionalism com fundos contíguos que se fundem/separam (merge/split), check animado e destaque por proximidade.",
     tags: ["fluid", "checkbox", "seleção", "múltipla", "marcar", "formulário"],
@@ -843,7 +746,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "select-fluid",
     name: "Select (Fluid)",
-    category: "Forms",
     description:
       "Select da Fluid Functionalism com popover em portal, destaque por proximidade, check animado, variantes bordered/borderless e suporte a ícones e erro.",
     tags: ["fluid", "select", "combobox", "dropdown", "seleção", "formulário"],
@@ -851,7 +753,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "tabs-fluid",
     name: "Tabs (Fluid)",
-    category: "Layout",
     description:
       "Abas da Fluid Functionalism com indicador de pílula elevada animado, hover por proximidade no eixo horizontal, anel de foco e painéis controlados.",
     tags: ["fluid", "tabs", "abas", "navegação", "pílula", "layout"],
@@ -859,7 +760,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "dialog-fluid",
     name: "Dialog (Fluid)",
-    category: "Layout",
     description:
       "Modal da Fluid Functionalism com overlay e conteúdo animados por mola, elevação de superfície empilhável, formas configuráveis e botão de fechar integrado.",
     tags: ["fluid", "dialog", "modal", "popup", "overlay", "layout"],
@@ -867,7 +767,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "chat-message-fluid",
     name: "Chat Message (Fluid)",
-    category: "Feedback",
     description:
       "Bolha de mensagem de chat da Fluid Functionalism com entrada animada, alinhamento por remetente (usuário/assistente), anexos em miniatura e meta-linha revelada no hover.",
     tags: ["fluid", "chat", "mensagem", "conversa", "assistente", "feedback"],
@@ -875,7 +774,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "thinking-steps-fluid",
     name: "Thinking Steps (Fluid)",
-    category: "Feedback",
     description:
       "Trilha de raciocínio da Fluid Functionalism: accordion com passos animados, status (ativo/concluído), detalhes aninhados, fontes em badges e imagens — para exibir o pensamento de uma IA.",
     tags: ["fluid", "thinking", "raciocínio", "ia", "passos", "feedback"],
@@ -883,7 +781,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "color-picker-fluid",
     name: "Color Picker (Fluid)",
-    category: "Forms",
     description:
       "Seletor de cor da Fluid Functionalism com quadrado de saturação, sliders de matiz e alpha, conta-gotas, swatches e formatos hex/rgb/hsl/oklch — em painel inline ou popover.",
     tags: ["fluid", "color", "cor", "picker", "seletor", "formulário"],
@@ -891,7 +788,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "ask-user-questions-fluid",
     name: "Ask User Questions (Fluid)",
-    category: "Forms",
     description:
       "Fluxo de perguntas da Fluid Functionalism: seleção única ou múltipla, campo 'Outro', mesclagem animada de seleções contíguas, navegação por teclado e Back/Skip/Continue.",
     tags: ["fluid", "perguntas", "questionário", "seleção", "formulário", "wizard"],
@@ -899,7 +795,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "input-message-fluid",
     name: "Input Message (Fluid)",
-    category: "Forms",
     description:
       "Composer de mensagem da Fluid Functionalism: textarea auto-expansível, anexos via drag-and-drop e picker, preview de imagens/PDF, slots customizáveis e botão de envio.",
     tags: ["fluid", "input", "mensagem", "chat", "anexo", "formulário"],
@@ -907,7 +802,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "logo-slider",
     name: "Logo Slider",
-    category: "Layout",
     description:
       "Marquee infinito de logos (CSS puro) com loop sem emenda e blur progressivo nas bordas; configurável por direção, velocidade e pause-on-hover.",
     tags: ["marquee", "logos", "slider", "infinite", "blur", "vengenceui"],
@@ -916,7 +810,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "sidebar",
     name: "Sidebar",
-    category: "Layout",
     description:
       "Barra lateral que recolhe para 60px e expande para 300px ao passar o mouse (motion/react), com rótulos que aparecem/desaparecem suavemente. No mobile vira um drawer em tela cheia. Suporta estado controlado e modo sempre-expandido (animate=false).",
     tags: [
@@ -933,7 +826,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "team-section-with-scales",
     name: "Team Section with Scales",
-    category: "Layout",
     description:
       "Seção de equipe com cabeçalho (eyebrow + título + descrição) e grade responsiva de cards de membros sobre o pattern decorativo Scales (linhas via CSS, reativo ao tema). Cada card traz avatar, nome, cargo, bio e links sociais opcionais, com realce no hover (motion/react).",
     tags: [
@@ -950,7 +842,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "stateful-button",
     name: "Stateful Button",
-    category: "Actions",
     description:
       "Botão com feedback de estado: ao clicar dispara um spinner de loading (motion/react) enquanto o handler assíncrono resolve e exibe um check de sucesso ao concluir. Animações de layout suaves e cor/tamanho customizáveis via className.",
     tags: [
@@ -967,7 +858,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "images-slider",
     name: "Images Slider",
-    category: "Layout",
     description:
       "Slider de imagens em tela cheia com autoplay (5s), navegação por teclado (← →) e transição 3D (escala + rotateX + saída deslizante para cima/baixo). Suporta overlay escuro e conteúdo sobreposto centralizado via children.",
     tags: [
@@ -984,7 +874,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "floating-dock",
     name: "Floating Dock",
-    category: "Actions",
     description:
       "Dock de navegação estilo macOS com magnificação dos ícones conforme a proximidade do cursor (motion useTransform + useSpring). Responsivo: barra horizontal no desktop (md+) e botão flutuante expansível no mobile, com tooltip por item.",
     tags: [
@@ -1001,7 +890,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "floating-navbar",
     name: "Floating Navbar",
-    category: "Actions",
     description:
       "Navbar pill flutuante (rounded-full) que aparece ao rolar para cima e some ao rolar para baixo. Animação de entrada/saída via motion (translateY + opacity) controlada por useScroll/useMotionValueEvent. Itens com ícone (mobile) ou rótulo (desktop) + botão de CTA opcional. Aceita scrollContainer próprio.",
     tags: [
@@ -1018,7 +906,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "following-pointer",
     name: "Following Pointer",
-    category: "Feedback",
     description:
       "Substitui o cursor nativo por um ponteiro animado (motion/react) que segue o mouse dentro da área, com um badge configurável (título/avatar) ao lado. Ótimo para destacar cards de blog ou conteúdo interativo.",
     tags: [
@@ -1035,7 +922,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "resizable-navbar",
     name: "Resizable Navbar",
-    category: "Actions",
     description:
       "Barra de navegação que encolhe ao rolar a página (motion/react + useScroll): ganha blur, sombra e reduz a largura. Inclui variante desktop e menu mobile colapsável com toggle animado.",
     tags: [
@@ -1052,7 +938,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "features-section-with-skeletons",
     name: "Features Section with Skeletons",
-    category: "Layout",
     description:
       "Seção de features em grade bento responsiva (lg:grid-cols-6) com cards que exibem skeletons animados (motion/react) como preview — grade de imagens com hover, barras de analytics e anel pulsante. Cabeçalho e features configuráveis via props.",
     tags: [
@@ -1069,7 +954,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "encrypted-text",
     name: "Encrypted Text",
-    category: "Feedback",
     description:
       "Texto que entra como ruído aleatório e é descriptografado caractere a caractere quando aparece no viewport. Charset, velocidade de revelação e de flip configuráveis, com classes separadas para os estados embaralhado e revelado.",
     tags: ["encrypted", "decrypt", "scramble", "text", "reveal", "terminal", "hacker", "motion"],
@@ -1077,7 +961,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "container-cover",
     name: "Container Cover",
-    category: "Feedback",
     description:
       "Destaque animado para texto inline: ao passar o mouse, o fundo escurece, partículas (sparkles) percorrem a área, beams horizontais varrem o bloco e o texto treme e encolhe levemente. Ideal para realçar palavras em headlines.",
     tags: [
@@ -1094,7 +977,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "navbar-menu",
     name: "Navbar Menu",
-    category: "Layout",
     description:
       "Navbar pill (rounded-full) com menu hover-dropdown fullscreen-blur. Hover num item (MenuItem) abre card dropdown com backdrop-blur-sm rounded-2xl border shadow-xl. Itens internos: ProductItem (img + título + descrição) e HoveredLink (link simples).",
     tags: [
@@ -1111,7 +993,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "compare",
     name: "Compare",
-    category: "Layout",
     description:
       "Slider de comparação de 2 imagens com handle arrastável. Suporta modo hover (segue o mouse) e drag (arrastar explícito), com animação de autoplay opcional. Usa clip-path para recorte e requestAnimationFrame para movimento suave.",
     tags: [
@@ -1128,7 +1009,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "focus-cards",
     name: "Focus Cards",
-    category: "Layout",
     description:
       "Grid de cards de imagem com efeito de foco reverso: ao passar o mouse sobre um card, os demais ganham blur leve e scale reduzido, destacando o item hovered. Cada card exibe uma imagem com overlay escuro e título em gradiente claro. Sem dependências externas — transições CSS puras com transition-all.",
     tags: [
@@ -1145,7 +1025,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "3d-globe",
     name: "3D Globe",
-    category: "Feedback",
     description:
       "Globo terrestre 3D que rotaciona automaticamente, reimplementado com a lib leve cobe (~5kb) sobre WebGL — sem texturas ou imagens remotas. Os pontos do mapa e os markers são desenhados por shader. Cores dark fixas (globo escuro + markers ciano) são a assinatura visual do efeito (estilo Aceternity), então não seguem o tema shadcn. Faz cleanup do contexto WebGL (globe.destroy() + cancelAnimationFrame) ao desmontar.",
     tags: ["3d", "globe", "webgl", "cobe", "map", "aceternity", "feedback"],
@@ -1153,7 +1032,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "github-globe",
     name: "GitHub Globe",
-    category: "Feedback",
     description:
       "Globo 3D interativo estilo GitHub (Aceternity UI) renderizado com three + three-globe sobre WebGL: continentes em hex-polígonos, arcos animados (com dash + gap) entre pares de coordenadas, anéis pulsantes nos pontos de origem e rotação automática via OrbitControls. Cores dark hardcoded (fundo preto, globo azul-marinho, atmosfera) — brand do efeito, não segue tema shadcn. Faz cleanup completo do contexto WebGL (dispose de geometrias/materiais/renderer, cancelAnimationFrame) ao desmontar.",
     tags: [
@@ -1172,7 +1050,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "google-gemini-effect",
     name: "Google Gemini Effect",
-    category: "Feedback",
     description:
       "Cinco curvas SVG onduladas e coloridas (rosa, laranja, azul-claro, azul e azul-forte) que se desenham progressivamente via pathLength conforme o scroll, com cópias borradas (Gaussian blur) por baixo formando um glow. Os MotionValue do pathLength vêm de useScroll + useTransform na área scrollável, inspirado na animação de aterrissagem do Google Gemini.",
     tags: [
@@ -1189,7 +1066,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "pixelated-canvas",
     name: "Pixelated Canvas",
-    category: "Feedback",
     description:
       "Renderiza uma imagem como uma malha de pixels (quadrados ou círculos) sobre canvas 2D, com amostragem por célula, dropout em regiões de baixo contraste, tint, grayscale e object-fit. No modo interativo, os pixels se distorcem ao redor do cursor (repel/attract/swirl) com jitter e fade suave ao sair, tudo via requestAnimationFrame com limpeza de listeners e rAF.",
     tags: [
@@ -1204,7 +1080,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "timeline",
     name: "Timeline",
-    category: "Layout",
     description:
       "Linha do tempo vertical da Aceternity UI com uma barra de progresso que cresce (gradiente roxo→azul) conforme a rolagem, dirigida por motion useScroll. Cada entrada tem um marco com título (data) e conteúdo arbitrário; sticky labels no desktop. Cabeçalho e descrição configuráveis.",
     tags: ["timeline", "scroll", "progress", "changelog", "layout", "aceternity"],
@@ -1212,7 +1087,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "terminal",
     name: "Terminal",
-    category: "Feedback",
     description:
       "Mock de terminal/console da Aceternity UI que datilografa comandos linha a linha com cursor piscante, syntax highlight de bash (comandos, flags, strings, paths) e saídas opcionais por comando. Anima ao entrar na viewport; velocidade, usuário e atrasos configuráveis.",
     tags: ["terminal", "console", "typewriter", "cli", "bash", "aceternity"],
@@ -1220,7 +1094,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "parallax-hero-images-2",
     name: "Parallax Hero Images 2",
-    category: "Layout",
     description:
       "Variante 2 (scroll-driven) do parallax hero da Aceternity UI: imagens distribuídas em 3 colunas que deslizam verticalmente conforme a rolagem avança (laterais sobem, meio desce, com leve zoom-out), criando profundidade. Aceita uma área scrollável própria via scrollRef para hero sections com conteúdo sobreposto.",
     tags: ["hero", "parallax", "scroll", "images", "layout", "aceternity"],
@@ -1228,7 +1101,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "tracing-beam",
     name: "Tracing Beam",
-    category: "Layout",
     description:
       "Feixe luminoso da Aceternity UI que acompanha a rolagem ao lado do conteúdo: um caminho SVG preenchido por um gradiente (ciano → violeta) cujo progresso evolui com o scroll, dirigido por motion (useScroll + useSpring). Ideal para artigos longos e landing pages narrativas; envolve qualquer conteúdo e mede sua altura automaticamente.",
     tags: ["tracing", "beam", "scroll", "gradient", "layout", "aceternity"],
@@ -1236,7 +1108,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "parallax-scroll",
     name: "Parallax Scroll",
-    category: "Layout",
     description:
       "Galeria de imagens da Aceternity UI em 3 colunas que se movem em velocidades e direções diferentes conforme o scroll da própria área (altura fixa, overflow-y-auto): as laterais sobem e a do meio desce, criando profundidade. Usa useScroll/useTransform da motion.",
     tags: ["parallax", "scroll", "gallery", "images", "grid", "aceternity"],
@@ -1244,7 +1115,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "noise-background",
     name: "Noise Background",
-    category: "Feedback",
     description:
       "Fundo da Aceternity UI com camadas de gradiente radial que flutuam aleatoriamente em loop, sobrepostas por uma textura de ruído sutil (mix-blend overlay) e uma faixa de luz no topo. Cores, intensidade do ruído e velocidade configuráveis; envolve qualquer conteúdo.",
     tags: ["noise", "background", "gradient", "grain", "texture", "aceternity"],
@@ -1252,7 +1122,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "hero-section-with-mousemove",
     name: "Hero Section with Mousemove",
-    category: "Layout",
     description:
       "Hero imersivo da Aceternity UI com elementos flutuantes que reagem ao movimento do mouse: cada cartão se desloca em parallax proporcional à sua profundidade (depth), sobre um fundo escuro com grade e brilho radial. Título, descrição e itens são configuráveis.",
     tags: ["hero", "mousemove", "parallax", "interactive", "layout", "aceternity"],
@@ -1260,7 +1129,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "background-gradient",
     name: "Background Gradient",
-    category: "Feedback",
     description:
       "Borda em gradiente radial multicolor (verde/violeta/amarelo/azul) animada em loop suave que intensifica o brilho no hover, ideal para destacar cards e botões. Reimplementado padronizado shadcn com motion/react.",
     tags: [
@@ -1277,7 +1145,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "glowing-effect",
     name: "Glowing Effect",
-    category: "Feedback",
     description:
       "Borda luminosa que segue o cursor: gradiente cônico rotacionado em torno do card via máscara, atualizado por pointermove e interpolado com easing do motion.",
     tags: [
@@ -1295,7 +1162,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "hero-highlight",
     name: "Hero Highlight",
-    category: "Layout",
     description:
       "Seção hero com fundo de pontos que revela um realce indigo seguindo o cursor (radial mask) e texto destacado com fundo gradiente animado.",
     tags: [
@@ -1313,7 +1179,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "shooting-stars-and-stars-background",
     name: "Shooting Stars and Stars Background",
-    category: "Feedback",
     description:
       "Céu noturno da Aceternity UI em duas camadas: StarsBackground desenha estrelas estáticas cintilando em <canvas> (densidade e velocidade de twinkle configuráveis) e ShootingStars dispara estrelas cadentes em <svg> que atravessam a tela em ângulos aleatórios, com gradiente de cauda configurável. Animado via requestAnimationFrame com cleanup. Fundo escuro fixo (brand do efeito).",
     tags: [
@@ -1329,7 +1194,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "typewriter-effect",
     name: "Typewriter Effect",
-    category: "Feedback",
     description:
       "Efeito de datilografia da Aceternity UI em duas variantes: TypewriterEffect revela cada caractere com stagger de 0.1s quando entra na viewport; TypewriterEffectSmooth (máquina de escrever) anima a largura do container de 0% até fit-content em 2s. Cursor (token --primary do shadcn) pisca em loop infinito em ambas. Ideal para títulos de hero, slogans e CTAs animados.",
     tags: [
@@ -1347,7 +1211,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "grid-and-dot-backgrounds",
     name: "Grid and Dot Backgrounds",
-    category: "Layout",
     description:
       "Fundos decorativos da Aceternity UI em CSS puro: malha de linhas (grid / grid-small) ou pontos (dot) desenhados via background-image (linear/radial-gradient) com máscara radial que esmaece nas bordas. Wrapper relative com altura própria e conteúdo sobreposto; cores derivam dos tokens shadcn, adaptando a light/dark.",
     tags: ["background", "grid", "dot", "pattern", "hero", "aceternity"],
@@ -1355,7 +1218,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "meteors",
     name: "Meteors",
-    category: "Feedback",
     description:
       "Efeito de fundo da Aceternity UI: uma chuva de meteoros diagonais que cruzam a tela em loop, cada um com atraso e duração aleatórios. Fica atrás do conteúdo (card/hero) para dar movimento sutil. Quantidade configurável via prop number.",
     tags: ["meteors", "background", "animation", "stars", "hero", "aceternity"],
@@ -1363,7 +1225,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "spotlight",
     name: "Spotlight",
-    category: "Feedback",
     description:
       "Efeito de holofote da Aceternity UI: um SVG com elipse desfocada que simula um facho de luz vindo de um canto, com fade-in suave (animate-spotlight). Posicionado de forma absoluta dentro de um container relative de fundo escuro, atrás do conteúdo. Cor configurável via prop fill.",
     tags: ["spotlight", "light", "glow", "hero", "background", "aceternity"],
@@ -1371,7 +1232,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "spotlight-new",
     name: "Spotlight New",
-    category: "Feedback",
     description:
       "Versão nova do spotlight da Aceternity UI: dois feixes de luz (radial-gradient) que balançam em loop suave sobre um fundo escuro, ideal para destacar um hero. Cores, amplitude e velocidade configuráveis.",
     tags: ["spotlight", "light", "beam", "hero", "background", "aceternity"],
@@ -1379,7 +1239,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "expandable-cards",
     name: "Expandable Cards",
-    category: "Layout",
     description:
       "Lista de cards da Aceternity UI que expandem para um modal centralizado fullscreen via shared layout (layoutId/motion). Overlay com blur, fecha com Escape ou clique fora, e trava o scroll do body enquanto aberto.",
     tags: ["card", "expand", "modal", "layout", "animation", "aceternity"],
@@ -1387,7 +1246,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "3d-card-effect",
     name: "3D Card Effect",
-    category: "Layout",
     description:
       "Card que inclina seguindo o cursor com elementos internos flutuando em profundidades distintas (perspectiva 3D real).",
     tags: ["card", "3d", "perspective", "hover", "tilt", "aceternity"],
@@ -1395,7 +1253,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "card-stack",
     name: "Card Stack",
-    category: "Layout",
     description:
       "Pilha de cards de testimonials da Aceternity UI que rotaciona automaticamente: a cada ~5s o card do topo vai pro fundo. Empilhamento com offset vertical e escala decrescente por profundidade, animado com motion. Inclui o helper Highlight pra destacar trechos em emerald.",
     tags: ["card", "stack", "testimonials", "carousel", "animation", "aceternity"],
@@ -1403,7 +1260,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "background-lines",
     name: "Background Lines",
-    category: "Feedback",
     description:
       "Efeito de fundo da Aceternity UI: SVG com múltiplos paths curvos coloridos que animam em padrão de onda (wave) em loop, atrás do conteúdo. Inspirado no height.app; fundo transparente que adapta ao tema.",
     tags: ["background", "lines", "svg", "wave", "hero", "aceternity"],
@@ -1411,7 +1267,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "svg-mask-effect",
     name: "SVG Mask Effect",
-    category: "Feedback",
     description:
       "Efeito de revelação da Aceternity UI: o texto base fica escondido por uma camada; ao mover o mouse, uma máscara circular segue o cursor e revela o conteúdo por baixo, crescendo no hover. Funciona em light e dark.",
     tags: ["mask", "reveal", "hover", "cursor", "effect", "aceternity"],
@@ -1419,7 +1274,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "background-beams-with-collision",
     name: "Background Beams With Collision",
-    category: "Feedback",
     description:
       "Efeito de fundo da Aceternity UI: feixes verticais coloridos caem do topo e explodem em partículas ao colidir com a base. Detecção de colisão via getBoundingClientRect; fundo adapta ao tema.",
     tags: ["background", "beams", "collision", "explosion", "hero", "aceternity"],
@@ -1427,7 +1281,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "background-ripple-effect",
     name: "Background Ripple Effect",
-    category: "Feedback",
     description:
       "Grade de células quadradas da Aceternity UI: ao clicar numa célula, um ripple (onda de opacidade) se propaga pelas vizinhas com delay proporcional à distância. Cores reativas ao tema.",
     tags: ["background", "ripple", "grid", "interactive", "click", "aceternity"],
@@ -1435,7 +1288,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "images-badge",
     name: "Images Badge",
-    category: "Feedback",
     description:
       "Badge da Aceternity UI com ícone de pasta + texto; no hover, até 3 imagens saem da pasta num leque animado (fan-out via translate/spread/rotation) usando motion.",
     tags: ["badge", "images", "hover", "fan", "gallery", "aceternity"],
@@ -1443,7 +1295,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "parallax-hero-images",
     name: "Parallax Hero Images",
-    category: "Layout",
     description:
       "Hero com imagens em profundidades distintas que transladam em parallax ao mover o mouse; entrada com fade-in + blur. Variante default vs edge-focus muda o mapa de profundidade.",
     tags: ["parallax", "hero", "images", "mouse", "depth", "aceternity"],
@@ -1451,7 +1302,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "scales",
     name: "Scales",
-    category: "Layout",
     description:
       "Background decorativo da Aceternity UI: pattern de linhas repetidas via CSS puro, com orientação (horizontal/vertical/diagonal), densidade e cor configuráveis. ScalesContainer posiciona o pattern atrás do conteúdo.",
     tags: ["background", "pattern", "lines", "diagonal", "decorative", "aceternity"],
@@ -1459,7 +1309,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "sparkles",
     name: "Sparkles",
-    category: "Feedback",
     description:
       "Campo de partículas brancas cintilantes (twinkle + leve drift) em canvas puro, reimplementado a partir do SparklesCore da Aceternity UI. Ideal como background de hero ou efeito standalone.",
     tags: ["sparkles", "particles", "background", "hero", "canvas", "aceternity"],
@@ -1467,7 +1316,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "dotted-glow-background",
     name: "Dotted Glow Background",
-    category: "Feedback",
     description:
       "Fundo em canvas da Aceternity UI: grade de pontos que pulsam (alpha animado) com efeito glow, via requestAnimationFrame. Cores reativas ao tema (light/dark) por CSS variables, alta densidade (devicePixelRatio) e ResizeObserver.",
     tags: ["background", "dots", "glow", "animation", "canvas", "aceternity"],
@@ -1475,7 +1323,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "background-boxes",
     name: "Background Boxes",
-    category: "Feedback",
     description:
       "Grid de células da Aceternity UI sobre fundo escuro; ao passar o mouse, cada célula acende com uma cor de highlight aleatória. Container com perspectiva isométrica (skew/translate/scale) e ícones \"+\" esparsos, via motion.",
     tags: ["background", "boxes", "grid", "hover", "highlight", "aceternity"],
@@ -1483,7 +1330,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "wavy-background",
     name: "Wavy Background",
-    category: "Feedback",
     description:
       "Ondas coloridas suaves animadas em canvas atrás de um conteúdo (hero escuro), com movimento orgânico gerado por simplex noise 3D reimplementado inline (zero dependência externa).",
     tags: ["background", "waves", "canvas", "hero", "animation", "aceternity"],
@@ -1491,7 +1337,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "background-beams",
     name: "Background Beams",
-    category: "Feedback",
     description:
       "Feixes de luz (\"beams\") da Aceternity UI que seguem dezenas de paths SVG curvos animados via linearGradients em movimento (x1/y1/x2/y2 percorrendo o caminho), sobre fundo escuro. Ideal como background de hero.",
     tags: ["background", "beams", "svg", "hero", "animation", "aceternity"],
@@ -1499,7 +1344,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "vortex",
     name: "Vortex",
-    category: "Feedback",
     description:
       "Fundo de partículas em redemoinho (swirl) animado em canvas via simplex noise 3D, com glow aditivo e CTA sobreposto. Cor, contagem de partículas, amplitude e velocidade configuráveis; fundo escuro fixo (brand do efeito).",
     tags: ["background", "vortex", "particles", "swirl", "canvas", "aceternity"],
@@ -1507,7 +1351,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "tooltip-card",
     name: "Tooltip Card",
-    category: "Feedback",
     description:
       "Tooltip da Aceternity UI que aparece no hover e SEGUE o cursor (motion/react com AnimatePresence + spring). O conteúdo pode ser texto simples ou um card React rico (avatar, nome, bio); posição calculada a partir do mouse com clamp nas bordas do viewport.",
     tags: ["tooltip", "card", "hover", "cursor", "follow", "aceternity"],
@@ -1515,7 +1358,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "card-hover-effect",
     name: "Card Hover Effect",
-    category: "Layout",
     description:
       "Grid de cards da Aceternity UI onde, ao passar o mouse, um fundo destacado desliza suavemente entre os cards via motion (AnimatePresence + layoutId compartilhado). Funciona em light e dark.",
     tags: ["card", "hover", "grid", "slide", "layout", "aceternity"],
@@ -1523,7 +1365,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "container-scroll-animation",
     name: "Container Scroll Animation",
-    category: "Layout",
     description:
       "Efeito de scroll 3D da Aceternity UI: conforme o usuário rola, um card/mockup rotaciona (rotateX), escala e o título translada para cima. Dirigido por useScroll/useTransform (motion/react); detecção de mobile ajusta a escala. Funciona em light e dark.",
     tags: ["scroll", "animation", "3d", "hero", "parallax", "aceternity"],
@@ -1531,7 +1372,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "hero-parallax",
     name: "Hero Parallax",
-    category: "Layout",
     description:
       "Hero da Aceternity UI: header (título + descrição) sobre 3 fileiras de 5 thumbnails de produtos que transladam horizontalmente em direções opostas conforme o scroll, com o conjunto rotacionando (rotateX/rotateZ), transladando e esmaecendo — suavizado por springs (useScroll/useTransform/useSpring de motion/react).",
     tags: ["hero", "parallax", "scroll", "products", "grid", "aceternity"],
@@ -1539,7 +1379,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "text-hover-effect",
     name: "Text Hover Effect",
-    category: "Feedback",
     description:
       "SVG com texto em stroke que, ao passar o mouse, ganha um realce gradiente multicolor (amarelo/vermelho/azul/ciano/violeta) revelado por uma máscara radial seguindo o cursor, com stroke inicial animado via strokeDasharray. Reimplementado padronizado shadcn com motion/react, palette de gradiente configurável e variantes de densidade.",
     tags: [
@@ -1557,7 +1396,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "lamp-effect",
     name: "Lamp Effect",
-    category: "Feedback",
     description:
       "Efeito \"lâmpada\" da Aceternity UI: dois cones de luz cônicos (conic-gradient) com blur que crescem ao entrar na viewport, acompanhados de uma linha brilhante horizontal, projetando luz ciano sobre um fundo escuro (slate-950) para revelar um título abaixo. Animado por whileInView de motion/react.",
     tags: ["lamp", "light", "glow", "hero", "conic", "aceternity"],
@@ -1565,7 +1403,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "text-generate-effect",
     name: "Text Generate Effect",
-    category: "Feedback",
     description:
       "Texto da Aceternity UI em que cada palavra entra com fade + blur desfocado (10px) com stagger de 0.2s. Tema via token semântico text-foreground; aceita frase, flag de blur e duração customizada. Animado na montagem via useAnimate (motion/react).",
     tags: ["text", "gerar", "blur", "stagger", "animação", "aceternity"],
@@ -1573,7 +1410,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "flip-words",
     name: "Flip Words",
-    category: "Feedback",
     description:
       "Ciclador de palavras da Aceternity UI: AnimatePresence com troca animada por letra (entrada com stagger blur→nítido, saída dramática com scale, blur e deslocamento). Tema segue token semântico text-foreground; aceita lista de palavras e duração customizável.",
     tags: ["flip", "words", "texto", "animação", "letra", "aceternity"],
@@ -1583,7 +1419,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "layout-text-flip",
     name: "Layout Text Flip",
-    category: "Feedback",
     description:
       "Título fixo + palavra que rotaciona com flip vertical (y -40 → 0 → +50) e blur de entrada/saída (Aceternity UI). O layoutId do título permite transição suave entre seções; a palavra rotativa usa popLayout para preservar posição. A pill rotativa usa tokens semânticos shadcn (bg-card + ring-border), aceitando duration customizável e children opcional (ex.: separador).",
     tags: ["flip", "layout", "texto", "animação", "hero", "aceternity"],
@@ -1591,7 +1426,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "aurora-background",
     name: "Aurora Background",
-    category: "Feedback",
     description:
       "Fundo animado da Aceternity UI com gradiente aurora (repeating-linear-gradient em tons azul/índigo/violeta) que desliza horizontalmente em loop infinito (keyframe aurora 60s). Inclui mask radial opcional, variação automática para dark mode e blend difference para contraste orgânico do conteúdo. Cores do efeito são fixas (assinatura visual).",
     tags: [
@@ -1606,7 +1440,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "text-reveal-card",
     name: "Text Reveal Card",
-    category: "Feedback",
     description:
       "Card Aceternity UI: arraste o mouse sobre o card e um texto escondido é revelado progressivamente da esquerda pra direita via clip-path animado por motion, com estrelinhas piscando ao fundo. Background escuro fixo (brand do efeito).",
     tags: ["text", "reveal", "card", "mask", "mouse", "stars", "aceternity"],
@@ -1616,7 +1449,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "glowing-stars-effect",
     name: "Glowing Stars Effect",
-    category: "Feedback",
     description:
       "Card da Aceternity UI com uma malha de estrelinhas (108 pontos em 18 colunas) que brilham aleatoriamente a cada 3s e acendem todas no hover, com glows azuis (motion/react). Inclui subcomponentes GlowingStarsTitle e GlowingStarsDescription para o conteúdo do card.",
     tags: ["card", "stars", "glow", "animation", "aceternity"],
@@ -1624,7 +1456,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "container-text-flip",
     name: "Container Text Flip",
-    category: "Feedback",
     description:
       "Container animado da Aceternity UI que muda de largura suavemente para acomodar a palavra atual e cicla por uma lista de palavras com stagger de blur por letra (10px → nítido). Tema segue tokens semânticos shadcn (text-foreground, bg-muted, border). Aceita lista de palavras, intervalo entre trocas e duração da animação.",
     tags: [
@@ -1643,7 +1474,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "squiggly-text",
     name: "Squiggly Text",
-    category: "Feedback",
     description:
       "Texto da Aceternity UI que 'treme' ciclicamente entre filtros SVG (feTurbulence + feDisplacementMap) com seeds diferentes, criando efeito de vibração/ondulação configurável (steps, stepDuration, scale, baseFrequency, numOctaves). Animação por useTime + useTransform de motion/react; o filtro aplica em qualquer texto inline ou em bloco (as='span'|'div').",
     tags: ["squiggly", "wobble", "text", "svg", "filter", "aceternity"],
@@ -1651,7 +1481,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "wobble-card",
     name: "Wobble Card",
-    category: "Layout",
     description:
       "Card que balança e translada com o mouse via motion (tilt 3D + scale do conteúdo + noise overlay).",
     tags: ["card", "tilt", "parallax", "motion", "aceternity", "feedback"],
@@ -1659,7 +1488,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "evervault-card",
     name: "Evervault Card",
-    category: "Layout",
     description:
       "Card da Aceternity UI que revela uma chuva de caracteres aleatórios sob um mask radial que segue o cursor: ao passar o mouse, um gradient verde→azul com efeito de mix-blend-overlay exibe uma string alfanumérica gerada dinamicamente, mantendo no centro um badge circular desfocado com o texto da prop `text`. Ideal para hero, CTAs criptografados e destaque visual. Reimplementado padronizado shadcn com motion/react.",
     tags: [
@@ -1679,7 +1507,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "glare-card",
     name: "Glare Card",
-    category: "Layout",
     description:
       "Card Aceternity com brilho/glare 3D seguindo o mouse: rotaciona (rotateX/rotateY) conforme o cursor e revela um gradiente rainbow/foil/diagonal sobre fundo escuro. Efeito brand fixo (precedente: text-reveal-card, vortex).",
     tags: ["glare", "card", "3d", "shine", "rainbow", "aceternity"],
@@ -1687,7 +1514,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "3d-pin",
     name: "3D Pin",
-    category: "Layout",
     description:
       "Card da Aceternity UI que inclina em 3D (rotateX + scale) no hover, acompanhado de um PinPerspective (linhas cyan e bolhas concêntricas em loop) que sobe do card. Ideal para destacar um CTA ou um item em destaque numa grid.",
     tags: [
@@ -1705,7 +1531,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "background-gradient-animation",
     name: "Background Gradient Animation",
-    category: "Feedback",
     description:
       "Fundo da Aceternity UI com blobs de gradiente radial que se movem continuamente (CSS keyframes) e se misturam via mix-blend-mode + filtro goo (feGaussianBlur/feColorMatrix). Um blob extra segue o cursor quando interactive. Cores, tamanho e blend configuráveis.",
     tags: ["background", "gradient", "blobs", "animation", "interactive", "aceternity"],
@@ -1713,7 +1538,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "draggable-card",
     name: "Draggable Card",
-    category: "Layout",
     description:
       "Card arrastável da Aceternity UI com física de mola (spring) e rotação 3D seguindo o cursor. Ao soltar, o gesto de arrastar é animado com spring e bounce proporcional à velocidade.",
     tags: [
@@ -1733,7 +1557,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "colourful-text",
     name: "Colourful Text",
-    category: "Feedback",
     description:
       "Componente Aceternity UI: cada caractere do texto anima com cor (10 tons do espectro RGB reembaralhados a cada 5s), y, scale, filter blur e opacity em loop, dando efeito de 'onda' colorida. Cores são fixas (brand do efeito, alinhado com glitch/cyber). Ideal para hero headlines e CTAs que precisam de destaque animado sem competir com o restante do copy.",
     tags: [
@@ -1750,7 +1573,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "direction-aware-hover",
     name: "Direction Aware Hover",
-    category: "Layout",
     description:
       "Card da Aceternity UI que detecta a borda de entrada do mouse via atan2 e desloca imagem + texto pela direção oposta: entrar por baixo → imagem sobe; entrar por cima → imagem desce. O overlay escuro e o texto surgem suavemente no hover. Ideal para grids de perfis, testemunhos ou vitrines visuais que precisam de microinteração direcional.",
     tags: [
@@ -1767,7 +1589,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "comet-card",
     name: "Comet Card",
-    category: "Layout",
     description:
       "Card 3D da Aceternity UI que segue o cursor com tilt (rotateX/Y), parallax (translateX/Y) e um glare radial que se move com o mouse. Profundidade de rotação e translação configuráveis via props; aceita qualquer conteúdo como children dentro de um card visual com overflow-hidden.",
     tags: [
@@ -1785,7 +1606,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "3d-marquee",
     name: "3D Marquee",
-    category: "Layout",
     description:
       "Grid 4 colunas em perspectiva 3D (rotateX 55°, rotateZ -45°) onde cada coluna rola verticalmente em loop infinito reverso, com durações alternadas (10s nas pares, 15s nas ímpares). Cada imagem ganha um leve translateY no hover. Inclui overlays decorativos de linhas horizontais/verticais com mask gradient nas bordas. Imagens mínimas: 16 (4 por coluna) — ideal 24 (6 por coluna).",
     tags: ["3d", "marquee", "grid", "gallery", "infinite", "aceternity"],
@@ -1795,7 +1615,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "animated-testimonials",
     name: "Animated Testimonials",
-    category: "Feedback",
     description:
       "Carrossel de depoimentos da Aceternity UI com AnimatePresence (motion v12): imagem rotaciona 3D aleatoriamente e entra com scale + z-index, nome/cargo/citação trocam com stagger de blur por palavra. Suporta autoplay (5s) e lista arbitrária de testemunhos via prop `testimonials`.",
     tags: [
@@ -1816,7 +1635,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "code-block",
     name: "Code Block",
-    category: "Feedback",
     description:
       "Bloco de código da Aceternity UI com syntax highlight manual leve (regex para keywords, strings, números, comentários e identificadores), números de linha, linhas destacáveis, abas com indicator animado (motion v12) e botão de copiar inline com feedback visual (ícone Check + cor emerald por 2s). Suporta múltiplas linguagens (ts/tsx, js/jsx, py, bash, json, css) via prop `language` ou por aba. Fundo slate-900 com borda slate-800 (brand dark, alinhado com glare-card/text-reveal-card).",
     tags: [
@@ -1836,7 +1654,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "dither-shader",
     name: "Dither Shader",
-    category: "Feedback",
     description:
       "Aplica dithering (Bayer / halftone / noise / crosshatch) sobre uma imagem renderizada num <canvas>, com modos de cor original / grayscale / duotone / custom. Usa Canvas 2D puro (sem WebGL/three.js) e suporta animação contínua no modo noise. Imagem via prop `src` (CORS-friendly, ex.: picsum.photos).",
     tags: [
@@ -1859,14 +1676,12 @@ export const components: ComponentMeta[] = [
   {
     slug: "file-upload",
     name: "File Upload",
-    category: "Forms",
     description: "...",
     tags: ["file", "upload", "drag", "drop", "aceternity"],
   },
   {
     slug: "animated-modal",
     name: "Animated Modal",
-    category: "Feedback",
     description:
       "Modal da Aceternity UI com animação de entrada cinematográfica (scale + rotateX + translateY), overlay com backdrop-blur, click-outside e body scroll-lock enquanto aberto. Composto por 5 peças (Provider, Trigger, Body, Content, Footer) que se combinam via Context.",
     tags: [
@@ -1885,7 +1700,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "gooey-input",
     name: "Gooey Input",
-    category: "Forms",
     description:
       "Search input com efeito gooey da Aceternity UI: filtro SVG (feGaussianBlur + feColorMatrix com alpha boost 20 -10) que faz o ícone circular 'derreter' e se fundir com a barra de search expandida. O ícone da lupa compartilha um layoutId entre o botão e o bubble destacado, criando uma transição orgânica via motion/react. Ao desfocar com campo vazio, o controle volta ao estado colapsado.",
     tags: ["search", "input", "gooey", "animation", "aceternity"],
@@ -1893,7 +1707,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "hover-border-gradient",
     name: "Hover Border Gradient",
-    category: "Actions",
     description:
       "Botão (ou wrapper polimórfico via `as`) com borda que ganha gradiente radial animado ao passar o mouse. Em repouso a direção do gradiente rotaciona ciclicamente (TOP→LEFT→BOTTOM→RIGHT) a cada `duration`s; no hover a borda preenche com o highlight azul (#3275F8). Cores são fixas (brand do efeito) — não segue tema shadcn.",
     tags: [
@@ -1912,7 +1725,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "loader",
     name: "Loader",
-    category: "Feedback",
     description:
       "Coleção de cinco loaders animados da Aceternity UI: três pontos saltitantes em onda, três pontos deslizando horizontalmente, raio SVG com pathLength 0→1 e fill animado, texto com skew/scale glitch e camadas RGB (verde+violeta) atrás, e caracteres pulsando com text-shadow. Cores são fixas (assinatura visual do efeito) e não seguem o tema shadcn.",
     tags: [
@@ -1929,7 +1741,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "moving-border",
     name: "Moving Border",
-    category: "Actions",
     description:
       "Botão (ou wrapper polimórfico via `as`) com borda que se move continuamente ao longo do perímetro, implementada com um `<rect>` SVG invisível percorrido por um gradiente radial via `getPointAtLength` + `useAnimationFrame` (motion v12). Duração configurável em ms, raio da borda customizável e gradiente da 'bola' substituível. Cores são fixas (slate-900 + cyan, brand do efeito) — não segue tema shadcn.",
     tags: [
@@ -1949,7 +1760,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "magnetic-button",
     name: "Magnetic Button",
-    category: "Actions",
     description:
       "Wrapper que atrai o conteúdo em direção ao cursor com spring (useMotionValue + useSpring). Quando o mouse se aproxima, o filho é deslocado proporcionalmente em direção ao ponteiro; ao sair, retorna ao centro com física de mola. A borda azul aparece no hover como feedback visual. Útil para CTAs e botões interativos.",
     tags: ["button", "magnetic", "hover", "spring", "aceternity"],
@@ -1959,7 +1769,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "notch",
     name: "Notch",
-    category: "Layout",
     description:
       "Barra/notch fixa no topo ou base do viewport (estilo iOS Dynamic Island) com grupos de triggers que abrem um popover de opções animado via motion/react. Cores dark hardcoded (bg-neutral-950/95, text-neutral-100/300/400) — brand do efeito, não segue tema shadcn.",
     tags: [
@@ -1978,7 +1787,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "sticky-scroll-reveal",
     name: "Sticky Scroll Reveal",
-    category: "Layout",
     description:
       "Container scrollável vertical com seções de texto à esquerda e um card sticky à direita que troca conteúdo e gradiente de fundo conforme a seção ativa muda. O progresso do scroll interno é medido por `useScroll({ container })` (motion v12) e mapeado em breakpoints normalizados (i/N) para decidir qual card está em foco. Cores são hardcoded (slate-900/black + gradientes cyan/pink/orange) — brand do efeito, não segue tema shadcn.",
     tags: [
@@ -1996,7 +1804,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "world-map",
     name: "World Map",
-    category: "Feedback",
     description:
       "Mapa-múndi pontilhado da Aceternity UI (SVG gerado em runtime pela lib dotted-map) com arcos curvos que se desenham progressivamente (pathLength animado por motion) entre pares de coordenadas, e pontos pulsantes (animate SVG) nas pontas. Útil para ilustrar conexões/rotas globais. Cor das linhas configurável e fundo adaptativo ao tema (branco no claro, preto no escuro).",
     tags: ["world", "map", "globe", "connections", "svg", "aceternity"],
@@ -2004,7 +1811,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "keyboard",
     name: "Keyboard",
-    category: "Feedback",
     description:
       "Teclado virtual estilo Apple com teclas que afundam ao clicar ou ao pressionar a tecla física correspondente. Suporte a layout QWERTZ/ANSI e preview animado da última tecla pressionada.",
     tags: ["keyboard", "teclado", "virtual", "apple", "aceternity"],
@@ -2012,7 +1818,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "placeholders-and-vanish-input",
     name: "Placeholders and Vanish Input",
-    category: "Forms",
     description:
       "Campo de texto com placeholders animados que desaparecem ao focar, e botão de submit com loading animado. Efeito de 'vanish' no texto ao enviar.",
     tags: ["input", "placeholder", "vanish", "animation", "aceternity"],
@@ -2020,7 +1825,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "webcam-pixel-grid",
     name: "Webcam Pixel Grid",
-    category: "Feedback",
     description:
       "Grid de pixels que captura frames da webcam e renderiza em tempo real como uma matriz de cores. Fallback elegante quando webcam não está disponível.",
     tags: ["webcam", "pixel", "grid", "camera", "realtime", "aceternity"],
@@ -2028,7 +1832,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "apple-cards-carousel",
     name: "Apple Cards Carousel",
-    category: "Layout",
     description:
       "Carrossel horizontal estilo Apple com cards que expandem em modal via layoutId (motion/react). Navegação por setas, scroll e botão X. Fecha com Escape ou clique fora.",
     tags: ["carousel", "cards", "apple", "modal", "layout", "motion", "gallery", "image"],
@@ -2036,7 +1839,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "ascii-art",
     name: "ASCII Art",
-    category: "Feedback",
     description:
       "Renderizador de imagem como ASCII art em canvas com animação (fade/typewriter/matrix). Suporta múltiplos charsets (standard, blocks, braille, dense, etc.), cores customizadas, ASCII colorido e efeito matrix com caracteres katakana.",
     tags: [
@@ -2056,7 +1858,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "canvas-reveal-effect",
     name: "Canvas Reveal Effect",
-    category: "Feedback",
     description:
       "Efeito de revelação com dot matrix WebGL usando shader customizada via @react-three/fiber + three. Animação surge do centro para as bordas com opacidade progressiva.",
     tags: ["canvas", "webgl", "shader", "dot-matrix", "reveal", "three", "animation", "aceternity"],
@@ -2064,7 +1865,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "card-spotlight",
     name: "Card Spotlight",
-    category: "Feedback",
     description:
       "Card com spotlight radial que segue o cursor (CSS custom props --mouse-x/--mouse-y) e grid de dots animado via CanvasRevealEffect no hover. Cores dark fixas (brand do efeito).",
     tags: ["card", "spotlight", "radial", "cursor", "dots", "canvas", "webgl", "aceternity"],
@@ -2072,7 +1872,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "canvas-text",
     name: "Canvas Text",
-    category: "Feedback",
     description:
       "Texto renderizado em canvas com animação e efeitos visuais.",
     tags: ["canvas", "text", "animation", "aceternity"],
@@ -2080,7 +1879,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "animated-tooltip",
     name: "Animated Tooltip",
-    category: "Feedback",
     description:
       "Fileira de avatares com tooltip animado que segue o cursor — useSpring + useTransform + AnimatePresence. O tooltip inclina e translada conforme a posição do mouse sobre o avatar. Cores dark hardcoded (fundo preto + gradientes emerald/sky) são a assinatura visual do efeito, não seguem tema shadcn.",
     tags: ["tooltip", "avatar", "spring", "animation", "hover", "aceternity", "feedback"],
@@ -2088,7 +1886,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "text-flipping-board",
     name: "Text Flipping Board",
-    category: "Feedback",
     description:
       "Split-flap board estilo aeroporto: cada caractere gira pra revelar a letra, com delay em cascata por linha e coluna.",
     tags: ["text", "split-flap", "board", "flip", "animation", "airport", "aceternity"],
@@ -2096,7 +1893,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "sticky-banner",
     name: "Sticky Banner",
-    category: "Layout",
     description:
       "Banner fixo no topo (sticky) que oculta/mostra conforme a posição de scroll, com botão de fechar interno. Wrapper bg-transparent — cor fica nos children.",
     tags: ["sticky", "banner", "scroll", "hide", "top", "aceternity", "layout"],
@@ -2104,7 +1900,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "multi-step-loader",
     name: "Multi Step Loader",
-    category: "Feedback",
     description:
       "Loader fullscreen com overlay blur, lista de etapas com índice ativo controlado por state, ícone Check progressivo (vazio → preenchido → lime), e AnimatePresence para entrada/saída. Cada etapa avança automaticamente com duração configurável e loop opcional.",
     tags: [
@@ -2120,7 +1915,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "link-preview",
     name: "Link Preview",
-    category: "Feedback",
     description:
       "Hover-card que mostra um screenshot da URL apontada por um link, com leve parallax no eixo X seguindo o cursor. Usa @radix-ui/react-hover-card + qss.",
     tags: [
@@ -2136,7 +1930,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "layout-grid",
     name: "Layout Grid",
-    category: "Layout",
     description:
       "Grid bento responsivo (1 col mobile, 3 col desktop) com cards clicáveis que expandem em overlay centralizado usando layoutId compartilhado do motion. Cards com thumbnail e conteúdo JSX customizável.",
     tags: [
@@ -2154,7 +1947,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "macbook-scroll",
     name: "Macbook Scroll",
-    category: "Layout",
     description:
       "Mock de MacBook Pro com tampa que abre ao rolar a página. useScroll mede o progresso e useTransform aplica scaleX/scaleY/translate/rotate no lid + parallax no título. Imagem reveal dentro da tela.",
     tags: [
@@ -2171,7 +1963,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "bento-grid",
     name: "Bento Grid",
-    category: "Layout",
     description:
       "Grid bento responsivo (1 coluna no mobile, 3 colunas no desktop) com cards de tamanhos variados. Cada item aceita header, título, descrição e ícone, com micro-interação de deslize no hover.",
     tags: [
@@ -2187,7 +1978,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "infinite-moving-cards",
     name: "Infinite Moving Cards",
-    category: "Layout",
     description:
       "Carrossel de cards em loop infinito. Os itens são duplicados em runtime e uma animação CSS faz a esteira correr sem emendas, com direção (left/right), velocidade (fast/normal/slow) e pausa no hover. Máscara lateral suaviza as bordas.",
     tags: [
@@ -2204,7 +1994,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "lens",
     name: "Lens",
-    category: "Feedback",
     description:
       "Lente de aumento que segue o cursor sobre uma imagem ou card, ampliando a região sob ela com máscara radial. Suporta posição fixa (estática) e estado de hover controlado externamente.",
     tags: [
@@ -2221,7 +2010,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "error-tracker-feed",
     name: "Error Tracker Feed",
-    category: "Feedback",
     description:
       "Feed de erros/exception events estilo Sentry: lista de issues com tipo, mensagem, count, ambiente (prod/staging/dev), status (new/resolved/ignored/suppressed), usuários afetados e mini-sparkline de tendência. Filtros funcionais (ambiente, status, busca por tipo) e agrupamento configurável por tipo, serviço ou usuário.",
     tags: [
@@ -2242,7 +2030,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "react-flow",
     name: "React Flow",
-    category: "Layout",
     description:
       "Suite de diagramas baseada em @xyflow/react, tematizada com tokens shadcn (light/dark reativo). Inclui custom nodes no estilo Card, edges animadas/direcionais, Controls, MiniMap e Background pontilhado. Pronta para flowcharts, organogramas, pipelines e canvas drag-and-drop.",
     usage:
@@ -2264,7 +2051,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "request-flow-inspector",
     name: "Request Flow Inspector",
-    category: "Feedback",
     description:
       "Inspetor detalhado de UMA request HTTP no estilo DevTools Network / Datadog APM: método, URL, status com cor semântica, waterfall de timing (DNS/TCP/TLS/Server/Transfer), request/response headers, body com syntax highlight de JSON, cookies com badges secure/httpOnly, IDs de trace e card lateral com IP, geo (bandeira/ASN/user-agent) e ambiente.",
     usage:
@@ -2286,7 +2072,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "fleet-server-grid",
     name: "Fleet Server Grid",
-    category: "Feedback",
     description:
       "Grid responsivo de tiles compactos para visualizar uma frota de servidores de uma vez. Cada tile mostra nome, host, status dot (verde/âmbar/vermelho), 3 mini-barras (CPU/MEM/DISK com cor reativa ao percentual), sparkline determinística de CPU (12 pontos), uptime formatado, função e região. Suporta busca em tempo real (nome/host/função/região), sort por status/nome/CPU/memória, e agrupamento por status/função/região. Click no tile abre um modal de detalhe (Dialog do shadcn) com tabela de discos e top processos — ou render prop customizável via renderDetail.",
     tags: [
@@ -2305,7 +2090,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "server-overview-card",
     name: "Server Overview Card",
-    category: "Feedback",
     description:
       "Card denso de overview de UM servidor/container (estilo New Relic / Datadog Host Summary): status, uptime, host, gauges radiais de CPU + memória (270°), lista de discos com throughput, rede + conexões, top 5 processos e último incidente. Cores semânticas por status e sparklines opcionais. Determinístico, sem dependências novas.",
     tags: [
@@ -2329,7 +2113,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "container-resource-panel",
     name: "Container Resource Panel",
-    category: "Feedback",
     description:
       "Painel read-only dos recursos de um container Docker: status (running/exited/restarting/paused/dead/created), health, CPU/MEM com limites e barras, network rx/tx, block I/O read/write, restart count com cor, portas publicadas, env vars (com masked) e mounts. Inspirado em Portainer / Docker Desktop.",
     usage:
@@ -2351,7 +2134,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "user-activity-stream",
     name: "User Activity Stream",
-    category: "Feedback",
     description:
       "Feed de atividades de usuários em tempo real (estilo Hotjar/FullStory/Mixpanel Live). Cada item é uma ação observada (login, page_view, form_submit, error, abuse_flag etc.) com avatar, timestamp relativo, geo e IP. Suporta filtros (ação, usuário, período), agrupamento por usuário/ação/página e auto-scroll com botão 'pular para o mais recente' quando o usuário rola pra cima.",
     tags: [
@@ -2373,7 +2155,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "db-overview-grid",
     name: "Db Overview Grid",
-    category: "Feedback",
     description:
       "Visão geral em grid de uma frota de bancos de dados (Postgres, MySQL, SQL Server, Oracle, SQLite). " +
       "Cada tile mostra env, engine, host:port, status, conexões, tamanho, cache hit, QPS, slow queries, TPS, replication lag, top 3 tabelas e último backup. " +
@@ -2396,7 +2177,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "incident-timeline",
     name: "Incident Timeline",
-    category: "Feedback",
     description:
       "Timeline vertical de eventos de um incidente (detect → page → escalate → mitigate → resolve, etc.) com sticky header de status/severidade, nós circulares coloridos por severidade, chips por tipo de evento, timestamps relativo e absoluto, autor opcional e modo live que re-renderiza tempos a cada 30s. Inspirado no ObservabilityCenter, reutilizável para qualquer fluxo de incident response.",
     tags: [
@@ -2419,7 +2199,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "bar-chart",
     name: "Bar Chart",
-    category: "Feedback",
     description:
       "Gráfico de barras verticais minimalista feito só com divs: altura proporcional ao maior valor da série e cor de preenchimento configurável via `accent`. Sem dependências, ideal para mini-gráficos de receita/uso em dashboards.",
     tags: [
@@ -2440,7 +2219,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "h-bar-chart",
     name: "Horizontal Bar Chart",
-    category: "Feedback",
     description:
       "Gráfico de barras horizontais minimalista feito só com divs: rótulo à esquerda, trilha preenchida proporcional ao maior valor e valor à direita. Sem dependências, ideal para rankings e comparações (ex.: canais de aquisição) em dashboards.",
     tags: [
@@ -2462,7 +2240,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "donut-chart",
     name: "Donut Chart",
-    category: "Feedback",
     description:
       "Donut/anel genérico em SVG montado a partir de arcos: trilha de fundo + um arco por segmento, com comprimento proporcional ao total e cor por classe Tailwind. Vão central livre para um rótulo absoluto. Sem dependências, ideal para distribuições (mix de planos, share) em dashboards.",
     tags: [
@@ -2484,7 +2261,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "kpi-card",
     name: "KPI Card",
-    category: "Feedback",
     description:
       "Cartão de métrica para dashboards: rótulo, valor numérico animado (AnimatedNumber) com prefixo/sufixo opcionais, ícone e um badge de variação (`delta`) colorido por tendência (verde/vermelho). API genérica, pronta para reuso em qualquer painel de KPIs.",
     tags: [
@@ -2506,7 +2282,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "sparkline",
     name: "Sparkline",
-    category: "Feedback",
     description:
       "Mini-gráfico de linha em SVG (polyline + área translúcida) feito sem dependências. A escala vertical é normalizada ao min/max da série; cores da linha e da área são classes Tailwind. Ideal para tendências compactas dentro de cards e KPIs.",
     tags: [
@@ -2528,7 +2303,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "dashboard-panel",
     name: "Dashboard Panel",
-    category: "Layout",
     description:
       "Card-shell de painel para dashboards: borda/sombra padrão e um header com título, descrição opcional e um slot de ação à direita; o conteúdo vai em children. Inclui um ponto de extensão `glow` reservado para uma futura variante com brilho.",
     tags: [
@@ -2548,7 +2322,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "detail-stat-cell",
     name: "Detail Stat Cell",
-    category: "Feedback",
     description:
       "Célula de rótulo + valor para grades de detalhe: rótulo discreto no topo (com ícone opcional) e o valor/conteúdo logo abaixo, dentro de um bloco com borda suave. Pensada para resumos em duas colunas (cartão/diálogo de cliente, fatura, recurso).",
     tags: [
@@ -2569,7 +2342,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "preference-row",
     name: "Preference Row",
-    category: "Forms",
     description:
       "Linha de preferência/toggle para telas de configurações: título (label) e descrição opcional à esquerda, com um slot para o controle (Switch, Select, Button…) à direita. Pensada para listas separadas por divisória; sem estado próprio (o controle vive fora).",
     tags: [
@@ -2590,7 +2362,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "activity-feed",
     name: "Activity Feed",
-    category: "Feedback",
     description:
       "Feed de eventos recentes com avatar, frase \"{ator} {ação} {alvo}\" e timestamp relativo. Itens separados por divisória dentro de um container rolável de altura limitada — ideal para o card \"Atividade recente\" de um dashboard. Sem estado próprio; os dados vêm por props.",
     tags: [
@@ -2611,7 +2382,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "leaderboard-list",
     name: "Leaderboard List",
-    category: "Feedback",
     description:
       "Ranking de itens com posição, avatar, nome + barra de progresso, badge opcional e valor formatado alinhado à direita. Ideal para \"Top clientes por MRR\", \"Top produtos\" e afins. O valor vem já formatado e o progresso (0..100) já calculado — sem suposição de moeda ou escala.",
     tags: [
@@ -2632,7 +2402,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "invoice-table",
     name: "Invoice Table",
-    category: "Layout",
     description:
       "Tabela compacta de itens de uma fatura (item, quantidade, valor) com header discreto; cada linha mostra o valor calculado como `qty × unit`. Opcionalmente renderiza uma linha de total no rodapé. Valores formatados por `formatValue` (default \"$\" + en-US), sem assumir moeda.",
     tags: [
@@ -2653,7 +2422,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "dashboard-sidebar-nav",
     name: "Dashboard Sidebar Nav",
-    category: "Layout",
     description:
       "Barra lateral de navegação para layouts de dashboard/app: marca/brand no topo, lista de itens com ícone e destaque do item ativo, e um rodapé opcional fixado embaixo (ex.: card de upgrade). Navegação 100% controlada por props — sem estado próprio.",
     tags: [
@@ -2674,7 +2442,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "dashboard-user-menu",
     name: "Dashboard User Menu",
-    category: "Actions",
     description:
       "Gatilho de avatar + dropdown do usuário para a topbar: avatar (com chevron opcional) que abre um menu com cabeçalho de identidade (nome + e-mail) e uma lista de ações vindas por props, com suporte a item destrutivo e separadores.",
     tags: [
@@ -2695,7 +2462,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "donut-breakdown",
     name: "Donut Breakdown",
-    category: "Feedback",
     description:
       "Bloco de distribuição: combina um DonutChart (anel proporcional) com uma legenda (bolinha de cor + rótulo + valor) e um rótulo central opcional (ex.: total). Ideal para 'Distribuição de planos', 'Mix de receita por categoria' e afins. Reusa o DonutChart internamente.",
     tags: [
@@ -2716,7 +2482,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "stat-tile",
     name: "Stat Tile",
-    category: "Feedback",
     description:
       "Mini-card de estatística para dashboards: ícone opcional + rótulo, valor numérico animado (via AnimatedNumber) com prefixo/sufixo, e um badge de variação (delta) opcional colorido por tendência. Versão compacta do KpiCard, para grades densas de métricas.",
     tags: [
@@ -2737,7 +2502,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "dashboard-topbar",
     name: "Dashboard Topbar",
-    category: "Layout",
     description:
       "Barra superior (header) para layouts de dashboard/app: botão de menu opcional (mobile), título com adorno opcional ao lado (ex.: badge de status), slot de busca (ou campo padrão via onSearch) e as ações à direita. Sem estado de UI hardcoded — tudo vem por props.",
     tags: [
@@ -2758,7 +2522,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "upgrade-card",
     name: "Upgrade Card",
-    category: "Feedback",
     description:
       "Card promocional de upgrade de plano: título, descrição opcional e um CTA (botão via onClick ou link via href), com ícone opcional. Ideal para o rodapé de uma sidebar de dashboard ('Plano Pro / Fazer upgrade'), mas genérico para qualquer call-to-action.",
     tags: [
@@ -2779,7 +2542,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "radial-gauge",
     name: "Radial Gauge",
-    category: "Feedback",
     description:
       "Medidor radial de arco SVG (270°) com trilha de fundo, arco de valor com glow e miolo de valor/unidade/rótulo (ou children custom). A cor do arco é fixa (`color`) ou derivada por faixa de valor (`thresholds`). Ideal para SLO, saturação (CPU/memória/disco) e disponibilidade.",
     tags: [
@@ -2800,7 +2562,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "signal-card",
     name: "Signal Card",
-    category: "Feedback",
     description:
       "Cartão de 'golden signal' para observabilidade: ícone + rótulo, valor (com unidade), indicador de variação (trend com seta colorida por polaridade) e uma mini-sparkline. Reusa o componente Sparkline por baixo. A cor de acento vem de `tone` ou é derivada de `status`.",
     tags: [
@@ -2821,7 +2582,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "ecg-strip",
     name: "ECG Strip",
-    category: "Feedback",
     description:
       "Faixa de 'batimento' (eletrocardiograma) animada em SVG, varrendo horizontalmente via requestAnimationFrame com glow na cor do traço (loop sem costura). Velocidade, amplitude e cor são controláveis, e a animação pode ser congelada — o rAF é sempre cancelado no unmount. Dá um pulso 'vivo' a headers de observabilidade.",
     tags: [
@@ -2842,7 +2602,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "service-mesh",
     name: "Service Mesh",
-    category: "Feedback",
     description:
       "Malha viva de serviços: grafo de nós ligados por arestas curvas com PACOTES de tráfego trafegando ao vivo (SVG + requestAnimationFrame, cauda de cometa) coloridos por severidade do trecho, distribuídos pelo peso de cada nó. Nós em alarme/selecionados ganham glow e radar pings. Autocontido (PRNG, geometria e animações CSS escopadas inclusos); o rAF é sempre cancelado no unmount.",
     tags: [
@@ -2865,7 +2624,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "log-stream",
     name: "Log Stream",
-    category: "Feedback",
     description:
       "Stream de logs estilo terminal, com fonte monoespaçada e linhas densas (horário, nível colorido, serviço, método + path, código de status tingido por faixa HTTP, duração e mensagem). No topo, chips de filtro por nível com contagem — controlados (via `levels` + `onToggleLevel`) ou internos (estado próprio, tudo ligado por padrão).",
     tags: [
@@ -2887,7 +2645,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "trace-waterfall",
     name: "Trace Waterfall",
-    category: "Feedback",
     description:
       "Cascata (waterfall) de spans de um trace distribuído: cada span é uma barra posicionada/dimensionada por início/duração sobre uma escala total, indentada por profundidade e tingida pelo status (verde/âmbar/vermelho, com glow) — um heatmap de latência p95 por span. Mensagem opcional de 'serviço folha' quando há ≤1 span.",
     tags: [
@@ -2910,7 +2667,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "collapsible-section",
     name: "Collapsible Section",
-    category: "Layout",
     description:
       "Seção colapsável com header clicável (chevron + ícone + título + slot de ação) e conteúdo que aparece/some. Funciona controlada (open + onOpenChange) ou não-controlada (defaultOpen). O slot de ação fica fora do botão de toggle, permitindo ações interativas próprias (ex.: um '+'). Ideal para sidebars e acordeões de seções.",
     tags: [
@@ -2931,7 +2687,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "database-tab-bar",
     name: "Database Tab Bar",
-    category: "Actions",
     description:
       "Barra de abas estilo VS Code para 'documentos' abertos (bancos, arquivos, queries). Cada aba tem rótulo, ícone opcional, um slot de meta (ex.: badge de engine) e, quando 'suja' (dirty), mostra um ponto que vira o 'X' de fechar no hover. Um botão '+' opcional dispara onNew. 100% controlada por props.",
     tags: [
@@ -2952,7 +2707,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "connection-list",
     name: "Connection List",
-    category: "Feedback",
     description:
       "Lista de conexões/instâncias (bancos, servidores) para uma sidebar: cada item tem um indicador de status (ponto), nome e um slot de meta à direita; o item ativo recebe destaque. Sem estado próprio — tudo vem por props.",
     tags: [
@@ -2973,7 +2727,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "favorites-list",
     name: "Favorites List",
-    category: "Feedback",
     description:
       "Lista de itens favoritados (estrela) para uma sidebar: cada item mostra uma estrela preenchida e um rótulo (mono por padrão). Opcionalmente, um botão de remover (StarOff) aparece no hover. Mostra um estado vazio quando não há itens.",
     tags: [
@@ -2994,7 +2747,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "query-history-list",
     name: "Query History List",
-    category: "Feedback",
     description:
       "Histórico de queries (SQL) recentes para uma sidebar: cada item é um cartão com o SQL colapsado em uma linha (truncado) e uma linha de meta com duração e horário relativo. Controlada por props.",
     tags: [
@@ -3015,7 +2767,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "table-info-panel",
     name: "Table Info Panel",
-    category: "Feedback",
     description:
       "Painel de inspeção de uma tabela de banco: cabeçalho com schema.tabela + descrição, dois StatTiles (linhas e tamanho) e listas roláveis de colunas, índices e foreign keys, com estado vazio e botão de favoritar. Reusa StatTile, ScrollArea e Button do acervo; as FKs viram clicáveis quando onNavigateFk é passado.",
     tags: [
@@ -3037,7 +2788,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "workbench-status-bar",
     name: "Workbench Status Bar",
-    category: "Feedback",
     description:
       "Barra de status (rodapé) estilo IDE: uma faixa fina, densa e rolável horizontalmente, com slots de itens à esquerda e à direita (o grupo da direita é empurrado com ml-auto). Só a casca visual — o conteúdo dos segmentos vem por props.",
     tags: [
@@ -3058,7 +2808,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "user-list-item",
     name: "User List Item",
-    category: "Feedback",
     description:
       "Linha de usuário para listas de pessoas em dashboards: avatar (com fallback de iniciais) + nome e e-mail à esquerda; à direita um slot para status/badge e/ou ações. Reusa Avatar e Badge do acervo; sem estado próprio. A casca (borda/padding) fica por conta do consumidor via className.",
     tags: [
@@ -3080,7 +2829,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "metric-glow-card",
     name: "Metric Glow Card",
-    category: "Feedback",
     description:
       "Conteúdo de métrica centrado para dashboards de destaque: rótulo em maiúsculas, valor em string livre (ex.: \"R$ 124.500\", \"4m 32s\") e uma variação colorida por tendência (verde/vermelho). É só o conteúdo, pensado para morar dentro de uma casca com brilho (ex.: o GlowCard do glow-card-grid).",
     tags: [
@@ -3102,7 +2850,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "latency-heatmap",
     name: "Latency Heatmap",
-    category: "Feedback",
     description:
       "Grade (heatmap) de latência/intensidade em CSS grid: matriz coluna-maior em que cada célula recebe uma cor via escala configurável, com eixos opcionais (lento/rápido à esquerda, janela/agora abaixo). Totalmente desacoplado de simulação — só recebe a matriz e renderiza.",
     tags: [
@@ -3123,7 +2870,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "line-chart",
     name: "Line Chart",
-    category: "Feedback",
     description:
       "Gráfico de linha em SVG puro com eixos, grid tracejado, preenchimento de área translúcida e legenda. Suporta múltiplas séries temporais sobrepostas com normalização automática de escala (min/max global). Sem dependências externas — apenas SVG + classes Tailwind.",
     tags: [
@@ -3142,7 +2888,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "chart-widget",
     name: "Chart Widget",
-    category: "Feedback",
     description:
       "Casca de widget para gráficos com header (título + badge de tipo + ações), body (com estado loading via Skeleton) e footer opcional (query + duração). Envolve qualquer visualização num container consistente — passe o gráfico como children.",
     tags: [
@@ -3159,7 +2904,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "dashboard-filter-bar",
     name: "Dashboard Filter Bar",
-    category: "Feedback",
     description:
       "Barra de filtros para dashboards com date range pickers (de/até), seletor de fonte de dados (Select) e chips de filtros ativos removíveis (Badge com botão X). Layout flex-wrap que se adapta à largura disponível.",
     tags: [
@@ -3177,7 +2921,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "chart-template-gallery",
     name: "Chart Template Gallery",
-    category: "Feedback",
     description:
       "Galeria de templates de gráficos selecionáveis em grid 2 colunas. Cada template tem ícone, nome, descrição e preview opcional. Suporta seleção única com estado visual (borda destacada, aria-pressed). Navegação por teclado (Enter/Space).",
     tags: [
@@ -3196,7 +2939,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "area-chart-tremor",
     name: "Area Chart (Tremor)",
-    category: "Feedback",
     description:
       "Gráfico de área construído com Recharts para séries temporais empilhadas ou sobrepostas. Suporta paleta de cores, eixos customizados e tooltip rico com metadados.",
     tags: ["tremor", "chart", "grafico", "area", "recharts", "dashboard", "analytics", "feedback"],
@@ -3204,7 +2946,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "bar-chart-tremor",
     name: "Bar Chart (Tremor)",
-    category: "Feedback",
     description:
       "Gráfico de barras verticais com Recharts, ideal para comparar categorias. Aceita empilhamento, cores por categoria e eventos de clique com payload customizado.",
     tags: ["tremor", "chart", "grafico", "bar", "barra", "recharts", "dashboard", "analytics", "feedback"],
@@ -3212,7 +2953,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "line-chart-tremor",
     name: "Line Chart (Tremor)",
-    category: "Feedback",
     description:
       "Gráfico de linhas com Recharts para séries temporais. Suporta múltiplas séries, curva suave (monotone/linear/step) e configuração de eixos categóricos.",
     tags: ["tremor", "chart", "grafico", "line", "linha", "recharts", "dashboard", "analytics", "feedback"],
@@ -3220,7 +2960,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "donut-chart-tremor",
     name: "Donut Chart (Tremor)",
-    category: "Feedback",
     description:
       "Gráfico de rosca/pizza com Recharts para proporções. Variante alterna entre donut e pie; permite cores, valores centrais e labels customizados.",
     tags: ["tremor", "chart", "grafico", "donut", "pie", "rosca", "recharts", "dashboard", "analytics", "feedback"],
@@ -3228,7 +2967,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "scatter-chart-tremor",
     name: "Scatter Chart (Tremor)",
-    category: "Feedback",
     description:
       "Gráfico de dispersão com Recharts para correlacionar duas variáveis numéricas. Aceita categoria por cor e customização dos eixos.",
     tags: ["tremor", "chart", "grafico", "scatter", "dispersao", "recharts", "dashboard", "analytics", "feedback"],
@@ -3236,7 +2974,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "combo-chart-tremor",
     name: "Combo Chart (Tremor)",
-    category: "Feedback",
     description:
       "Combina barras e linhas no mesmo gráfico para comparar grandezas diferentes em paralelo. Categorias podem ser declaradas como string simples ou como objeto { name, type }.",
     tags: ["tremor", "chart", "grafico", "combo", "bar", "line", "recharts", "dashboard", "analytics", "feedback"],
@@ -3244,7 +2981,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "bar-list-tremor",
     name: "Bar List (Tremor)",
-    category: "Feedback",
     description:
       "Lista horizontal de barras com label e valor, ideal para rankings e comparações rápidas sem ocupar a área de um gráfico completo.",
     tags: ["tremor", "list", "lista", "bar", "barra", "ranking", "dashboard", "analytics", "feedback"],
@@ -3252,7 +2988,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "category-bar-tremor",
     name: "Category Bar (Tremor)",
-    category: "Feedback",
     description:
       "Barra horizontal segmentada por categoria com marcadores posicionáveis. Útil para visualizar distribuição percentual ou status em uma única faixa.",
     tags: ["tremor", "bar", "barra", "category", "segmento", "marker", "dashboard", "analytics", "feedback"],
@@ -3260,7 +2995,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "spark-chart-tremor",
     name: "Spark Chart (Tremor)",
-    category: "Feedback",
     description:
       "Mini-gráfico compacto (área, barra ou linha) para inline em cards e tabelas. Suporta curva (linear/monotone/step) e variação de tipo no mesmo componente.",
     tags: ["tremor", "chart", "grafico", "spark", "mini", "inline", "recharts", "dashboard", "analytics", "feedback"],
@@ -3268,7 +3002,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "tracker-tremor",
     name: "Tracker (Tremor)",
-    category: "Feedback",
     description:
       "Indicador de progresso horizontal da Tremor Raw: barra com pontos coloridos marcando eventos no caminho, ideal para funis, etapas de processo e checkpoints em dashboards analíticos.",
     tags: ["tremor", "kpi", "tracker", "progresso", "funil", "etapas", "dashboard", "feedback"],
@@ -3276,7 +3009,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "progress-bar-tremor",
     name: "Progress Bar (Tremor)",
-    category: "Feedback",
     description:
       "Barra de progresso horizontal da Tremor Raw com variantes de cor, suporte a label e tooltip, ideal para metas, conclusão de tarefas e indicadores de saturação em dashboards.",
     tags: ["tremor", "progress", "barra", "progresso", "meta", "dashboard", "feedback"],
@@ -3284,7 +3016,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "progress-circle-tremor",
     name: "Progress Circle (Tremor)",
-    category: "Feedback",
     description:
       "Indicador circular de progresso da Tremor Raw: arco proporcional ao valor, com miolo configurável (texto/children) e variantes de cor para destacar conclusão de metas em dashboards.",
     tags: ["tremor", "progress", "circulo", "arco", "meta", "dashboard", "feedback"],
@@ -3292,7 +3023,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "callout-tremor",
     name: "Callout (Tremor)",
-    category: "Feedback",
     description:
       "Bloco de destaque da Tremor Raw com ícone, título e texto: ideal para anotações contextuais, insights e avisos curtos ao lado de métricas em dashboards analíticos.",
     tags: ["tremor", "callout", "destaque", "anotacao", "insight", "dashboard", "feedback"],
@@ -3300,7 +3030,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "divider-tremor",
     name: "Divider (Tremor)",
-    category: "Layout",
     description:
       "Linha divisória horizontal/vertical da Tremor Raw com variante intermediária (texto entre dois traços). Versão minimalista do separator shadcn, ideal para seções em dashboards.",
     tags: ["tremor", "divider", "linha", "separador", "layout"],
@@ -3308,7 +3037,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "tab-navigation-tremor",
     name: "Tab Navigation (Tremor)",
-    category: "Layout",
     description:
       "Nav horizontal de abas estilo admin da Tremor Raw: estado ativo sublinhado, ícone opcional por item, modo controlado/não-controlado via `value`/`defaultValue`/`onValueChange`. Diferente do `tabs` shadcn (que traz painéis de conteúdo), esta é apenas a faixa de navegação.",
     tags: ["tremor", "tabs", "navegacao", "navbar", "admin", "layout"],
@@ -3316,7 +3044,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "date-range-picker-tremor",
     name: "Date Range Picker (Tremor)",
-    category: "Forms",
     description:
       "Seletor de intervalo de datas (from/to) da Tremor Raw: calendário duplo, presets rápidos (Last 7 days, Month to date, etc.) e formatação localizada via date-fns. Ideal para dashboards de analytics com filtros temporais.",
     tags: ["tremor", "input", "date", "range", "calendario", "intervalo", "dashboard", "presets"],
@@ -3324,7 +3051,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "radio-card-group-tremor",
     name: "Radio Card Group (Tremor)",
-    category: "Forms",
     description:
       "Radio group onde cada opção é um card selecionável da Tremor Raw, com ícone + título + descrição. Mantém a acessibilidade de radiogroup (navegação por setas). Ideal para escolha de plano, método de pagamento ou tipo de assinatura.",
     tags: ["tremor", "input", "radio", "card", "selecao", "plano", "pagamento"],
@@ -3332,7 +3058,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "card-tremor",
     name: "Card (Tremor)",
-    category: "Layout",
     description:
       "Container/card da Tremor Raw com fundo, borda e cantos arredondados padronizados. Casca visual para agrupar blocos de dashboard (header + conteúdo + footer) com tipografia consistente.",
     tags: ["tremor", "card", "container", "panel", "layout"],
@@ -3340,7 +3065,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "calendar-tremor",
     name: "Calendar (Tremor)",
-    category: "Forms",
     description:
       "Wrapper do Calendar shadcn (react-day-picker v9) com a casca visual e cores da Tremor Raw: borda, foco ring e tokens azul/tremor-id para que o validador Playwright identifique a variante Tremor dentro do ecossistema Vitrine.",
     tags: ["tremor", "calendar", "calendario", "data", "date", "picker", "wrapper"],
@@ -3348,7 +3072,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "select-native-tremor",
     name: "Select Native (Tremor)",
-    category: "Forms",
     description:
       "Wrapper do <select> HTML nativo estilizado com a casca da Tremor Raw (foco ring, borda, opções com tema). Ideal para selects simples que não precisam do peso de um popover/combobox, mantendo a mesma identidade visual Tremor.",
     tags: ["tremor", "select", "native", "formulario", "input"],
@@ -3356,7 +3079,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "label-tremor",
     name: "Label (Tremor)",
-    category: "Forms",
     description:
       "Wrapper do <label> HTML estilizado com tipografia e cor da Tremor Raw. Pequeno e proposital: serve para padronizar rótulos de formulários dentro de dashboards Tremor sem precisar do label do shadcn (que traz FormControl/FormMessage).",
     tags: ["tremor", "label", "rotulo", "formulario"],
@@ -3364,7 +3086,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "toggle-tremor",
     name: "Toggle (Tremor)",
-    category: "Forms",
     description:
       "Toggle/switch da Tremor Raw (input + span visual animado) com foco ring e estados checked/unchecked na paleta azul Tremor. Wrapper leve do <input type='checkbox'> que cobre o caso clássico de on/off em filtros e preferências.",
     tags: ["tremor", "toggle", "switch", "checkbox", "formulario", "on-off"],
@@ -3372,7 +3093,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "button-group",
     name: "Button Group",
-    category: "Actions",
     description:
       "Agrupa botões e inputs relacionados numa única unidade visual, com cantos e bordas unificados (horizontal ou vertical).",
     tags: ["button", "group", "grupo", "toolbar", "ação", "shadcn"],
@@ -3380,7 +3100,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "empty",
     name: "Empty",
-    category: "Feedback",
     description:
       "Estado vazio (empty state) com ícone, título, descrição e ação — para listas e telas ainda sem conteúdo.",
     tags: ["empty", "estado-vazio", "placeholder", "sem-dados", "shadcn"],
@@ -3388,7 +3107,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "item",
     name: "Item",
-    category: "Layout",
     description:
       "Primitivo de linha/lista flexível com mídia, conteúdo, título, descrição e ações — base para listas e cards compactos.",
     tags: ["item", "lista", "linha", "list-item", "shadcn"],
@@ -3396,7 +3114,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "tooltip",
     name: "Tooltip",
-    category: "Feedback",
     description:
       "Dica contextual exibida ao passar o mouse ou focar um gatilho. Baseado em @radix-ui/react-tooltip.",
     tags: ["tooltip", "dica", "hover", "overlay", "shadcn"],
@@ -3404,7 +3121,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "label",
     name: "Label",
-    category: "Forms",
     description:
       "Rótulo acessível para campos de formulário. Baseado em @radix-ui/react-label.",
     tags: ["label", "rótulo", "formulário", "acessibilidade", "shadcn"],
@@ -3412,7 +3128,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "field",
     name: "Field",
-    category: "Forms",
     description:
       "Wrapper de campo de formulário: agrupa label, controle, descrição e mensagem de erro com espaçamento consistente.",
     tags: ["field", "campo", "formulário", "form", "shadcn"],
@@ -3420,7 +3135,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "input-group",
     name: "Input Group",
-    category: "Forms",
     description:
       "Input com addons (ícones, botões ou texto) à esquerda, à direita ou em bloco, integrados visualmente ao campo.",
     tags: ["input", "group", "addon", "ícone", "formulário", "shadcn"],
@@ -3428,7 +3142,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "toggle-group",
     name: "Toggle Group",
-    category: "Actions",
     description:
       "Grupo de botões de alternância com seleção única ou múltipla. Baseado em @radix-ui/react-toggle-group.",
     tags: ["toggle", "group", "grupo", "seleção", "shadcn"],
@@ -3436,7 +3149,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "kbd",
     name: "Kbd",
-    category: "Feedback",
     description:
       "Representação visual de teclas e atalhos de teclado (ex.: ⌘ K). Use KbdGroup para combinações.",
     tags: ["kbd", "tecla", "atalho", "teclado", "shortcut", "shadcn"],
@@ -3444,7 +3156,6 @@ export const components: ComponentMeta[] = [
   {
     slug: "spinner",
     name: "Spinner",
-    category: "Feedback",
     description:
       "Indicador de carregamento giratório minimalista, baseado no ícone Loader2 do lucide.",
     tags: ["spinner", "loading", "loader", "carregando", "shadcn"],

@@ -14,7 +14,7 @@
  * helpers em vez de reimplementar a lógica.
  */
 
-import { components, type ComponentMeta, type Category } from "@/data/components"
+import { components, type ComponentMeta } from "@/data/components"
 
 /** As quatro origens canônicas de componentes da vitrine. */
 export type ComponentOrigin = "shadcn" | "Fluid" | "chanhdai" | "@pierre/trees"
@@ -102,8 +102,6 @@ export interface Family {
   variants: ComponentMeta[]
   /** Origens distintas presentes na família (na ordem de prioridade). */
   origins: ComponentOrigin[]
-  /** Categoria da família (categoria da primeira variante após ordenação). */
-  category: Category
   /** Slug representativo (primeira variante após ordenação) — para deep-link. */
   representativeSlug: string
 }
@@ -188,7 +186,6 @@ function buildFamily(base: string, variants: ComponentMeta[]): Family {
     name: humanizeBase(base),
     variants: sorted,
     origins,
-    category: first.category,
     representativeSlug: first.slug,
   }
 }

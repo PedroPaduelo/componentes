@@ -75,7 +75,8 @@ export const GROUP_IDS = [
   "forms-inputs",
   "actions-navigation",
   "layout-containers",
-  "typography",
+  "typography-base",
+  "typography-effects",
   "cards",
   "tables-data",
   "feedback-status",
@@ -148,12 +149,21 @@ export const GROUPS: Group[] = [
     icon: LayoutGrid,
   },
   {
-    id: "typography",
+    id: "typography-base",
     label: "Tipografia",
     domain: "primitivos",
     description:
-      "Use para texto: tipografia base estilo shadcn (h1–h4, parágrafo, lead, blockquote, lista, código inline) e efeitos de texto animados (flip, typewriter, geração progressiva, gradiente, brilho).",
+      "Use para texto base estilo shadcn: títulos h1–h4, parágrafo, lead, blockquote, lista, código inline, large/small/muted. Para texto animado, veja “Efeitos de Texto”.",
     order: 4,
+    icon: Pilcrow,
+  },
+  {
+    id: "typography-effects",
+    label: "Efeitos de Texto",
+    domain: "primitivos",
+    description:
+      "Use para animar texto: flip, typewriter, geração progressiva, gradiente, brilho, glitch, criptografia e revelações. Para tipografia base, veja “Tipografia”.",
+    order: 5,
     icon: Pilcrow,
   },
   {
@@ -162,7 +172,7 @@ export const GROUPS: Group[] = [
     domain: "primitivos",
     description:
       "Use para agrupar conteúdo e métricas em blocos: card base, KPI/stat cards, tiles de métrica e cards de resumo (servidor, sinal, upgrade). Cards com efeitos decorativos ficam em “Cards Decorativos”.",
-    order: 5,
+    order: 6,
     icon: SquareStack,
   },
   {
@@ -171,7 +181,7 @@ export const GROUPS: Group[] = [
     domain: "primitivos",
     description:
       "Use para exibir coleções de itens em linhas: tabelas, data tables, listas (atividade, favoritos, leaderboard, usuários) e blocos de item.",
-    order: 6,
+    order: 7,
     icon: ListTree,
   },
   {
@@ -180,7 +190,7 @@ export const GROUPS: Group[] = [
     domain: "primitivos",
     description:
       "Use para comunicar estado e progresso: alertas, callouts, toasts, barras e círculos de progresso, trackers, skeletons e loaders.",
-    order: 7,
+    order: 8,
     icon: MessageSquare,
   },
   {
@@ -189,7 +199,7 @@ export const GROUPS: Group[] = [
     domain: "primitivos",
     description:
       "Use para rotular, identificar e dar contexto pontual: avatares, badges, tooltips, hover-cards, previews de link, empty states, kbd e números animados.",
-    order: 8,
+    order: 9,
     icon: IdCard,
   },
 
@@ -200,7 +210,7 @@ export const GROUPS: Group[] = [
     domain: "aplicacoes",
     description:
       "Use para construir interfaces de conversa e IA: mensagens, indicadores de raciocínio, prompts e fluxos de pergunta ao usuário.",
-    order: 9,
+    order: 10,
     icon: Bot,
   },
   {
@@ -209,7 +219,7 @@ export const GROUPS: Group[] = [
     domain: "aplicacoes",
     description:
       "Use para visualizar dados quantitativos: gráficos de área, barra, linha, pizza/donut, dispersão, sparkline, combo, medidores e bar lists.",
-    order: 10,
+    order: 11,
     icon: LineChart,
   },
   {
@@ -218,7 +228,7 @@ export const GROUPS: Group[] = [
     domain: "aplicacoes",
     description:
       "Use para montar telas de dashboard e observability: feeds, timelines, trace/latency, logs, server/DB grids, status bars e widgets de painel.",
-    order: 11,
+    order: 12,
     icon: BarChart3,
   },
   {
@@ -227,7 +237,7 @@ export const GROUPS: Group[] = [
     domain: "aplicacoes",
     description:
       "Use para conteúdo de desenvolvedor: blocos de código com highlight, comandos de instalação, terminais, gráfico de contribuições, globos 3D e mapa-múndi.",
-    order: 12,
+    order: 13,
     icon: Terminal,
   },
 
@@ -238,7 +248,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Use como fundo imersivo de uma seção: beams, auroras, grids e pontos, partículas (meteoros, estrelas, sparkles), spotlights, gradientes animados e shaders.",
-    order: 13,
+    order: 14,
     icon: Wallpaper,
   },
   {
@@ -247,7 +257,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Use como abertura de página de alto impacto: heros com parallax, lamp, highlight, efeito ao mover o mouse e cenas conduzidas por scroll (macbook, gemini).",
-    order: 14,
+    order: 15,
     icon: Presentation,
   },
   {
@@ -256,7 +266,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Use para reações a scroll e ponteiro: revelações no scroll, tracing beam, parallax de galeria, lens/zoom, glow e máscaras que seguem o cursor.",
-    order: 15,
+    order: 16,
     icon: Pointer,
   },
   {
@@ -265,7 +275,7 @@ export const GROUPS: Group[] = [
     domain: "visual",
     description:
       "Use quando o card é o destaque visual: efeitos 3D, glare, spotlight, comet, wobble, hover direcional, pin e pilhas/grids animadas. Para cards funcionais, veja “Cards”.",
-    order: 16,
+    order: 17,
     icon: Wand2,
   },
 ]
@@ -421,26 +431,28 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   tree: "layout-containers",
   "work-experience-component": "layout-containers",
 
-  // — Tipografia: texto base (shadcn) + efeitos de texto animados —
-  typography: "typography",
-  "canvas-text": "typography",
-  "colourful-text": "typography",
-  "container-cover": "typography",
-  "container-text-flip": "typography",
-  "cyber-glitch-text": "typography",
-  "encrypted-text": "typography",
-  "flip-fade-text": "typography",
-  "flip-text": "typography",
-  "flip-words": "typography",
-  "fluid-gradient-text": "typography",
-  "layout-text-flip": "typography",
-  "shimmering-text": "typography",
-  "squiggly-text": "typography",
-  "text-flipping-board": "typography",
-  "text-generate-effect": "typography",
-  "text-hover-effect": "typography",
-  "text-reveal-card": "typography",
-  "typewriter-effect": "typography",
+  // — Tipografia: texto base (shadcn) —
+  typography: "typography-base",
+
+  // — Efeitos de Texto: animações de texto —
+  "canvas-text": "typography-effects",
+  "colourful-text": "typography-effects",
+  "container-cover": "typography-effects",
+  "container-text-flip": "typography-effects",
+  "cyber-glitch-text": "typography-effects",
+  "encrypted-text": "typography-effects",
+  "flip-fade-text": "typography-effects",
+  "flip-text": "typography-effects",
+  "flip-words": "typography-effects",
+  "fluid-gradient-text": "typography-effects",
+  "layout-text-flip": "typography-effects",
+  "shimmering-text": "typography-effects",
+  "squiggly-text": "typography-effects",
+  "text-flipping-board": "typography-effects",
+  "text-generate-effect": "typography-effects",
+  "text-hover-effect": "typography-effects",
+  "text-reveal-card": "typography-effects",
+  "typewriter-effect": "typography-effects",
 
   // — Cards: conteúdo e métrica (funcionais) —
   card: "cards",

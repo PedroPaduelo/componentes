@@ -7,6 +7,9 @@
     "@radix-ui/react-slot@^1.2.3",
     "react-hook-form@^7.54.0"
   ],
+  "registryDependencies": [
+    "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/label.json"
+  ],
   "files": [
     {
       "path": "src/components/ui/form.tsx",
@@ -16,11 +19,6 @@
     {
       "path": "src/components/ui/form-internal.ts",
       "content": "import * as React from \"react\"\nimport { useFormContext, useFormState, type FieldPath, type FieldValues } from \"react-hook-form\"\n\nexport type FormFieldContextValue<\n  TFieldValues extends FieldValues = FieldValues,\n  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,\n> = {\n  name: TName\n}\n\nexport const FormFieldContext = React.createContext<FormFieldContextValue>(\n  {} as FormFieldContextValue\n)\n\nexport type FormItemContextValue = {\n  id: string\n}\n\nexport const FormItemContext = React.createContext<FormItemContextValue>(\n  {} as FormItemContextValue\n)\n\nexport const useFormField = () => {\n  const fieldContext = React.useContext(FormFieldContext)\n  const itemContext = React.useContext(FormItemContext)\n  const { getFieldState } = useFormContext()\n  const formState = useFormState({ name: fieldContext.name })\n  const fieldState = getFieldState(fieldContext.name, formState)\n\n  if (!fieldContext) {\n    throw new Error(\"useFormField should be used within <FormField>\")\n  }\n\n  const { id } = itemContext\n\n  return {\n    id,\n    name: fieldContext.name,\n    formItemId: `${id}-form-item`,\n    formDescriptionId: `${id}-form-item-description`,\n    formMessageId: `${id}-form-item-message`,\n    ...fieldState,\n  }\n}\n",
-      "type": "registry:ui"
-    },
-    {
-      "path": "src/components/ui/label.tsx",
-      "content": "import * as React from \"react\"\n\nimport { cn } from \"@/lib/utils\"\n\nfunction Label({ className, ...props }: React.ComponentProps<\"label\">) {\n  return (\n    <label\n      data-slot=\"label\"\n      className={cn(\n        \"text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70\",\n        className\n      )}\n      {...props}\n    />\n  )\n}\n\nexport { Label }\n",
       "type": "registry:ui"
     }
   ],

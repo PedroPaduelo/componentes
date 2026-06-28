@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { Link, Navigate, useParams } from "react-router-dom"
 
 import { Badge } from "@/components/ui/badge"
@@ -24,7 +24,6 @@ import {
 import { getGroup, GROUP_BY_ID } from "@/data/groups"
 import { getExamplesBySlug } from "@/data/examples"
 import { getComponentInstall } from "@/data/component-install"
-import { getAdjacentFamilies } from "@/lib/doc-nav"
 import { NotFound } from "@/pages/NotFound"
 
 /** Resolve a família cujo base bate exatamente com o param. */
@@ -125,9 +124,9 @@ export function FamilyView({ family, hash }: { family: Family; hash: string }) {
 
   const tocSections = buildTocSections(family, multi)
 
-  // Navegação "Anterior / Próxima" — segue a mesma ordem da DocsSidebar.
-  // Mapeia Family → { href: /components/<base>, label: <name> }.
-  const { prev, next } = getAdjacentFamilies(family.base)
+  // Navegação "Anterior / Próxima" — mesma ordem da DocsSidebar (alfabética
+  // por base). Mapeia Family → { href: /components/<base>, label: <name> }.
+  const { prev, next } = useAdjacentFamilies(family.base)
   const pagerPrev = prev
     ? { href: `/components/${prev.base}`, label: prev.name }
     : undefined
@@ -161,7 +160,9 @@ export function FamilyView({ family, hash }: { family: Family; hash: string }) {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
             <div className="flex flex-1 flex-col gap-4">
               <div className="flex flex-wrap items-center gap-2">
-                <Badge variant="secondary">{family.category}</Badge>
+                <Badge variant="secondary">
+                  {GROUP_BY_ID[getGroup(family.representativeSlug)].label}
+                </Badge>
                 {family.origins.map((origin) => (
                   <OriginBadge key={origin} origin={origin} />
                 ))}
@@ -222,6 +223,34 @@ export function FamilyView({ family, hash }: { family: Family; hash: string }) {
  *
  * - Família multi-variante: uma entrada por variante (depth 1, âncora
  *   `section-<slug>`) com as três subseções (Uso/Instalação/Dica, depth 2).
+ * - Família de variante única: as três subseções viram entradas de topo
+ *   (depth 1), apontando para `<slug>-uso` / `-instalacao` / `-dica`.
+ */
+/**
+ * Resolve os "vizinhos" (anterior/próximo) de uma família na ordem da
+ * DocsSidebar (alfabética por base, herdada de `groupByFamily()`). Bordas:
+ * retorna `{prev: undefined, next: undefined}` para a primeira/última
+ * família, e `{}` se o base não existir na sequência.
+ */
+function useAdjacentFamilies(base: string): {
+  prev?: Family
+  next?: Family
+} {
+  return useMemo(() => {
+    const sequence = groupByFamily()
+    const index = sequence.findIndex((f) => f.base === base)
+    if (index === -1) return {}
+    return {
+      prev: index > 0 ? sequence[index - 1] : undefined,
+      next: index < sequence.length - 1 ? sequence[index + 1] : undefined,
+    }
+  }, [base])
+}
+
+/**
+ * Constrói o índice "Nesta página" (TOC) das seções ancoradas.
+ * - Família de múltiplas variantes: cada variante vira uma entrada de topo
+ *   `section-<slug>` (depth 1) com as três subseções (Uso/Instalação/Dica, depth 2).
  * - Família de variante única: as três subseções viram entradas de topo
  *   (depth 1), apontando para `<slug>-uso` / `-instalacao` / `-dica`.
  */

@@ -10,11 +10,6 @@ import { CopyPromptButton } from "@/components/showcase/CopyPromptButton"
 import { CopyFetchButton } from "@/components/showcase/CopyFetchButton"
 import { OriginBadge } from "@/components/catalog/OriginBadge"
 import { SearchInput } from "@/components/catalog/SearchInput"
-import {
-  CategoryFilter,
-  ALL_CATEGORIES,
-  type CategoryFilterValue,
-} from "@/components/catalog/CategoryFilter"
 import { groupByFamily } from "@/data/families"
 import { filterFamilies } from "@/lib/family-filter"
 import { buildComponentPrompt } from "@/data/component-prompt"
@@ -26,6 +21,7 @@ import {
   getCompositionAddCommand,
 } from "@/data/composition-prompt"
 import { aiSkills } from "@/data/ai-skills"
+import { getGroup, GROUP_BY_ID } from "@/data/groups"
 
 /** Texto pesquisável de uma composição. */
 function compositionHaystack(c: (typeof compositions)[number]): string {
@@ -45,11 +41,10 @@ function compositionHaystack(c: (typeof compositions)[number]): string {
 export function AiIndex() {
   const families = useMemo(() => groupByFamily(), [])
   const [query, setQuery] = useState("")
-  const [category, setCategory] = useState<CategoryFilterValue>(ALL_CATEGORIES)
 
   const filteredFamilies = useMemo(
-    () => filterFamilies(families, query, category),
-    [families, query, category],
+    () => filterFamilies(families, query),
+    [families, query],
   )
 
   const q = query.trim().toLowerCase()
@@ -135,10 +130,9 @@ export function AiIndex() {
           onChange={setQuery}
           placeholder="Buscar componentes e composições..."
         />
-        <CategoryFilter value={category} onChange={setCategory} />
         <p className="text-xs text-muted-foreground">
-          O filtro de categoria acima se aplica aos componentes. As composições
-          são filtradas pela busca por texto.
+          A busca filtra componentes e composições. Para filtrar por tipo,
+          visite o <Link to="/components" className="underline-offset-2 hover:underline">catálogo</Link>.
         </p>
       </div>
 
@@ -177,7 +171,9 @@ export function AiIndex() {
                         >
                           {family.name}
                         </Link>
-                        <Badge variant="secondary">{family.category}</Badge>
+                        <Badge variant="secondary">
+                          {GROUP_BY_ID[getGroup(family.representativeSlug)].label}
+                        </Badge>
                         {family.origins.map((origin) => (
                           <OriginBadge key={origin} origin={origin} />
                         ))}

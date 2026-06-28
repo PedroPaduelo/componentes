@@ -37,7 +37,7 @@ function fieldText(chunk, field, stopFields) {
   return segs.map((s) => unescapeStr(s.slice(1, -1))).join("")
 }
 
-function parseEntries(file, { hasCategory }) {
+function parseEntries(file) {
   const txt = read(resolve(SRC, file))
   const slugRe = /slug:\s*"([^"]+)"/g
   const matches = []
@@ -50,18 +50,8 @@ function parseEntries(file, { hasCategory }) {
     const chunk = txt.slice(at, end)
     const nameM = chunk.match(/name:\s*"((?:[^"\\]|\\.)*)"/)
     const name = nameM ? unescapeStr(nameM[1]) : slug
-    const description = fieldText(chunk, "description", [
-      "tags",
-      "usage",
-      "category",
-      "wide",
-    ])
-    let category = ""
-    if (hasCategory) {
-      const cM = chunk.match(/category:\s*"([^"]+)"/)
-      category = cM ? cM[1] : ""
-    }
-    out.push({ slug, name, category, description: description || name })
+    const description = fieldText(chunk, "description", ["tags", "usage", "wide"])
+    out.push({ slug, name, description: description || name })
   }
   return out
 }
@@ -117,8 +107,8 @@ function parseGroups() {
 
 const { slugGroup, groupLabel } = parseGroups()
 
-const components = parseEntries("data/components.ts", { hasCategory: true })
-const compositions = parseEntries("data/compositions.ts", { hasCategory: true })
+const components = parseEntries("data/components.ts")
+const compositions = parseEntries("data/compositions.ts")
 
 const addCmd = (slug) => `npx shadcn@latest add ${HOMEPAGE}/r/${slug}.json`
 
@@ -182,8 +172,7 @@ for (const gid of groupOrder) {
   lines.push(`### ${groupLabel[gid]} (${items.length})`)
   lines.push("")
   for (const c of items) {
-    const cat = c.category ? ` — ${c.category}` : ""
-    lines.push(`- **${c.name}** (\`${c.slug}\`)${cat}. ${c.description}`)
+    lines.push(`- **${c.name}** (\`${c.slug}\`). ${c.description}`)
     lines.push(`  - instalar: \`${addCmd(c.slug)}\``)
   }
   lines.push("")
@@ -192,8 +181,7 @@ if (noGroup.length > 0) {
   lines.push(`### Outros (${noGroup.length})`)
   lines.push("")
   for (const c of noGroup) {
-    const cat = c.category ? ` — ${c.category}` : ""
-    lines.push(`- **${c.name}** (\`${c.slug}\`)${cat}. ${c.description}`)
+    lines.push(`- **${c.name}** (\`${c.slug}\`). ${c.description}`)
     lines.push(`  - instalar: \`${addCmd(c.slug)}\``)
   }
   lines.push("")
@@ -206,8 +194,7 @@ lines.push(
 )
 lines.push("")
 for (const c of compositions) {
-  const cat = c.category ? ` — ${c.category}` : ""
-  lines.push(`- **${c.name}** (\`${c.slug}\`)${cat}. ${c.description}`)
+  lines.push(`- **${c.name}** (\`${c.slug}\`). ${c.description}`)
   lines.push(`  - instalar bloco: \`${addCmd(c.slug)}\``)
 }
 lines.push("")

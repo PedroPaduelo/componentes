@@ -31,6 +31,9 @@
       "dependencies": [
         "cobe@^2.0.1"
       ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
+      ],
       "files": [
         {
           "path": "src/components/ui/3d-globe.tsx",
@@ -307,6 +310,37 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "area-chart-tremor",
+      "type": "registry:ui",
+      "title": "Area Chart (Tremor)",
+      "description": "Gráfico de área construído com Recharts para séries temporais empilhadas ou sobrepostas. Suporta paleta de cores, eixos customizados e tooltip rico com metadados.",
+      "dependencies": [
+        "lucide-react@^0.468.0",
+        "recharts@^2.15.2"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/area-chart-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
     },
     {
       "name": "ascii-art",
@@ -647,6 +681,49 @@
       ]
     },
     {
+      "name": "bar-chart-tremor",
+      "type": "registry:ui",
+      "title": "Bar Chart (Tremor)",
+      "description": "Gráfico de barras verticais com Recharts, ideal para comparar categorias. Aceita empilhamento, cores por categoria e eventos de clique com payload customizado.",
+      "dependencies": [
+        "lucide-react@^0.468.0",
+        "recharts@^2.15.2"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/bar-chart-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
+    },
+    {
+      "name": "bar-list-tremor",
+      "type": "registry:ui",
+      "title": "Bar List (Tremor)",
+      "description": "Lista horizontal de barras com label e valor, ideal para rankings e comparações rápidas sem ocupar a área de um gráfico completo.",
+      "files": [
+        {
+          "path": "src/components/ui/bar-list-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "bento-grid",
       "type": "registry:ui",
       "title": "Bento Grid",
@@ -734,6 +811,25 @@
       }
     },
     {
+      "name": "button-group",
+      "type": "registry:ui",
+      "title": "Button Group",
+      "description": "Agrupa botões e inputs relacionados numa única unidade visual, com cantos e bordas unificados (horizontal ou vertical).",
+      "dependencies": [
+        "@radix-ui/react-slot@^1.2.3",
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/separator.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/button-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "calendar",
       "type": "registry:ui",
       "title": "Calendar",
@@ -753,6 +849,68 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "calendar-tremor",
+      "type": "registry:ui",
+      "title": "Calendar (Tremor)",
+      "description": "Wrapper do Calendar shadcn (react-day-picker v9) com a casca visual e cores da Tremor Raw: borda, foco ring e tokens azul/tremor-id para que o validador Playwright identifique a variante Tremor dentro do ecossistema Vitrine.",
+      "dependencies": [
+        "date-fns@^3.6.0",
+        "react-day-picker@^9.8.0"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/calendar.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/calendar-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
+    },
+    {
+      "name": "callout-tremor",
+      "type": "registry:ui",
+      "title": "Callout (Tremor)",
+      "description": "Bloco de destaque da Tremor Raw com ícone, título e texto: ideal para anotações contextuais, insights e avisos curtos ao lado de métricas em dashboards analíticos.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/callout-tremor.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/callout-tremor-variants.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
     },
     {
       "name": "canvas-reveal-effect",
@@ -854,6 +1012,33 @@
       ]
     },
     {
+      "name": "card-tremor",
+      "type": "registry:ui",
+      "title": "Card (Tremor)",
+      "description": "Container/card da Tremor Raw com fundo, borda e cantos arredondados padronizados. Casca visual para agrupar blocos de dashboard (header + conteúdo + footer) com tipografia consistente.",
+      "dependencies": [
+        "@radix-ui/react-slot@^1.2.3"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/card-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
+    },
+    {
       "name": "carousel",
       "type": "registry:ui",
       "title": "Carousel",
@@ -868,6 +1053,22 @@
       "files": [
         {
           "path": "src/components/ui/carousel.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "category-bar-tremor",
+      "type": "registry:ui",
+      "title": "Category Bar (Tremor)",
+      "description": "Barra horizontal segmentada por categoria com marcadores posicionáveis. Útil para visualizar distribuição percentual ou status em uma única faixa.",
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tooltip.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/category-bar-tremor.tsx",
           "type": "registry:ui"
         }
       ]
@@ -1037,7 +1238,7 @@
       "title": "Collapsible",
       "description": "Contêiner expansível/recolhível com animação de abertura/fechamento. Baseado em @radix-ui/react-collapsible.",
       "dependencies": [
-        "@radix-ui/react-collapsible@^1.1.12"
+        "@radix-ui/react-collapsible@^1.1.14"
       ],
       "files": [
         {
@@ -1111,6 +1312,24 @@
         },
         {
           "path": "src/components/ui/colourful-text-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "combo-chart-tremor",
+      "type": "registry:ui",
+      "title": "Combo Chart (Tremor)",
+      "description": "Combina barras e linhas no mesmo gráfico para comparar grandezas diferentes em paralelo. Categorias podem ser declaradas como string simples ou como objeto { name, type }.",
+      "dependencies": [
+        "recharts@^2.15.2"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/combo-chart-tremor.tsx",
           "type": "registry:ui"
         }
       ]
@@ -1492,6 +1711,42 @@
       ]
     },
     {
+      "name": "date-range-picker-tremor",
+      "type": "registry:ui",
+      "title": "Date Range Picker (Tremor)",
+      "description": "Seletor de intervalo de datas (from/to) da Tremor Raw: calendário duplo, presets rápidos (Last 7 days, Month to date, etc.) e formatação localizada via date-fns. Ideal para dashboards de analytics com filtros temporais.",
+      "dependencies": [
+        "date-fns@^3.6.0",
+        "lucide-react@^0.468.0",
+        "react-day-picker@^9.8.0"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/calendar.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/popover.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/select.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/date-range-picker-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
+    },
+    {
       "name": "db-overview-grid",
       "type": "registry:ui",
       "title": "Db Overview Grid",
@@ -1513,33 +1768,6 @@
         },
         {
           "path": "src/components/ui/db-overview-grid-types.ts",
-          "type": "registry:ui"
-        }
-      ]
-    },
-    {
-      "name": "db-schema-explorer",
-      "type": "registry:ui",
-      "title": "DB Schema Explorer",
-      "description": "Explorador de schema de banco no estilo DBeaver/Navicat: árvore lateral (banco → schemas → tabelas) com busca em tempo real, painel de detalhe com 4 abas (Columns / Indexes / Foreign keys / DDL) e referência FK clicável que pula para a tabela alvo.",
-      "dependencies": [
-        "lucide-react@^0.468.0"
-      ],
-      "registryDependencies": [
-        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json",
-        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
-        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input.json",
-        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/scroll-area.json",
-        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/table.json",
-        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tabs.json"
-      ],
-      "files": [
-        {
-          "path": "src/components/ui/db-schema-explorer.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "src/components/ui/db-schema-explorer-types.ts",
           "type": "registry:ui"
         }
       ]
@@ -1625,6 +1853,30 @@
       ]
     },
     {
+      "name": "divider-tremor",
+      "type": "registry:ui",
+      "title": "Divider (Tremor)",
+      "description": "Linha divisória horizontal/vertical da Tremor Raw com variante intermediária (texto entre dois traços). Versão minimalista do separator shadcn, ideal para seções em dashboards.",
+      "files": [
+        {
+          "path": "src/components/ui/divider-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
+    },
+    {
       "name": "donut-breakdown",
       "type": "registry:ui",
       "title": "Donut Breakdown",
@@ -1650,6 +1902,36 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "donut-chart-tremor",
+      "type": "registry:ui",
+      "title": "Donut Chart (Tremor)",
+      "description": "Gráfico de rosca/pizza com Recharts para proporções. Variante alterna entre donut e pie; permite cores, valores centrais e labels customizados.",
+      "dependencies": [
+        "recharts@^2.15.2"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/donut-chart-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
     },
     {
       "name": "dot-grid-spotlight",
@@ -1805,6 +2087,21 @@
       ]
     },
     {
+      "name": "empty",
+      "type": "registry:ui",
+      "title": "Empty",
+      "description": "Estado vazio (empty state) com ícone, título, descrição e ação — para listas e telas ainda sem conteúdo.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/empty.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "encrypted-text",
       "type": "registry:ui",
       "title": "Encrypted Text",
@@ -1912,6 +2209,25 @@
       "files": [
         {
           "path": "src/components/ui/features-section-with-skeletons.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "field",
+      "type": "registry:ui",
+      "title": "Field",
+      "description": "Wrapper de campo de formulário: agrupa label, controle, descrição e mensagem de erro com espaçamento consistente.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/label.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/separator.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/field.tsx",
           "type": "registry:ui"
         }
       ]
@@ -2262,6 +2578,9 @@
         "@radix-ui/react-slot@^1.2.3",
         "react-hook-form@^7.54.0"
       ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/label.json"
+      ],
       "files": [
         {
           "path": "src/components/ui/form.tsx",
@@ -2269,10 +2588,6 @@
         },
         {
           "path": "src/components/ui/form-internal.ts",
-          "type": "registry:ui"
-        },
-        {
-          "path": "src/components/ui/label.tsx",
           "type": "registry:ui"
         }
       ]
@@ -2282,16 +2597,12 @@
       "type": "registry:ui",
       "title": "GitHub Contributions",
       "description": "Heatmap de contribuições estilo GitHub, com células por dia, tooltips e escalas de cor.",
-      "dependencies": [
-        "@radix-ui/react-tooltip@^1.2.8"
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tooltip.json"
       ],
       "files": [
         {
           "path": "src/components/ui/github-contributions.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "src/components/ui/tooltip.tsx",
           "type": "registry:ui"
         }
       ]
@@ -2307,6 +2618,9 @@
       ],
       "devDependencies": [
         "@types/three@^0.171.0"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {
@@ -2702,6 +3016,26 @@
       ]
     },
     {
+      "name": "input-group",
+      "type": "registry:ui",
+      "title": "Input Group",
+      "description": "Input com addons (ícones, botões ou texto) à esquerda, à direita ou em bloco, integrados visualmente ao campo.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/textarea.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/input-group.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "input-group-fluid",
       "type": "registry:ui",
       "title": "Input Group (Fluid)",
@@ -2790,6 +3124,37 @@
       ]
     },
     {
+      "name": "item",
+      "type": "registry:ui",
+      "title": "Item",
+      "description": "Primitivo de linha/lista flexível com mídia, conteúdo, título, descrição e ações — base para listas e cards compactos.",
+      "dependencies": [
+        "@radix-ui/react-slot@^1.2.3",
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/separator.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/item.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "kbd",
+      "type": "registry:ui",
+      "title": "Kbd",
+      "description": "Representação visual de teclas e atalhos de teclado (ex.: ⌘ K). Use KbdGroup para combinações.",
+      "files": [
+        {
+          "path": "src/components/ui/kbd.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "keyboard",
       "type": "registry:ui",
       "title": "Keyboard",
@@ -2823,6 +3188,49 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "label",
+      "type": "registry:ui",
+      "title": "Label",
+      "description": "Rótulo acessível para campos de formulário. Baseado em @radix-ui/react-label.",
+      "dependencies": [
+        "@radix-ui/react-label@^2.1.10",
+        "class-variance-authority@^0.7.1"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/label.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "label-tremor",
+      "type": "registry:ui",
+      "title": "Label (Tremor)",
+      "description": "Wrapper do <label> HTML estilizado com tipografia e cor da Tremor Raw. Pequeno e proposital: serve para padronizar rótulos de formulários dentro de dashboards Tremor sem precisar do label do shadcn (que traz FormControl/FormMessage).",
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/label-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
     },
     {
       "name": "lamp-effect",
@@ -2942,6 +3350,37 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "line-chart-tremor",
+      "type": "registry:ui",
+      "title": "Line Chart (Tremor)",
+      "description": "Gráfico de linhas com Recharts para séries temporais. Suporta múltiplas séries, curva suave (monotone/linear/step) e configuração de eixos categóricos.",
+      "dependencies": [
+        "lucide-react@^0.468.0",
+        "recharts@^2.15.2"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/line-chart-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
     },
     {
       "name": "link-preview",
@@ -3185,16 +3624,12 @@
       "type": "registry:ui",
       "title": "Middle Truncation",
       "description": "Trunca texto no meio preservando início e fim — ideal para hashes, paths e e-mails.",
-      "dependencies": [
-        "@radix-ui/react-tooltip@^1.2.8"
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tooltip.json"
       ],
       "files": [
         {
           "path": "src/components/ui/middle-truncation.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "src/components/ui/tooltip.tsx",
           "type": "registry:ui"
         }
       ]
@@ -3533,6 +3968,71 @@
       ]
     },
     {
+      "name": "progress-bar-tremor",
+      "type": "registry:ui",
+      "title": "Progress Bar (Tremor)",
+      "description": "Barra de progresso horizontal da Tremor Raw com variantes de cor, suporte a label e tooltip, ideal para metas, conclusão de tarefas e indicadores de saturação em dashboards.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/progress-bar-tremor.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/progress-bar-tremor-variants.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
+    },
+    {
+      "name": "progress-circle-tremor",
+      "type": "registry:ui",
+      "title": "Progress Circle (Tremor)",
+      "description": "Indicador circular de progresso da Tremor Raw: arco proporcional ao valor, com miolo configurável (texto/children) e variantes de cor para destacar conclusão de metas em dashboards.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/progress-circle-tremor.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/progress-circle-tremor-variants.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
+    },
+    {
       "name": "query-history-list",
       "type": "registry:ui",
       "title": "Query History List",
@@ -3558,6 +4058,36 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "radio-card-group-tremor",
+      "type": "registry:ui",
+      "title": "Radio Card Group (Tremor)",
+      "description": "Radio group onde cada opção é um card selecionável da Tremor Raw, com ícone + título + descrição. Mantém a acessibilidade de radiogroup (navegação por setas). Ideal para escolha de plano, método de pagamento ou tipo de assinatura.",
+      "dependencies": [
+        "@radix-ui/react-radio-group@^1.2.3"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/radio-card-group-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
     },
     {
       "name": "radio-group",
@@ -3747,6 +4277,36 @@
       ]
     },
     {
+      "name": "scatter-chart-tremor",
+      "type": "registry:ui",
+      "title": "Scatter Chart (Tremor)",
+      "description": "Gráfico de dispersão com Recharts para correlacionar duas variáveis numéricas. Aceita categoria por cor e customização dos eixos.",
+      "dependencies": [
+        "recharts@^2.15.2"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/scatter-chart-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
+    },
+    {
       "name": "scroll-area",
       "type": "registry:ui",
       "title": "Scroll Area",
@@ -3823,6 +4383,33 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "select-native-tremor",
+      "type": "registry:ui",
+      "title": "Select Native (Tremor)",
+      "description": "Wrapper do <select> HTML nativo estilizado com a casca da Tremor Raw (foco ring, borda, opções com tema). Ideal para selects simples que não precisam do peso de um popover/combobox, mantendo a mesma identidade visual Tremor.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/select-native-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
     },
     {
       "name": "separator",
@@ -4061,25 +4648,6 @@
       ]
     },
     {
-      "name": "slow-query-list",
-      "type": "registry:ui",
-      "title": "Slow Query List",
-      "description": "Listagem de queries SQL lentas com diagnóstico: tempo, query SQL com syntax highlight, plano do EXPLAIN em árvore, locks ativos e sugestões automáticas (índice faltante, rewrite, vacuum, stats, lock). Filtros por threshold, severidade e banco; agrupamento por tabela/database/user.",
-      "dependencies": [
-        "lucide-react@^0.468.0"
-      ],
-      "files": [
-        {
-          "path": "src/components/ui/slow-query-list.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "src/components/ui/slow-query-list-types.ts",
-          "type": "registry:ui"
-        }
-      ]
-    },
-    {
       "name": "sonner",
       "type": "registry:ui",
       "title": "Sonner",
@@ -4093,6 +4661,36 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "spark-chart-tremor",
+      "type": "registry:ui",
+      "title": "Spark Chart (Tremor)",
+      "description": "Mini-gráfico compacto (área, barra ou linha) para inline em cards e tabelas. Suporta curva (linear/monotone/step) e variação de tipo no mesmo componente.",
+      "dependencies": [
+        "recharts@^2.15.2"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/spark-chart-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
     },
     {
       "name": "sparkles",
@@ -4118,6 +4716,21 @@
       "files": [
         {
           "path": "src/components/ui/sparkline.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "spinner",
+      "type": "registry:ui",
+      "title": "Spinner",
+      "description": "Indicador de carregamento giratório minimalista, baseado no ícone Loader2 do lucide.",
+      "dependencies": [
+        "lucide-react@^0.468.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/spinner.tsx",
           "type": "registry:ui"
         }
       ]
@@ -4338,6 +4951,33 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "tab-navigation-tremor",
+      "type": "registry:ui",
+      "title": "Tab Navigation (Tremor)",
+      "description": "Nav horizontal de abas estilo admin da Tremor Raw: estado ativo sublinhado, ícone opcional por item, modo controlado/não-controlado via `value`/`defaultValue`/`onValueChange`. Diferente do `tabs` shadcn (que traz painéis de conteúdo), esta é apenas a faixa de navegação.",
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tab-navigation-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
     },
     {
       "name": "table",
@@ -4589,20 +5229,16 @@
       "title": "Theme Switcher",
       "description": "Seletor de tema elaborado com opções light/dark/system (e talvez accent color).",
       "dependencies": [
-        "@radix-ui/react-tooltip@^1.2.8",
         "lucide-react@^0.468.0"
       ],
       "registryDependencies": [
         "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dropdown-menu.json",
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tooltip.json",
         "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/use-theme.json"
       ],
       "files": [
         {
           "path": "src/components/ui/theme-switcher.tsx",
-          "type": "registry:ui"
-        },
-        {
-          "path": "src/components/ui/tooltip.tsx",
           "type": "registry:ui"
         }
       ]
@@ -4800,6 +5436,75 @@
       ]
     },
     {
+      "name": "toggle-group",
+      "type": "registry:ui",
+      "title": "Toggle Group",
+      "description": "Grupo de botões de alternância com seleção única ou múltipla. Baseado em @radix-ui/react-toggle-group.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1",
+        "radix-ui@^1.6.0"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/toggle-group.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/toggle-variants.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "toggle-tremor",
+      "type": "registry:ui",
+      "title": "Toggle (Tremor)",
+      "description": "Toggle/switch da Tremor Raw (input + span visual animado) com foco ring e estados checked/unchecked na paleta azul Tremor. Wrapper leve do <input type='checkbox'> que cobre o caso clássico de on/off em filtros e preferências.",
+      "dependencies": [
+        "class-variance-authority@^0.7.1"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/toggle-tremor.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/toggle-tremor-variants.ts",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
+    },
+    {
+      "name": "tooltip",
+      "type": "registry:ui",
+      "title": "Tooltip",
+      "description": "Dica contextual exibida ao passar o mouse ou focar um gatilho. Baseado em @radix-ui/react-tooltip.",
+      "dependencies": [
+        "@radix-ui/react-tooltip@^1.2.8"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tooltip.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
       "name": "tooltip-card",
       "type": "registry:ui",
       "title": "Tooltip Card",
@@ -4865,6 +5570,36 @@
           "type": "registry:ui"
         }
       ]
+    },
+    {
+      "name": "tracker-tremor",
+      "type": "registry:ui",
+      "title": "Tracker (Tremor)",
+      "description": "Indicador de progresso horizontal da Tremor Raw: barra com pontos coloridos marcando eventos no caminho, ideal para funis, etapas de processo e checkpoints em dashboards analíticos.",
+      "dependencies": [
+        "@radix-ui/react-hover-card@^1.1.15"
+      ],
+      "registryDependencies": [
+        "https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tremor-utils.json"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/tracker-tremor.tsx",
+          "type": "registry:ui"
+        }
+      ],
+      "css": {
+        ".transition-all": {
+          "transition-property": "all",
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        },
+        ".duration-300": {
+          "transition-duration": "300ms"
+        },
+        ".ease-in-out": {
+          "transition-timing-function": "cubic-bezier(0.4, 0, 0.2, 1)"
+        }
+      }
     },
     {
       "name": "tree",
@@ -4939,6 +5674,21 @@
       }
     },
     {
+      "name": "tremor-utils",
+      "type": "registry:lib",
+      "title": "Tremor Utils",
+      "dependencies": [
+        "clsx@^2.1.1",
+        "tailwind-merge@^2.5.5"
+      ],
+      "files": [
+        {
+          "path": "src/lib/tremor-utils.ts",
+          "type": "registry:lib"
+        }
+      ]
+    },
+    {
       "name": "typewriter-effect",
       "type": "registry:ui",
       "title": "Typewriter Effect",
@@ -4953,6 +5703,26 @@
         },
         {
           "path": "src/components/ui/typewriter-effect-types.ts",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "typography",
+      "type": "registry:ui",
+      "title": "Typography",
+      "description": "Estilos de tipografia base no estilo shadcn: títulos h1–h4, parágrafo, lead, blockquote, lista, código inline e textos large/small/muted. Um componente com `variant` que renderiza o elemento HTML semântico adequado.",
+      "dependencies": [
+        "@radix-ui/react-slot@^1.2.3",
+        "class-variance-authority@^0.7.1"
+      ],
+      "files": [
+        {
+          "path": "src/components/ui/typography.tsx",
+          "type": "registry:ui"
+        },
+        {
+          "path": "src/components/ui/typography-variants.ts",
           "type": "registry:ui"
         }
       ]

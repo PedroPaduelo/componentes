@@ -14,6 +14,7 @@ import {
 } from "@/data/component-install"
 import { buildUsageTip } from "@/data/component-prompt"
 import { getOrigin, type Family } from "@/data/families"
+import { GROUP_BY_ID, getGroup } from "@/data/groups"
 
 /** URL pública do índice completo legível por máquina (llms.txt). */
 export const LLMS_TXT_PATH = "/llms.txt"
@@ -28,8 +29,9 @@ export function buildAiDefinition(family: Family): string {
   const install = getComponentInstall(family.representativeSlug)
   const tip = buildUsageTip(rep, origin)
   const addCommand = getRegistryAddCommand(family.representativeSlug)
+  const groupLabel = GROUP_BY_ID[getGroup(family.representativeSlug)].label
   return (
-    `${family.name} (${family.category}). ${rep.description} ` +
+    `${family.name} (${groupLabel}). ${rep.description} ` +
     `Quando usar: ${tip} ` +
     `Instale com \`${addCommand}\` e importe \`{ ${install.exportName} }\` de "${install.importPath}".`
   )

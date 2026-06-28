@@ -10,7 +10,6 @@ import { getGroup, GROUPS } from "@/data/groups"
 import { ComponentCard } from "@/components/catalog/ComponentCard"
 import { SearchInput } from "@/components/catalog/SearchInput"
 import {
-  ALL_CATEGORIES,
   OriginFilter,
   TagFilter,
 } from "@/components/catalog/CategoryFilter"
@@ -69,13 +68,13 @@ export function Home() {
   }, [families, group])
 
   const filtered = useMemo(
-    () => filterFamilies(groupFiltered, query, ALL_CATEGORIES, origin, tag),
+    () => filterFamilies(groupFiltered, query, origin, tag),
     [groupFiltered, query, origin, tag],
   )
 
   // Contagens por origem respeitando busca/tag (mas não a origem selecionada).
   const originCounts = useMemo(() => {
-    const base = filterFamilies(families, query, ALL_CATEGORIES, null, tag)
+    const base = filterFamilies(families, query, null, tag)
     const map: Record<string, number> = {}
     for (const family of base) {
       for (const o of family.origins) {
@@ -87,7 +86,7 @@ export function Home() {
 
   // Contagens por tag respeitando busca/origem (mas não a tag selecionada).
   const tagCounts = useMemo(() => {
-    const base = filterFamilies(families, query, ALL_CATEGORIES, origin, null)
+    const base = filterFamilies(families, query, origin, null)
     const map: Record<string, number> = {}
     for (const family of base) {
       const seen = new Set<string>()
@@ -105,7 +104,7 @@ export function Home() {
   // com a contagem de famílias atualizada pela busca/origem/tag selecionados
   // — sem considerar o próprio filtro de grupo.
   const groupOptions = useMemo(() => {
-    const base = filterFamilies(families, query, ALL_CATEGORIES, origin, tag)
+    const base = filterFamilies(families, query, origin, tag)
     return GROUPS.map((g) => {
       const count = base.filter((f) =>
         f.variants.some((v) => getGroup(v.slug) === g.id),
@@ -115,7 +114,7 @@ export function Home() {
   }, [families, query, origin, tag])
 
   const groupTotalCount = useMemo(() => {
-    return filterFamilies(families, query, ALL_CATEGORIES, origin, tag).length
+    return filterFamilies(families, query, origin, tag).length
   }, [families, query, origin, tag])
 
   const hasActiveFilters =
