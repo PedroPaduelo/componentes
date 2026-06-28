@@ -1,23 +1,24 @@
 /**
  * Camada de dados de GRUPOS (clusterização) — dados puros, sem UI.
  *
- * Objetivo (UX Vitrine v2): o catálogo é ~1 página por slug (272 componentes),
- * o que fragmenta a navegação. Este módulo introduz uma unidade conceitual de
- * PÁGINA — o "grupo" — que clusteriza componentes afins por domínio (ex.: todos
- * os inputs numa única seção "Forms & Inputs").
+ * Objetivo (UX Vitrine): o catálogo tem centenas de slugs, o que fragmenta a
+ * navegação. Este módulo introduz a unidade conceitual de PÁGINA — o "grupo" —
+ * que clusteriza componentes afins por INTENÇÃO de uso, para humano e para IA
+ * (vibe-coding) acharem o componente certo rápido.
  *
  * --- ADITIVO E DESACOPLADO (decisão de design) ---
  * - NÃO altera `families.ts` (derivação de família/origem continua intacta) nem
- *   `CATEGORIES` (as 4 categorias canônicas seguem como estão). Os helpers de
- *   grupo apenas CONSOMEM `groupByFamily`/`components` (read-only).
+ *   `CATEGORIES` (as 4 categorias canônicas seguem como metadado/badge). Os
+ *   helpers de grupo apenas CONSOMEM `groupByFamily`/`components` (read-only).
  * - NÃO adiciona nenhum campo em `ComponentMeta` → os parsers regex dos scripts
  *   de `_meta` (build-ai-assets / build-registry) NÃO são afetados.
  * - O vínculo slug → grupo vive em `SLUG_GROUP_MAP` (mapa de derivação externo),
  *   mantendo o registry (`components.ts`) como única fonte da verdade dos itens.
  *
- * A taxonomia (13 grupos, agrupados em 3 domínios macro) separa primitivos de
+ * A taxonomia (16 grupos, agrupados em 3 domínios macro) separa primitivos de
  * UI, blocos de aplicação/dados e efeitos visuais. Cada grupo é a unidade de
- * página/seção da navegação.
+ * página/seção da navegação. A cobertura (todo slug tem grupo explícito) é
+ * garantida no CI por `_meta/scripts/lote/validate-groups.mjs`.
  */
 
 import {
@@ -26,14 +27,17 @@ import {
   IdCard,
   LayoutGrid,
   LineChart,
+  ListTree,
   MessageSquare,
   MousePointerClick,
   Pilcrow,
-  Sparkles,
+  Pointer,
+  Presentation,
   SquareStack,
-  Table,
   Terminal,
   TextCursorInput,
+  Wallpaper,
+  Wand2,
   type LucideIcon,
 } from "lucide-react"
 
@@ -46,8 +50,8 @@ import { groupByFamily, type Family } from "@/data/families"
 
 /**
  * Domínios macro: agrupam os grupos em três blocos de navegação. Servem para
- * ORDENAR os grupos (primitivos → aplicações → visual) e podem ancorar seções
- * de nível superior na sidebar/command palette.
+ * ORDENAR os grupos (primitivos → aplicações → visual) e ancoram seções de
+ * nível superior na sidebar/overview.
  */
 export const DOMAIN_IDS = ["primitivos", "aplicacoes", "visual"] as const
 
@@ -59,12 +63,15 @@ export type DomainId = (typeof DOMAIN_IDS)[number]
 /* -------------------------------------------------------------------------- */
 
 /**
- * Ids canônicos dos 13 grupos da vitrine (união literal `as const`).
+ * Ids canônicos dos 16 grupos da vitrine (união literal `as const`).
  *
  * São URL-safe (kebab-case) porque viram o contrato da rota de grupo
  * (ex.: `/components/grupo/forms-inputs`). Estáveis — não renomear sem migração.
+ * (Os ids de grupos pré-existentes foram mantidos mesmo após renomear os
+ * RÓTULOS, para não quebrar deep-links já publicados.)
  */
 export const GROUP_IDS = [
+  // primitivos de UI
   "forms-inputs",
   "actions-navigation",
   "layout-containers",
@@ -73,11 +80,16 @@ export const GROUP_IDS = [
   "tables-data",
   "feedback-status",
   "data-display",
+  // aplicações & dados
   "chat-ai",
   "dashboards-charts",
   "dashboards-data",
   "dev",
+  // visual & efeitos
   "backgrounds-fx",
+  "hero-sections",
+  "scroll-pointer-fx",
+  "card-effects",
 ] as const
 
 /** União dos ids de grupo (literal `as const`). */
@@ -91,17 +103,20 @@ export interface Group {
   label: string
   /** Domínio macro ao qual o grupo pertence (define o bloco de ordenação). */
   domain: DomainId
-  /** Descrição curta exibida no topo da página/seção do grupo. */
+  /** Descrição curta (orientada a INTENÇÃO de uso) no topo da página/seção. */
   description: string
-  /** Ordem global (1..13) — já arranjada por domínio (contígua por bloco). */
+  /** Ordem global (1..16) — já arranjada por domínio (contígua por bloco). */
   order: number
   /** Ícone lucide associado ao grupo (opcional). */
   icon?: LucideIcon
 }
 
 /**
- * Os 13 grupos da taxonomia, JÁ ORDENADOS por domínio:
- * primitivos (1–8) → aplicações (9–12) → visual (13).
+ * Os 16 grupos da taxonomia, JÁ ORDENADOS por domínio:
+ * primitivos (1–8) → aplicações (9–12) → visual (13–16).
+ *
+ * As descrições lideram pela INTENÇÃO ("use para…") para ajudar tanto a busca
+ * humana quanto o matching de IA durante vibe-coding.
  */
 export const GROUPS: Group[] = [
   // — Domínio: primitivos de UI —
@@ -110,7 +125,7 @@ export const GROUPS: Group[] = [
     label: "Forms & Inputs",
     domain: "primitivos",
     description:
-      "Campos, seleção e captura de dados: inputs, textarea, OTP, selects, sliders, switches, checkboxes e formulários.",
+      "Use para capturar dados do usuário: inputs, textarea, OTP, selects, sliders, switches, checkboxes, date pickers e formulários completos.",
     order: 1,
     icon: TextCursorInput,
   },
@@ -119,7 +134,7 @@ export const GROUPS: Group[] = [
     label: "Actions & Navegação",
     domain: "primitivos",
     description:
-      "Botões e gatilhos de ação, além de menus, abas, breadcrumbs, paginação e barras de navegação.",
+      "Use para disparar ações e mover o usuário pela interface: botões e gatilhos, menus, abas, breadcrumbs, paginação e barras de navegação.",
     order: 2,
     icon: MousePointerClick,
   },
@@ -128,7 +143,7 @@ export const GROUPS: Group[] = [
     label: "Layout & Containers",
     domain: "primitivos",
     description:
-      "Estrutura visual: grids, carrosséis, modais, drawers, painéis redimensionáveis, accordions, banners e separadores.",
+      "Use para estruturar a tela: grids, carrosséis, modais, drawers, painéis redimensionáveis, accordions, banners e separadores.",
     order: 3,
     icon: LayoutGrid,
   },
@@ -137,7 +152,7 @@ export const GROUPS: Group[] = [
     label: "Tipografia",
     domain: "primitivos",
     description:
-      "Tudo de texto: tipografia base no estilo shadcn (títulos h1–h4, parágrafo, lead, blockquote, lista, código inline, large/small/muted) e efeitos de texto animados (flip, typewriter, geração progressiva, gradiente, brilho e revelações).",
+      "Use para texto: tipografia base estilo shadcn (h1–h4, parágrafo, lead, blockquote, lista, código inline) e efeitos de texto animados (flip, typewriter, geração progressiva, gradiente, brilho).",
     order: 4,
     icon: Pilcrow,
   },
@@ -146,34 +161,34 @@ export const GROUPS: Group[] = [
     label: "Cards",
     domain: "primitivos",
     description:
-      "Todos os cards: card base, KPI/stat cards e tiles de métrica, além de cards decorativos (3D, glare, spotlight, comet, wobble, hover e stacks animados).",
+      "Use para agrupar conteúdo e métricas em blocos: card base, KPI/stat cards, tiles de métrica e cards de resumo (servidor, sinal, upgrade). Cards com efeitos decorativos ficam em “Cards Decorativos”.",
     order: 5,
     icon: SquareStack,
   },
   {
     id: "tables-data",
-    label: "Tabelas & Dados",
+    label: "Listas & Tabelas",
     domain: "primitivos",
     description:
-      "Exibição de dados primitiva: tabelas, listas, code blocks e terminais.",
+      "Use para exibir coleções de itens em linhas: tabelas, data tables, listas (atividade, favoritos, leaderboard, usuários) e blocos de item.",
     order: 6,
-    icon: Table,
+    icon: ListTree,
   },
   {
     id: "feedback-status",
     label: "Feedback & Status",
     domain: "primitivos",
     description:
-      "Comunicação de estado e processo: alertas, callouts, toasts, barras e círculos de progresso, trackers, skeletons e indicadores de carregamento.",
+      "Use para comunicar estado e progresso: alertas, callouts, toasts, barras e círculos de progresso, trackers, skeletons e loaders.",
     order: 7,
     icon: MessageSquare,
   },
   {
     id: "data-display",
-    label: "Exibição de Dados",
+    label: "Badges & Indicadores",
     domain: "primitivos",
     description:
-      "Exibição de informação e identidade: avatares, badges, tooltips, hover-cards, previews de link e números animados.",
+      "Use para rotular, identificar e dar contexto pontual: avatares, badges, tooltips, hover-cards, previews de link, empty states, kbd e números animados.",
     order: 8,
     icon: IdCard,
   },
@@ -184,25 +199,25 @@ export const GROUPS: Group[] = [
     label: "Chat & IA",
     domain: "aplicacoes",
     description:
-      "Blocos de conversa e IA: mensagens, indicadores de raciocínio, prompts e fluxos de pergunta ao usuário.",
+      "Use para construir interfaces de conversa e IA: mensagens, indicadores de raciocínio, prompts e fluxos de pergunta ao usuário.",
     order: 9,
     icon: Bot,
   },
   {
     id: "dashboards-charts",
-    label: "Dashboards & Charts",
+    label: "Gráficos",
     domain: "aplicacoes",
     description:
-      "Visualizações de dados: gráficos de área, barra, linha, pizza, dispersão, sparkline, combo, medidores e listas de barras.",
+      "Use para visualizar dados quantitativos: gráficos de área, barra, linha, pizza/donut, dispersão, sparkline, combo, medidores e bar lists.",
     order: 10,
     icon: LineChart,
   },
   {
     id: "dashboards-data",
-    label: "Dashboards & Data",
+    label: "Dashboards & Observability",
     domain: "aplicacoes",
     description:
-      "Blocos prontos de dashboard e observability: feeds, timelines, trace/latency, logs, server/DB grids, barras de status e dev tools.",
+      "Use para montar telas de dashboard e observability: feeds, timelines, trace/latency, logs, server/DB grids, status bars e widgets de painel.",
     order: 11,
     icon: BarChart3,
   },
@@ -211,7 +226,7 @@ export const GROUPS: Group[] = [
     label: "Dev & Código",
     domain: "aplicacoes",
     description:
-      "Ferramentas de desenvolvedor: blocos de código com highlight, comandos de instalação, terminais, gráfico de contribuições, globos 3D e mapa-múndi.",
+      "Use para conteúdo de desenvolvedor: blocos de código com highlight, comandos de instalação, terminais, gráfico de contribuições, globos 3D e mapa-múndi.",
     order: 12,
     icon: Terminal,
   },
@@ -219,12 +234,39 @@ export const GROUPS: Group[] = [
   // — Domínio: visual & efeitos —
   {
     id: "backgrounds-fx",
-    label: "Backgrounds & FX",
+    label: "Backgrounds",
     domain: "visual",
     description:
-      "Fundos e efeitos imersivos: beams, auroras, grids, partículas, spotlights, meteoros e shaders.",
+      "Use como fundo imersivo de uma seção: beams, auroras, grids e pontos, partículas (meteoros, estrelas, sparkles), spotlights, gradientes animados e shaders.",
     order: 13,
-    icon: Sparkles,
+    icon: Wallpaper,
+  },
+  {
+    id: "hero-sections",
+    label: "Hero Sections",
+    domain: "visual",
+    description:
+      "Use como abertura de página de alto impacto: heros com parallax, lamp, highlight, efeito ao mover o mouse e cenas conduzidas por scroll (macbook, gemini).",
+    order: 14,
+    icon: Presentation,
+  },
+  {
+    id: "scroll-pointer-fx",
+    label: "Scroll & Interação",
+    domain: "visual",
+    description:
+      "Use para reações a scroll e ponteiro: revelações no scroll, tracing beam, parallax de galeria, lens/zoom, glow e máscaras que seguem o cursor.",
+    order: 15,
+    icon: Pointer,
+  },
+  {
+    id: "card-effects",
+    label: "Cards Decorativos",
+    domain: "visual",
+    description:
+      "Use quando o card é o destaque visual: efeitos 3D, glare, spotlight, comet, wobble, hover direcional, pin e pilhas/grids animadas. Para cards funcionais, veja “Cards”.",
+    order: 16,
+    icon: Wand2,
   },
 ]
 
@@ -243,7 +285,11 @@ export const GROUP_BY_ID: Record<GroupId, Group> = GROUPS.reduce(
 
 /**
  * Grupo de fallback para slugs SEM entrada explícita em `SLUG_GROUP_MAP`.
- * Aponta para `feedback-status` (destino neutro) até a curadoria mover o item.
+ *
+ * NÃO se deve confiar nele: o validador de cobertura
+ * (`_meta/scripts/lote/validate-groups.mjs`, rodado no CI) FALHA se algum slug
+ * do registry não tiver grupo explícito. O default existe só como rede de
+ * segurança em runtime para um slug recém-adicionado antes do mapeamento.
  */
 export const DEFAULT_GROUP: GroupId = "feedback-status"
 
@@ -252,12 +298,11 @@ export const DEFAULT_GROUP: GroupId = "feedback-status"
  *
  * COBERTURA: mapeia os slugs de `components.ts`, cada um para 1 dos `GroupId`.
  * A vinculação fica AQUI (e não em `ComponentMeta`) para manter a camada de
- * grupos aditiva e desacoplada do registry e dos parsers `_meta`. Slugs futuros
- * sem entrada caem em `DEFAULT_GROUP`. Organizado por grupo, alfabético dentro
- * de cada bloco.
+ * grupos aditiva e desacoplada do registry e dos parsers `_meta`. Organizado
+ * por grupo, alfabético dentro de cada bloco.
  */
 export const SLUG_GROUP_MAP: Record<string, GroupId> = {
-  // — Forms & Inputs: campos, seleção e captura de dados —
+  // — Forms & Inputs: captura de dados —
   label: "forms-inputs",
   field: "forms-inputs",
   "input-group": "forms-inputs",
@@ -397,7 +442,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "text-reveal-card": "typography",
   "typewriter-effect": "typography",
 
-  // — Cards: conteúdo, métrica e efeitos decorativos —
+  // — Cards: conteúdo e métrica (funcionais) —
   card: "cards",
   "card-tremor": "cards",
   "detail-stat-cell": "cards",
@@ -408,23 +453,8 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "stat-tile": "cards",
   "table-info-panel": "cards",
   "upgrade-card": "cards",
-  // efeitos de card (decorativos / animados)
-  "3d-card-effect": "cards",
-  "3d-pin": "cards",
-  "card-hover-effect": "cards",
-  "card-spotlight": "cards",
-  "card-stack": "cards",
-  "comet-card": "cards",
-  "direction-aware-hover": "cards",
-  "draggable-card": "cards",
-  "evervault-card": "cards",
-  "focus-cards": "cards",
-  "glare-card": "cards",
-  "glow-card-grid": "cards",
-  "glowing-stars-effect": "cards",
-  "wobble-card": "cards",
 
-  // — Tabelas & Dados: tabelas e listas —
+  // — Listas & Tabelas: tabelas e listas —
   "activity-feed": "tables-data",
   "connection-list": "tables-data",
   "data-table": "tables-data",
@@ -461,7 +491,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   toast: "feedback-status",
   "tracker-tremor": "feedback-status",
 
-  // — Exibição de Dados: avatares, badges, tooltips, previews, empty, kbd e números —
+  // — Badges & Indicadores: avatares, badges, tooltips, previews, empty, kbd e números —
   kbd: "data-display",
   "animated-number": "data-display",
   "animated-tooltip": "data-display",
@@ -483,7 +513,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "thinking-indicator-fluid": "chat-ai",
   "thinking-steps-fluid": "chat-ai",
 
-  // — Dashboards & Charts: gráficos, medidores, sparklines —
+  // — Gráficos: visualizações de dados quantitativos —
   "area-chart-tremor": "dashboards-charts",
   "bar-chart": "dashboards-charts",
   "bar-chart-tremor": "dashboards-charts",
@@ -501,7 +531,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "spark-chart-tremor": "dashboards-charts",
   sparkline: "dashboards-charts",
 
-  // — Dashboards & Data: blocos de aplicação/observability, dev tools —
+  // — Dashboards & Observability: blocos de aplicação/observability —
   "chart-template-gallery": "dashboards-data",
   "chart-widget": "dashboards-data",
   "container-resource-panel": "dashboards-data",
@@ -521,7 +551,7 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "user-activity-stream": "dashboards-data",
   "workbench-status-bar": "dashboards-data",
 
-  // — Backgrounds & FX: beams, auroras, partículas, spotlights, shaders —
+  // — Backgrounds: fundos imersivos, partículas, spotlights, shaders —
   "3d-marquee": "backgrounds-fx",
   "ascii-art": "backgrounds-fx",
   "aurora-background": "backgrounds-fx",
@@ -533,26 +563,13 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   "background-lines": "backgrounds-fx",
   "background-ripple-effect": "backgrounds-fx",
   "canvas-reveal-effect": "backgrounds-fx",
-  "container-scroll-animation": "backgrounds-fx",
   "dither-shader": "backgrounds-fx",
   "dot-grid-spotlight": "backgrounds-fx",
   "dotted-glow-background": "backgrounds-fx",
-  "following-pointer": "backgrounds-fx",
-  "glowing-effect": "backgrounds-fx",
-  "google-gemini-effect": "backgrounds-fx",
   "grid-and-dot-backgrounds": "backgrounds-fx",
-  "hero-highlight": "backgrounds-fx",
-  "hero-parallax": "backgrounds-fx",
-  "hero-section-with-mousemove": "backgrounds-fx",
-  "lamp-effect": "backgrounds-fx",
-  lens: "backgrounds-fx",
   "light-lines": "backgrounds-fx",
-  "macbook-scroll": "backgrounds-fx",
   meteors: "backgrounds-fx",
   "noise-background": "backgrounds-fx",
-  "parallax-hero-images": "backgrounds-fx",
-  "parallax-hero-images-2": "backgrounds-fx",
-  "parallax-scroll": "backgrounds-fx",
   "perspective-grid": "backgrounds-fx",
   "pixelated-canvas": "backgrounds-fx",
   scales: "backgrounds-fx",
@@ -560,11 +577,44 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
   sparkles: "backgrounds-fx",
   spotlight: "backgrounds-fx",
   "spotlight-new": "backgrounds-fx",
-  "svg-mask-effect": "backgrounds-fx",
-  "tracing-beam": "backgrounds-fx",
   vortex: "backgrounds-fx",
   "wavy-background": "backgrounds-fx",
   "webcam-pixel-grid": "backgrounds-fx",
+
+  // — Hero Sections: aberturas de página de alto impacto —
+  "google-gemini-effect": "hero-sections",
+  "hero-highlight": "hero-sections",
+  "hero-parallax": "hero-sections",
+  "hero-section-with-mousemove": "hero-sections",
+  "lamp-effect": "hero-sections",
+  "macbook-scroll": "hero-sections",
+  "parallax-hero-images": "hero-sections",
+  "parallax-hero-images-2": "hero-sections",
+
+  // — Scroll & Interação: reações a scroll e ponteiro —
+  "container-scroll-animation": "scroll-pointer-fx",
+  "following-pointer": "scroll-pointer-fx",
+  "glowing-effect": "scroll-pointer-fx",
+  lens: "scroll-pointer-fx",
+  "parallax-scroll": "scroll-pointer-fx",
+  "svg-mask-effect": "scroll-pointer-fx",
+  "tracing-beam": "scroll-pointer-fx",
+
+  // — Cards Decorativos: card como destaque visual (efeitos) —
+  "3d-card-effect": "card-effects",
+  "3d-pin": "card-effects",
+  "card-hover-effect": "card-effects",
+  "card-spotlight": "card-effects",
+  "card-stack": "card-effects",
+  "comet-card": "card-effects",
+  "direction-aware-hover": "card-effects",
+  "draggable-card": "card-effects",
+  "evervault-card": "card-effects",
+  "focus-cards": "card-effects",
+  "glare-card": "card-effects",
+  "glow-card-grid": "card-effects",
+  "glowing-stars-effect": "card-effects",
+  "wobble-card": "card-effects",
 }
 
 /* -------------------------------------------------------------------------- */
@@ -575,9 +625,9 @@ export const SLUG_GROUP_MAP: Record<string, GroupId> = {
  * Resolve o GRUPO de um slug.
  *
  * Consulta {@link SLUG_GROUP_MAP} (O(1)) e cai em {@link DEFAULT_GROUP} para
- * slugs ainda não classificados (itens novos do registry). É a porta de entrada
- * única para qualquer UI/consumidor que precise saber a que grupo um componente
- * pertence — ninguém deve ler `SLUG_GROUP_MAP` direto.
+ * slugs ainda não classificados (itens novos do registry — barrados no CI). É a
+ * porta de entrada única para qualquer UI/consumidor que precise saber a que
+ * grupo um componente pertence — ninguém deve ler `SLUG_GROUP_MAP` direto.
  */
 export function getGroup(slug: string): GroupId {
   return SLUG_GROUP_MAP[slug] ?? DEFAULT_GROUP

@@ -21,16 +21,19 @@ import {
   IdCard,
   LayoutGrid,
   LineChart,
+  ListTree,
   MessageSquare,
   MousePointerClick,
   Palette,
   Pilcrow,
+  Pointer,
+  Presentation,
   Shapes,
-  Sparkles,
   SquareStack,
-  Table,
   Terminal,
   TextCursorInput,
+  Wallpaper,
+  Wand2,
   type LucideIcon,
 } from "lucide-react"
 
@@ -50,19 +53,22 @@ export const DOMAIN_ICONS: Record<DomainId, LucideIcon> = {
   visual: Palette,
 }
 
-/** Ícone lucide associado a cada um dos 13 grupos (espelha `GROUPS` de groups.ts). */
+/** Ícone lucide associado a cada um dos 16 grupos (espelha `GROUPS` de groups.ts). */
 export const GROUP_ICONS: Record<GroupId, LucideIcon> = {
   "forms-inputs": TextCursorInput,
   "actions-navigation": MousePointerClick,
   "layout-containers": LayoutGrid,
   "typography": Pilcrow,
   "cards": SquareStack,
-  "tables-data": Table,
+  "tables-data": ListTree,
   "feedback-status": MessageSquare,
   "data-display": IdCard,
   "chat-ai": Bot,
   "dashboards-charts": LineChart,
   "dashboards-data": BarChart3,
   "dev": Terminal,
-  "backgrounds-fx": Sparkles,
+  "backgrounds-fx": Wallpaper,
+  "hero-sections": Presentation,
+  "scroll-pointer-fx": Pointer,
+  "card-effects": Wand2,
 }

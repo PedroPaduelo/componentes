@@ -48,13 +48,11 @@ function GroupCard({ group }: { group: GroupWithCount }) {
 }
 
 /**
- * Rota índice `/components`: OVERVIEW dos 9 grupos da vitrine (ONDA 2).
+ * Rota índice `/components`: OVERVIEW dos 16 grupos da vitrine.
  *
- * Antes esta rota redirecionava (`<Navigate/>`) para a primeira família em
- * ordem alfabética (`3d-card-effect`) — uma landing ruim, que jogava o usuário
- * num componente arbitrário. Agora renderiza um índice de fato: os 9 grupos
- * (via {@link listGroups}, já com `familyCount`/`componentCount`) organizados
- * pelos 3 DOMÍNIOS macro (`DOMAIN_IDS`: primitivos → aplicações → visual).
+ * Renderiza um índice de fato: os 16 grupos (via {@link listGroups}, já com
+ * `familyCount`/`componentCount`) organizados pelos 3 DOMÍNIOS macro
+ * (`DOMAIN_IDS`: primitivos → aplicações → visual).
  *
  * Cada grupo vira um card com ícone, rótulo, descrição curta e contagem
  * (famílias · componentes), linkando para a group-page

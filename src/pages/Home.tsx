@@ -11,10 +11,8 @@ import { ComponentCard } from "@/components/catalog/ComponentCard"
 import { SearchInput } from "@/components/catalog/SearchInput"
 import {
   ALL_CATEGORIES,
-  CategoryFilter,
   OriginFilter,
   TagFilter,
-  type CategoryFilterValue,
 } from "@/components/catalog/CategoryFilter"
 import {
   ALL_GROUPS,
@@ -23,25 +21,18 @@ import {
 } from "@/components/catalog/GroupFilter"
 import { EmptyState } from "@/components/catalog/EmptyState"
 
+/**
+ * Catálogo flat (`/`): busca + facetas. A faceta de "tipo de componente" é
+ * UMA SÓ — o GRUPO (mesma taxonomia de `/components`) — evitando a duplicação
+ * antiga (Categoria × Grupo) que confundia humano e IA. `Origin` (de onde vem)
+ * e `Tag` (palavra-chave livre) são facetas ORTOGONAIS e permanecem. A
+ * `category` segue como metadado/badge no card, só não é mais um filtro.
+ */
 export function Home() {
   const [searchParams] = useSearchParams()
 
-  // Lê query params do breadcrumb (ex.: ?category=Feedback, ?origin=Fluid).
-  // Resolve a issue LOW cmqjn9aac: breadcrumb linka ?category= mas Home não lia.
-  const paramCategory = searchParams.get("category")
+  // Lê ?origin= do breadcrumb (ex.: ?origin=Fluid).
   const paramOrigin = searchParams.get("origin")
-
-  const validCategory = useMemo<CategoryFilterValue>(() => {
-    if (
-      paramCategory === "Actions" ||
-      paramCategory === "Layout" ||
-      paramCategory === "Forms" ||
-      paramCategory === "Feedback"
-    ) {
-      return paramCategory
-    }
-    return ALL_CATEGORIES
-  }, [paramCategory])
 
   const validOrigin = useMemo<ComponentOrigin | null>(() => {
     if (
@@ -56,16 +47,9 @@ export function Home() {
   }, [paramOrigin])
 
   const [query, setQuery] = useState("")
-  const [category, setCategory] = useState<CategoryFilterValue>(validCategory)
   const [origin, setOrigin] = useState<ComponentOrigin | null>(validOrigin)
   const [tag, setTag] = useState<string | null>(null)
   const [group, setGroup] = useState<GroupFilterValue>(ALL_GROUPS)
-
-  // Sincroniza quando o breadcrumb muda o query param (ex.: user clica num
-  // link de categoria fora da Home e volta).
-  useEffect(() => {
-    setCategory(validCategory)
-  }, [validCategory])
 
   useEffect(() => {
     setOrigin(validOrigin)
@@ -85,26 +69,13 @@ export function Home() {
   }, [families, group])
 
   const filtered = useMemo(
-    () => filterFamilies(groupFiltered, query, category, origin, tag),
-    [groupFiltered, query, category, origin, tag],
+    () => filterFamilies(groupFiltered, query, ALL_CATEGORIES, origin, tag),
+    [groupFiltered, query, origin, tag],
   )
 
-  // Contagens por categoria respeitando a busca/origem/tag atuais (mas não a categoria selecionada).
-  const categoryCounts = useMemo(() => {
-    const base = filterFamilies(families, query, ALL_CATEGORIES, origin, tag)
-    const map: Record<string, number> = { [ALL_CATEGORIES]: base.length }
-    for (const family of base) {
-      const cats = new Set(family.variants.map((v) => v.category))
-      for (const c of cats) {
-        map[c] = (map[c] ?? 0) + 1
-      }
-    }
-    return map
-  }, [families, query, origin, tag])
-
-  // Contagens por origem respeitando busca/categoria/tag (mas não a origem selecionada).
+  // Contagens por origem respeitando busca/tag (mas não a origem selecionada).
   const originCounts = useMemo(() => {
-    const base = filterFamilies(families, query, category, null, tag)
+    const base = filterFamilies(families, query, ALL_CATEGORIES, null, tag)
     const map: Record<string, number> = {}
     for (const family of base) {
       for (const o of family.origins) {
@@ -112,11 +83,11 @@ export function Home() {
       }
     }
     return map
-  }, [families, query, category, tag])
+  }, [families, query, tag])
 
-  // Contagens por tag respeitando busca/categoria/origem (mas não a tag selecionada).
+  // Contagens por tag respeitando busca/origem (mas não a tag selecionada).
   const tagCounts = useMemo(() => {
-    const base = filterFamilies(families, query, category, origin, null)
+    const base = filterFamilies(families, query, ALL_CATEGORIES, origin, null)
     const map: Record<string, number> = {}
     for (const family of base) {
       const seen = new Set<string>()
@@ -128,35 +99,30 @@ export function Home() {
       }
     }
     return map
-  }, [families, query, category, origin])
+  }, [families, query, origin])
 
   // Opções de grupo já ordenadas por `order` (primitivos → aplicações → visual),
-  // com a contagem de famílias atualizada pela busca/categoria/origem/tag
-  // selecionados — sem considerar o próprio filtro de grupo.
+  // com a contagem de famílias atualizada pela busca/origem/tag selecionados
+  // — sem considerar o próprio filtro de grupo.
   const groupOptions = useMemo(() => {
-    const base = filterFamilies(families, query, category, origin, tag)
+    const base = filterFamilies(families, query, ALL_CATEGORIES, origin, tag)
     return GROUPS.map((g) => {
       const count = base.filter((f) =>
         f.variants.some((v) => getGroup(v.slug) === g.id),
       ).length
       return { id: g.id, label: g.label, count }
     })
-  }, [families, query, category, origin, tag])
+  }, [families, query, origin, tag])
 
   const groupTotalCount = useMemo(() => {
-    return filterFamilies(families, query, category, origin, tag).length
-  }, [families, query, category, origin, tag])
+    return filterFamilies(families, query, ALL_CATEGORIES, origin, tag).length
+  }, [families, query, origin, tag])
 
   const hasActiveFilters =
-    query !== "" ||
-    category !== ALL_CATEGORIES ||
-    origin !== null ||
-    tag !== null ||
-    group !== ALL_GROUPS
+    query !== "" || origin !== null || tag !== null || group !== ALL_GROUPS
 
   function resetFilters() {
     setQuery("")
-    setCategory(ALL_CATEGORIES)
     setOrigin(null)
     setTag(null)
     setGroup(ALL_GROUPS)
@@ -175,7 +141,7 @@ export function Home() {
         <p className="mt-3 text-base text-muted-foreground sm:text-lg">
           Explore componentes React open-source agrupados por família. Cada
           família reúne as variantes de diferentes bibliotecas. Busque por nome
-          e filtre por categoria, origem ou tag.
+          e filtre por grupo, origem ou tag.
         </p>
       </section>
 
@@ -183,22 +149,12 @@ export function Home() {
       <section className="mx-auto mt-10 max-w-3xl space-y-4">
         <SearchInput value={query} onChange={setQuery} />
 
-        <div className="flex flex-wrap items-center gap-2">
-          <CategoryFilter
-            value={category}
-            onChange={setCategory}
-            counts={categoryCounts}
-          />
-          {hasActiveFilters ? (
-            <button
-              type="button"
-              onClick={resetFilters}
-              className="text-xs text-muted-foreground underline-offset-2 hover:underline"
-            >
-              Limpar filtros
-            </button>
-          ) : null}
-        </div>
+        <GroupFilter
+          value={group}
+          onChange={setGroup}
+          options={groupOptions}
+          totalCount={groupTotalCount}
+        />
 
         <OriginFilter
           value={origin}
@@ -213,12 +169,15 @@ export function Home() {
           counts={tagCounts}
         />
 
-        <GroupFilter
-          value={group}
-          onChange={setGroup}
-          options={groupOptions}
-          totalCount={groupTotalCount}
-        />
+        {hasActiveFilters ? (
+          <button
+            type="button"
+            onClick={resetFilters}
+            className="text-xs text-muted-foreground underline-offset-2 hover:underline"
+          >
+            Limpar filtros
+          </button>
+        ) : null}
       </section>
 
       {/* Grid de cards / empty state */}

@@ -21,11 +21,11 @@ npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com
 
 Depois, importe de `@/components/ui/<arquivo>` (componentes) ou renderize a tela em `@/compositions/<slug>` (composições). As dependências de componentes de uma composição são instaladas automaticamente (registryDependencies).
 
-## Componentes (251)
+## Componentes (282)
 
 Componentes organizados por **grupo** (clusterização por domínio). Use o grupo para descobrir componentes relacionados.
 
-### Forms & Inputs (30)
+### Forms & Inputs (39)
 
 - **Input** (`input`) — Forms. Campo de texto para entrada de dados em formulários, com estados de foco e erro.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input.json`
@@ -87,8 +87,26 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/placeholders-and-vanish-input.json`
 - **Preference Row** (`preference-row`) — Forms. Linha de preferência/toggle para telas de configurações: título (label) e descrição opcional à esquerda, com um slot para o controle (Switch, Select, Button…) à direita. Pensada para listas separadas por divisória; sem estado próprio (o controle vive fora).
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/preference-row.json`
+- **Date Range Picker (Tremor)** (`date-range-picker-tremor`) — Forms. Seletor de intervalo de datas (from/to) da Tremor Raw: calendário duplo, presets rápidos (Last 7 days, Month to date, etc.) e formatação localizada via date-fns. Ideal para dashboards de analytics com filtros temporais.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/date-range-picker-tremor.json`
+- **Radio Card Group (Tremor)** (`radio-card-group-tremor`) — Forms. Radio group onde cada opção é um card selecionável da Tremor Raw, com ícone + título + descrição. Mantém a acessibilidade de radiogroup (navegação por setas). Ideal para escolha de plano, método de pagamento ou tipo de assinatura.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/radio-card-group-tremor.json`
+- **Calendar (Tremor)** (`calendar-tremor`) — Forms. Wrapper do Calendar shadcn (react-day-picker v9) com a casca visual e cores da Tremor Raw: borda, foco ring e tokens azul/tremor-id para que o validador Playwright identifique a variante Tremor dentro do ecossistema Vitrine.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/calendar-tremor.json`
+- **Select Native (Tremor)** (`select-native-tremor`) — Forms. Wrapper do <select> HTML nativo estilizado com a casca da Tremor Raw (foco ring, borda, opções com tema). Ideal para selects simples que não precisam do peso de um popover/combobox, mantendo a mesma identidade visual Tremor.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/select-native-tremor.json`
+- **Label (Tremor)** (`label-tremor`) — Forms. Wrapper do <label> HTML estilizado com tipografia e cor da Tremor Raw. Pequeno e proposital: serve para padronizar rótulos de formulários dentro de dashboards Tremor sem precisar do label do shadcn (que traz FormControl/FormMessage).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/label-tremor.json`
+- **Toggle (Tremor)** (`toggle-tremor`) — Forms. Toggle/switch da Tremor Raw (input + span visual animado) com foco ring e estados checked/unchecked na paleta azul Tremor. Wrapper leve do <input type='checkbox'> que cobre o caso clássico de on/off em filtros e preferências.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/toggle-tremor.json`
+- **Label** (`label`) — Forms. Rótulo acessível para campos de formulário. Baseado em @radix-ui/react-label.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/label.json`
+- **Field** (`field`) — Forms. Wrapper de campo de formulário: agrupa label, controle, descrição e mensagem de erro com espaçamento consistente.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/field.json`
+- **Input Group** (`input-group`) — Forms. Input com addons (ícones, botões ou texto) à esquerda, à direita ou em bloco, integrados visualmente ao campo.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input-group.json`
 
-### Actions & Navegação (36)
+### Actions & Navegação (39)
 
 - **Button** (`button`) — Actions. Botão acionável com variantes de estilo e tamanho para disparar ações.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button.json`
@@ -162,11 +180,15 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dashboard-user-menu.json`
 - **Database Tab Bar** (`database-tab-bar`) — Actions. Barra de abas estilo VS Code para 'documentos' abertos (bancos, arquivos, queries). Cada aba tem rótulo, ícone opcional, um slot de meta (ex.: badge de engine) e, quando 'suja' (dirty), mostra um ponto que vira o 'X' de fechar no hover. Um botão '+' opcional dispara onNew. 100% controlada por props.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/database-tab-bar.json`
+- **Tab Navigation (Tremor)** (`tab-navigation-tremor`) — Layout. Nav horizontal de abas estilo admin da Tremor Raw: estado ativo sublinhado, ícone opcional por item, modo controlado/não-controlado via `value`/`defaultValue`/`onValueChange`. Diferente do `tabs` shadcn (que traz painéis de conteúdo), esta é apenas a faixa de navegação.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tab-navigation-tremor.json`
+- **Button Group** (`button-group`) — Actions. Agrupa botões e inputs relacionados numa única unidade visual, com cantos e bordas unificados (horizontal ou vertical).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/button-group.json`
+- **Toggle Group** (`toggle-group`) — Actions. Grupo de botões de alternância com seleção única ou múltipla. Baseado em @radix-ui/react-toggle-group.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/toggle-group.json`
 
-### Layout & Containers (48)
+### Layout & Containers (35)
 
-- **Card** (`card`) — Layout. Contêiner com cabeçalho, conteúdo e rodapé para agrupar informação relacionada.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/card.json`
 - **Dialog** (`dialog`) — Layout. Janela modal sobreposta ao conteúdo para fluxos focados e confirmações.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dialog.json`
 - **Sheet** (`sheet`) — Layout. Painel deslizante a partir da borda da tela para navegação ou formulários.
@@ -191,8 +213,6 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/scroll-area.json`
 - **Collapsible** (`collapsible`) — Layout. Contêiner expansível/recolhível com animação de abertura/fechamento. Baseado em @radix-ui/react-collapsible.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/collapsible.json`
-- **Glow Card Grid** (`glow-card-grid`) — Layout. Grid de cards com efeito glow — icon/background borrado que segue o cursor e borda com backdrop-blur.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/glow-card-grid.json`
 - **Scroll Fade Effect** (`scroll-fade-effect`) — Layout. Container com fade nas bordas superior/inferior quando há conteúdo scrollável além do viewport (estilo iOS).
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/scroll-fade-effect.json`
 - **Carousel** (`carousel`) — Layout. Carrossel de conteúdo com scroll horizontal, controles anterior/próximo e suporte a teclado. Baseado em embla-carousel-react.
@@ -211,32 +231,8 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/features-section-with-skeletons.json`
 - **Compare** (`compare`) — Layout. Slider de comparação de 2 imagens com handle arrastável. Suporta modo hover (segue o mouse) e drag (arrastar explícito), com animação de autoplay opcional. Usa clip-path para recorte e requestAnimationFrame para movimento suave.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/compare.json`
-- **Focus Cards** (`focus-cards`) — Layout. Grid de cards de imagem com efeito de foco reverso: ao passar o mouse sobre um card, os demais ganham blur leve e scale reduzido, destacando o item hovered. Cada card exibe uma imagem com overlay escuro e título em gradiente claro. Sem dependências externas — transições CSS puras com transition-all.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/focus-cards.json`
 - **Expandable Cards** (`expandable-cards`) — Layout. Lista de cards da Aceternity UI que expandem para um modal centralizado fullscreen via shared layout (layoutId/motion). Overlay com blur, fecha com Escape ou clique fora, e trava o scroll do body enquanto aberto.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/expandable-cards.json`
-- **3D Card Effect** (`3d-card-effect`) — Layout. Card que inclina seguindo o cursor com elementos internos flutuando em profundidades distintas (perspectiva 3D real).
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/3d-card-effect.json`
-- **Card Stack** (`card-stack`) — Layout. Pilha de cards de testimonials da Aceternity UI que rotaciona automaticamente: a cada ~5s o card do topo vai pro fundo. Empilhamento com offset vertical e escala decrescente por profundidade, animado com motion. Inclui o helper Highlight pra destacar trechos em emerald.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/card-stack.json`
-- **Card Hover Effect** (`card-hover-effect`) — Layout. Grid de cards da Aceternity UI onde, ao passar o mouse, um fundo destacado desliza suavemente entre os cards via motion (AnimatePresence + layoutId compartilhado). Funciona em light e dark.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/card-hover-effect.json`
-- **Glowing Stars Effect** (`glowing-stars-effect`) — Feedback. Card da Aceternity UI com uma malha de estrelinhas (108 pontos em 18 colunas) que brilham aleatoriamente a cada 3s e acendem todas no hover, com glows azuis (motion/react). Inclui subcomponentes GlowingStarsTitle e GlowingStarsDescription para o conteúdo do card.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/glowing-stars-effect.json`
-- **Wobble Card** (`wobble-card`) — Layout. Card que balança e translada com o mouse via motion (tilt 3D + scale do conteúdo + noise overlay).
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/wobble-card.json`
-- **Evervault Card** (`evervault-card`) — Layout. Card da Aceternity UI que revela uma chuva de caracteres aleatórios sob um mask radial que segue o cursor: ao passar o mouse, um gradient verde→azul com efeito de mix-blend-overlay exibe uma string alfanumérica gerada dinamicamente, mantendo no centro um badge circular desfocado com o texto da prop `text`. Ideal para hero, CTAs criptografados e destaque visual. Reimplementado padronizado shadcn com motion/react.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/evervault-card.json`
-- **Glare Card** (`glare-card`) — Layout. Card Aceternity com brilho/glare 3D seguindo o mouse: rotaciona (rotateX/rotateY) conforme o cursor e revela um gradiente rainbow/foil/diagonal sobre fundo escuro. Efeito brand fixo (precedente: text-reveal-card, vortex).
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/glare-card.json`
-- **3D Pin** (`3d-pin`) — Layout. Card da Aceternity UI que inclina em 3D (rotateX + scale) no hover, acompanhado de um PinPerspective (linhas cyan e bolhas concêntricas em loop) que sobe do card. Ideal para destacar um CTA ou um item em destaque numa grid.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/3d-pin.json`
-- **Draggable Card** (`draggable-card`) — Layout. Card arrastável da Aceternity UI com física de mola (spring) e rotação 3D seguindo o cursor. Ao soltar, o gesto de arrastar é animado com spring e bounce proporcional à velocidade.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/draggable-card.json`
-- **Direction Aware Hover** (`direction-aware-hover`) — Layout. Card da Aceternity UI que detecta a borda de entrada do mouse via atan2 e desloca imagem + texto pela direção oposta: entrar por baixo → imagem sobe; entrar por cima → imagem desce. O overlay escuro e o texto surgem suavemente no hover. Ideal para grids de perfis, testemunhos ou vitrines visuais que precisam de microinteração direcional.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/direction-aware-hover.json`
-- **Comet Card** (`comet-card`) — Layout. Card 3D da Aceternity UI que segue o cursor com tilt (rotateX/Y), parallax (translateX/Y) e um glare radial que se move com o mouse. Profundidade de rotação e translação configuráveis via props; aceita qualquer conteúdo como children dentro de um card visual com overflow-hidden.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/comet-card.json`
 - **Animated Testimonials** (`animated-testimonials`) — Feedback. Carrossel de depoimentos da Aceternity UI com AnimatePresence (motion v12): imagem rotaciona 3D aleatoriamente e entra com scale + z-index, nome/cargo/citação trocam com stagger de blur por palavra. Suporta autoplay (5s) e lista arbitrária de testemunhos via prop `testimonials`.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/animated-testimonials.json`
 - **Animated Modal** (`animated-modal`) — Feedback. Modal da Aceternity UI com animação de entrada cinematográfica (scale + rotateX + translateY), overlay com backdrop-blur, click-outside e body scroll-lock enquanto aberto. Composto por 5 peças (Provider, Trigger, Body, Content, Footer) que se combinam via Context.
@@ -245,8 +241,8 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/sticky-scroll-reveal.json`
 - **Apple Cards Carousel** (`apple-cards-carousel`) — Layout. Carrossel horizontal estilo Apple com cards que expandem em modal via layoutId (motion/react). Navegação por setas, scroll e botão X. Fecha com Escape ou clique fora.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/apple-cards-carousel.json`
-- **Card Spotlight** (`card-spotlight`) — Feedback. Card com spotlight radial que segue o cursor (CSS custom props --mouse-x/--mouse-y) e grid de dots animado via CanvasRevealEffect no hover. Cores dark fixas (brand do efeito).
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/card-spotlight.json`
+- **Sticky Banner** (`sticky-banner`) — Layout. Banner fixo no topo (sticky) que oculta/mostra conforme a posição de scroll, com botão de fechar interno. Wrapper bg-transparent — cor fica nos children.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/sticky-banner.json`
 - **Layout Grid** (`layout-grid`) — Layout. Grid bento responsivo (1 col mobile, 3 col desktop) com cards clicáveis que expandem em overlay centralizado usando layoutId compartilhado do motion. Cards com thumbnail e conteúdo JSX customizável.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/layout-grid.json`
 - **Bento Grid** (`bento-grid`) — Layout. Grid bento responsivo (1 coluna no mobile, 3 colunas no desktop) com cards de tamanhos variados. Cada item aceita header, título, descrição e ícone, com micro-interação de deslize no hover.
@@ -261,164 +257,13 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dashboard-topbar.json`
 - **Collapsible Section** (`collapsible-section`) — Layout. Seção colapsável com header clicável (chevron + ícone + título + slot de ação) e conteúdo que aparece/some. Funciona controlada (open + onOpenChange) ou não-controlada (defaultOpen). O slot de ação fica fora do botão de toggle, permitindo ações interativas próprias (ex.: um '+'). Ideal para sidebars e acordeões de seções.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/collapsible-section.json`
+- **Divider (Tremor)** (`divider-tremor`) — Layout. Linha divisória horizontal/vertical da Tremor Raw com variante intermediária (texto entre dois traços). Versão minimalista do separator shadcn, ideal para seções em dashboards.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/divider-tremor.json`
 
-### Feedback & Status (20)
+### Tipografia (19)
 
-- **Badge** (`badge`) — Feedback. Etiqueta compacta para destacar status, contagens ou rótulos contextuais.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json`
-- **Alert** (`alert`) — Feedback. Mensagem de destaque para informar, avisar ou comunicar erros. Variantes default e destrutiva.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/alert.json`
-- **Avatar** (`avatar`) — Feedback. Imagem de perfil com fallback automático (iniciais). Baseado em @radix-ui/react-avatar.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/avatar.json`
-- **Sonner** (`sonner`) — Feedback. Toast/notificação elegante e minimalista com suporte a ações, promises e posicionamento configurável. Baseada em sonner.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/sonner.json`
-- **Toast** (`toast`) — Feedback. Notificação temporária e não-bloqueante para confirmar ações, exibir alertas ou comunicar estados do sistema. Baseado em @radix-ui/react-toast.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/toast.json`
-- **Progress** (`progress`) — Feedback. Barra de progresso para indicar conclusão de uma tarefa ou etapa. Baseado em @radix-ui/react-progress.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/progress.json`
-- **Skeleton** (`skeleton`) — Feedback. Placeholder animado com pulse para indicar carregamento de conteúdo. Classes utilitárias customizáveis.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/skeleton.json`
-- **Mobius Loop Icon** (`mobius-loop-icon`) — Actions. Ícono animado de loop infinito (mobius strip) com morphing SVG entre círculos e infinito.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/mobius-loop-icon.json`
-- **Animated Number** (`animated-number`) — Feedback. Número slot-machine (dígitos rolando 0–9) + placar com feedback de cor (verde sobe, vermelho desce) e bounce.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/animated-number.json`
-- **Badge (Fluid)** (`badge-fluid`) — Feedback. Selo/etiqueta da Fluid Functionalism com variantes solid e dot, paleta de cores e três tamanhos.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge-fluid.json`
-- **Tooltip (Fluid)** (`tooltip-fluid`) — Feedback. Tooltip da Fluid Functionalism com animação de entrada/saída via motion e posicionamento em quatro lados.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tooltip-fluid.json`
-- **Hover Card** (`hover-card`) — Feedback. Card flutuante com conteúdo rico que aparece ao passar o mouse sobre um gatilho. Baseado em @radix-ui/react-hover-card.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/hover-card.json`
-- **Images Badge** (`images-badge`) — Feedback. Badge da Aceternity UI com ícone de pasta + texto; no hover, até 3 imagens saem da pasta num leque animado (fan-out via translate/spread/rotation) usando motion.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/images-badge.json`
-- **Tooltip Card** (`tooltip-card`) — Feedback. Tooltip da Aceternity UI que aparece no hover e SEGUE o cursor (motion/react com AnimatePresence + spring). O conteúdo pode ser texto simples ou um card React rico (avatar, nome, bio); posição calculada a partir do mouse com clamp nas bordas do viewport.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tooltip-card.json`
-- **Loader** (`loader`) — Feedback. Coleção de cinco loaders animados da Aceternity UI: três pontos saltitantes em onda, três pontos deslizando horizontalmente, raio SVG com pathLength 0→1 e fill animado, texto com skew/scale glitch e camadas RGB (verde+violeta) atrás, e caracteres pulsando com text-shadow. Cores são fixas (assinatura visual do efeito) e não seguem o tema shadcn.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/loader.json`
-- **Animated Tooltip** (`animated-tooltip`) — Feedback. Fileira de avatares com tooltip animado que segue o cursor — useSpring + useTransform + AnimatePresence. O tooltip inclina e translada conforme a posição do mouse sobre o avatar. Cores dark hardcoded (fundo preto + gradientes emerald/sky) são a assinatura visual do efeito, não seguem tema shadcn.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/animated-tooltip.json`
-- **Sticky Banner** (`sticky-banner`) — Layout. Banner fixo no topo (sticky) que oculta/mostra conforme a posição de scroll, com botão de fechar interno. Wrapper bg-transparent — cor fica nos children.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/sticky-banner.json`
-- **Multi Step Loader** (`multi-step-loader`) — Feedback. Loader fullscreen com overlay blur, lista de etapas com índice ativo controlado por state, ícone Check progressivo (vazio → preenchido → lime), e AnimatePresence para entrada/saída. Cada etapa avança automaticamente com duração configurável e loop opcional.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/multi-step-loader.json`
-- **Link Preview** (`link-preview`) — Feedback. Hover-card que mostra um screenshot da URL apontada por um link, com leve parallax no eixo X seguindo o cursor. Usa @radix-ui/react-hover-card + qss.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/link-preview.json`
-- **Workbench Status Bar** (`workbench-status-bar`) — Feedback. Barra de status (rodapé) estilo IDE: uma faixa fina, densa e rolável horizontalmente, com slots de itens à esquerda e à direita (o grupo da direita é empurrado com ml-auto). Só a casca visual — o conteúdo dos segmentos vem por props.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/workbench-status-bar.json`
-
-### Chat & IA (5)
-
-- **Thinking Indicator (Fluid)** (`thinking-indicator-fluid`) — Feedback. Indicador de processamento da Fluid Functionalism com ícone morfando entre formas e texto com efeito shimmer que alterna palavras.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/thinking-indicator-fluid.json`
-- **Chat Message (Fluid)** (`chat-message-fluid`) — Feedback. Bolha de mensagem de chat da Fluid Functionalism com entrada animada, alinhamento por remetente (usuário/assistente), anexos em miniatura e meta-linha revelada no hover.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/chat-message-fluid.json`
-- **Thinking Steps (Fluid)** (`thinking-steps-fluid`) — Feedback. Trilha de raciocínio da Fluid Functionalism: accordion com passos animados, status (ativo/concluído), detalhes aninhados, fontes em badges e imagens — para exibir o pensamento de uma IA.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/thinking-steps-fluid.json`
-- **Ask User Questions (Fluid)** (`ask-user-questions-fluid`) — Forms. Fluxo de perguntas da Fluid Functionalism: seleção única ou múltipla, campo 'Outro', mesclagem animada de seleções contíguas, navegação por teclado e Back/Skip/Continue.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/ask-user-questions-fluid.json`
-- **Input Message (Fluid)** (`input-message-fluid`) — Forms. Composer de mensagem da Fluid Functionalism: textarea auto-expansível, anexos via drag-and-drop e picker, preview de imagens/PDF, slots customizáveis e botão de envio.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input-message-fluid.json`
-
-### Dashboards & Dev (48)
-
-- **Data Table** (`data-table`) — Layout. Tabela de dados avançada com ordenação, paginação e busca global. Baseada em @tanstack/react-table.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/data-table.json`
-- **Table** (`table`) — Layout. Semantic HTML table with header, body, footer, rows, cells, and caption — styled with Tailwind and adaptive to light/dark.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/table.json`
-- **Code Block Command** (`code-block-command`) — Feedback. Comando shell com tokens coloridos (comando, args, flags) e botão de copiar.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/code-block-command.json`
-- **GitHub Contributions** (`github-contributions`) — Feedback. Heatmap de contribuições estilo GitHub, com células por dia, tooltips e escalas de cor.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/github-contributions.json`
-- **Table (Fluid)** (`table-fluid`) — Layout. Tabela da Fluid Functionalism com destaque de linha por proximidade do cursor e transições suaves.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/table-fluid.json`
-- **Timeline** (`timeline`) — Layout. Linha do tempo vertical da Aceternity UI com uma barra de progresso que cresce (gradiente roxo→azul) conforme a rolagem, dirigida por motion useScroll. Cada entrada tem um marco com título (data) e conteúdo arbitrário; sticky labels no desktop. Cabeçalho e descrição configuráveis.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/timeline.json`
-- **Terminal** (`terminal`) — Feedback. Mock de terminal/console da Aceternity UI que datilografa comandos linha a linha com cursor piscante, syntax highlight de bash (comandos, flags, strings, paths) e saídas opcionais por comando. Anima ao entrar na viewport; velocidade, usuário e atrasos configuráveis.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/terminal.json`
-- **Code Block** (`code-block`) — Feedback. Bloco de código da Aceternity UI com syntax highlight manual leve (regex para keywords, strings, números, comentários e identificadores), números de linha, linhas destacáveis, abas com indicator animado (motion v12) e botão de copiar inline com feedback visual (ícone Check + cor emerald por 2s). Suporta múltiplas linguagens (ts/tsx, js/jsx, py, bash, json, css) via prop `language` ou por aba. Fundo slate-900 com borda slate-800 (brand dark, alinhado com glare-card/text-reveal-card).
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/code-block.json`
-- **Error Tracker Feed** (`error-tracker-feed`) — Feedback. Feed de erros/exception events estilo Sentry: lista de issues com tipo, mensagem, count, ambiente (prod/staging/dev), status (new/resolved/ignored/suppressed), usuários afetados e mini-sparkline de tendência. Filtros funcionais (ambiente, status, busca por tipo) e agrupamento configurável por tipo, serviço ou usuário.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/error-tracker-feed.json`
-- **React Flow** (`react-flow`) — Layout. Suite de diagramas baseada em @xyflow/react, tematizada com tokens shadcn (light/dark reativo). Inclui custom nodes no estilo Card, edges animadas/direcionais, Controls, MiniMap e Background pontilhado. Pronta para flowcharts, organogramas, pipelines e canvas drag-and-drop.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/react-flow.json`
-- **Request Flow Inspector** (`request-flow-inspector`) — Feedback. Inspetor detalhado de UMA request HTTP no estilo DevTools Network / Datadog APM: método, URL, status com cor semântica, waterfall de timing (DNS/TCP/TLS/Server/Transfer), request/response headers, body com syntax highlight de JSON, cookies com badges secure/httpOnly, IDs de trace e card lateral com IP, geo (bandeira/ASN/user-agent) e ambiente.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/request-flow-inspector.json`
-- **Fleet Server Grid** (`fleet-server-grid`) — Feedback. Grid responsivo de tiles compactos para visualizar uma frota de servidores de uma vez. Cada tile mostra nome, host, status dot (verde/âmbar/vermelho), 3 mini-barras (CPU/MEM/DISK com cor reativa ao percentual), sparkline determinística de CPU (12 pontos), uptime formatado, função e região. Suporta busca em tempo real (nome/host/função/região), sort por status/nome/CPU/memória, e agrupamento por status/função/região. Click no tile abre um modal de detalhe (Dialog do shadcn) com tabela de discos e top processos — ou render prop customizável via renderDetail.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fleet-server-grid.json`
-- **Server Overview Card** (`server-overview-card`) — Feedback. Card denso de overview de UM servidor/container (estilo New Relic / Datadog Host Summary): status, uptime, host, gauges radiais de CPU + memória (270°), lista de discos com throughput, rede + conexões, top 5 processos e último incidente. Cores semânticas por status e sparklines opcionais. Determinístico, sem dependências novas.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/server-overview-card.json`
-- **Container Resource Panel** (`container-resource-panel`) — Feedback. Painel read-only dos recursos de um container Docker: status (running/exited/restarting/paused/dead/created), health, CPU/MEM com limites e barras, network rx/tx, block I/O read/write, restart count com cor, portas publicadas, env vars (com masked) e mounts. Inspirado em Portainer / Docker Desktop.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/container-resource-panel.json`
-- **DB Schema Explorer** (`db-schema-explorer`) — Feedback. Explorador de schema de banco no estilo DBeaver/Navicat: árvore lateral (banco → schemas → tabelas) com busca em tempo real, painel de detalhe com 4 abas (Columns / Indexes / Foreign keys / DDL) e referência FK clicável que pula para a tabela alvo.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/db-schema-explorer.json`
-- **Slow Query List** (`slow-query-list`) — Feedback. Listagem de queries SQL lentas com diagnóstico: tempo, query SQL com syntax highlight, plano do EXPLAIN em árvore, locks ativos e sugestões automáticas (índice faltante, rewrite, vacuum, stats, lock). Filtros por threshold, severidade e banco; agrupamento por tabela/database/user.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/slow-query-list.json`
-- **User Activity Stream** (`user-activity-stream`) — Feedback. Feed de atividades de usuários em tempo real (estilo Hotjar/FullStory/Mixpanel Live). Cada item é uma ação observada (login, page_view, form_submit, error, abuse_flag etc.) com avatar, timestamp relativo, geo e IP. Suporta filtros (ação, usuário, período), agrupamento por usuário/ação/página e auto-scroll com botão 'pular para o mais recente' quando o usuário rola pra cima.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/user-activity-stream.json`
-- **Db Overview Grid** (`db-overview-grid`) — Feedback. Visão geral em grid de uma frota de bancos de dados (Postgres, MySQL, SQL Server, Oracle, SQLite). Cada tile mostra env, engine, host:port, status, conexões, tamanho, cache hit, QPS, slow queries, TPS, replication lag, top 3 tabelas e último backup. Inclui busca, ordenação e Dialog de detalhe via render prop (integra com `db-schema-explorer`).
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/db-overview-grid.json`
-- **Incident Timeline** (`incident-timeline`) — Feedback. Timeline vertical de eventos de um incidente (detect → page → escalate → mitigate → resolve, etc.) com sticky header de status/severidade, nós circulares coloridos por severidade, chips por tipo de evento, timestamps relativo e absoluto, autor opcional e modo live que re-renderiza tempos a cada 30s. Inspirado no ObservabilityCenter, reutilizável para qualquer fluxo de incident response.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/incident-timeline.json`
-- **Bar Chart** (`bar-chart`) — Feedback. Gráfico de barras verticais minimalista feito só com divs: altura proporcional ao maior valor da série e cor de preenchimento configurável via `accent`. Sem dependências, ideal para mini-gráficos de receita/uso em dashboards.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/bar-chart.json`
-- **Horizontal Bar Chart** (`h-bar-chart`) — Feedback. Gráfico de barras horizontais minimalista feito só com divs: rótulo à esquerda, trilha preenchida proporcional ao maior valor e valor à direita. Sem dependências, ideal para rankings e comparações (ex.: canais de aquisição) em dashboards.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/h-bar-chart.json`
-- **Donut Chart** (`donut-chart`) — Feedback. Donut/anel genérico em SVG montado a partir de arcos: trilha de fundo + um arco por segmento, com comprimento proporcional ao total e cor por classe Tailwind. Vão central livre para um rótulo absoluto. Sem dependências, ideal para distribuições (mix de planos, share) em dashboards.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/donut-chart.json`
-- **KPI Card** (`kpi-card`) — Feedback. Cartão de métrica para dashboards: rótulo, valor numérico animado (AnimatedNumber) com prefixo/sufixo opcionais, ícone e um badge de variação (`delta`) colorido por tendência (verde/vermelho). API genérica, pronta para reuso em qualquer painel de KPIs.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/kpi-card.json`
-- **Sparkline** (`sparkline`) — Feedback. Mini-gráfico de linha em SVG (polyline + área translúcida) feito sem dependências. A escala vertical é normalizada ao min/max da série; cores da linha e da área são classes Tailwind. Ideal para tendências compactas dentro de cards e KPIs.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/sparkline.json`
-- **Detail Stat Cell** (`detail-stat-cell`) — Feedback. Célula de rótulo + valor para grades de detalhe: rótulo discreto no topo (com ícone opcional) e o valor/conteúdo logo abaixo, dentro de um bloco com borda suave. Pensada para resumos em duas colunas (cartão/diálogo de cliente, fatura, recurso).
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/detail-stat-cell.json`
-- **Activity Feed** (`activity-feed`) — Feedback. Feed de eventos recentes com avatar, frase "{ator} {ação} {alvo}" e timestamp relativo. Itens separados por divisória dentro de um container rolável de altura limitada — ideal para o card "Atividade recente" de um dashboard. Sem estado próprio; os dados vêm por props.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/activity-feed.json`
-- **Leaderboard List** (`leaderboard-list`) — Feedback. Ranking de itens com posição, avatar, nome + barra de progresso, badge opcional e valor formatado alinhado à direita. Ideal para "Top clientes por MRR", "Top produtos" e afins. O valor vem já formatado e o progresso (0..100) já calculado — sem suposição de moeda ou escala.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/leaderboard-list.json`
-- **Invoice Table** (`invoice-table`) — Layout. Tabela compacta de itens de uma fatura (item, quantidade, valor) com header discreto; cada linha mostra o valor calculado como `qty × unit`. Opcionalmente renderiza uma linha de total no rodapé. Valores formatados por `formatValue` (default "$" + en-US), sem assumir moeda.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/invoice-table.json`
-- **Donut Breakdown** (`donut-breakdown`) — Feedback. Bloco de distribuição: combina um DonutChart (anel proporcional) com uma legenda (bolinha de cor + rótulo + valor) e um rótulo central opcional (ex.: total). Ideal para 'Distribuição de planos', 'Mix de receita por categoria' e afins. Reusa o DonutChart internamente.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/donut-breakdown.json`
-- **Stat Tile** (`stat-tile`) — Feedback. Mini-card de estatística para dashboards: ícone opcional + rótulo, valor numérico animado (via AnimatedNumber) com prefixo/sufixo, e um badge de variação (delta) opcional colorido por tendência. Versão compacta do KpiCard, para grades densas de métricas.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/stat-tile.json`
-- **Upgrade Card** (`upgrade-card`) — Feedback. Card promocional de upgrade de plano: título, descrição opcional e um CTA (botão via onClick ou link via href), com ícone opcional. Ideal para o rodapé de uma sidebar de dashboard ('Plano Pro / Fazer upgrade'), mas genérico para qualquer call-to-action.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/upgrade-card.json`
-- **Radial Gauge** (`radial-gauge`) — Feedback. Medidor radial de arco SVG (270°) com trilha de fundo, arco de valor com glow e miolo de valor/unidade/rótulo (ou children custom). A cor do arco é fixa (`color`) ou derivada por faixa de valor (`thresholds`). Ideal para SLO, saturação (CPU/memória/disco) e disponibilidade.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/radial-gauge.json`
-- **Signal Card** (`signal-card`) — Feedback. Cartão de 'golden signal' para observabilidade: ícone + rótulo, valor (com unidade), indicador de variação (trend com seta colorida por polaridade) e uma mini-sparkline. Reusa o componente Sparkline por baixo. A cor de acento vem de `tone` ou é derivada de `status`.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/signal-card.json`
-- **ECG Strip** (`ecg-strip`) — Feedback. Faixa de 'batimento' (eletrocardiograma) animada em SVG, varrendo horizontalmente via requestAnimationFrame com glow na cor do traço (loop sem costura). Velocidade, amplitude e cor são controláveis, e a animação pode ser congelada — o rAF é sempre cancelado no unmount. Dá um pulso 'vivo' a headers de observabilidade.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/ecg-strip.json`
-- **Service Mesh** (`service-mesh`) — Feedback. Malha viva de serviços: grafo de nós ligados por arestas curvas com PACOTES de tráfego trafegando ao vivo (SVG + requestAnimationFrame, cauda de cometa) coloridos por severidade do trecho, distribuídos pelo peso de cada nó. Nós em alarme/selecionados ganham glow e radar pings. Autocontido (PRNG, geometria e animações CSS escopadas inclusos); o rAF é sempre cancelado no unmount.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/service-mesh.json`
-- **Log Stream** (`log-stream`) — Feedback. Stream de logs estilo terminal, com fonte monoespaçada e linhas densas (horário, nível colorido, serviço, método + path, código de status tingido por faixa HTTP, duração e mensagem). No topo, chips de filtro por nível com contagem — controlados (via `levels` + `onToggleLevel`) ou internos (estado próprio, tudo ligado por padrão).
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/log-stream.json`
-- **Trace Waterfall** (`trace-waterfall`) — Feedback. Cascata (waterfall) de spans de um trace distribuído: cada span é uma barra posicionada/dimensionada por início/duração sobre uma escala total, indentada por profundidade e tingida pelo status (verde/âmbar/vermelho, com glow) — um heatmap de latência p95 por span. Mensagem opcional de 'serviço folha' quando há ≤1 span.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/trace-waterfall.json`
-- **Connection List** (`connection-list`) — Feedback. Lista de conexões/instâncias (bancos, servidores) para uma sidebar: cada item tem um indicador de status (ponto), nome e um slot de meta à direita; o item ativo recebe destaque. Sem estado próprio — tudo vem por props.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/connection-list.json`
-- **Favorites List** (`favorites-list`) — Feedback. Lista de itens favoritados (estrela) para uma sidebar: cada item mostra uma estrela preenchida e um rótulo (mono por padrão). Opcionalmente, um botão de remover (StarOff) aparece no hover. Mostra um estado vazio quando não há itens.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/favorites-list.json`
-- **Query History List** (`query-history-list`) — Feedback. Histórico de queries (SQL) recentes para uma sidebar: cada item é um cartão com o SQL colapsado em uma linha (truncado) e uma linha de meta com duração e horário relativo. Controlada por props.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/query-history-list.json`
-- **Table Info Panel** (`table-info-panel`) — Feedback. Painel de inspeção de uma tabela de banco: cabeçalho com schema.tabela + descrição, dois StatTiles (linhas e tamanho) e listas roláveis de colunas, índices e foreign keys, com estado vazio e botão de favoritar. Reusa StatTile, ScrollArea e Button do acervo; as FKs viram clicáveis quando onNavigateFk é passado.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/table-info-panel.json`
-- **User List Item** (`user-list-item`) — Feedback. Linha de usuário para listas de pessoas em dashboards: avatar (com fallback de iniciais) + nome e e-mail à esquerda; à direita um slot para status/badge e/ou ações. Reusa Avatar e Badge do acervo; sem estado próprio. A casca (borda/padding) fica por conta do consumidor via className.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/user-list-item.json`
-- **Metric Glow Card** (`metric-glow-card`) — Feedback. Conteúdo de métrica centrado para dashboards de destaque: rótulo em maiúsculas, valor em string livre (ex.: "R$ 124.500", "4m 32s") e uma variação colorida por tendência (verde/vermelho). É só o conteúdo, pensado para morar dentro de uma casca com brilho (ex.: o GlowCard do glow-card-grid).
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/metric-glow-card.json`
-- **Latency Heatmap** (`latency-heatmap`) — Feedback. Grade (heatmap) de latência/intensidade em CSS grid: matriz coluna-maior em que cada célula recebe uma cor via escala configurável, com eixos opcionais (lento/rápido à esquerda, janela/agora abaixo). Totalmente desacoplado de simulação — só recebe a matriz e renderiza.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/latency-heatmap.json`
-- **Line Chart** (`line-chart`) — Feedback. Gráfico de linha em SVG puro com eixos, grid tracejado, preenchimento de área translúcida e legenda. Suporta múltiplas séries temporais sobrepostas com normalização automática de escala (min/max global). Sem dependências externas — apenas SVG + classes Tailwind.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/line-chart.json`
-- **Chart Widget** (`chart-widget`) — Feedback. Casca de widget para gráficos com header (título + badge de tipo + ações), body (com estado loading via Skeleton) e footer opcional (query + duração). Envolve qualquer visualização num container consistente — passe o gráfico como children.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/chart-widget.json`
-- **Dashboard Filter Bar** (`dashboard-filter-bar`) — Feedback. Barra de filtros para dashboards com date range pickers (de/até), seletor de fonte de dados (Select) e chips de filtros ativos removíveis (Badge com botão X). Layout flex-wrap que se adapta à largura disponível.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dashboard-filter-bar.json`
-- **Chart Template Gallery** (`chart-template-gallery`) — Feedback. Galeria de templates de gráficos selecionáveis em grid 2 colunas. Cada template tem ícone, nome, descrição e preview opcional. Suporta seleção única com estado visual (borda destacada, aria-pressed). Navegação por teclado (Enter/Space).
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/chart-template-gallery.json`
-
-### Efeitos de Texto (18)
-
+- **Typography** (`typography`) — Layout. Estilos de tipografia base no estilo shadcn: títulos h1–h4, parágrafo, lead, blockquote, lista, código inline e textos large/small/muted. Um componente com `variant` que renderiza o elemento HTML semântico adequado.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/typography.json`
 - **Fluid Gradient Text** (`fluid-gradient-text`) — Layout. Texto com gradiente animado (mesh gradient) que flui continuamente.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fluid-gradient-text.json`
 - **Shimmering Text** (`shimmering-text`) — Feedback. Texto com efeito shimmer (brilho da esquerda pra direita, estilo skeleton/loading).
@@ -456,7 +301,217 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
 - **Text Flipping Board** (`text-flipping-board`) — Feedback. Split-flap board estilo aeroporto: cada caractere gira pra revelar a letra, com delay em cascata por linha e coluna.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/text-flipping-board.json`
 
-### Backgrounds & FX (43)
+### Cards (10)
+
+- **Card** (`card`) — Layout. Contêiner com cabeçalho, conteúdo e rodapé para agrupar informação relacionada.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/card.json`
+- **Server Overview Card** (`server-overview-card`) — Feedback. Card denso de overview de UM servidor/container (estilo New Relic / Datadog Host Summary): status, uptime, host, gauges radiais de CPU + memória (270°), lista de discos com throughput, rede + conexões, top 5 processos e último incidente. Cores semânticas por status e sparklines opcionais. Determinístico, sem dependências novas.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/server-overview-card.json`
+- **KPI Card** (`kpi-card`) — Feedback. Cartão de métrica para dashboards: rótulo, valor numérico animado (AnimatedNumber) com prefixo/sufixo opcionais, ícone e um badge de variação (`delta`) colorido por tendência (verde/vermelho). API genérica, pronta para reuso em qualquer painel de KPIs.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/kpi-card.json`
+- **Detail Stat Cell** (`detail-stat-cell`) — Feedback. Célula de rótulo + valor para grades de detalhe: rótulo discreto no topo (com ícone opcional) e o valor/conteúdo logo abaixo, dentro de um bloco com borda suave. Pensada para resumos em duas colunas (cartão/diálogo de cliente, fatura, recurso).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/detail-stat-cell.json`
+- **Stat Tile** (`stat-tile`) — Feedback. Mini-card de estatística para dashboards: ícone opcional + rótulo, valor numérico animado (via AnimatedNumber) com prefixo/sufixo, e um badge de variação (delta) opcional colorido por tendência. Versão compacta do KpiCard, para grades densas de métricas.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/stat-tile.json`
+- **Upgrade Card** (`upgrade-card`) — Feedback. Card promocional de upgrade de plano: título, descrição opcional e um CTA (botão via onClick ou link via href), com ícone opcional. Ideal para o rodapé de uma sidebar de dashboard ('Plano Pro / Fazer upgrade'), mas genérico para qualquer call-to-action.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/upgrade-card.json`
+- **Signal Card** (`signal-card`) — Feedback. Cartão de 'golden signal' para observabilidade: ícone + rótulo, valor (com unidade), indicador de variação (trend com seta colorida por polaridade) e uma mini-sparkline. Reusa o componente Sparkline por baixo. A cor de acento vem de `tone` ou é derivada de `status`.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/signal-card.json`
+- **Table Info Panel** (`table-info-panel`) — Feedback. Painel de inspeção de uma tabela de banco: cabeçalho com schema.tabela + descrição, dois StatTiles (linhas e tamanho) e listas roláveis de colunas, índices e foreign keys, com estado vazio e botão de favoritar. Reusa StatTile, ScrollArea e Button do acervo; as FKs viram clicáveis quando onNavigateFk é passado.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/table-info-panel.json`
+- **Metric Glow Card** (`metric-glow-card`) — Feedback. Conteúdo de métrica centrado para dashboards de destaque: rótulo em maiúsculas, valor em string livre (ex.: "R$ 124.500", "4m 32s") e uma variação colorida por tendência (verde/vermelho). É só o conteúdo, pensado para morar dentro de uma casca com brilho (ex.: o GlowCard do glow-card-grid).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/metric-glow-card.json`
+- **Card (Tremor)** (`card-tremor`) — Layout. Container/card da Tremor Raw com fundo, borda e cantos arredondados padronizados. Casca visual para agrupar blocos de dashboard (header + conteúdo + footer) com tipografia consistente.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/card-tremor.json`
+
+### Listas & Tabelas (11)
+
+- **Data Table** (`data-table`) — Layout. Tabela de dados avançada com ordenação, paginação e busca global. Baseada em @tanstack/react-table.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/data-table.json`
+- **Table** (`table`) — Layout. Semantic HTML table with header, body, footer, rows, cells, and caption — styled with Tailwind and adaptive to light/dark.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/table.json`
+- **Table (Fluid)** (`table-fluid`) — Layout. Tabela da Fluid Functionalism com destaque de linha por proximidade do cursor e transições suaves.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/table-fluid.json`
+- **Activity Feed** (`activity-feed`) — Feedback. Feed de eventos recentes com avatar, frase "{ator} {ação} {alvo}" e timestamp relativo. Itens separados por divisória dentro de um container rolável de altura limitada — ideal para o card "Atividade recente" de um dashboard. Sem estado próprio; os dados vêm por props.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/activity-feed.json`
+- **Leaderboard List** (`leaderboard-list`) — Feedback. Ranking de itens com posição, avatar, nome + barra de progresso, badge opcional e valor formatado alinhado à direita. Ideal para "Top clientes por MRR", "Top produtos" e afins. O valor vem já formatado e o progresso (0..100) já calculado — sem suposição de moeda ou escala.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/leaderboard-list.json`
+- **Invoice Table** (`invoice-table`) — Layout. Tabela compacta de itens de uma fatura (item, quantidade, valor) com header discreto; cada linha mostra o valor calculado como `qty × unit`. Opcionalmente renderiza uma linha de total no rodapé. Valores formatados por `formatValue` (default "$" + en-US), sem assumir moeda.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/invoice-table.json`
+- **Connection List** (`connection-list`) — Feedback. Lista de conexões/instâncias (bancos, servidores) para uma sidebar: cada item tem um indicador de status (ponto), nome e um slot de meta à direita; o item ativo recebe destaque. Sem estado próprio — tudo vem por props.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/connection-list.json`
+- **Favorites List** (`favorites-list`) — Feedback. Lista de itens favoritados (estrela) para uma sidebar: cada item mostra uma estrela preenchida e um rótulo (mono por padrão). Opcionalmente, um botão de remover (StarOff) aparece no hover. Mostra um estado vazio quando não há itens.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/favorites-list.json`
+- **Query History List** (`query-history-list`) — Feedback. Histórico de queries (SQL) recentes para uma sidebar: cada item é um cartão com o SQL colapsado em uma linha (truncado) e uma linha de meta com duração e horário relativo. Controlada por props.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/query-history-list.json`
+- **User List Item** (`user-list-item`) — Feedback. Linha de usuário para listas de pessoas em dashboards: avatar (com fallback de iniciais) + nome e e-mail à esquerda; à direita um slot para status/badge e/ou ações. Reusa Avatar e Badge do acervo; sem estado próprio. A casca (borda/padding) fica por conta do consumidor via className.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/user-list-item.json`
+- **Item** (`item`) — Layout. Primitivo de linha/lista flexível com mídia, conteúdo, título, descrição e ações — base para listas e cards compactos.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/item.json`
+
+### Feedback & Status (13)
+
+- **Alert** (`alert`) — Feedback. Mensagem de destaque para informar, avisar ou comunicar erros. Variantes default e destrutiva.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/alert.json`
+- **Sonner** (`sonner`) — Feedback. Toast/notificação elegante e minimalista com suporte a ações, promises e posicionamento configurável. Baseada em sonner.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/sonner.json`
+- **Toast** (`toast`) — Feedback. Notificação temporária e não-bloqueante para confirmar ações, exibir alertas ou comunicar estados do sistema. Baseado em @radix-ui/react-toast.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/toast.json`
+- **Progress** (`progress`) — Feedback. Barra de progresso para indicar conclusão de uma tarefa ou etapa. Baseado em @radix-ui/react-progress.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/progress.json`
+- **Skeleton** (`skeleton`) — Feedback. Placeholder animado com pulse para indicar carregamento de conteúdo. Classes utilitárias customizáveis.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/skeleton.json`
+- **Mobius Loop Icon** (`mobius-loop-icon`) — Actions. Ícono animado de loop infinito (mobius strip) com morphing SVG entre círculos e infinito.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/mobius-loop-icon.json`
+- **Loader** (`loader`) — Feedback. Coleção de cinco loaders animados da Aceternity UI: três pontos saltitantes em onda, três pontos deslizando horizontalmente, raio SVG com pathLength 0→1 e fill animado, texto com skew/scale glitch e camadas RGB (verde+violeta) atrás, e caracteres pulsando com text-shadow. Cores são fixas (assinatura visual do efeito) e não seguem o tema shadcn.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/loader.json`
+- **Multi Step Loader** (`multi-step-loader`) — Feedback. Loader fullscreen com overlay blur, lista de etapas com índice ativo controlado por state, ícone Check progressivo (vazio → preenchido → lime), e AnimatePresence para entrada/saída. Cada etapa avança automaticamente com duração configurável e loop opcional.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/multi-step-loader.json`
+- **Tracker (Tremor)** (`tracker-tremor`) — Feedback. Indicador de progresso horizontal da Tremor Raw: barra com pontos coloridos marcando eventos no caminho, ideal para funis, etapas de processo e checkpoints em dashboards analíticos.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tracker-tremor.json`
+- **Progress Bar (Tremor)** (`progress-bar-tremor`) — Feedback. Barra de progresso horizontal da Tremor Raw com variantes de cor, suporte a label e tooltip, ideal para metas, conclusão de tarefas e indicadores de saturação em dashboards.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/progress-bar-tremor.json`
+- **Progress Circle (Tremor)** (`progress-circle-tremor`) — Feedback. Indicador circular de progresso da Tremor Raw: arco proporcional ao valor, com miolo configurável (texto/children) e variantes de cor para destacar conclusão de metas em dashboards.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/progress-circle-tremor.json`
+- **Callout (Tremor)** (`callout-tremor`) — Feedback. Bloco de destaque da Tremor Raw com ícone, título e texto: ideal para anotações contextuais, insights e avisos curtos ao lado de métricas em dashboards analíticos.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/callout-tremor.json`
+- **Spinner** (`spinner`) — Feedback. Indicador de carregamento giratório minimalista, baseado no ícone Loader2 do lucide.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/spinner.json`
+
+### Badges & Indicadores (13)
+
+- **Badge** (`badge`) — Feedback. Etiqueta compacta para destacar status, contagens ou rótulos contextuais.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge.json`
+- **Avatar** (`avatar`) — Feedback. Imagem de perfil com fallback automático (iniciais). Baseado em @radix-ui/react-avatar.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/avatar.json`
+- **Animated Number** (`animated-number`) — Feedback. Número slot-machine (dígitos rolando 0–9) + placar com feedback de cor (verde sobe, vermelho desce) e bounce.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/animated-number.json`
+- **Badge (Fluid)** (`badge-fluid`) — Feedback. Selo/etiqueta da Fluid Functionalism com variantes solid e dot, paleta de cores e três tamanhos.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/badge-fluid.json`
+- **Tooltip (Fluid)** (`tooltip-fluid`) — Feedback. Tooltip da Fluid Functionalism com animação de entrada/saída via motion e posicionamento em quatro lados.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tooltip-fluid.json`
+- **Hover Card** (`hover-card`) — Feedback. Card flutuante com conteúdo rico que aparece ao passar o mouse sobre um gatilho. Baseado em @radix-ui/react-hover-card.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/hover-card.json`
+- **Images Badge** (`images-badge`) — Feedback. Badge da Aceternity UI com ícone de pasta + texto; no hover, até 3 imagens saem da pasta num leque animado (fan-out via translate/spread/rotation) usando motion.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/images-badge.json`
+- **Tooltip Card** (`tooltip-card`) — Feedback. Tooltip da Aceternity UI que aparece no hover e SEGUE o cursor (motion/react com AnimatePresence + spring). O conteúdo pode ser texto simples ou um card React rico (avatar, nome, bio); posição calculada a partir do mouse com clamp nas bordas do viewport.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tooltip-card.json`
+- **Animated Tooltip** (`animated-tooltip`) — Feedback. Fileira de avatares com tooltip animado que segue o cursor — useSpring + useTransform + AnimatePresence. O tooltip inclina e translada conforme a posição do mouse sobre o avatar. Cores dark hardcoded (fundo preto + gradientes emerald/sky) são a assinatura visual do efeito, não seguem tema shadcn.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/animated-tooltip.json`
+- **Link Preview** (`link-preview`) — Feedback. Hover-card que mostra um screenshot da URL apontada por um link, com leve parallax no eixo X seguindo o cursor. Usa @radix-ui/react-hover-card + qss.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/link-preview.json`
+- **Empty** (`empty`) — Feedback. Estado vazio (empty state) com ícone, título, descrição e ação — para listas e telas ainda sem conteúdo.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/empty.json`
+- **Tooltip** (`tooltip`) — Feedback. Dica contextual exibida ao passar o mouse ou focar um gatilho. Baseado em @radix-ui/react-tooltip.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tooltip.json`
+- **Kbd** (`kbd`) — Feedback. Representação visual de teclas e atalhos de teclado (ex.: ⌘ K). Use KbdGroup para combinações.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/kbd.json`
+
+### Chat & IA (5)
+
+- **Thinking Indicator (Fluid)** (`thinking-indicator-fluid`) — Feedback. Indicador de processamento da Fluid Functionalism com ícone morfando entre formas e texto com efeito shimmer que alterna palavras.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/thinking-indicator-fluid.json`
+- **Chat Message (Fluid)** (`chat-message-fluid`) — Feedback. Bolha de mensagem de chat da Fluid Functionalism com entrada animada, alinhamento por remetente (usuário/assistente), anexos em miniatura e meta-linha revelada no hover.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/chat-message-fluid.json`
+- **Thinking Steps (Fluid)** (`thinking-steps-fluid`) — Feedback. Trilha de raciocínio da Fluid Functionalism: accordion com passos animados, status (ativo/concluído), detalhes aninhados, fontes em badges e imagens — para exibir o pensamento de uma IA.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/thinking-steps-fluid.json`
+- **Ask User Questions (Fluid)** (`ask-user-questions-fluid`) — Forms. Fluxo de perguntas da Fluid Functionalism: seleção única ou múltipla, campo 'Outro', mesclagem animada de seleções contíguas, navegação por teclado e Back/Skip/Continue.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/ask-user-questions-fluid.json`
+- **Input Message (Fluid)** (`input-message-fluid`) — Forms. Composer de mensagem da Fluid Functionalism: textarea auto-expansível, anexos via drag-and-drop e picker, preview de imagens/PDF, slots customizáveis e botão de envio.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/input-message-fluid.json`
+
+### Gráficos (16)
+
+- **Bar Chart** (`bar-chart`) — Feedback. Gráfico de barras verticais minimalista feito só com divs: altura proporcional ao maior valor da série e cor de preenchimento configurável via `accent`. Sem dependências, ideal para mini-gráficos de receita/uso em dashboards.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/bar-chart.json`
+- **Horizontal Bar Chart** (`h-bar-chart`) — Feedback. Gráfico de barras horizontais minimalista feito só com divs: rótulo à esquerda, trilha preenchida proporcional ao maior valor e valor à direita. Sem dependências, ideal para rankings e comparações (ex.: canais de aquisição) em dashboards.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/h-bar-chart.json`
+- **Donut Chart** (`donut-chart`) — Feedback. Donut/anel genérico em SVG montado a partir de arcos: trilha de fundo + um arco por segmento, com comprimento proporcional ao total e cor por classe Tailwind. Vão central livre para um rótulo absoluto. Sem dependências, ideal para distribuições (mix de planos, share) em dashboards.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/donut-chart.json`
+- **Sparkline** (`sparkline`) — Feedback. Mini-gráfico de linha em SVG (polyline + área translúcida) feito sem dependências. A escala vertical é normalizada ao min/max da série; cores da linha e da área são classes Tailwind. Ideal para tendências compactas dentro de cards e KPIs.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/sparkline.json`
+- **Donut Breakdown** (`donut-breakdown`) — Feedback. Bloco de distribuição: combina um DonutChart (anel proporcional) com uma legenda (bolinha de cor + rótulo + valor) e um rótulo central opcional (ex.: total). Ideal para 'Distribuição de planos', 'Mix de receita por categoria' e afins. Reusa o DonutChart internamente.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/donut-breakdown.json`
+- **Radial Gauge** (`radial-gauge`) — Feedback. Medidor radial de arco SVG (270°) com trilha de fundo, arco de valor com glow e miolo de valor/unidade/rótulo (ou children custom). A cor do arco é fixa (`color`) ou derivada por faixa de valor (`thresholds`). Ideal para SLO, saturação (CPU/memória/disco) e disponibilidade.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/radial-gauge.json`
+- **Line Chart** (`line-chart`) — Feedback. Gráfico de linha em SVG puro com eixos, grid tracejado, preenchimento de área translúcida e legenda. Suporta múltiplas séries temporais sobrepostas com normalização automática de escala (min/max global). Sem dependências externas — apenas SVG + classes Tailwind.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/line-chart.json`
+- **Area Chart (Tremor)** (`area-chart-tremor`) — Feedback. Gráfico de área construído com Recharts para séries temporais empilhadas ou sobrepostas. Suporta paleta de cores, eixos customizados e tooltip rico com metadados.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/area-chart-tremor.json`
+- **Bar Chart (Tremor)** (`bar-chart-tremor`) — Feedback. Gráfico de barras verticais com Recharts, ideal para comparar categorias. Aceita empilhamento, cores por categoria e eventos de clique com payload customizado.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/bar-chart-tremor.json`
+- **Line Chart (Tremor)** (`line-chart-tremor`) — Feedback. Gráfico de linhas com Recharts para séries temporais. Suporta múltiplas séries, curva suave (monotone/linear/step) e configuração de eixos categóricos.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/line-chart-tremor.json`
+- **Donut Chart (Tremor)** (`donut-chart-tremor`) — Feedback. Gráfico de rosca/pizza com Recharts para proporções. Variante alterna entre donut e pie; permite cores, valores centrais e labels customizados.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/donut-chart-tremor.json`
+- **Scatter Chart (Tremor)** (`scatter-chart-tremor`) — Feedback. Gráfico de dispersão com Recharts para correlacionar duas variáveis numéricas. Aceita categoria por cor e customização dos eixos.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/scatter-chart-tremor.json`
+- **Combo Chart (Tremor)** (`combo-chart-tremor`) — Feedback. Combina barras e linhas no mesmo gráfico para comparar grandezas diferentes em paralelo. Categorias podem ser declaradas como string simples ou como objeto { name, type }.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/combo-chart-tremor.json`
+- **Bar List (Tremor)** (`bar-list-tremor`) — Feedback. Lista horizontal de barras com label e valor, ideal para rankings e comparações rápidas sem ocupar a área de um gráfico completo.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/bar-list-tremor.json`
+- **Category Bar (Tremor)** (`category-bar-tremor`) — Feedback. Barra horizontal segmentada por categoria com marcadores posicionáveis. Útil para visualizar distribuição percentual ou status em uma única faixa.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/category-bar-tremor.json`
+- **Spark Chart (Tremor)** (`spark-chart-tremor`) — Feedback. Mini-gráfico compacto (área, barra ou linha) para inline em cards e tabelas. Suporta curva (linear/monotone/step) e variação de tipo no mesmo componente.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/spark-chart-tremor.json`
+
+### Dashboards & Observability (18)
+
+- **Timeline** (`timeline`) — Layout. Linha do tempo vertical da Aceternity UI com uma barra de progresso que cresce (gradiente roxo→azul) conforme a rolagem, dirigida por motion useScroll. Cada entrada tem um marco com título (data) e conteúdo arbitrário; sticky labels no desktop. Cabeçalho e descrição configuráveis.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/timeline.json`
+- **Error Tracker Feed** (`error-tracker-feed`) — Feedback. Feed de erros/exception events estilo Sentry: lista de issues com tipo, mensagem, count, ambiente (prod/staging/dev), status (new/resolved/ignored/suppressed), usuários afetados e mini-sparkline de tendência. Filtros funcionais (ambiente, status, busca por tipo) e agrupamento configurável por tipo, serviço ou usuário.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/error-tracker-feed.json`
+- **React Flow** (`react-flow`) — Layout. Suite de diagramas baseada em @xyflow/react, tematizada com tokens shadcn (light/dark reativo). Inclui custom nodes no estilo Card, edges animadas/direcionais, Controls, MiniMap e Background pontilhado. Pronta para flowcharts, organogramas, pipelines e canvas drag-and-drop.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/react-flow.json`
+- **Request Flow Inspector** (`request-flow-inspector`) — Feedback. Inspetor detalhado de UMA request HTTP no estilo DevTools Network / Datadog APM: método, URL, status com cor semântica, waterfall de timing (DNS/TCP/TLS/Server/Transfer), request/response headers, body com syntax highlight de JSON, cookies com badges secure/httpOnly, IDs de trace e card lateral com IP, geo (bandeira/ASN/user-agent) e ambiente.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/request-flow-inspector.json`
+- **Fleet Server Grid** (`fleet-server-grid`) — Feedback. Grid responsivo de tiles compactos para visualizar uma frota de servidores de uma vez. Cada tile mostra nome, host, status dot (verde/âmbar/vermelho), 3 mini-barras (CPU/MEM/DISK com cor reativa ao percentual), sparkline determinística de CPU (12 pontos), uptime formatado, função e região. Suporta busca em tempo real (nome/host/função/região), sort por status/nome/CPU/memória, e agrupamento por status/função/região. Click no tile abre um modal de detalhe (Dialog do shadcn) com tabela de discos e top processos — ou render prop customizável via renderDetail.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/fleet-server-grid.json`
+- **Container Resource Panel** (`container-resource-panel`) — Feedback. Painel read-only dos recursos de um container Docker: status (running/exited/restarting/paused/dead/created), health, CPU/MEM com limites e barras, network rx/tx, block I/O read/write, restart count com cor, portas publicadas, env vars (com masked) e mounts. Inspirado em Portainer / Docker Desktop.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/container-resource-panel.json`
+- **User Activity Stream** (`user-activity-stream`) — Feedback. Feed de atividades de usuários em tempo real (estilo Hotjar/FullStory/Mixpanel Live). Cada item é uma ação observada (login, page_view, form_submit, error, abuse_flag etc.) com avatar, timestamp relativo, geo e IP. Suporta filtros (ação, usuário, período), agrupamento por usuário/ação/página e auto-scroll com botão 'pular para o mais recente' quando o usuário rola pra cima.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/user-activity-stream.json`
+- **Db Overview Grid** (`db-overview-grid`) — Feedback. Visão geral em grid de uma frota de bancos de dados (Postgres, MySQL, SQL Server, Oracle, SQLite). Cada tile mostra env, engine, host:port, status, conexões, tamanho, cache hit, QPS, slow queries, TPS, replication lag, top 3 tabelas e último backup. Inclui busca, ordenação e Dialog de detalhe via render prop (integra com `db-schema-explorer`).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/db-overview-grid.json`
+- **Incident Timeline** (`incident-timeline`) — Feedback. Timeline vertical de eventos de um incidente (detect → page → escalate → mitigate → resolve, etc.) com sticky header de status/severidade, nós circulares coloridos por severidade, chips por tipo de evento, timestamps relativo e absoluto, autor opcional e modo live que re-renderiza tempos a cada 30s. Inspirado no ObservabilityCenter, reutilizável para qualquer fluxo de incident response.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/incident-timeline.json`
+- **ECG Strip** (`ecg-strip`) — Feedback. Faixa de 'batimento' (eletrocardiograma) animada em SVG, varrendo horizontalmente via requestAnimationFrame com glow na cor do traço (loop sem costura). Velocidade, amplitude e cor são controláveis, e a animação pode ser congelada — o rAF é sempre cancelado no unmount. Dá um pulso 'vivo' a headers de observabilidade.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/ecg-strip.json`
+- **Service Mesh** (`service-mesh`) — Feedback. Malha viva de serviços: grafo de nós ligados por arestas curvas com PACOTES de tráfego trafegando ao vivo (SVG + requestAnimationFrame, cauda de cometa) coloridos por severidade do trecho, distribuídos pelo peso de cada nó. Nós em alarme/selecionados ganham glow e radar pings. Autocontido (PRNG, geometria e animações CSS escopadas inclusos); o rAF é sempre cancelado no unmount.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/service-mesh.json`
+- **Log Stream** (`log-stream`) — Feedback. Stream de logs estilo terminal, com fonte monoespaçada e linhas densas (horário, nível colorido, serviço, método + path, código de status tingido por faixa HTTP, duração e mensagem). No topo, chips de filtro por nível com contagem — controlados (via `levels` + `onToggleLevel`) ou internos (estado próprio, tudo ligado por padrão).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/log-stream.json`
+- **Trace Waterfall** (`trace-waterfall`) — Feedback. Cascata (waterfall) de spans de um trace distribuído: cada span é uma barra posicionada/dimensionada por início/duração sobre uma escala total, indentada por profundidade e tingida pelo status (verde/âmbar/vermelho, com glow) — um heatmap de latência p95 por span. Mensagem opcional de 'serviço folha' quando há ≤1 span.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/trace-waterfall.json`
+- **Workbench Status Bar** (`workbench-status-bar`) — Feedback. Barra de status (rodapé) estilo IDE: uma faixa fina, densa e rolável horizontalmente, com slots de itens à esquerda e à direita (o grupo da direita é empurrado com ml-auto). Só a casca visual — o conteúdo dos segmentos vem por props.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/workbench-status-bar.json`
+- **Latency Heatmap** (`latency-heatmap`) — Feedback. Grade (heatmap) de latência/intensidade em CSS grid: matriz coluna-maior em que cada célula recebe uma cor via escala configurável, com eixos opcionais (lento/rápido à esquerda, janela/agora abaixo). Totalmente desacoplado de simulação — só recebe a matriz e renderiza.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/latency-heatmap.json`
+- **Chart Widget** (`chart-widget`) — Feedback. Casca de widget para gráficos com header (título + badge de tipo + ações), body (com estado loading via Skeleton) e footer opcional (query + duração). Envolve qualquer visualização num container consistente — passe o gráfico como children.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/chart-widget.json`
+- **Dashboard Filter Bar** (`dashboard-filter-bar`) — Feedback. Barra de filtros para dashboards com date range pickers (de/até), seletor de fonte de dados (Select) e chips de filtros ativos removíveis (Badge com botão X). Layout flex-wrap que se adapta à largura disponível.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dashboard-filter-bar.json`
+- **Chart Template Gallery** (`chart-template-gallery`) — Feedback. Galeria de templates de gráficos selecionáveis em grid 2 colunas. Cada template tem ícone, nome, descrição e preview opcional. Suporta seleção única com estado visual (borda destacada, aria-pressed). Navegação por teclado (Enter/Space).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/chart-template-gallery.json`
+
+### Dev & Código (7)
+
+- **Code Block Command** (`code-block-command`) — Feedback. Comando shell com tokens coloridos (comando, args, flags) e botão de copiar.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/code-block-command.json`
+- **GitHub Contributions** (`github-contributions`) — Feedback. Heatmap de contribuições estilo GitHub, com células por dia, tooltips e escalas de cor.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/github-contributions.json`
+- **3D Globe** (`3d-globe`) — Feedback. Globo terrestre 3D que rotaciona automaticamente, reimplementado com a lib leve cobe (~5kb) sobre WebGL — sem texturas ou imagens remotas. Os pontos do mapa e os markers são desenhados por shader. Cores dark fixas (globo escuro + markers ciano) são a assinatura visual do efeito (estilo Aceternity), então não seguem o tema shadcn. Faz cleanup do contexto WebGL (globe.destroy() + cancelAnimationFrame) ao desmontar.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/3d-globe.json`
+- **GitHub Globe** (`github-globe`) — Feedback. Globo 3D interativo estilo GitHub (Aceternity UI) renderizado com three + three-globe sobre WebGL: continentes em hex-polígonos, arcos animados (com dash + gap) entre pares de coordenadas, anéis pulsantes nos pontos de origem e rotação automática via OrbitControls. Cores dark hardcoded (fundo preto, globo azul-marinho, atmosfera) — brand do efeito, não segue tema shadcn. Faz cleanup completo do contexto WebGL (dispose de geometrias/materiais/renderer, cancelAnimationFrame) ao desmontar.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/github-globe.json`
+- **Terminal** (`terminal`) — Feedback. Mock de terminal/console da Aceternity UI que datilografa comandos linha a linha com cursor piscante, syntax highlight de bash (comandos, flags, strings, paths) e saídas opcionais por comando. Anima ao entrar na viewport; velocidade, usuário e atrasos configuráveis.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/terminal.json`
+- **Code Block** (`code-block`) — Feedback. Bloco de código da Aceternity UI com syntax highlight manual leve (regex para keywords, strings, números, comentários e identificadores), números de linha, linhas destacáveis, abas com indicator animado (motion v12) e botão de copiar inline com feedback visual (ícone Check + cor emerald por 2s). Suporta múltiplas linguagens (ts/tsx, js/jsx, py, bash, json, css) via prop `language` ou por aba. Fundo slate-900 com borda slate-800 (brand dark, alinhado com glare-card/text-reveal-card).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/code-block.json`
+- **World Map** (`world-map`) — Feedback. Mapa-múndi pontilhado da Aceternity UI (SVG gerado em runtime pela lib dotted-map) com arcos curvos que se desenham progressivamente (pathLength animado por motion) entre pares de coordenadas, e pontos pulsantes (animate SVG) nas pontas. Útil para ilustrar conexões/rotas globais. Cor das linhas configurável e fundo adaptativo ao tema (branco no claro, preto no escuro).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/world-map.json`
+
+### Backgrounds (28)
 
 - **Dot Grid Spotlight** (`dot-grid-spotlight`) — Feedback. Background de grade de pontos com spotlight que segue o cursor do mouse.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dot-grid-spotlight.json`
@@ -464,28 +519,12 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/perspective-grid.json`
 - **Light Lines** (`light-lines`) — Feedback. Background animado de "light trails" em linhas verticais: SVG com 17 luzes que sobem/descem em loop infinito via requestAnimationFrame, sobre linhas estáticas e gradiente configurável.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/light-lines.json`
-- **Following Pointer** (`following-pointer`) — Feedback. Substitui o cursor nativo por um ponteiro animado (motion/react) que segue o mouse dentro da área, com um badge configurável (título/avatar) ao lado. Ótimo para destacar cards de blog ou conteúdo interativo.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/following-pointer.json`
-- **Google Gemini Effect** (`google-gemini-effect`) — Feedback. Cinco curvas SVG onduladas e coloridas (rosa, laranja, azul-claro, azul e azul-forte) que se desenham progressivamente via pathLength conforme o scroll, com cópias borradas (Gaussian blur) por baixo formando um glow. Os MotionValue do pathLength vêm de useScroll + useTransform na área scrollável, inspirado na animação de aterrissagem do Google Gemini.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/google-gemini-effect.json`
 - **Pixelated Canvas** (`pixelated-canvas`) — Feedback. Renderiza uma imagem como uma malha de pixels (quadrados ou círculos) sobre canvas 2D, com amostragem por célula, dropout em regiões de baixo contraste, tint, grayscale e object-fit. No modo interativo, os pixels se distorcem ao redor do cursor (repel/attract/swirl) com jitter e fade suave ao sair, tudo via requestAnimationFrame com limpeza de listeners e rAF.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/pixelated-canvas.json`
-- **Parallax Hero Images 2** (`parallax-hero-images-2`) — Layout. Variante 2 (scroll-driven) do parallax hero da Aceternity UI: imagens distribuídas em 3 colunas que deslizam verticalmente conforme a rolagem avança (laterais sobem, meio desce, com leve zoom-out), criando profundidade. Aceita uma área scrollável própria via scrollRef para hero sections com conteúdo sobreposto.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/parallax-hero-images-2.json`
-- **Tracing Beam** (`tracing-beam`) — Layout. Feixe luminoso da Aceternity UI que acompanha a rolagem ao lado do conteúdo: um caminho SVG preenchido por um gradiente (ciano → violeta) cujo progresso evolui com o scroll, dirigido por motion (useScroll + useSpring). Ideal para artigos longos e landing pages narrativas; envolve qualquer conteúdo e mede sua altura automaticamente.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tracing-beam.json`
-- **Parallax Scroll** (`parallax-scroll`) — Layout. Galeria de imagens da Aceternity UI em 3 colunas que se movem em velocidades e direções diferentes conforme o scroll da própria área (altura fixa, overflow-y-auto): as laterais sobem e a do meio desce, criando profundidade. Usa useScroll/useTransform da motion.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/parallax-scroll.json`
 - **Noise Background** (`noise-background`) — Feedback. Fundo da Aceternity UI com camadas de gradiente radial que flutuam aleatoriamente em loop, sobrepostas por uma textura de ruído sutil (mix-blend overlay) e uma faixa de luz no topo. Cores, intensidade do ruído e velocidade configuráveis; envolve qualquer conteúdo.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/noise-background.json`
-- **Hero Section with Mousemove** (`hero-section-with-mousemove`) — Layout. Hero imersivo da Aceternity UI com elementos flutuantes que reagem ao movimento do mouse: cada cartão se desloca em parallax proporcional à sua profundidade (depth), sobre um fundo escuro com grade e brilho radial. Título, descrição e itens são configuráveis.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/hero-section-with-mousemove.json`
 - **Background Gradient** (`background-gradient`) — Feedback. Borda em gradiente radial multicolor (verde/violeta/amarelo/azul) animada em loop suave que intensifica o brilho no hover, ideal para destacar cards e botões. Reimplementado padronizado shadcn com motion/react.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/background-gradient.json`
-- **Glowing Effect** (`glowing-effect`) — Feedback. Borda luminosa que segue o cursor: gradiente cônico rotacionado em torno do card via máscara, atualizado por pointermove e interpolado com easing do motion.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/glowing-effect.json`
-- **Hero Highlight** (`hero-highlight`) — Layout. Seção hero com fundo de pontos que revela um realce indigo seguindo o cursor (radial mask) e texto destacado com fundo gradiente animado.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/hero-highlight.json`
 - **Shooting Stars and Stars Background** (`shooting-stars-and-stars-background`) — Feedback. Céu noturno da Aceternity UI em duas camadas: StarsBackground desenha estrelas estáticas cintilando em <canvas> (densidade e velocidade de twinkle configuráveis) e ShootingStars dispara estrelas cadentes em <svg> que atravessam a tela em ângulos aleatórios, com gradiente de cauda configurável. Animado via requestAnimationFrame com cleanup. Fundo escuro fixo (brand do efeito).
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/shooting-stars-and-stars-background.json`
 - **Grid and Dot Backgrounds** (`grid-and-dot-backgrounds`) — Layout. Fundos decorativos da Aceternity UI em CSS puro: malha de linhas (grid / grid-small) ou pontos (dot) desenhados via background-image (linear/radial-gradient) com máscara radial que esmaece nas bordas. Wrapper relative com altura própria e conteúdo sobreposto; cores derivam dos tokens shadcn, adaptando a light/dark.
@@ -498,14 +537,10 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/spotlight-new.json`
 - **Background Lines** (`background-lines`) — Feedback. Efeito de fundo da Aceternity UI: SVG com múltiplos paths curvos coloridos que animam em padrão de onda (wave) em loop, atrás do conteúdo. Inspirado no height.app; fundo transparente que adapta ao tema.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/background-lines.json`
-- **SVG Mask Effect** (`svg-mask-effect`) — Feedback. Efeito de revelação da Aceternity UI: o texto base fica escondido por uma camada; ao mover o mouse, uma máscara circular segue o cursor e revela o conteúdo por baixo, crescendo no hover. Funciona em light e dark.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/svg-mask-effect.json`
 - **Background Beams With Collision** (`background-beams-with-collision`) — Feedback. Efeito de fundo da Aceternity UI: feixes verticais coloridos caem do topo e explodem em partículas ao colidir com a base. Detecção de colisão via getBoundingClientRect; fundo adapta ao tema.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/background-beams-with-collision.json`
 - **Background Ripple Effect** (`background-ripple-effect`) — Feedback. Grade de células quadradas da Aceternity UI: ao clicar numa célula, um ripple (onda de opacidade) se propaga pelas vizinhas com delay proporcional à distância. Cores reativas ao tema.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/background-ripple-effect.json`
-- **Parallax Hero Images** (`parallax-hero-images`) — Layout. Hero com imagens em profundidades distintas que transladam em parallax ao mover o mouse; entrada com fade-in + blur. Variante default vs edge-focus muda o mapa de profundidade.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/parallax-hero-images.json`
 - **Scales** (`scales`) — Layout. Background decorativo da Aceternity UI: pattern de linhas repetidas via CSS puro, com orientação (horizontal/vertical/diagonal), densidade e cor configuráveis. ScalesContainer posiciona o pattern atrás do conteúdo.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/scales.json`
 - **Sparkles** (`sparkles`) — Feedback. Campo de partículas brancas cintilantes (twinkle + leve drift) em canvas puro, reimplementado a partir do SparklesCore da Aceternity UI. Ideal como background de hero ou efeito standalone.
@@ -520,12 +555,6 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/background-beams.json`
 - **Vortex** (`vortex`) — Feedback. Fundo de partículas em redemoinho (swirl) animado em canvas via simplex noise 3D, com glow aditivo e CTA sobreposto. Cor, contagem de partículas, amplitude e velocidade configuráveis; fundo escuro fixo (brand do efeito).
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/vortex.json`
-- **Container Scroll Animation** (`container-scroll-animation`) — Layout. Efeito de scroll 3D da Aceternity UI: conforme o usuário rola, um card/mockup rotaciona (rotateX), escala e o título translada para cima. Dirigido por useScroll/useTransform (motion/react); detecção de mobile ajusta a escala. Funciona em light e dark.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/container-scroll-animation.json`
-- **Hero Parallax** (`hero-parallax`) — Layout. Hero da Aceternity UI: header (título + descrição) sobre 3 fileiras de 5 thumbnails de produtos que transladam horizontalmente em direções opostas conforme o scroll, com o conjunto rotacionando (rotateX/rotateZ), transladando e esmaecendo — suavizado por springs (useScroll/useTransform/useSpring de motion/react).
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/hero-parallax.json`
-- **Lamp Effect** (`lamp-effect`) — Feedback. Efeito "lâmpada" da Aceternity UI: dois cones de luz cônicos (conic-gradient) com blur que crescem ao entrar na viewport, acompanhados de uma linha brilhante horizontal, projetando luz ciano sobre um fundo escuro (slate-950) para revelar um título abaixo. Animado por whileInView de motion/react.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/lamp-effect.json`
 - **Aurora Background** (`aurora-background`) — Feedback. Fundo animado da Aceternity UI com gradiente aurora (repeating-linear-gradient em tons azul/índigo/violeta) que desliza horizontalmente em loop infinito (keyframe aurora 60s). Inclui mask radial opcional, variação automática para dark mode e blend difference para contraste orgânico do conteúdo. Cores do efeito são fixas (assinatura visual).
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/aurora-background.json`
 - **Background Gradient Animation** (`background-gradient-animation`) — Feedback. Fundo da Aceternity UI com blobs de gradiente radial que se movem continuamente (CSS keyframes) e se misturam via mix-blend-mode + filtro goo (feGaussianBlur/feColorMatrix). Um blob extra segue o cursor quando interactive. Cores, tamanho e blend configuráveis.
@@ -540,21 +569,75 @@ Componentes organizados por **grupo** (clusterização por domínio). Use o grup
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/ascii-art.json`
 - **Canvas Reveal Effect** (`canvas-reveal-effect`) — Feedback. Efeito de revelação com dot matrix WebGL usando shader customizada via @react-three/fiber + three. Animação surge do centro para as bordas com opacidade progressiva.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/canvas-reveal-effect.json`
+
+### Hero Sections (8)
+
+- **Google Gemini Effect** (`google-gemini-effect`) — Feedback. Cinco curvas SVG onduladas e coloridas (rosa, laranja, azul-claro, azul e azul-forte) que se desenham progressivamente via pathLength conforme o scroll, com cópias borradas (Gaussian blur) por baixo formando um glow. Os MotionValue do pathLength vêm de useScroll + useTransform na área scrollável, inspirado na animação de aterrissagem do Google Gemini.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/google-gemini-effect.json`
+- **Parallax Hero Images 2** (`parallax-hero-images-2`) — Layout. Variante 2 (scroll-driven) do parallax hero da Aceternity UI: imagens distribuídas em 3 colunas que deslizam verticalmente conforme a rolagem avança (laterais sobem, meio desce, com leve zoom-out), criando profundidade. Aceita uma área scrollável própria via scrollRef para hero sections com conteúdo sobreposto.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/parallax-hero-images-2.json`
+- **Hero Section with Mousemove** (`hero-section-with-mousemove`) — Layout. Hero imersivo da Aceternity UI com elementos flutuantes que reagem ao movimento do mouse: cada cartão se desloca em parallax proporcional à sua profundidade (depth), sobre um fundo escuro com grade e brilho radial. Título, descrição e itens são configuráveis.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/hero-section-with-mousemove.json`
+- **Hero Highlight** (`hero-highlight`) — Layout. Seção hero com fundo de pontos que revela um realce indigo seguindo o cursor (radial mask) e texto destacado com fundo gradiente animado.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/hero-highlight.json`
+- **Parallax Hero Images** (`parallax-hero-images`) — Layout. Hero com imagens em profundidades distintas que transladam em parallax ao mover o mouse; entrada com fade-in + blur. Variante default vs edge-focus muda o mapa de profundidade.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/parallax-hero-images.json`
+- **Hero Parallax** (`hero-parallax`) — Layout. Hero da Aceternity UI: header (título + descrição) sobre 3 fileiras de 5 thumbnails de produtos que transladam horizontalmente em direções opostas conforme o scroll, com o conjunto rotacionando (rotateX/rotateZ), transladando e esmaecendo — suavizado por springs (useScroll/useTransform/useSpring de motion/react).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/hero-parallax.json`
+- **Lamp Effect** (`lamp-effect`) — Feedback. Efeito "lâmpada" da Aceternity UI: dois cones de luz cônicos (conic-gradient) com blur que crescem ao entrar na viewport, acompanhados de uma linha brilhante horizontal, projetando luz ciano sobre um fundo escuro (slate-950) para revelar um título abaixo. Animado por whileInView de motion/react.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/lamp-effect.json`
 - **Macbook Scroll** (`macbook-scroll`) — Layout. Mock de MacBook Pro com tampa que abre ao rolar a página. useScroll mede o progresso e useTransform aplica scaleX/scaleY/translate/rotate no lid + parallax no título. Imagem reveal dentro da tela.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/macbook-scroll.json`
+
+### Scroll & Interação (7)
+
+- **Following Pointer** (`following-pointer`) — Feedback. Substitui o cursor nativo por um ponteiro animado (motion/react) que segue o mouse dentro da área, com um badge configurável (título/avatar) ao lado. Ótimo para destacar cards de blog ou conteúdo interativo.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/following-pointer.json`
+- **Tracing Beam** (`tracing-beam`) — Layout. Feixe luminoso da Aceternity UI que acompanha a rolagem ao lado do conteúdo: um caminho SVG preenchido por um gradiente (ciano → violeta) cujo progresso evolui com o scroll, dirigido por motion (useScroll + useSpring). Ideal para artigos longos e landing pages narrativas; envolve qualquer conteúdo e mede sua altura automaticamente.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/tracing-beam.json`
+- **Parallax Scroll** (`parallax-scroll`) — Layout. Galeria de imagens da Aceternity UI em 3 colunas que se movem em velocidades e direções diferentes conforme o scroll da própria área (altura fixa, overflow-y-auto): as laterais sobem e a do meio desce, criando profundidade. Usa useScroll/useTransform da motion.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/parallax-scroll.json`
+- **Glowing Effect** (`glowing-effect`) — Feedback. Borda luminosa que segue o cursor: gradiente cônico rotacionado em torno do card via máscara, atualizado por pointermove e interpolado com easing do motion.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/glowing-effect.json`
+- **SVG Mask Effect** (`svg-mask-effect`) — Feedback. Efeito de revelação da Aceternity UI: o texto base fica escondido por uma camada; ao mover o mouse, uma máscara circular segue o cursor e revela o conteúdo por baixo, crescendo no hover. Funciona em light e dark.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/svg-mask-effect.json`
+- **Container Scroll Animation** (`container-scroll-animation`) — Layout. Efeito de scroll 3D da Aceternity UI: conforme o usuário rola, um card/mockup rotaciona (rotateX), escala e o título translada para cima. Dirigido por useScroll/useTransform (motion/react); detecção de mobile ajusta a escala. Funciona em light e dark.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/container-scroll-animation.json`
 - **Lens** (`lens`) — Feedback. Lente de aumento que segue o cursor sobre uma imagem ou card, ampliando a região sob ela com máscara radial. Suporta posição fixa (estática) e estado de hover controlado externamente.
   - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/lens.json`
 
-### Globos & Mapas (3)
+### Cards Decorativos (14)
 
-- **3D Globe** (`3d-globe`) — Feedback. Globo terrestre 3D que rotaciona automaticamente, reimplementado com a lib leve cobe (~5kb) sobre WebGL — sem texturas ou imagens remotas. Os pontos do mapa e os markers são desenhados por shader. Cores dark fixas (globo escuro + markers ciano) são a assinatura visual do efeito (estilo Aceternity), então não seguem o tema shadcn. Faz cleanup do contexto WebGL (globe.destroy() + cancelAnimationFrame) ao desmontar.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/3d-globe.json`
-- **GitHub Globe** (`github-globe`) — Feedback. Globo 3D interativo estilo GitHub (Aceternity UI) renderizado com three + three-globe sobre WebGL: continentes em hex-polígonos, arcos animados (com dash + gap) entre pares de coordenadas, anéis pulsantes nos pontos de origem e rotação automática via OrbitControls. Cores dark hardcoded (fundo preto, globo azul-marinho, atmosfera) — brand do efeito, não segue tema shadcn. Faz cleanup completo do contexto WebGL (dispose de geometrias/materiais/renderer, cancelAnimationFrame) ao desmontar.
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/github-globe.json`
-- **World Map** (`world-map`) — Feedback. Mapa-múndi pontilhado da Aceternity UI (SVG gerado em runtime pela lib dotted-map) com arcos curvos que se desenham progressivamente (pathLength animado por motion) entre pares de coordenadas, e pontos pulsantes (animate SVG) nas pontas. Útil para ilustrar conexões/rotas globais. Cor das linhas configurável e fundo adaptativo ao tema (branco no claro, preto no escuro).
-  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/world-map.json`
+- **Glow Card Grid** (`glow-card-grid`) — Layout. Grid de cards com efeito glow — icon/background borrado que segue o cursor e borda com backdrop-blur.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/glow-card-grid.json`
+- **Focus Cards** (`focus-cards`) — Layout. Grid de cards de imagem com efeito de foco reverso: ao passar o mouse sobre um card, os demais ganham blur leve e scale reduzido, destacando o item hovered. Cada card exibe uma imagem com overlay escuro e título em gradiente claro. Sem dependências externas — transições CSS puras com transition-all.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/focus-cards.json`
+- **3D Card Effect** (`3d-card-effect`) — Layout. Card que inclina seguindo o cursor com elementos internos flutuando em profundidades distintas (perspectiva 3D real).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/3d-card-effect.json`
+- **Card Stack** (`card-stack`) — Layout. Pilha de cards de testimonials da Aceternity UI que rotaciona automaticamente: a cada ~5s o card do topo vai pro fundo. Empilhamento com offset vertical e escala decrescente por profundidade, animado com motion. Inclui o helper Highlight pra destacar trechos em emerald.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/card-stack.json`
+- **Card Hover Effect** (`card-hover-effect`) — Layout. Grid de cards da Aceternity UI onde, ao passar o mouse, um fundo destacado desliza suavemente entre os cards via motion (AnimatePresence + layoutId compartilhado). Funciona em light e dark.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/card-hover-effect.json`
+- **Glowing Stars Effect** (`glowing-stars-effect`) — Feedback. Card da Aceternity UI com uma malha de estrelinhas (108 pontos em 18 colunas) que brilham aleatoriamente a cada 3s e acendem todas no hover, com glows azuis (motion/react). Inclui subcomponentes GlowingStarsTitle e GlowingStarsDescription para o conteúdo do card.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/glowing-stars-effect.json`
+- **Wobble Card** (`wobble-card`) — Layout. Card que balança e translada com o mouse via motion (tilt 3D + scale do conteúdo + noise overlay).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/wobble-card.json`
+- **Evervault Card** (`evervault-card`) — Layout. Card da Aceternity UI que revela uma chuva de caracteres aleatórios sob um mask radial que segue o cursor: ao passar o mouse, um gradient verde→azul com efeito de mix-blend-overlay exibe uma string alfanumérica gerada dinamicamente, mantendo no centro um badge circular desfocado com o texto da prop `text`. Ideal para hero, CTAs criptografados e destaque visual. Reimplementado padronizado shadcn com motion/react.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/evervault-card.json`
+- **Glare Card** (`glare-card`) — Layout. Card Aceternity com brilho/glare 3D seguindo o mouse: rotaciona (rotateX/rotateY) conforme o cursor e revela um gradiente rainbow/foil/diagonal sobre fundo escuro. Efeito brand fixo (precedente: text-reveal-card, vortex).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/glare-card.json`
+- **3D Pin** (`3d-pin`) — Layout. Card da Aceternity UI que inclina em 3D (rotateX + scale) no hover, acompanhado de um PinPerspective (linhas cyan e bolhas concêntricas em loop) que sobe do card. Ideal para destacar um CTA ou um item em destaque numa grid.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/3d-pin.json`
+- **Draggable Card** (`draggable-card`) — Layout. Card arrastável da Aceternity UI com física de mola (spring) e rotação 3D seguindo o cursor. Ao soltar, o gesto de arrastar é animado com spring e bounce proporcional à velocidade.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/draggable-card.json`
+- **Direction Aware Hover** (`direction-aware-hover`) — Layout. Card da Aceternity UI que detecta a borda de entrada do mouse via atan2 e desloca imagem + texto pela direção oposta: entrar por baixo → imagem sobe; entrar por cima → imagem desce. O overlay escuro e o texto surgem suavemente no hover. Ideal para grids de perfis, testemunhos ou vitrines visuais que precisam de microinteração direcional.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/direction-aware-hover.json`
+- **Comet Card** (`comet-card`) — Layout. Card 3D da Aceternity UI que segue o cursor com tilt (rotateX/Y), parallax (translateX/Y) e um glare radial que se move com o mouse. Profundidade de rotação e translação configuráveis via props; aceita qualquer conteúdo como children dentro de um card visual com overflow-hidden.
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/comet-card.json`
+- **Card Spotlight** (`card-spotlight`) — Feedback. Card com spotlight radial que segue o cursor (CSS custom props --mouse-x/--mouse-y) e grid de dots animado via CanvasRevealEffect no hover. Cores dark fixas (brand do efeito).
+  - instalar: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/card-spotlight.json`
 
-## Composições / blocos (42)
+## Composições / blocos (46)
 
 Cada composição é uma TELA completa instalável como um bloco único; o comando puxa a tela + todos os componentes da vitrine que ela usa.
 
@@ -614,8 +697,10 @@ Cada composição é uma TELA completa instalável como um bloco único; o coman
   - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/music-player.json`
 - **Coming Soon / Waitlist** (`coming-soon`) — Marketing. Tela de lançamento 'em breve' full-bleed com fundo de estrelas animado, título colorido, countdown dd:hh:mm:ss, captura de e-mail para waitlist com confirmação e contador de prova social.
   - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/coming-soon.json`
-- **Reserva de Viagem** (`travel-booking`) — Marketing. Landing de viagens com busca interativa (destino, datas e hóspedes), destinos populares em FocusCards, mapa-múndi com rotas, depoimentos animados e faixa de benefícios.
+- **Reserva de Viagem** (`travel-booking`) — Marketing. Landing de passagens Brasil & Mundo com busca interativa (Nordeste em foco, mas com Caribe/Europa/Américas), FocusCards de destinos do Nordeste, mapa-múndi com rotas saindo de SP, AnimatedTestimonials e bento com GlowingEffect.
   - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/travel-booking.json`
+- **Reserva de Viagem — Tropical WOU** (`travel-booking-tropical`) — Marketing. Versão premium da landing de passagens com densidade máxima de efeitos da Vitrine: hero em AuroraBackground + HeroHighlight + TextHoverEffect gigante 'BRASIL' + FlipWords + ContainerTextFlip, ParallaxHeroImages2 dos destinos Nordestinos, Vortex dourado nos números, WorldMap saindo do Brasil, BentoGrid com GlowingEffect e CTA final em CardSpotlight + SparklesCore. Foco Nordeste + mundo.
+  - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/travel-booking-tropical.json`
 - **IDE com IA** (`ai-ide`) — Aplicação. Ambiente de programação estilo VS Code (em layout largo) com imersão total e a IA como protagonista — todos os botões funcionam. Title bar com menus Arquivo/Editar/Ver como dropdowns de ações reais. Explorer com árvore mutável: abrir/fechar pastas, criar arquivo/pasta (input inline), renomear e excluir no hover. Activity bar troca o painel (Explorer/Search/Source Control/Run/Extensions/Preferências com SwitchFluid); Run dispara no terminal. Editor com tabs fecháveis, dot de não-salvo, caret por linha (Ln/Col) e ghost suggestion. Painel inferior Terminal/Problemas/Saída colapsável. Destaque: chat de IA com raciocínio EMBUTIDO na bolha do assistant — expandido durante o pensar (passos em streaming + indicador + contador de tempo) e auto-contraído ao terminar para “Pensei por Ns ›”, reabrível por clique; em seguida a resposta final aparece com efeito de digitação token-a-token e bloco de código aplicável que edita o editor e marca o arquivo como modificado. Modos Chat/Edit/Agent, dropdown de modelo, chips @arquivo, slash commands, command palette ⌘K, status bar reativa e responsivo (IA vira Sheet em telas estreitas).
   - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/ai-ide.json`
 - **Workflow Builder** (`workflow-builder`) — Aplicação. Editor visual de automações no estilo n8n/Zapier construído sobre o React Flow (@xyflow/react). App de tela cheia com toolbar, paleta arrastável, canvas e inspetor: nós customizados tematizados (gatilho/ação/condição/saída) com ícones, Handles e estados; arraste da paleta cria nós (drag&drop → screenToFlowPosition), ligue Handles para conectar (edges animadas com seta), e edite título/subtítulo no inspetor. A toolbar adiciona nós, auto-organiza em camadas, ajusta à tela (fitView), alterna MiniMap/Grade e dispara a ▶ simulação, que percorre o grafo acendendo nós e destacando o caminho. Barra de status com contadores e export do grafo em JSON. MiniMap colorido por tipo, Background pontilhado e Controls; tema light/dark reativo via tokens shadcn.
@@ -640,6 +725,12 @@ Cada composição é uma TELA completa instalável como um bloco único; o coman
   - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/observability-center.json`
 - **AI Dashboard Builder** (`ai-dashboard-builder`) — Aplicação. Plataforma de dashboards comandada por IA em layout de 3 painéis: chat à esquerda onde o usuário descreve o que precisa (ex.: "Vendas por região no último trimestre"), o agente escolhe um template, escreve a consulta SQL, simula a execução e renderiza o resultado como gráfico de barras, tabela de dados e KPIs no painel central — acompanhado de um painel direito de detalhes com a query gerada, metadados e ações. Tudo determinístico (sem chamadas de rede), com histórico de mensagens, indicadores de raciocínio e estado de loading simulado.
   - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/ai-dashboard-builder.json`
+- **Slow Query Monitor** (`slow-query-list`) — Aplicação. Diagnóstico de queries SQL lentas (estilo pgAdmin / DataDog DBM / pganalyze): seletor de banco, lista com tempo, SQL destacada, plano do EXPLAIN em árvore, locks ativos e sugestões automáticas (índice faltante, rewrite, vacuum). Filtros por threshold/severidade e agrupamento por tabela.
+  - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/slow-query-list.json`
+- **DB Schema Explorer** (`db-schema-explorer`) — Aplicação. Explorador de schema de banco no estilo DBeaver/Navicat: seletor de conexão, árvore lateral (banco → schemas → tabelas) com busca em tempo real, painel de detalhe com 4 abas (Columns / Indexes / Foreign keys / DDL) e referência FK clicável que salta para a tabela alvo.
+  - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/db-schema-explorer.json`
 - **DBA Workbench** (`dba-workbench`) — Aplicação. Workbench IDE-like de banco de dados (estilo DBeaver / Navicat / DataGrip) construído em torno do componente DbSchemaExplorer: tabs de bancos abertos (estilo VS Code) com 2 bancos pré-abertos (Postgres da auditoria de produção + Postgres do SGT Maker), sidebar esquerda com 3 seções colapsáveis (Conexões, Favoritos, Histórico de queries SQL recentes), painel direito com info da tabela selecionada (linhas, tamanho, colunas com badges PK/FK, índices, foreign keys), status bar com conexão ativa e query time da última ação, topbar com badge de engine e ações globais (Refresh, Export DDL, Query, Settings). Tudo determinístico (PRNG seedado) — sem Math.random. Clique em uma tabela na árvore central pra popular o painel direito; clique no ícone de estrela pra favoritar/desfavoritar.
   - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/dba-workbench.json`
+- **VoaCRM — CRM para Agência de Turismo** (`voa-crm`) — Aplicação. CRM completo para agência de viagens em 5 áreas navegáveis: Painel com 4 KPI cards (reservas, receita, ticket médio, taxa de ocupação), gráfico de receita por destino e próximas viagens confirmadas; Clientes em tabela com busca, filtros por status (Lead/Prospect/Cliente/VIP) e cadastro em diálogo; Reservas agrupadas por status (Confirmada/Pendente/Cancelada) em cards com passageiro, destino, datas, valor e ações (Confirmar, Reagendar, Reembolsar); Pipeline Kanban com 5 estágios de negociação de pacotes (Novo lead → Em negociação → Cotação enviada → Aguardando pagamento → Fechado) com cards arrastáveis entre colunas e toast de confirmação; e Campanhas com 3 canais (E-mail/WhatsApp/Ads), métricas (Alcance, Conversões, ROI), status ativo/pausado e ação de pausar/retomar.
+  - instalar bloco: `npx shadcn@latest add https://ui-list-ui-componets-cmqcdlm7.cloud.serendiped.com/r/voa-crm.json`
 

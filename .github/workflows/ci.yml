@@ -31,5 +31,8 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      - name: Validate component groups (cobertura da taxonomia)
+        run: npm run validate:groups
+
       - name: Build (tsc -b + vite build)
         run: npm run build
