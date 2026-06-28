@@ -421,12 +421,12 @@ export function PricingPage() {
       <DottedGlowBackground
         gap={16}
         radius={2}
-        opacity={0.5}
-        backgroundOpacity={0.2}
-        colorLightVar="--color-neutral-500"
-        colorDarkVar="--color-neutral-400"
-        glowColorLightVar="--color-violet-500"
-        glowColorDarkVar="--color-violet-400"
+        opacity={0.4}
+        backgroundOpacity={0.15}
+        colorLightVar="--color-neutral-400"
+        colorDarkVar="--color-neutral-500"
+        glowColorLightVar="--color-neutral-500"
+        glowColorDarkVar="--color-neutral-600"
       />
 
       <div className="relative z-10 mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
@@ -498,7 +498,7 @@ export function PricingPage() {
                 className={cn(
                   "relative flex flex-col bg-card/80 backdrop-blur-sm",
                   plan.highlighted &&
-                    "border-primary shadow-lg ring-1 ring-primary/40 md:scale-[1.03]"
+                    "border-primary shadow-xl ring-1 ring-primary/30"
                 )}
               >
                 {plan.highlighted && (
