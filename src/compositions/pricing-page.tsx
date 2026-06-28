@@ -13,7 +13,7 @@
  * - `InfiniteMovingCards` com depoimentos de clientes.
  * - `Accordion` com as perguntas frequentes.
  * - `Button` como CTA de cada plano e da seção final.
- * - `DottedGlowBackground` / `ScalesContainer` como decoração sutil.
+ * - `ScalesContainer` como decoração sutil.
  */
 import { Fragment, useMemo, useState } from "react"
 import {
@@ -47,7 +47,6 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-  DottedGlowBackground,
   InfiniteMovingCards,
   Input,
   LogoSlider,
@@ -417,16 +416,10 @@ export function PricingPage() {
 
   return (
     <div className="relative overflow-hidden rounded-xl border bg-background">
-      {/* Fundo decorativo sutil */}
-      <DottedGlowBackground
-        gap={16}
-        radius={2}
-        opacity={0.4}
-        backgroundOpacity={0.15}
-        colorLightVar="--color-neutral-400"
-        colorDarkVar="--color-neutral-500"
-        glowColorLightVar="--color-neutral-500"
-        glowColorDarkVar="--color-neutral-600"
+      {/* Fundo: gradiente estático e sutil no topo (sem animação) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-96 bg-gradient-to-b from-muted/40 to-transparent"
       />
 
       <div className="relative z-10 mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
