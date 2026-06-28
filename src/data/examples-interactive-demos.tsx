@@ -8,7 +8,9 @@ import * as React from "react"
 import type { LucideIcon } from "lucide-react"
 import { Sun, Moon, Eye, EyeOff, Bell, BellOff } from "lucide-react"
 
+import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button-variants"
 import { ChevronsUpDownIcon } from "@/components/ui/chevrons-up-down-icon"
 import { IconSwap } from "@/components/ui/icon-swap"
 import { ElasticSlider } from "@/components/ui/elastic-slider"
@@ -31,15 +33,22 @@ export function IconSwapDemo({
   off: LucideIcon
 }) {
   const [active, setActive] = React.useState(true)
+  // Renderiza o IconSwap como o próprio botão (sem wrapper Button)
+  // porque aninhar `<button>` dentro de `<button>` é inválido no HTML.
+  // As classes do Button `variant="outline" size="icon"` são aplicadas
+  // diretamente via `buttonVariants` do shadcn/ui.
   return (
-    <Button
-      variant="outline"
-      size="icon"
-      onClick={() => setActive((v) => !v)}
+    <IconSwap
+      iconOn={on}
+      iconOff={off}
+      active={active}
+      iconClassName="size-5"
       aria-label="Alternar"
-    >
-      <IconSwap iconOn={on} iconOff={off} active={active} iconClassName="size-5" />
-    </Button>
+      onClick={() => setActive((v) => !v)}
+      className={cn(
+        buttonVariants({ variant: "outline", size: "icon" }),
+      )}
+    />
   )
 }
 

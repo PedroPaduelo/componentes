@@ -78,50 +78,100 @@ function ThreeDGlobe({
 
     let width = 0
     let frameId = 0
+    let globe: ReturnType<typeof createGlobe> | null = null
+    // Flag de segurança contra race entre StrictMode (mount → cleanup →
+    // mount) e o rAF do render loop: se um render agendado na primeira
+    // montagem escapar do cancelAnimationFrame (porque já estava em
+    // processamento), ele não deve chamar `globe.update()` em um globe
+    // que já foi destruído no cleanup — daí o INVALID_OPERATION.
+    let destroyed = false
 
-    const onResize = () => {
-      width = canvas.offsetWidth
+    const measure = () => {
+      const rect = canvas.getBoundingClientRect()
+      width = rect.width || canvas.offsetWidth
     }
-    onResize()
-    window.addEventListener("resize", onResize)
+    measure()
 
-    const options: COBEOptions = {
-      devicePixelRatio: 2,
-      width: width * 2,
-      height: width * 2,
-      phi: 0,
-      theta: 0.3,
-      dark: isDark ? 1 : 0,
-      diffuse: 1.2,
-      mapSamples: 16000,
-      mapBrightness: isDark ? 6 : 8,
-      baseColor: resolvedBase,
-      markerColor: resolvedMarker,
-      glowColor: resolvedGlow,
-      markers: markers.map((m) => ({ location: m.location, size: m.size })),
-    }
-
-    let globe: ReturnType<typeof createGlobe>
-    try {
-      globe = createGlobe(canvas, options)
-    } catch {
-      // WebGL indisponível: evita propagar a exceção e derrubar a árvore React.
-      setUnsupported(true)
-      return
+    if (width === 0) {
+      const rafId = requestAnimationFrame(() => {
+        if (destroyed) return
+        measure()
+        init()
+      })
+      return () => {
+        destroyed = true
+        cancelAnimationFrame(rafId)
+      }
     }
 
-    const render = () => {
-      phiRef.current += rotationSpeed
-      globe.update({ phi: phiRef.current, width: width * 2, height: width * 2 })
-      canvas.style.opacity = "1"
+    function init() {
+      if (!canvas || destroyed) return
+      if (globe) return
+      const rect = canvas.getBoundingClientRect()
+      const w = rect.width || canvas.offsetWidth
+      if (w === 0) return
+
+      const options: COBEOptions = {
+        devicePixelRatio: 2,
+        width: w * 2,
+        height: w * 2,
+        phi: 0,
+        theta: 0.3,
+        dark: isDark ? 1 : 0,
+        diffuse: 1.2,
+        mapSamples: 16000,
+        mapBrightness: isDark ? 6 : 8,
+        baseColor: resolvedBase,
+        markerColor: resolvedMarker,
+        glowColor: resolvedGlow,
+        markers: markers.map((m) => ({ location: m.location, size: m.size })),
+      }
+
+      try {
+        globe = createGlobe(canvas, options)
+      } catch {
+        setUnsupported(true)
+        return
+      }
+
+      width = w
+      const render = () => {
+        if (destroyed || !globe) return
+        phiRef.current += rotationSpeed
+        globe.update({
+          phi: phiRef.current,
+          width: width * 2,
+          height: width * 2,
+        })
+        canvas.style.opacity = "1"
+        frameId = requestAnimationFrame(render)
+      }
       frameId = requestAnimationFrame(render)
     }
-    frameId = requestAnimationFrame(render)
+
+    init()
+
+    const resizeObserver = new ResizeObserver(() => {
+      if (destroyed) return
+      const rect = canvas.getBoundingClientRect()
+      const newWidth = rect.width || canvas.offsetWidth
+      if (newWidth > 0 && newWidth !== width) {
+        width = newWidth
+        if (globe) {
+          globe.update({ width: width * 2, height: width * 2 })
+        }
+      }
+    })
+    resizeObserver.observe(canvas)
 
     return () => {
+      destroyed = true
       cancelAnimationFrame(frameId)
-      window.removeEventListener("resize", onResize)
-      globe.destroy()
+      resizeObserver.disconnect()
+      if (globe) {
+        globe.destroy()
+        globe = null
+      }
     }
   }, [markers, resolvedBase, resolvedMarker, resolvedGlow, isDark, rotationSpeed])
 

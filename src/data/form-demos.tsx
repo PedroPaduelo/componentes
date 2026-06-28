@@ -38,7 +38,16 @@ export function LoginFormDemo() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="seu@email.com" type="email" {...field} />
+                <Input
+                  placeholder="seu@email.com"
+                  type="email"
+                  autoComplete="email"
+                  name={field.name}
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
+                />
               </FormControl>
               <FormDescription>Usaremos este email para login.</FormDescription>
               <FormMessage />
@@ -52,7 +61,16 @@ export function LoginFormDemo() {
             <FormItem>
               <FormLabel>Senha</FormLabel>
               <FormControl>
-                <Input placeholder="********" type="password" {...field} />
+                <Input
+                  placeholder="********"
+                  type="password"
+                  autoComplete="current-password"
+                  name={field.name}
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -90,7 +108,14 @@ export function ProfileFormDemo() {
             <FormItem>
               <FormLabel>Nome</FormLabel>
               <FormControl>
-                <Input placeholder="Seu nome" {...field} />
+                <Input
+                  placeholder="Seu nome"
+                  name={field.name}
+                  value={field.value}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -103,7 +128,14 @@ export function ProfileFormDemo() {
             <FormItem>
               <FormLabel>Bio</FormLabel>
               <FormControl>
-                <Textarea placeholder="Fale um pouco..." {...field} />
+                <Textarea
+                  placeholder="Fale um pouco..."
+                  name={field.name}
+                  value={field.value ?? ""}
+                  onChange={field.onChange}
+                  onBlur={field.onBlur}
+                  ref={field.ref}
+                />
               </FormControl>
               <FormDescription>Máximo de 160 caracteres.</FormDescription>
               <FormMessage />

@@ -91,7 +91,7 @@ export function FlipWords({ words, duration = 3000, className }: FlipWordsProps)
           setIsAnimating(false)
         }}
       >
-        <motion.div
+        <motion.span
           key={currentWord}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -113,7 +113,7 @@ export function FlipWords({ words, duration = 3000, className }: FlipWordsProps)
           {currentWord.split(" ").map((word, wordIndex) => (
             <WordSpan key={`${word}-${wordIndex}`} word={word} wordIndex={wordIndex} />
           ))}
-        </motion.div>
+        </motion.span>
       </AnimatePresence>
     </span>
   )

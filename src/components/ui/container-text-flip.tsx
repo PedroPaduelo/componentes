@@ -103,7 +103,7 @@ function ContainerTextFlip({
       key={currentWord}
       {...props}
     >
-      <motion.div
+      <motion.span
         transition={{
           duration: animationDuration / 1000,
           ease: "easeInOut",
@@ -112,7 +112,7 @@ function ContainerTextFlip({
         ref={textRef}
         layoutId={`word-div-${currentWord}-${id}`}
       >
-        <motion.div className="inline-block">
+        <motion.span className="inline-block">
           {letters.map((letter, index) => (
             <motion.span
               key={`${id}-${currentWord}-${index}`}
@@ -124,8 +124,8 @@ function ContainerTextFlip({
               {letter}
             </motion.span>
           ))}
-        </motion.div>
-      </motion.div>
+        </motion.span>
+      </motion.span>
     </motion.p>
   )
 }

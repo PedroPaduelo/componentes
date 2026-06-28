@@ -19,7 +19,7 @@ import type {
  */
 function ContainerCover({ children, className }: ContainerCoverProps) {
   const [hovered, setHovered] = React.useState(false)
-  const ref = React.useRef<HTMLDivElement>(null)
+  const ref = React.useRef<HTMLSpanElement>(null)
   const [containerWidth, setContainerWidth] = React.useState(0)
   const [beamPositions, setBeamPositions] = React.useState<number[]>([])
 
@@ -39,23 +39,23 @@ function ContainerCover({ children, className }: ContainerCoverProps) {
   }, [])
 
   return (
-    <div
+    <span
       data-slot="container-cover"
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       ref={ref}
-      className="group/cover relative inline-block rounded-sm bg-neutral-100 px-2 py-2 transition duration-200 hover:bg-neutral-900 dark:bg-neutral-900"
+      className="group/cover relative inline-block rounded-sm bg-neutral-100 px-2 py-2 align-middle transition duration-200 hover:bg-neutral-900 dark:bg-neutral-900"
     >
       <AnimatePresence>
         {hovered && (
-          <motion.div
+          <motion.span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ opacity: { duration: 0.2 } }}
-            className="absolute inset-0 h-full w-full overflow-hidden"
+            className="pointer-events-none absolute inset-0 block h-full w-full overflow-hidden"
           >
-            <motion.div
+            <motion.span
               animate={{ translateX: ["-50%", "0%"] }}
               transition={{
                 translateX: {
@@ -82,8 +82,8 @@ function ContainerCover({ children, className }: ContainerCoverProps) {
                 className="h-full w-full"
                 particleColor="#FFFFFF"
               />
-            </motion.div>
-          </motion.div>
+            </motion.span>
+          </motion.span>
         )}
       </AnimatePresence>
 
@@ -125,7 +125,7 @@ function ContainerCover({ children, className }: ContainerCoverProps) {
       <ContainerCoverCircle className="absolute -right-px -bottom-px" delay={0.4} />
       <ContainerCoverCircle className="absolute -top-px -left-px" delay={0.8} />
       <ContainerCoverCircle className="absolute -bottom-px -left-px" delay={1.6} />
-    </div>
+    </span>
   )
 }
 
@@ -177,10 +177,11 @@ function ContainerCoverBeam({
 
 function ContainerCoverCircle({ className, delay }: ContainerCoverCircleProps) {
   return (
-    <div
+    <span
+      aria-hidden="true"
       style={delay ? { animationDelay: `${delay}s` } : undefined}
       className={cn(
-        "pointer-events-none h-2 w-2 animate-pulse rounded-full bg-neutral-600 opacity-20 group-hover/cover:hidden dark:bg-white",
+        "pointer-events-none block h-2 w-2 animate-pulse rounded-full bg-neutral-600 opacity-20 group-hover/cover:hidden dark:bg-white",
         className,
       )}
     />

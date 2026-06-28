@@ -725,15 +725,21 @@ const tabsBasicExample: Example = {
 const inputBasicExample: Example = {
   title: "Básico",
   description: "Campo de texto com placeholder e tipos nativos.",
-  code: `<Input type="email" placeholder="seu@email.com" />
-<Input type="password" placeholder="Senha" />
-<Input disabled placeholder="Desabilitado" />`,
+  code: `<form className="flex flex-wrap items-center gap-3">
+  <Input type="email" placeholder="seu@email.com" />
+  <Input type="password" placeholder="Senha" autoComplete="current-password" />
+  <Input disabled placeholder="Desabilitado" />
+</form>`,
   render: (
-    <>
+    <form className="flex flex-wrap items-center gap-3">
       <Input type="email" placeholder="seu@email.com" />
-      <Input type="password" placeholder="Senha" />
+      <Input
+        type="password"
+        placeholder="Senha"
+        autoComplete="current-password"
+      />
       <Input disabled placeholder="Desabilitado" />
-    </>
+    </form>
   ),
 }
 

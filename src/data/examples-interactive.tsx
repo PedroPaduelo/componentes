@@ -54,9 +54,15 @@ const iconSwapExample: Example = {
   code: `function Demo() {
   const [active, setActive] = React.useState(true)
   return (
-    <Button variant="outline" size="icon" onClick={() => setActive(v => !v)}>
-      <IconSwap iconOn={Sun} iconOff={Moon} active={active} iconClassName="size-5" />
-    </Button>
+    <IconSwap
+      iconOn={Sun}
+      iconOff={Moon}
+      active={active}
+      iconClassName="size-5"
+      aria-label="Alternar"
+      onClick={() => setActive(v => !v)}
+      className={cn(buttonVariants({ variant: "outline", size: "icon" }))}
+    />
   )
 }`,
   render: <IconSwapRow />,

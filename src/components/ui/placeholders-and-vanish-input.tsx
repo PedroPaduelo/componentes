@@ -95,7 +95,12 @@ function PlaceholdersAndVanishInput({
     if (!inputRef.current) return
     const canvas = canvasRef.current
     if (!canvas) return
-    const ctx = canvas.getContext("2d")
+    // `willReadFrequently: true` é uma dica para o browser habilitar um
+    // caminho otimizado quando o contexto vai ser usado majoritariamente
+    // para `getImageData`. Sem isso o Chrome emite o warning:
+    //   "Canvas2D: Multiple readback operations using getImageData are
+    //    faster with the willReadFrequently attribute set to true."
+    const ctx = canvas.getContext("2d", { willReadFrequently: true })
     if (!ctx) return
 
     canvas.width = VANISH_CANVAS_SIZE
